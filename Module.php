@@ -3,7 +3,6 @@
 namespace EdpUser;
 
 use Zend\Module\Manager,
-    Zend\Config\Config,
     Zend\Loader\AutoloaderFactory;
 
 class Module
@@ -29,6 +28,6 @@ class Module
 
     public function getConfig($env = null)
     {
-        return new Config(include __DIR__ . '/configs/module.config.php');
+        return include __DIR__ . '/configs/module.config.php';
     }
 }

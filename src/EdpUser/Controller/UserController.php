@@ -57,10 +57,48 @@ class UserController extends ActionController
         );
     }
 
+    public function logoutAction()
+    {
+        if (!$this->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute('default', array(
+                'controller' => 'user',
+                'action'     => 'login',
+            )); 
+        }
+
+        $this->getAuthService()->clearIdentity();
+
+        return $this->redirect()->toRoute('default', array(
+            'controller' => 'user',
+            'action'     => 'login',
+        )); 
+    }
+
     public function registerAction()
     {
+        if ($this->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute('default', array(
+                'controller' => 'user',
+                'action'     => 'index',
+            )); 
+        }
         $request    = $this->getRequest();
         $form       = $this->getRegisterForm();
+        if ($request->isPost()) {
+            if (false === $form->isValid($request->post()->toArray())) {
+                return $this->redirect()->toRoute('default', array(
+                    'controller' => 'user',
+                    'action'     => 'register',
+                )); 
+            } else {
+                $this->getUserService()->createFromForm($form);
+                // @TODO: Setting for logging in after registration
+                return $this->redirect()->toRoute('default', array(
+                    'controller' => 'user',
+                    'action'     => 'login',
+                )); 
+            }
+        }
         return array(
             'registerForm' => $form,
         );

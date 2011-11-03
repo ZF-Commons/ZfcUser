@@ -17,11 +17,11 @@ class Base extends Form
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('StringLength', true, array(3, 255)),
-                array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
-                    'em'      => $this->entityManager,
-                    'entity'  => 'EdpUser\Entity\User',
-                    'field'   => 'username'
-                ))
+                //array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
+                //    'em'      => $this->entityManager,
+                //    'entity'  => 'EdpUser\Entity\User',
+                //    'field'   => 'username'
+                //))
             ),
             'required'   => true,
             'label'      => 'Username',
@@ -31,11 +31,11 @@ class Base extends Form
             'filters'    => array('StringTrim'),
             'validators' => array(
                 'EmailAddress',
-                array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
-                    'em'      => $this->entityManager,
-                    'entity'  => 'EdpUser\Entity\User',
-                    'field'   => 'email'
-                ))
+                //array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
+                //    'em'      => $this->entityManager,
+                //    'entity'  => 'EdpUser\Entity\User',
+                //    'field'   => 'email'
+                //))
             ),
             'required'   => true,
             'label'      => 'Email',

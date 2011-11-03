@@ -18,7 +18,7 @@ class User
     private $userId;
 
     /**
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(type="string", unique=true, nullable=true)
      */
     private $username;
 
@@ -43,12 +43,12 @@ class User
     private $salt;
 
     /**
-     * @ORM\Column(name="last_login", type="datetime")
+     * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
 
     /**
-     * @ORM\Column(name="last_ip", type="integer")
+     * @ORM\Column(name="last_ip", type="integer", nullable=true)
      */
     private $lastIp;
 
@@ -135,7 +135,14 @@ class User
      */
     public function getDisplayName()
     {
-        return $this->displayName;
+        if ($this->displayName !== null) {
+            return $this->displayName;
+        } elseif ($this->username !== null) {
+            return $this->username;
+        } elseif ($this->email !== null) {
+            return $this->email;
+        }
+        return NULL;
     }
  
     /**
@@ -224,7 +231,7 @@ class User
      */
     public function getLastIp()
     {
-        return $this->lastIp;
+        return long2ip($this->lastIp);
     }
  
     /**
@@ -236,7 +243,7 @@ class User
      */
     public function setLastIp($lastIp)
     {
-        $this->lastIp = $lastIp;
+        $this->lastIp = ip2long($lastIp);
         return $this;
     }
  
@@ -270,7 +277,7 @@ class User
      */
     public function getRegisterIp()
     {
-        return $this->registerIp;
+        return long2ip($this->registerIp);
     }
  
     /**
@@ -282,7 +289,7 @@ class User
      */
     public function setRegisterIp($registerIp)
     {
-        $this->registerIp = $registerIp;
+        $this->registerIp = ip2long($registerIp);
         return $this;
     }
 }

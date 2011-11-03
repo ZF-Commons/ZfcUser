@@ -10,6 +10,7 @@ class Register extends Base
     {
         parent::initLate();
         $this->removeElement('userId');
+        $this->removeElement('username');
         $this->getElement('submit')->setLabel('Register');
     }
 }
