@@ -31,19 +31,18 @@ Installation
     2. `./doctrine orm:schema:create`
 5. Navigate to http://yourproject/user and you should land on a login page.
 
-Provided Stuff
---------------
+Available Locator Items
+-----------------------
 
-* Zend\Form login form
-* Zend\Form registration form
-* User Service
-* Doctrine User Entity
-* User controller:
-    * /user/login
-    * /user/logout
-    * /user/register
-    * /user/index
-
+- `edpuser-user-service` - A service class providing easy access to common
+  user-related functionality.
+- `edpuser-register-form` - A Zend\Form user registration form
+- `edpuser-login-form` - A Zend\Form user login form
+- `user` - An ActionController which provides the following actions:
+    - /user/login
+    - /user/logout
+    - /user/register
+    - /user/index
 
 Common Use-Cases
 ----------------
