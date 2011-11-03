@@ -27,15 +27,17 @@ class Base extends Form
             'label'      => 'Username',
         ));
 
+        $noEntityExists = new \SpiffyDoctrine\Validator\NoEntityExists(array(
+            'em'     => $this->entityManager,
+            'entity' => 'EdpUser\Entity\User',
+            'field'  => 'email',
+        ));
+
         $this->addElement('text', 'email', array(
             'filters'    => array('StringTrim'),
             'validators' => array(
                 'EmailAddress',
-                //array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
-                //    'em'      => $this->entityManager,
-                //    'entity'  => 'EdpUser\Entity\User',
-                //    'field'   => 'email'
-                //))
+                $noEntityExists,
             ),
             'required'   => true,
             'label'      => 'Email',
@@ -85,4 +87,3 @@ class Base extends Form
         return $this;
     }
 }
-

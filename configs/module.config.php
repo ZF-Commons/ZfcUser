@@ -15,6 +15,13 @@ return array(
                     ),
                 ),
             ),
+            'doctrine-driverchain' => array(
+                'injections' => array(
+                    'addDriver' => array(
+                        (int) base_convert('EdpUser', 36, 9) => array('nestedDriver' => 'doctrine-annotationdriver', 'namespace' => 'EdpUser\Entity'),
+                    )
+                ),
+            ),
             'edpuser-user-service' => array(
                 'parameters' => array(
                     'entityManager' => 'doctrine-em',

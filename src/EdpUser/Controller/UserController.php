@@ -86,6 +86,8 @@ class UserController extends ActionController
         $form       = $this->getRegisterForm();
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
+                $this->flashMessenger()->setNamespace('edpuser-register-form')->addMessage($request->post()->toArray());
+                // @TODO: FlashMessenger persist form
                 return $this->redirect()->toRoute('default', array(
                     'controller' => 'user',
                     'action'     => 'register',
@@ -108,6 +110,10 @@ class UserController extends ActionController
     {
         if (null === $this->registerForm) {
             $this->registerForm = $this->getLocator()->get('edpuser-register-form');
+            $fm = $this->flashMessenger()->setNamespace('edpuser-register-form')->getMessages();
+            if (isset($fm[0])) {
+                $this->registerForm->isValid($fm[0]);
+            }
         }
         return $this->registerForm;
     }
