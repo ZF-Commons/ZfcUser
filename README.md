@@ -14,11 +14,13 @@ be very simple and easily to extend.
 
 Requirements
 ------------
+
 * Zend Framework 2 (currently depends on commit [a8de089](https://github.com/ralphschindler/zf2/commit/a8de0890e216e9826be3414a818c333e2f307028) from Ralph Schindler's [hotfix/di](https://github.com/ralphschindler/zf2/tree/hotfix/di) branch.
-* [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine)
+* [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (latest master).
 
 Installation
 ------------
+
 1. Install [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) per the [README](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/README.md)
 2. Clone EdpUser into your modules directory:
     1. `cd path/to/project/modules`
@@ -28,6 +30,34 @@ Installation
     1. `cd path/to/SpiffyDoctrine/bin`
     2. `./doctrine orm:schema:create`
 5. Navigate to http://yourproject/user and you should land on a login page.
+
+Provided Stuff
+--------------
+
+* Zend\Form login form
+* Zend\Form registration form
+* User Service
+* Doctrine User Entity
+* User controller:
+    * /user/login
+    * /user/logout
+    * /user/register
+    * /user/index
+
+
+Common Use-Cases
+----------------
+
+### Checking if a user is logged in from an ActionController
+    
+    if ($this->getLocator()->get('edpuser-user-service')->getAuthService()->hasIdentity()) {
+        //...
+    }
+
+### Retrieving a user's identity in an ActionController
+    
+    $user = $this->getLocator()->get('edpuser-user-service')->getAuthService()->getIdentity();
+    return array('user' => $user);
 
 
 Features
