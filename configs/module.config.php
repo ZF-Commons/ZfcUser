@@ -6,6 +6,7 @@ return array(
                 'user'                  => 'EdpUser\Controller\UserController',
                 'edpuser-register-form' => 'EdpUser\Form\Register',
                 'edpuser-login-form'    => 'EdpUser\Form\Login',
+                'edpuser-user-service'  => 'EdpUser\Service\User',
             ),
             'doctrine-container' => array(
                 'parameters' => array(
@@ -18,6 +19,11 @@ return array(
                             ),
                         ),
                     ),
+                ),
+            ),
+            'edpuser-user-service' => array(
+                'parameters' => array(
+                    'entityManager' => 'em-default',
                 ),
             ),
             'edpuser-register-form' => array(
