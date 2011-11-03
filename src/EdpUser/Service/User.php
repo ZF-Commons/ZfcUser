@@ -40,21 +40,36 @@ class User
      */
     public function authenticate($identity, $credential)
     {
-        $adapter     = $this->getAuthAdapter($identity, $credential);
-        $authService = $this->getAuthService();
-        $result      = $authService->authenticate($adapter);
-        if (!$result->isValid()) {
-            // Try username...
-            // @TODO: Check settings
-            $adapter = $this->getAuthAdapter($identity, $credential, 'username'); 
-            $result  = $authService->authenticate($adapter);
-            if (!$result->isValid()) {
-                return false;
+        // Auth by email
+        $userEntity = $this->getUserRepository()->findOneBy(array('email' => $identity));
+        if ($userEntity !== null) {
+            $credentialHash = $this->hashPassword($credential, $userEntity->getSalt());
+            $adapter     = $this->getAuthAdapter($identity, $credentialHash);
+            $authService = $this->getAuthService();
+            $result      = $authService->authenticate($adapter);
+            if ($result->isValid()) {
+                return true;
             }
         }
-        return true;
+        // @TODO: Check if enableUsernameAuth setting is on 
+        $userEntity = $this->getUserRepository()->findOneBy(array('username' => $identity));
+        if ($userEntity !== null) {
+            $credentialHash = $this->hashPassword($credential, $userEntity->getSalt());
+            $adapter = $this->getAuthAdapter($identity, $credentialHash, 'username'); 
+            $result  = $authService->authenticate($adapter);
+            if ($result->isValid()) {
+                return true;
+            }
+        }
+        return false;
     }
 
+    /**
+     * createFromForm 
+     * 
+     * @param Form $form 
+     * @return EdpUser\Entity\User
+     */
     public function createFromForm(Form $form)
     {
         $user = new $this->entityClass;
@@ -93,6 +108,11 @@ class User
         return $this;
     }
 
+    public function getUserRepository()
+    {
+        return $this->getEntityManager()->getRepository('EdpUser\Entity\User');
+    }
+
     /**
      * getAuthAdapter 
      * 
@@ -111,7 +131,7 @@ class User
             $this->setAuthAdapter($authAdapter);
         }
         $this->authAdapter->setIdentity($identity)
-                          ->setCredential($password)
+                          ->setCredential($credential)
                           ->setIdentityColumn($identityColumn);
         return $this->authAdapter;
     }

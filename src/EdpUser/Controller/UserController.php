@@ -46,6 +46,7 @@ class UserController extends ActionController
                     'action'     => 'index',
                 )); 
             } else {
+                $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($request->post()->toArray());
                 return $this->redirect()->toRoute('default', array(
                     'controller' => 'user',
                     'action'     => 'login',
@@ -122,6 +123,10 @@ class UserController extends ActionController
     {
         if (null === $this->loginForm) {
             $this->loginForm = $this->getLocator()->get('edpuser-login-form');
+            $fm = $this->flashMessenger()->setNamespace('edpuser-login-form')->getMessages();
+            if (isset($fm[0])) {
+                $this->loginForm->isValid($fm[0]);
+            }
         }
         return $this->loginForm;
     }
