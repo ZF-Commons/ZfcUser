@@ -53,10 +53,16 @@ Common Use-Cases
         //...
     }
 
-### Retrieving a user's identity in an ActionController
+### Retrieving a user's identity from an ActionController
     
     $user = $this->getLocator()->get('edpuser-user-service')->getAuthService()->getIdentity();
     return array('user' => $user);
+
+**Note:** `getIdentity()` returns an instance of `EdpUser\Entity\User`.
+
+### Logging a user out from an ActionController
+
+    $this->getLocator()->get('edpuser-user-service')->getAuthService()->clearIdentity();
 
 
 Features

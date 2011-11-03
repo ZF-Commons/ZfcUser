@@ -48,6 +48,7 @@ class User
             $authService = $this->getAuthService();
             $result      = $authService->authenticate($adapter);
             if ($result->isValid()) {
+                $this->updateUserLastLogin($userEntity);
                 return true;
             }
         }
@@ -58,10 +59,26 @@ class User
             $adapter = $this->getAuthAdapter($identity, $credentialHash, 'username'); 
             $result  = $authService->authenticate($adapter);
             if ($result->isValid()) {
+                $this->updateUserLastLogin($userEntity);
                 return true;
             }
         }
         return false;
+    }
+
+    /**
+     * updateUserLastLogin 
+     * 
+     * @param EdpUser\Entity\User $user 
+     * @return void
+     */
+    protected function updateUserLastLogin($user)
+    {
+        $user->setLastLogin(new DateTime('now'));
+        $user->setLastIp($_SERVER['REMOTE_ADDR']);
+        $em = $this->getEntityManager();
+        $em->persist($user);
+        $em->flush();
     }
 
     /**
