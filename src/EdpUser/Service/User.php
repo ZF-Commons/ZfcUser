@@ -34,7 +34,10 @@ class User
         $adapter     = $this->getAuthAdapter($username, $password);
         $authService = $this->getAuthService();
         $result      = $authService->authenticate($adapter);
-        return $result;
+        if (!$result->isValid()) {
+            return false;
+        }
+        return true;
     }
 
     /**
