@@ -5,6 +5,9 @@ Version 0.0.1 Created by Evan Coury
 Introduction
 ------------
 
+**NOTE:** This is a work-in-progress. The features listed may be incomplete or
+entirely missing.
+
 EdpUser is a ZF2 module which utilizes Doctrine2. It provides the foundations
 for adding user authentication and registration to your ZF2 site. It is built to
 be very simple and easily to extend.
