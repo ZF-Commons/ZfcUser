@@ -8,27 +8,21 @@ return array(
                 'edpuser-login-form'    => 'EdpUser\Form\Login',
                 'edpuser-user-service'  => 'EdpUser\Service\User',
             ),
-            'doctrine-container' => array(
+            'doctrine-annotationdriver' => array(
                 'parameters' => array(
-                    'em' => array(
-                        'default' => array(
-                            'driver' => array(
-                                'paths' => array(
-                                    'EdpUser' => __DIR__ . '/../src/EdpUser/Entity',
-                                ),
-                            ),
-                        ),
+                    'paths' => array(
+                        'EdpUser' => __DIR__ . '/../src/EdpUser/Entity',
                     ),
                 ),
             ),
             'edpuser-user-service' => array(
                 'parameters' => array(
-                    'entityManager' => 'em-default',
+                    'entityManager' => 'doctrine-em',
                 ),
             ),
             'edpuser-register-form' => array(
                 'parameters' => array(
-                    'entityManager' => 'em-default'
+                    'entityManager' => 'doctrine-em'
                 ),
             ),
             'Zend\View\PhpRenderer' => array(
