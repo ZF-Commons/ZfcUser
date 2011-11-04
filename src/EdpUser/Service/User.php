@@ -2,7 +2,7 @@
 
 namespace EdpUser\Service;
 
-use Doctrine\ORM\EntityManager,
+use SpiffyDoctrine\Service\Doctrine,
     Zend\Authentication\AuthenticationService,
     SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
     Zend\Authentication\Adapter as AuthAdapter,
@@ -110,18 +110,18 @@ class User
      */
     public function getEntityManager()
     {
-        return $this->entityManager;
+        return $this->doctrine->getEntityManager();
     }
 
     /**
-     * setEntityManager 
+     * setDoctrine 
      * 
-     * @param EntityManager $entityManager 
+     * @param Doctrine $doctrine 
      * @return User
      */
-    public function setEntityManager(EntityManager $entityManager)
+    public function setDoctrine(Doctrine $doctrine)
     {
-        $this->entityManager = $entityManager;
+        $this->doctrine = $doctrine;
         return $this;
     }
 

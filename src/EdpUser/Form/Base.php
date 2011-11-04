@@ -2,12 +2,13 @@
 
 namespace EdpUser\Form;
 
-use Zend\Form\Form,
+use SpiffyDoctrine\Service\Doctrine,
+    Zend\Form\Form,
     Edp\Common\DbMapper;
 
 class Base extends Form
 {
-    protected $entityManager;
+    protected $doctrine;
 
     public function initLate()
     {
@@ -18,7 +19,7 @@ class Base extends Form
             'validators' => array(
                 array('StringLength', true, array(3, 255)),
                 //array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
-                //    'em'      => $this->entityManager,
+                //    'em'      => $this->getEntityManager(),
                 //    'entity'  => 'EdpUser\Entity\User',
                 //    'field'   => 'username'
                 //))
@@ -28,7 +29,7 @@ class Base extends Form
         ));
 
         $noEntityExists = new \SpiffyDoctrine\Validator\NoEntityExists(array(
-            'em'     => $this->entityManager,
+            'em'     => $this->getEntityManager(),
             'entity' => 'EdpUser\Entity\User',
             'field'  => 'email',
         ));
@@ -79,10 +80,15 @@ class Base extends Form
             'required'   => true,
         ));
     }
- 
-    public function setEntityManager($entityManager)
+
+    public function getEntityManager()
     {
-        $this->entityManager = $entityManager;
+        return $this->doctrine->getEntityManager();
+    }
+ 
+    public function setDoctrine(Doctrine $doctrine)
+    {
+        $this->doctrine = $doctrine;
         $this->initLate();
         return $this;
     }
