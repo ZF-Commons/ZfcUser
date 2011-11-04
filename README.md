@@ -28,7 +28,7 @@ Installation
 3. Enable EdpUser in your `application.config.php` modules array.
 4. Create the `user` table in your database via the Doctrine CLI:
     1. `cd path/to/SpiffyDoctrine/bin`
-    2. `./doctrine orm:schema:create`
+    2. `./doctrine orm:schema:update --dump-sql`
 5. Navigate to http://yourproject/user and you should land on a login page.
 
 Available Locator Items
