@@ -8,41 +8,74 @@ Introduction
 **NOTE:** This is a work-in-progress. The features listed may be incomplete or
 entirely missing.
 
-EdpUser is a ZF2 module which utilizes Doctrine2. It provides the foundations
+EdpUser is a user registration and authentication module for Zend Framework 2,
+which can utilize either Doctrine2 or Zend\Db. It provides the foundations
 for adding user authentication and registration to your ZF2 site. It is built to
 be very simple and easily to extend.
 
 Requirements
 ------------
 
-* Zend Framework 2 (currently depends on commit [a8de089](https://github.com/ralphschindler/zf2/commit/a8de0890e216e9826be3414a818c333e2f307028) from Ralph Schindler's [hotfix/di](https://github.com/ralphschindler/zf2/tree/hotfix/di) branch.
-* [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (latest master).
+* Zend Framework 2
+* [EdpCommon](https://github.com/EvanDotPro/EdpCommon) (latest master).
+* [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (optional).
 
-Installation
+Installation (Zend\Db)
 ------------
 
-1. Install [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) per the [README](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/README.md)
-2. Clone EdpUser into your modules directory:
+1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module.
+    1. `cd path/to/project/modules`
+    2. `git clone git://github.com/EvanDotPro/EdpCommon.git`
+    3. Enable EdpCommon in your `application.config.php` modules array.
+2. Install the [EdpUser](https://github.com/EvanDotPro/EdpUser) ZF2 module.
     1. `cd path/to/project/modules`
     2. `git clone git://github.com/EvanDotPro/EdpUser.git`
-3. Enable EdpUser in your `application.config.php` modules array.
+    3. Enable EdpUser in your `application.config.php` modules array.
+3. Create the `user` table in your database. (The chema is located in
+   `./EdpUser/data/schema.sql`)
+4. Add the following to your `Application/configs/module.config.php`:
+
+    // Application/configs/module.config.php
+    array(
+        'di' => array(
+            'instance' => array(
+                'alias' => array(
+                    'masterdb'            => 'PDO',
+                    'edpuser-pdo'         => 'masterdb',
+                    'edpuser-user-mapper' => 'EdpUser\Mapper\UserZendDb',
+                ),
+                'masterdb' => array(
+                    'parameters' => array(
+                        'dsn'            => 'mysql:dbname=CHANGEME;host=CHANGEME',
+                        'username'       => 'CHANGEME',
+                        'passwd'         => 'CHANGEME',
+                        'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
+                    ),
+                ),
+            ),
+        ),
+    );
+
+Navigate to http://yourproject/user and you should land on a login page.
+
+Installation (Doctrine2)
+------------
+
+1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module.
+    1. `cd path/to/project/modules`
+    2. `git clone git://github.com/EvanDotPro/EdpCommon.git`
+    3. Enable EdpCommon in your `application.config.php` modules array.
+2. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2 
+   module per the [installation instructions](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/docs/INSTALL.md).
+3. Install the [EdpUser](https://github.com/EvanDotPro/EdpUser) ZF2 module.
+    1. `cd path/to/project/modules`
+    2. `git clone git://github.com/EvanDotPro/EdpUser.git`
+    3. Enable EdpUser in your `application.config.php` modules array.
 4. Create the `user` table in your database via the Doctrine CLI:
     1. `cd path/to/SpiffyDoctrine/bin`
-    2. `./doctrine orm:schema:update --dump-sql`
-5. Navigate to http://yourproject/user and you should land on a login page.
-
-Available Locator Items
------------------------
-
-- `edpuser-user-service` - A service class providing easy access to common
-  user-related functionality.
-- `edpuser-register-form` - A Zend\Form user registration form
-- `edpuser-login-form` - A Zend\Form user login form
-- `user` - An ActionController which provides the following actions:
-    - /user/login
-    - /user/logout
-    - /user/register
-    - /user/index
+    2. `./doctrine orm:schema:update --dump-sql` (Import the schema into your DB)
+    
+Navigate to http://yourproject/user and you should land on a login page.
 
 Common Use-Cases
 ----------------
