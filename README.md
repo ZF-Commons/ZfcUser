@@ -35,26 +35,26 @@ Installation (Zend\Db)
    `./EdpUser/data/schema.sql`)
 4. Add the following to your `Application/configs/module.config.php`:
 
-    // Application/configs/module.config.php
-    array(
-        'di' => array(
-            'instance' => array(
-                'alias' => array(
-                    'masterdb'            => 'PDO',
-                    'edpuser-pdo'         => 'masterdb',
-                    'edpuser-user-mapper' => 'EdpUser\Mapper\UserZendDb',
-                ),
-                'masterdb' => array(
-                    'parameters' => array(
-                        'dsn'            => 'mysql:dbname=CHANGEME;host=CHANGEME',
-                        'username'       => 'CHANGEME',
-                        'passwd'         => 'CHANGEME',
-                        'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
+        // Application/configs/module.config.php
+        array(
+            'di' => array(
+                'instance' => array(
+                    'alias' => array(
+                        'masterdb'            => 'PDO',
+                        'edpuser-pdo'         => 'masterdb',
+                        'edpuser-user-mapper' => 'EdpUser\Mapper\UserZendDb',
+                    ),
+                    'masterdb' => array(
+                        'parameters' => array(
+                            'dsn'            => 'mysql:dbname=CHANGEME;host=CHANGEME',
+                            'username'       => 'CHANGEME',
+                            'passwd'         => 'CHANGEME',
+                            'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
+                        ),
                     ),
                 ),
             ),
-        ),
-    );
+        );
 
 Navigate to http://yourproject/user and you should land on a login page.
 
