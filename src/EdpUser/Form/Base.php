@@ -2,13 +2,13 @@
 
 namespace EdpUser\Form;
 
-use SpiffyDoctrine\Service\Doctrine,
-    Zend\Form\Form,
-    Edp\Common\DbMapper;
+use Zend\Form\Form,
+    EdpUser\Mapper\UserInterface as UserMapper;
 
 class Base extends Form
 {
-    protected $doctrine;
+    protected $emailValidator;
+    protected $userMapper;
 
     public function initLate()
     {
@@ -28,17 +28,11 @@ class Base extends Form
             'label'      => 'Username',
         ));
 
-        $noEntityExists = new \SpiffyDoctrine\Validator\NoEntityExists(array(
-            'em'     => $this->getEntityManager(),
-            'entity' => 'EdpUser\Entity\User',
-            'field'  => 'email',
-        ));
-
         $this->addElement('text', 'email', array(
             'filters'    => array('StringTrim'),
             'validators' => array(
                 'EmailAddress',
-                $noEntityExists,
+                $this->emailValidator,
             ),
             'required'   => true,
             'label'      => 'Email',
@@ -81,15 +75,23 @@ class Base extends Form
         ));
     }
 
-    public function getEntityManager()
+    /**
+     * setUserMapper 
+     * 
+     * @param UserMapper $userMapper 
+     * @return User
+     */
+    public function setUserMapper(UserMapper $userMapper)
     {
-        return $this->doctrine->getEntityManager();
-    }
- 
-    public function setDoctrine(Doctrine $doctrine)
-    {
-        $this->doctrine = $doctrine;
+        $this->userMapper = $userMapper;
+        $this->setEmailValidator($this->userMapper->getEmailValidator());
         $this->initLate();
+        return $this;
+    }
+
+    public function setEmailValidator($emailValidator)
+    {
+        $this->emailValidator = $emailValidator;
         return $this;
     }
 }

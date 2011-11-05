@@ -1,14 +1,16 @@
 <?php
 
-namespace EdpUser\Entity;
+namespace EdpUser\Model;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping as ORM,
+    DateTime,
+    EdpCommon\Model\ModelAbstract;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="user")
  */
-class User
+class User extends ModelAbstract
 {
     /**
      * @ORM\Id
@@ -214,12 +216,16 @@ class User
     /**
      * Set lastLogin.
      *
-     * @param DateTime $lastLogin the value to be set
+     * @param mixed $lastLogin the value to be set
      * @return User
      */
     public function setLastLogin($lastLogin)
     {
-        $this->lastLogin = $lastLogin;
+        if ($lastLogin instanceof DateTime) {
+            $this->lastLogin = $lastLogin;
+        } else {
+            $this->lastLogin = new DateTime($lastLogin);
+        }
         return $this;
     }
  
@@ -227,10 +233,14 @@ class User
      * Get lastIp.
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
+     * @param bool $long
      * @return lastIp
      */
-    public function getLastIp()
+    public function getLastIp($long = false)
     {
+        if (true === $long) {
+            return $this->lastIp;
+        }
         return long2ip($this->lastIp);
     }
  
@@ -260,12 +270,16 @@ class User
     /**
      * Set registerTime.
      *
-     * @param DateTime $registerTime the value to be set
+     * @param string $registerTime the value to be set
      * @return User
      */
     public function setRegisterTime($registerTime)
     {
-        $this->registerTime = $registerTime;
+        if ($registerTime instanceof DateTime) {
+            $this->registerTime = $registerTime;
+        } else {
+            $this->registerTime = new DateTime($registerTime);
+        }
         return $this;
     }
  
@@ -273,10 +287,14 @@ class User
      * Get registerIp.
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
+     * @param bool $long
      * @return registerIp
      */
-    public function getRegisterIp()
+    public function getRegisterIp($long = false)
     {
+        if (true === $long) {
+            return $this->registerIp;
+        }
         return long2ip($this->registerIp);
     }
  

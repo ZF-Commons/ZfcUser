@@ -2,34 +2,29 @@
 
 namespace EdpUser\Service;
 
-use SpiffyDoctrine\Service\Doctrine,
-    Zend\Authentication\AuthenticationService,
-    SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
-    Zend\Authentication\Adapter as AuthAdapter,
+use Zend\Authentication\AuthenticationService,
     Zend\Form\Form,
-    DateTime;
+    DateTime,
+    EdpUser\Mapper\UserInterface as UserMapper;
 
 class User
 {
     /**
-     * @var AuthAdapter
-     */
-    protected $authAdapter;
-
-    /**
-     * @var EntityManager
-     */
-    protected $entityManager;
-
-    /**
      * @var string
      */
-    protected $entityClass = 'EdpUser\Entity\User';
+    protected $entityClass = 'EdpUser\Model\User';
 
     /**
      * @var Zend\Authentication\AuthenticationService
      */
     protected $authService;
+
+    /**
+     * userMapper 
+     * 
+     * @var UserMapper
+     */
+    protected $userMapper;
 
     /**
      * authenticate 
@@ -41,25 +36,27 @@ class User
     public function authenticate($identity, $credential)
     {
         // Auth by email
-        $userEntity = $this->getUserRepository()->findOneBy(array('email' => $identity));
+        $userEntity = $this->userMapper->findByEmail($identity);
         if ($userEntity !== null) {
             $credentialHash = $this->hashPassword($credential, $userEntity->getSalt());
-            $adapter     = $this->getAuthAdapter($identity, $credentialHash);
+            $adapter     = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'email');
             $authService = $this->getAuthService();
             $result      = $authService->authenticate($adapter);
             if ($result->isValid()) {
                 $this->updateUserLastLogin($userEntity);
+                $authService->getStorage()->write($userEntity);
                 return true;
             }
         }
         // @TODO: Check if enableUsernameAuth setting is on 
-        $userEntity = $this->getUserRepository()->findOneBy(array('username' => $identity));
+        $userEntity = $this->userMapper->findByUsername($identity);
         if ($userEntity !== null) {
             $credentialHash = $this->hashPassword($credential, $userEntity->getSalt());
-            $adapter = $this->getAuthAdapter($identity, $credentialHash, 'username'); 
+            $adapter = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'username'); 
             $result  = $authService->authenticate($adapter);
             if ($result->isValid()) {
                 $this->updateUserLastLogin($userEntity);
+                $authService->getStorage()->write($userEntity);
                 return true;
             }
         }
@@ -76,9 +73,7 @@ class User
     {
         $user->setLastLogin(new DateTime('now'));
         $user->setLastIp($_SERVER['REMOTE_ADDR']);
-        $em = $this->getEntityManager();
-        $em->persist($user);
-        $em->flush();
+        $this->userMapper->persist($user);
     }
 
     /**
@@ -97,71 +92,19 @@ class User
              ->setPassword($this->hashPassword($form->getValue('password'), $user->getSalt()))
              ->setRegisterIp($_SERVER['REMOTE_ADDR'])
              ->setRegisterTime(new DateTime('now'));
-        $em = $this->getEntityManager();
-        $em->persist($user);
-        $em->flush();
+        $this->userMapper->persist($user);
         return $user;
     }
 
     /**
-     * getEntityManager 
+     * setUserMapper 
      * 
-     * @return EntityManager
-     */
-    public function getEntityManager()
-    {
-        return $this->doctrine->getEntityManager();
-    }
-
-    /**
-     * setDoctrine 
-     * 
-     * @param Doctrine $doctrine 
+     * @param UserMapper $userMapper 
      * @return User
      */
-    public function setDoctrine(Doctrine $doctrine)
+    public function setUserMapper(UserMapper $userMapper)
     {
-        $this->doctrine = $doctrine;
-        return $this;
-    }
-
-    public function getUserRepository()
-    {
-        return $this->getEntityManager()->getRepository('EdpUser\Entity\User');
-    }
-
-    /**
-     * getAuthAdapter 
-     * 
-     * @param string $identity 
-     * @param string $credential 
-     * @param string $identitycolumn 
-     * @return DoctrineAuthAdapter
-     */
-    public function getAuthAdapter($identity, $credential, $identityColumn = 'email')
-    {
-        if (null === $this->authAdapter) {
-            $authAdapter = new DoctrineAuthAdapter(
-                $this->getEntityManager(),
-                $this->entityClass
-            );
-            $this->setAuthAdapter($authAdapter);
-        }
-        $this->authAdapter->setIdentity($identity)
-                          ->setCredential($credential)
-                          ->setIdentityColumn($identityColumn);
-        return $this->authAdapter;
-    }
-
-    /**
-     * setAuthAdapter 
-     * 
-     * @param AuthAdapter $authAdapter 
-     * @return User
-     */
-    public function setAuthAdapter(AuthAdapter $authAdapter)
-    {
-        $this->authAdapter = $authAdapter;
+        $this->userMapper = $userMapper;
         return $this;
     }
 
