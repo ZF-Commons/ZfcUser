@@ -5,7 +5,9 @@ namespace EdpUser\Service;
 use Zend\Authentication\AuthenticationService,
     Zend\Form\Form,
     DateTime,
-    EdpUser\Mapper\UserInterface as UserMapper;
+    EdpUser\Mapper\UserInterface as UserMapper,
+    Zend\EventManager\EventCollection,
+    Zend\EventManager\EventManager;
 
 class User
 {
@@ -25,6 +27,11 @@ class User
      * @var UserMapper
      */
     protected $userMapper;
+
+    /**
+     * @var EventCollection
+     */
+    protected $events;
 
     /**
      * authenticate 
@@ -92,6 +99,7 @@ class User
              ->setPassword($this->hashPassword($form->getValue('password'), $user->getSalt()))
              ->setRegisterIp($_SERVER['REMOTE_ADDR'])
              ->setRegisterTime(new DateTime('now'));
+        $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         $this->userMapper->persist($user);
         return $user;
     }
@@ -176,5 +184,44 @@ class User
             );
         }
         return $data;
+    }
+
+    /**
+     * Set the event manager instance used by this context
+     * 
+     * @param  EventCollection $events 
+     * @return mixed
+     */
+    public function setEventManager(EventCollection $events)
+    {
+        $this->events = $events;
+        return $this;
+    }
+
+    /**
+     * Retrieve the event manager
+     *
+     * Lazy-loads an EventManager instance if none registered.
+     * 
+     * @return EventCollection
+     */
+    public function events()
+    {
+        if (!$this->events instanceof EventCollection) {
+            $identifiers = array(__CLASS__, get_class($this));
+            if (isset($this->eventIdentifier)) {
+                if ((is_string($this->eventIdentifier))
+                    || (is_array($this->eventIdentifier))
+                    || ($this->eventIdentifier instanceof Traversable)
+                ) {
+                    $identifiers = array_unique($identifiers + (array) $this->eventIdentifier);
+                } elseif (is_object($this->eventIdentifier)) {
+                    $identifiers[] = $this->eventIdentifier;
+                }
+                // silently ignore invalid eventIdentifier types
+            }
+            $this->setEventManager(new EventManager($identifiers));
+        }
+        return $this->events;
     }
 }

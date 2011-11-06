@@ -4,7 +4,8 @@ namespace EdpUser\Mapper;
 
 use EdpCommon\Mapper\DbMapperAbstract,
     EdpUser\Model\User as UserModel,
-    Zend\Authentication\Adapter\DbTable as DbAdapter;
+    Zend\Authentication\Adapter\DbTable as DbAdapter,
+    ArrayObject;
 
 class UserZendDb extends DbMapperAbstract implements UserInterface
 {
@@ -14,7 +15,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
 
     public function persist(UserModel $user)
     {
-        $data = array(
+        $data = new ArrayObject(array(
             'user_id'       => $user->getUserId(),
             'email'         => $user->getEmail(),
             'display_name'  => $user->getDisplayName(),
@@ -24,12 +25,13 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
             'register_ip'   => $user->getRegisterIp(true),
             'last_login'    => $user->getLastLogin() ? $user->getLastLogin()->format('Y-m-d H:i:s') : null,
             'last_ip'       => $user->getLastIp() ? $user->getLastIp(true) : null,
-        );
+        ));
+        $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'user' => $user));
         $db = $this->getWriteAdapter();
         if ($user->getUserId() > 0) {
-            $db->update($this->getTableName(), $data, $db->quoteInto('user_id = ?', $user->getUserId()));
+            $db->update($this->getTableName(), (array) $data, $db->quoteInto('user_id = ?', $user->getUserId()));
         } else {
-            $db->insert($this->getTableName(), $data);
+            $db->insert($this->getTableName(), (array) $data);
             $userId = $db->lastInsertId();
             $user->setUserId($userId);
         }
@@ -42,8 +44,11 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $sql = $db->select()
             ->from($this->getTableName())
             ->where('email = ?', $email);
+        $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
-        return UserModel::fromArray($row);
+        $user = UserModel::fromArray($row);
+        $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user, 'row' => $row));
+        return $user;
     }
 
     public function findByUsername($username)
@@ -52,6 +57,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $sql = $db->select()
             ->from($this->getTableName())
             ->where('username = ?', $username);
+        $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
         return UserModel::fromArray($row);
     }

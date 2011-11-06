@@ -3,9 +3,10 @@
 namespace EdpUser\Form;
 
 use Zend\Form\Form,
-    EdpUser\Mapper\UserInterface as UserMapper;
+    EdpUser\Mapper\UserInterface as UserMapper,
+    EdpCommon\Form\ProvidesEventsForm;
 
-class Base extends Form
+class Base extends ProvidesEventsForm
 {
     protected $emailValidator;
     protected $userMapper;
@@ -26,6 +27,7 @@ class Base extends Form
             ),
             'required'   => true,
             'label'      => 'Username',
+            'order'      => 100,
         ));
 
         $this->addElement('text', 'email', array(
@@ -36,6 +38,7 @@ class Base extends Form
             ),
             'required'   => true,
             'label'      => 'Email',
+            'order'      => 200,
         ));
 
         $this->addElement('text', 'display_name', array(
@@ -45,6 +48,7 @@ class Base extends Form
             ),
             'required'   => true,
             'label'      => 'Display Name',
+            'order'      => 300,
         ));
 
         $this->addElement('password', 'password', array(
@@ -54,6 +58,7 @@ class Base extends Form
             ),
             'required'   => true,
             'label'      => 'Password',
+            'order'      => 400,
         ));
 
         $this->addElement('password', 'passwordVerify', array(
@@ -63,16 +68,20 @@ class Base extends Form
             ),
             'required'   => true,
             'label'      => 'Password Verify',
+            'order'      => 405,
         ));
 
         $this->addElement('submit', 'submit', array(
             'ignore'   => true,
+            'order'    => 1000,
         ));
 
         $this->addElement('hidden', 'userId', array(
             'filters'    => array('StringTrim'),
             'required'   => true,
         ));
+
+        $this->events()->trigger('init', $this);
     }
 
     /**
