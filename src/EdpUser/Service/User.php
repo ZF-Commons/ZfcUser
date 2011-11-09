@@ -14,7 +14,7 @@ class User
     /**
      * @var string
      */
-    protected $entityClass = 'EdpUser\Model\User';
+    protected static $userModelClass = 'EdpUser\Model\User';
 
     /**
      * @var Zend\Authentication\AuthenticationService
@@ -91,7 +91,7 @@ class User
      */
     public function createFromForm(Form $form)
     {
-        $user = new $this->entityClass;
+        $user = new static::$userModelClass;
         $user->setEmail($form->getValue('email'))
              ->setUsername($form->getValue('username'))
              ->setDisplayName($form->getValue('display_name'))
@@ -138,6 +138,16 @@ class User
     {
         $this->authService = $authService;
         return $this;
+    }
+
+    public static function setUserModelClass($userModelClass)
+    {
+        static::$userModelClass = $userModelClass;
+    }
+
+    public static function getUserModelClass()
+    {
+        return static::$userModelClass;
     }
 
     /**

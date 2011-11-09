@@ -1,5 +1,8 @@
 <?php
 return array(
+    'edpuser' => array(
+        'user_model_class' => 'EdpUser\Model\User',
+    ),
     'di' => array(
         'instance' => array(
             'alias' => array(

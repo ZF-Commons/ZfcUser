@@ -4,26 +4,30 @@ namespace EdpUser\Mapper;
 
 use SpiffyDoctrine\Service\Doctrine,
     SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
-    EdpUser\Model\User as UserModel,
+    EdpUser\ModelBase\UserBase,
+    EdpCommon\EventManager\EventProvider,
+    EdpUser\Service\User as UserService,
     SpiffyDoctrine\Validator\NoEntityExists;
 
-class UserDoctrine implements UserInterface
+class UserDoctrine extends EventProvider implements UserInterface
 {
-    protected $entityClass = 'EdpUser\Model\User';
     protected $authAdapter;
     protected $doctrine;
     protected $emailValidator;
 
-    public function persist(UserModel $user)
+    public function persist(UserBase $user)
     {
         $em = $this->getEntityManager();
+        $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user, 'em' => $em));
         $em->persist($user);
+        $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user, 'em' => $em));
         $em->flush();
     }
 
     public function findByEmail($email)
     {
-        return $this->getUserRepository()->findOneBy(array('email' => $email));
+        $user = $this->getUserRepository()->findOneBy(array('email' => $email));
+        $user->ext('EdpUserTwitter', $user->getTwitter());
     }
 
     public function findByUsername($username)
@@ -36,7 +40,7 @@ class UserDoctrine implements UserInterface
         if (null === $this->authAdapter) {
             $authAdapter = new DoctrineAuthAdapter(
                 $this->getEntityManager(),
-                $this->entityClass
+                UserService::getUserModelClass()
             );
             $this->authAdapter = $authAdapter;
         }
@@ -51,7 +55,7 @@ class UserDoctrine implements UserInterface
         if (null === $this->emailValidator) {
             $this->emailValidator = new NoEntityExists(array(
                 'em'     => $this->getEntityManager(),
-                'entity' => $this->entityClass,
+                'entity' => UserService::getUserModelClass(),
                 'field'  => 'email',
             ));
         }
@@ -71,7 +75,7 @@ class UserDoctrine implements UserInterface
 
     public function getUserRepository()
     {
-        return $this->getEntityManager()->getRepository($this->entityClass);
+        return $this->getEntityManager()->getRepository(UserService::getUserModelClass());
     }
 
 }
