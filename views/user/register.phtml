@@ -1,6 +1,6 @@
 <h1>Register</h1>
 <?php
 $form = $this->registerForm;
-$form->setAction($this->url(array('controller' => 'user', 'action' => 'register'), array('name' => 'default')));
+$form->setAction($this->url('default', array('controller' => 'user', 'action' => 'register')));
 $form->setView($this);
 echo $form;
