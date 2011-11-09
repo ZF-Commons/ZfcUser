@@ -27,7 +27,8 @@ class UserDoctrine extends EventProvider implements UserInterface
     public function findByEmail($email)
     {
         $user = $this->getUserRepository()->findOneBy(array('email' => $email));
-        $user->ext('EdpUserTwitter', $user->getTwitter());
+        $this->events()->trigger(__FUNCTION__, $this, array('user' => $user));
+        return $user;
     }
 
     public function findByUsername($username)
