@@ -7,16 +7,16 @@ return array(
         'instance' => array(
             'alias' => array(
                 'user'                  => 'EdpUser\Controller\UserController',
-                'edpuser-register-form' => 'EdpUser\Form\Register',
-                'edpuser-login-form'    => 'EdpUser\Form\Login',
-                'edpuser-user-mapper'   => 'EdpUser\Mapper\UserDoctrine',
-                'edpuser-user-service'  => 'EdpUser\Service\User',
-                'edpuser-write-db'      => 'Zend\Db\Adapter\DiPdoMysql',
-                'edpuser-read-db'       => 'edpuser-write-db',
+                'edpuser_register_form' => 'EdpUser\Form\Register',
+                'edpuser_login_form'    => 'EdpUser\Form\Login',
+                'edpuser_user_mapper'   => 'EdpUser\Mapper\UserDoctrine',
+                'edpuser_user_service'  => 'EdpUser\Service\User',
+                'edpuser_write_db'      => 'Zend\Db\Adapter\DiPdoMysql',
+                'edpuser_read_db'       => 'edpuser_write_db',
             ),
-            'edpuser-write-db' => array(
+            'edpuser_write_db' => array(
                 'parameters' => array(
-                    'pdo'    => 'edpuser-pdo',
+                    'pdo'    => 'edpuser_pdo',
                     'config' => array(),
                 ),
             ),
@@ -40,14 +40,14 @@ return array(
                     )
                 )
             ),
-            'edpuser-user-service' => array(
+            'edpuser_user_service' => array(
                 'parameters' => array(
-                    'userMapper' => 'edpuser-user-mapper'
+                    'userMapper' => 'edpuser_user_mapper'
                 ),
             ),
-            'edpuser-register-form' => array(
+            'edpuser_register_form' => array(
                 'parameters' => array(
-                    'userMapper' => 'edpuser-user-mapper'
+                    'userMapper' => 'edpuser_user_mapper'
                 ),
             ),
             'EdpUser\Mapper\UserDoctrine' => array(
@@ -58,8 +58,8 @@ return array(
             'EdpUser\Mapper\UserZendDb' => array(
                 'parameters' => array(
                     'doctrine'     => 'doctrine',
-                    'readAdapter'  => 'edpuser-read-db',
-                    'writeAdapter' => 'edpuser-write-db',
+                    'readAdapter'  => 'edpuser_read_db',
+                    'writeAdapter' => 'edpuser_write_db',
                 ),
             ),
             'Zend\View\PhpRenderer' => array(

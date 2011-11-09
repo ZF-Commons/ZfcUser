@@ -110,7 +110,7 @@ class UserController extends ActionController
     public function getRegisterForm()
     {
         if (null === $this->registerForm) {
-            $this->registerForm = $this->getLocator()->get('edpuser-register-form');
+            $this->registerForm = $this->getLocator()->get('edpuser_register_form');
             $fm = $this->flashMessenger()->setNamespace('edpuser-register-form')->getMessages();
             if (isset($fm[0])) {
                 $this->registerForm->isValid($fm[0]);
@@ -122,7 +122,7 @@ class UserController extends ActionController
     public function getLoginForm()
     {
         if (null === $this->loginForm) {
-            $this->loginForm = $this->getLocator()->get('edpuser-login-form');
+            $this->loginForm = $this->getLocator()->get('edpuser_login_form');
             $fm = $this->flashMessenger()->setNamespace('edpuser-login-form')->getMessages();
             if (isset($fm[0])) {
                 $this->loginForm->isValid($fm[0]);
@@ -134,7 +134,7 @@ class UserController extends ActionController
     public function getUserService()
     {
         if (null === $this->userService) {
-            $this->userService = $this->getLocator()->get('edpuser-user-service');
+            $this->userService = $this->getLocator()->get('edpuser_user_service');
         }
         return $this->userService;
     }
