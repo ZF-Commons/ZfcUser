@@ -2,9 +2,9 @@
 return array(
     'edpuser' => array(
         'user_model_class'        => 'EdpUser\Model\User',
-        'enable_username'         => false,
-        'enable_display_name'     => false,
         'password_hash_algorithm' => 'sha512',
+        'enable_username'         => false,
+        'enable_display_name'     => true,
         'require_activation'      => false,
     ),
     'di' => array(

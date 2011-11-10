@@ -46,6 +46,7 @@ class User
             $adapter     = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'email');
             $result      = $authService->authenticate($adapter);
             if ($result->isValid()) {
+                $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
                 $this->updateUserLastLogin($userEntity);
                 $authService->getStorage()->write($userEntity);
                 return true;
@@ -58,6 +59,7 @@ class User
                 $adapter = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'username'); 
                 $result  = $authService->authenticate($adapter);
                 if ($result->isValid()) {
+                    $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
                     $this->updateUserLastLogin($userEntity);
                     $authService->getStorage()->write($userEntity);
                     return true;
