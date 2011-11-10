@@ -62,7 +62,6 @@ class UserDoctrine extends EventProvider implements UserInterface
             $this->emailValidator = new NoEntityExists(array(
                 'em'     => $this->getEntityManager(),
                 'entity' => Module::getOption('user_model_class'),
-                'entity' => 'Application\Entity\User', 
                 'field'  => 'email',
             ));
         }
