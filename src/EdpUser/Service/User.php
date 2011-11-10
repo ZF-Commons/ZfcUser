@@ -90,8 +90,7 @@ class User
      */
     public function createFromForm(Form $form)
     {
-        //$class = Module::getOption('user_model_class'); // doesn't work if set from Application
-        $class = 'Application\Entity\User';
+        $class = Module::getOption('user_model_class');
         $user = new $class;
         $user->setEmail($form->getValue('email'))
              ->setSalt($this->randomBytes(16))

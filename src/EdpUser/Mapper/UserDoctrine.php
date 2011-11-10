@@ -42,8 +42,7 @@ class UserDoctrine extends EventProvider implements UserInterface
 
     public function getAuthAdapter($identity, $credential, $identityColumn)
     {
-    	$class = Module::getOption('user_model_class'); // doesn't work if they change it in Application
-    	$class = 'Application\Entity\User';
+    	$class = Module::getOption('user_model_class');
         if (null === $this->authAdapter) {
             $authAdapter = new DoctrineAuthAdapter(
                 $this->getEntityManager(),
@@ -62,7 +61,7 @@ class UserDoctrine extends EventProvider implements UserInterface
         if (null === $this->emailValidator) {
             $this->emailValidator = new NoEntityExists(array(
                 'em'     => $this->getEntityManager(),
-                //'entity' => Module::getOption('user_model_class'), // doesn't work if they change it in Application
+                'entity' => Module::getOption('user_model_class'),
                 'entity' => 'Application\Entity\User', 
                 'field'  => 'email',
             ));
@@ -83,8 +82,7 @@ class UserDoctrine extends EventProvider implements UserInterface
 
     public function getUserRepository()
     {
-    	$class = Module::getOption('user_model_class'); // doesn't work if they change it in Application
-    	$class = 'Application\Entity\User';
+    	$class = Module::getOption('user_model_class');
         return $this->getEntityManager()->getRepository($class);
     }
 

@@ -32,13 +32,11 @@ return array(
 							'namespace'       => 'EdpUser\ModelBase',
 							'paths'           => array(__DIR__ . '/../src/EdpUser/ModelBase'),
 						),
-						/*
                         'edpuser_annotationdriver' => array(
                             'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                             'namespace'       => 'EdpUser\Model',
                             'paths'           => array(__DIR__ . '/../src/EdpUser/Model'),
                         ),
-                        */
                     ),
                 )
             ),
