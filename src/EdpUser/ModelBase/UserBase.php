@@ -44,6 +44,11 @@ class UserBase extends ModelAbstract
     private $salt;
 
     /**
+     * @ORM\Column(name="hash_algorithm", type="string", length="50")
+     */
+    private $hashAlgorithm;
+
+    /**
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;
@@ -62,6 +67,16 @@ class UserBase extends ModelAbstract
      * @ORM\Column(name="register_ip", type="integer")
      */
     private $registerIp;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $enabled;
  
     /**
      * Get userId.
@@ -143,7 +158,7 @@ class UserBase extends ModelAbstract
         } elseif ($this->email !== null) {
             return $this->email;
         }
-        return NULL;
+        return null;
     }
  
     /**
@@ -199,6 +214,27 @@ class UserBase extends ModelAbstract
     public function setSalt($salt)
     {
         $this->salt = $salt;
+        return $this;
+    }
+ 
+    /**
+     * Get hashAlgorithm.
+     *
+     * @return string hashAlgorithm
+     */
+    public function getHashAlgorithm()
+    {
+        return $this->hashAlgorithm;
+    }
+ 
+    /**
+     * Set hashAlgorithm.
+     *
+     * @param string $hashAlgorithm the value to be set
+     */
+    public function setHashAlgorithm($hashAlgorithm)
+    {
+        $this->hashAlgorithm = $hashAlgorithm;
         return $this;
     }
  
@@ -307,6 +343,48 @@ class UserBase extends ModelAbstract
     public function setRegisterIp($registerIp)
     {
         $this->registerIp = ip2long($registerIp);
+        return $this;
+    }
+ 
+    /**
+     * Get active.
+     *
+     * @return bool active
+     */
+    public function getActive()
+    {
+        return $this->active;
+    }
+ 
+    /**
+     * Set active.
+     *
+     * @param bool $active the value to be set
+     */
+    public function setActive($active)
+    {
+        $this->active = $active;
+        return $this;
+    }
+ 
+    /**
+     * Get enabled.
+     *
+     * @return bool enabled
+     */
+    public function getEnabled()
+    {
+        return $this->enabled;
+    }
+ 
+    /**
+     * Set enabled.
+     *
+     * @param bool $enabled the value to be set
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
         return $this;
     }
 }

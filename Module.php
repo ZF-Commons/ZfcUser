@@ -8,6 +8,8 @@ use Zend\Module\Manager,
 
 class Module
 {
+    protected static $options;
+
     public function init(Manager $moduleManager)
     {
         $this->initAutoloader();
@@ -36,7 +38,14 @@ class Module
     public function postInit($e)
     {
         $config = $e->getTarget()->getMergedConfig();
-        $userModelClass = $config['edpuser']['user_model_class'];
-        UserService::setUserModelClass($userModelClass);
+        static::$options = $config['edpuser'];
+    }
+
+    public static function getOption($option)
+    {
+        if (!isset(static::$options[$option])) {
+            return null;
+        }
+        return static::$options[$option];
     }
 }

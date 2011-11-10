@@ -6,16 +6,12 @@ use Zend\Authentication\AuthenticationService,
     Zend\Form\Form,
     DateTime,
     EdpUser\Mapper\UserInterface as UserMapper,
+    EdpUser\Module,
     Zend\EventManager\EventCollection,
     Zend\EventManager\EventManager;
 
 class User
 {
-    /**
-     * @var string
-     */
-    protected static $userModelClass = 'EdpUser\Model\User';
-
     /**
      * @var Zend\Authentication\AuthenticationService
      */
@@ -42,12 +38,12 @@ class User
      */
     public function authenticate($identity, $credential)
     {
+        $authService = $this->getAuthService();
         // Auth by email
         $userEntity = $this->userMapper->findByEmail($identity);
         if ($userEntity !== null) {
-            $credentialHash = $this->hashPassword($credential, $userEntity->getSalt());
+            $credentialHash = $this->hashPassword($credential, $userEntity->getSalt(), $userEntity->getHashAlgorithm());
             $adapter     = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'email');
-            $authService = $this->getAuthService();
             $result      = $authService->authenticate($adapter);
             if ($result->isValid()) {
                 $this->updateUserLastLogin($userEntity);
@@ -55,16 +51,17 @@ class User
                 return true;
             }
         }
-        // @TODO: Check if enableUsernameAuth setting is on 
-        $userEntity = $this->userMapper->findByUsername($identity);
-        if ($userEntity !== null) {
-            $credentialHash = $this->hashPassword($credential, $userEntity->getSalt());
-            $adapter = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'username'); 
-            $result  = $authService->authenticate($adapter);
-            if ($result->isValid()) {
-                $this->updateUserLastLogin($userEntity);
-                $authService->getStorage()->write($userEntity);
-                return true;
+        if (Module::getOption('enable_username')) {
+            $userEntity = $this->userMapper->findByUsername($identity);
+            if ($userEntity !== null) {
+                $credentialHash = $this->hashPassword($credential, $userEntity->getSalt(), $userEntity->getHashAlgorithm());
+                $adapter = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'username'); 
+                $result  = $authService->authenticate($adapter);
+                if ($result->isValid()) {
+                    $this->updateUserLastLogin($userEntity);
+                    $authService->getStorage()->write($userEntity);
+                    return true;
+                }
             }
         }
         return false;
@@ -91,14 +88,26 @@ class User
      */
     public function createFromForm(Form $form)
     {
-        $user = new static::$userModelClass;
+        $class = Module::getOption('user_model_class');
+        $user = new $class;
         $user->setEmail($form->getValue('email'))
-             ->setUsername($form->getValue('username'))
-             ->setDisplayName($form->getValue('display_name'))
              ->setSalt($this->randomBytes(16))
-             ->setPassword($this->hashPassword($form->getValue('password'), $user->getSalt()))
+             ->setPassword($this->hashPassword($form->getValue('password'), $user->getSalt(), Module::getOption('password_hash_algorithm')))
              ->setRegisterIp($_SERVER['REMOTE_ADDR'])
-             ->setRegisterTime(new DateTime('now'));
+             ->setRegisterTime(new DateTime('now'))
+             ->setHashAlgorithm(Module::getOption('password_hash_algorithm'))
+             ->setEnabled(true);
+        if (Module::getOption('require_activation')) {
+            $user->setActive(false);
+        } else {
+            $user->setActive(true);
+        }
+        if (Module::getOption('enable_username')) {
+            $user->setUsername($form->getValue('username'));
+        }
+        if (Module::getOption('enable_display_name')) {
+            $user->setDisplayName($form->getValue('display_name'));
+        }
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         $this->userMapper->persist($user);
         return $user;
@@ -128,6 +137,7 @@ class User
         }
         return $this->authService;
     }
+
     /**
      * setAuthenticationService 
      * 
@@ -140,26 +150,26 @@ class User
         return $this;
     }
 
-    public static function setUserModelClass($userModelClass)
-    {
-        static::$userModelClass = $userModelClass;
-    }
-
-    public static function getUserModelClass()
-    {
-        return static::$userModelClass;
-    }
-
     /**
      * hashPassword
      *
      * @param string $password
      * @param string $salt
+     * @param mixed $algorithm
      * @return string
      */
-    public function hashPassword($password, $salt)
+    public function hashPassword($password, $salt, $algorithm)
     {
-        return hash('sha512', $password.$salt);
+        if (is_string($algorithm) && in_array($algorithm, hash_algos())) {
+            return hash($algorithm, $password.$salt);
+        }
+        if (is_callable($algorithm, false, $callableName)) {
+            return $callableName($password.$salt);
+        }
+        throw new RuntimeException(sprintf(
+            'failed to call algorithm function %s(), does it exist?',
+            $callableName
+        ));
     }
 
     /**

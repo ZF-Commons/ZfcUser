@@ -4,9 +4,9 @@ namespace EdpUser\Mapper;
 
 use SpiffyDoctrine\Service\Doctrine,
     SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
+    EdpUser\Module,
     EdpUser\ModelBase\UserBase,
     EdpCommon\EventManager\EventProvider,
-    EdpUser\Service\User as UserService,
     SpiffyDoctrine\Validator\NoEntityExists;
 
 class UserDoctrine extends EventProvider implements UserInterface
@@ -33,7 +33,9 @@ class UserDoctrine extends EventProvider implements UserInterface
 
     public function findByUsername($username)
     {
-        return $this->getUserRepository()->findOneBy(array('username' => $username));
+        $user = $this->getUserRepository()->findOneBy(array('username' => $username));
+        $this->events()->trigger(__FUNCTION__, $this, array('user' => $user));
+        return $user;
     }
 
     public function getAuthAdapter($identity, $credential, $identityColumn)
@@ -41,7 +43,7 @@ class UserDoctrine extends EventProvider implements UserInterface
         if (null === $this->authAdapter) {
             $authAdapter = new DoctrineAuthAdapter(
                 $this->getEntityManager(),
-                UserService::getUserModelClass()
+                Module::getOption('user_model_class')
             );
             $this->authAdapter = $authAdapter;
         }
@@ -56,7 +58,7 @@ class UserDoctrine extends EventProvider implements UserInterface
         if (null === $this->emailValidator) {
             $this->emailValidator = new NoEntityExists(array(
                 'em'     => $this->getEntityManager(),
-                'entity' => UserService::getUserModelClass(),
+                'entity' => Module::getOption('user_model_class'),
                 'field'  => 'email',
             ));
         }
@@ -76,7 +78,7 @@ class UserDoctrine extends EventProvider implements UserInterface
 
     public function getUserRepository()
     {
-        return $this->getEntityManager()->getRepository(UserService::getUserModelClass());
+        return $this->getEntityManager()->getRepository(Module::getOption('user_model_class'));
     }
 
 }

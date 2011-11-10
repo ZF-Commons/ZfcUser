@@ -1,7 +1,11 @@
 <?php
 return array(
     'edpuser' => array(
-        'user_model_class' => 'EdpUser\Model\User',
+        'user_model_class'        => 'EdpUser\Model\User',
+        'enable_username'         => false,
+        'enable_display_name'     => false,
+        'password_hash_algorithm' => 'sha512',
+        'require_activation'      => false,
     ),
     'di' => array(
         'instance' => array(

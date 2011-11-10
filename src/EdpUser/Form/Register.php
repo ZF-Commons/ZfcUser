@@ -2,7 +2,8 @@
 
 namespace EdpUser\Form;
 
-use Zend\Form\Form;
+use Zend\Form\Form,
+    EdpUser\Module;
 
 class Register extends Base
 {
@@ -10,7 +11,12 @@ class Register extends Base
     {
         parent::initLate();
         $this->removeElement('userId');
-        $this->removeElement('username');
+        if (!Module::getOption('enable_username')) {
+            $this->removeElement('username');
+        }
+        if (!Module::getOption('enable_display_name')) {
+            $this->removeElement('display_name');
+        }
         $this->getElement('submit')->setLabel('Register');
     }
 }
