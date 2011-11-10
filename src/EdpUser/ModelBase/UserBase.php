@@ -29,7 +29,7 @@ class UserBase extends ModelAbstract
     private $email;
 
     /**
-     * @ORM\Column(name="display_name", type="string", length=50)
+     * @ORM\Column(name="display_name", type="string", length=50, nullable=true)
      */
     private $displayName;
 

@@ -2,17 +2,17 @@
 
 namespace EdpUser\Mapper;
 
-use SpiffyDoctrine\Service\Doctrine,
-    SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
+use Doctrine\ORM\EntityManager,
     EdpUser\Module,
     EdpUser\ModelBase\UserBase,
     EdpCommon\EventManager\EventProvider,
+    SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
     SpiffyDoctrine\Validator\NoEntityExists;
 
 class UserDoctrine extends EventProvider implements UserInterface
 {
     protected $authAdapter;
-    protected $doctrine;
+    protected $em;
     protected $emailValidator;
 
     public function persist(UserBase $user)
@@ -42,10 +42,12 @@ class UserDoctrine extends EventProvider implements UserInterface
 
     public function getAuthAdapter($identity, $credential, $identityColumn)
     {
+    	$class = Module::getOption('user_model_class'); // doesn't work if they change it in Application
+    	$class = 'Application\Entity\User';
         if (null === $this->authAdapter) {
             $authAdapter = new DoctrineAuthAdapter(
                 $this->getEntityManager(),
-                Module::getOption('user_model_class')
+                $class
             );
             $this->authAdapter = $authAdapter;
         }
@@ -60,7 +62,8 @@ class UserDoctrine extends EventProvider implements UserInterface
         if (null === $this->emailValidator) {
             $this->emailValidator = new NoEntityExists(array(
                 'em'     => $this->getEntityManager(),
-                'entity' => Module::getOption('user_model_class'),
+                //'entity' => Module::getOption('user_model_class'), // doesn't work if they change it in Application
+                'entity' => 'Application\Entity\User', 
                 'field'  => 'email',
             ));
         }
@@ -69,18 +72,20 @@ class UserDoctrine extends EventProvider implements UserInterface
 
     public function getEntityManager()
     {
-        return $this->doctrine->getEntityManager();
+        return $this->em;
     }
 
-    public function setDoctrine(Doctrine $doctrine)
+    public function setEntityManager(EntityManager $em)
     {
-        $this->doctrine = $doctrine;
+        $this->em = $em;
         return $this;
     }
 
     public function getUserRepository()
     {
-        return $this->getEntityManager()->getRepository(Module::getOption('user_model_class'));
+    	$class = Module::getOption('user_model_class'); // doesn't work if they change it in Application
+    	$class = 'Application\Entity\User';
+        return $this->getEntityManager()->getRepository($class);
     }
 
 }
