@@ -1,12 +1,13 @@
 <?php
 return array(
     'edpuser' => array(
-        'user_model_class'         => 'EdpUser\Model\User',
-        'password_hash_algorithm'  => 'sha512',
-        'enable_username'          => false,
-        'enable_display_name'      => false,
-        'require_activation'       => false,
-        'login_after_registration' => false,
+        'user_model_class'          => 'EdpUser\Model\User',
+        'password_hash_algorithm'   => 'sha512',
+        'enable_username'           => false,
+        'enable_display_name'       => false,
+        'require_activation'        => false,
+        'login_after_registration'  => false,
+        'registration_form_captcha' => true,
     ),
     'di' => array(
         'instance' => array(

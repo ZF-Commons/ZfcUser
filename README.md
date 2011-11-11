@@ -19,6 +19,8 @@ Features / Goals
 * Authenticate via username, email, or both (can opt out of the concept of 
   username and use strictly email) [COMPLETE]
 * User registration [COMPLETE]
+* Forms protected against CSRF [COMPLETE]
+* Registration form protected with CAPTCHA [IN PROGRESS] (Needs more options)
 * Out-of-the-box support for Doctrine2 _and_ Zend\Db [IN PROGRESS]
 * Robust event system to allow for extending [IN PROGRESS]
 * Support for additional authentication mechanisms via plugins (Google,
@@ -99,12 +101,13 @@ functionality. Options are defined in your Application module config like this:
     // Application/configs/module.config.php
     array(
         'edpuser' => array(
-            'user_model_class'         => 'EdpUser\Model\User',
-            'password_hash_algorithm'  => 'sha512',
-            'enable_username'          => false,
-            'enable_display_name'      => false,
-            'require_activation'       => false,
-            'login_after_registration' => false,
+            'user_model_class'          => 'EdpUser\Model\User',
+            'password_hash_algorithm'   => 'sha512',
+            'enable_username'           => false,
+            'enable_display_name'       => false,
+            'require_activation'        => false,
+            'login_after_registration'  => false,
+            'registration_form_captcha' => true,
         ),
     )
 
@@ -127,7 +130,10 @@ The following options are available:
   actually work yet, but defaults an 'active' field in the DB to 0.)
 - **login_after_registration** - Boolean value, automatically logs the user in
   after they successfully register. Default value is `false`.
-
+- **registration_form_captcha** - Boolean value, determines if a captcha should
+  be utilized on the user registration form. Default value is `true`. (Note,
+  right now this only utilizes a weak Zend\Text\Figlet CAPTCHA, but I have
+  plans to make all Zend\Captcha adapters work.)
 
 Overriding / extending the User entity
 --------------------------------------
