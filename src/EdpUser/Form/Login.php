@@ -10,6 +10,11 @@ class Login extends Form
     {
         $this->setMethod('post');
 
+        $this->addDecorator('FormErrors')
+             ->addDecorator('FormElements')
+             ->addDecorator('HtmlTag', array('tag' => 'dl', 'class' => 'login_form'))
+             ->addDecorator('FormDecorator');
+
         $this->addElement('text', 'email', array(
             'filters'    => array('StringTrim'),
             'validators' => array(

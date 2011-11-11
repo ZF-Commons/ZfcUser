@@ -5,6 +5,7 @@ namespace EdpUser\Controller;
 use Zend\Mvc\Controller\ActionController,
     Zend\Mvc\Router\RouteStack,
     EdpUser\Service\User as UserService,
+    EdpUser\Module,
     Zend\Controller\Action\Helper\FlashMessenger;
 
 class UserController extends ActionController
@@ -35,23 +36,32 @@ class UserController extends ActionController
         }
         $request    = $this->getRequest();
         $form       = $this->getLoginForm();
+
+        /**
+         * @TODO: Make this dynamic / translation-friendly 
+         */
+        $failedLoginMessage = 'Authentication failed. Please try again.';
+        
         if ($request->isPost()) {
-            $auth = $this->getUserService()->authenticate(
-                $request->post()->get('email'),
-                $request->post()->get('password')
-            );
-            if ($auth) {
-                return $this->redirect()->toRoute('default', array(
-                    'controller' => 'user',
-                    'action'     => 'index',
-                )); 
-            } else {
-                $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($request->post()->toArray());
+            if (false === $form->isValid($request->post()->toArray())) {
+                $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
                 return $this->redirect()->toRoute('default', array(
                     'controller' => 'user',
                     'action'     => 'login',
                 )); 
             }
+            $auth = $this->getUserService()->authenticate($request->post()->get('email'), $request->post()->get('password'));
+            if (false === $auth) {
+                $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
+                return $this->redirect()->toRoute('default', array(
+                    'controller' => 'user',
+                    'action'     => 'login',
+                )); 
+            }
+            return $this->redirect()->toRoute('default', array(
+                'controller' => 'user',
+                'action'     => 'index',
+            )); 
         }
         return array(
             'loginForm' => $form,
@@ -88,14 +98,21 @@ class UserController extends ActionController
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('edpuser-register-form')->addMessage($request->post()->toArray());
-                // @TODO: FlashMessenger persist form
                 return $this->redirect()->toRoute('default', array(
                     'controller' => 'user',
                     'action'     => 'register',
                 )); 
             } else {
                 $this->getUserService()->createFromForm($form);
-                // @TODO: Setting for logging in after registration
+                if (Module::getOption('login_after_registration')) {
+                    $auth = $this->getUserService()->authenticate($request->post()->get('email'), $request->post()->get('password'));
+                    if (false !== $auth) {
+                        return $this->redirect()->toRoute('default', array(
+                            'controller' => 'user',
+                            'action'     => 'index',
+                        )); 
+                    }
+                }
                 return $this->redirect()->toRoute('default', array(
                     'controller' => 'user',
                     'action'     => 'login',
@@ -125,7 +142,7 @@ class UserController extends ActionController
             $this->loginForm = $this->getLocator()->get('edpuser_login_form');
             $fm = $this->flashMessenger()->setNamespace('edpuser-login-form')->getMessages();
             if (isset($fm[0])) {
-                $this->loginForm->isValid($fm[0]);
+                $this->loginForm->addErrorMessage($fm[0]);
             }
         }
         return $this->loginForm;
