@@ -13,6 +13,19 @@ which can utilize either Doctrine2 or Zend\Db. It provides the foundations
 for adding user authentication and registration to your ZF2 site. It is built to
 be very simple and easily to extend.
 
+Features / Goals
+----------------
+
+* Authenticate via username, email, or both (can opt out of the concept of 
+  username and use strictly email) [COMPLETE]
+* User registration [COMPLETE]
+* Out-of-the-box support for Doctrine2 _and_ Zend\Db [IN PROGRESS]
+* Robust event system to allow for extending [IN PROGRESS]
+* Support for additional authentication mechanisms via plugins (Google,
+  Facebook, LDAP, etc) [INCOMPLETE]
+* Optional E-mail address verification [INCOMPLETE]
+* Forgot Password [INCOMPLETE]
+
 Requirements
 ------------
 
@@ -77,25 +90,98 @@ Installation (Zend\Db)
 
 Navigate to http://yourproject/user and you should land on a login page.
 
+Overriding / extending the User entity
+--------------------------------------
+
+Sometimes you may want to override the default user entity with your own. With
+EdpUser, this is very easy.
+
+First, create your extended User entity:
+
+    // Application/src/Application/EdpUser/Model/User.php
+
+    namespace Application\EdpUser\Model;
+
+    use Doctrine\ORM\Mapping as ORM,
+        EdpUser\ModelBase\UserBase;
+
+    /**
+     * @ORM\Entity
+     * @ORM\Table(name="user")
+     */
+    class User extends UserBase
+    {
+        /**
+         * You can add more stuff to the User entity here.
+         */
+    }
+
+Next, tell EdpUser to utilize your new entity class:
+
+    // Application/configs/module.config.php
+    return array(
+        'edpuser' => array(
+            'user_model_class' => 'Application\EdpUser\Model\User',
+        ),
+    ),
+
+If you're using Doctrine2, you'll also need to override the EdpUser entity path:
+
+    // Application/configs/module.config.php
+    return array(
+        'di' => array(
+            'instance' => array(
+                'doctrine_driver_chain' => array(
+                    'parameters' => array(
+                        'drivers' => array(
+                            'edpuser_annotationdriver' => array(
+                                'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                                'namespace'       => 'Application\EdpUser\Model',
+                                'paths'           => array(__DIR__ . '/../src/Application/EdpUser/Model'),
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+
 Options
 -------
 
-- `user_model_class` - Name of Entity class to use. Useful for using your own
+The EdpUser module has some options to allow you to quickly customize the basic
+functionality. Options are defined in your Application module config like this:
+
+    // Application/configs/module.config.php
+    array(
+        'edpuser' => array(
+            'user_model_class'         => 'EdpUser\Model\User',
+            'password_hash_algorithm'  => 'sha512',
+            'enable_username'          => false,
+            'enable_display_name'      => false,
+            'require_activation'       => false,
+            'login_after_registration' => false,
+        ),
+    )
+
+The following options are available:
+
+- **user_model_class** - Name of Entity class to use. Useful for using your own
   entity class instead of the default one provided. Default is `EdpUser\Model\User`.
-- `password_hash_algorithm` - Name of the hashing algorithm to use for hashing.
+- **password_hash_algorithm** - Name of the hashing algorithm to use for hashing.
   Checked against valid algorithms for PHP's `hash()` function. Examples include
   `sha1`, `sha224`, `sha256`, `sha384`, `sha512`, `md5`. Default is `sha512`.
   **Note:** This value can also be a valid PHP callback, or name of a static
   method such as `MyClass::hashPassword`.
-- `enable_username` - Boolean value, enables username field on the registration
+- **enable_username** - Boolean value, enables username field on the registration
   form, and allows users to log in using their username _OR_ email address.
   Default is `false`.
-- `enable_display_name` - Boolean value, enables a display name field on the
+- **enable_display_name** - Boolean value, enables a display name field on the
   registration form. Default value is `false`.
-- `require_activation` - Boolean value, require that the user verify their email
+- **require_activation** - Boolean value, require that the user verify their email
   address to 'activate' their account. Default value is `false`. (Note, this doesn't
   actually work yet, but defaults an 'active' field in the DB to 0.)
-- `login_after_registration` - Boolean value, automatically logs the user in
+- **login_after_registration** - Boolean value, automatically logs the user in
   after they successfully register. Default value is `false`.
 
 Common Use-Cases
@@ -119,15 +205,3 @@ Common Use-Cases
     $this->getLocator()->get('edpuser-user-service')->getAuthService()->clearIdentity();
 
 
-Features / Goals
-----------------
-
-* Authenticate via username, email, or both (can opt out of the concept of 
-  username and use strictly email) [COMPLETE]
-* User registration [COMPLETE]
-* Out-of-the-box support for Doctrine2 _and_ Zend\Db [IN PROGRESS]
-* Robust event system to allow for extending [IN PROGRESS]
-* Support for additional authentication mechanisms via plugins (Google,
-  Facebook, LDAP, etc) [INCOMPLETE]
-* Optional E-mail address verification [INCOMPLETE]
-* Forgot Password [INCOMPLETE]
