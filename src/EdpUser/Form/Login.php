@@ -2,9 +2,10 @@
 
 namespace EdpUser\Form;
 
-use Zend\Form\Form;
+use Zend\Form\Form,
+    EdpCommon\Form\ProvidesEventsForm;
 
-class Login extends Form
+class Login extends ProvidesEventsForm
 {
     public function init()
     {
@@ -38,11 +39,12 @@ class Login extends Form
             'label'    => 'Sign In',
         ));
 
-        /*
-         * Not currently working on ZF2 master
         $this->addElement('hash', 'csrf', array(
             'ignore' => true,
+            'decorators' => array('ViewHelper'),
         ));
-         */
+
+        $this->events()->trigger('init', $this);
+
     }
 }
