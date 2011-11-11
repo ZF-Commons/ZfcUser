@@ -20,6 +20,25 @@ Requirements
 * [EdpCommon](https://github.com/EvanDotPro/EdpCommon) (latest master).
 * [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (optional).
 
+Installation (Doctrine2)
+------------
+
+1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module.
+    1. `cd path/to/project/modules`
+    2. `git clone git://github.com/EvanDotPro/EdpCommon.git`
+    3. Enable EdpCommon in your `application.config.php` modules array.
+2. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2 
+   module per the [installation instructions](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/docs/INSTALL.md).
+3. Install the [EdpUser](https://github.com/EvanDotPro/EdpUser) ZF2 module.
+    1. `cd path/to/project/modules`
+    2. `git clone git://github.com/EvanDotPro/EdpUser.git`
+    3. Enable EdpUser in your `application.config.php` modules array.
+4. Create the `user` table in your database via the Doctrine CLI:
+    1. `cd path/to/SpiffyDoctrine/bin`
+    2. `./doctrine orm:schema:update --dump-sql` (Import the schema into your DB)
+    
+Navigate to http://yourproject/user and you should land on a login page.
+
 Installation (Zend\Db)
 ------------
 
@@ -58,25 +77,6 @@ Installation (Zend\Db)
 
 Navigate to http://yourproject/user and you should land on a login page.
 
-Installation (Doctrine2)
-------------
-
-1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module.
-    1. `cd path/to/project/modules`
-    2. `git clone git://github.com/EvanDotPro/EdpCommon.git`
-    3. Enable EdpCommon in your `application.config.php` modules array.
-2. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2 
-   module per the [installation instructions](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/docs/INSTALL.md).
-3. Install the [EdpUser](https://github.com/EvanDotPro/EdpUser) ZF2 module.
-    1. `cd path/to/project/modules`
-    2. `git clone git://github.com/EvanDotPro/EdpUser.git`
-    3. Enable EdpUser in your `application.config.php` modules array.
-4. Create the `user` table in your database via the Doctrine CLI:
-    1. `cd path/to/SpiffyDoctrine/bin`
-    2. `./doctrine orm:schema:update --dump-sql` (Import the schema into your DB)
-    
-Navigate to http://yourproject/user and you should land on a login page.
-
 Common Use-Cases
 ----------------
 
@@ -98,13 +98,15 @@ Common Use-Cases
     $this->getLocator()->get('edpuser-user-service')->getAuthService()->clearIdentity();
 
 
-Features
---------
-(Most of these are not complete yet)
+Features / Goals
+----------------
 
-* Authenticate via username, email, or both (can opt out of the concept of
-  username and use strictly email)
-* E-mail address verification (optional)
-* Forgot Password
-* User Registration
-* Robust event system to allow for extending
+* Authenticate via username, email, or both (can opt out of the concept of 
+  username and use strictly email) [COMPLETE]
+* User registration [COMPLETE]
+* Out-of-the-box support for Doctrine2 _and_ Zend\Db [IN PROGRESS]
+* Robust event system to allow for extending [IN PROGRESS]
+* Support for additional authentication mechanisms via plugins (Google,
+  Facebook, LDAP, etc) [INCOMPLETE]
+* Optional E-mail address verification [INCOMPLETE]
+* Forgot Password [INCOMPLETE]
