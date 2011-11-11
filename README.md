@@ -77,6 +77,27 @@ Installation (Zend\Db)
 
 Navigate to http://yourproject/user and you should land on a login page.
 
+Options
+-------
+
+- `user_model_class` - Name of Entity class to use. Useful for using your own
+  entity class instead of the default one provided. Default is `EdpUser\Model\User`.
+- `password_hash_algorithm` - Name of the hashing algorithm to use for hashing.
+  Checked against valid algorithms for PHP's `hash()` function. Examples include
+  `sha1`, `sha224`, `sha256`, `sha384`, `sha512`, `md5`. Default is `sha512`.
+  **Note:** This value can also be a valid PHP callback, or name of a static
+  method such as `MyClass::hashPassword`.
+- `enable_username` - Boolean value, enables username field on the registration
+  form, and allows users to log in using their username _OR_ email address.
+  Default is `false`.
+- `enable_display_name` - Boolean value, enables a display name field on the
+  registration form. Default value is `false`.
+- `require_activation` - Boolean value, require that the user verify their email
+  address to 'activate' their account. Default value is `false`. (Note, this doesn't
+  actually work yet, but defaults an 'active' field in the DB to 0.)
+- `login_after_registration` - Boolean value, automatically logs the user in
+  after they successfully register. Default value is `false`.
+
 Common Use-Cases
 ----------------
 
