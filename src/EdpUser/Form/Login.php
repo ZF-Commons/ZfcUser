@@ -3,7 +3,8 @@
 namespace EdpUser\Form;
 
 use Zend\Form\Form,
-    EdpCommon\Form\ProvidesEventsForm;
+    EdpCommon\Form\ProvidesEventsForm,
+    EdpUser\Module;
 
 class Login extends ProvidesEventsForm
 {
@@ -24,6 +25,14 @@ class Login extends ProvidesEventsForm
             'required'   => true,
             'label'      => 'Email',
         ));
+        
+
+        if (Module::getOption('enable_username')) {
+            $emailElement = $this->getElement('email');
+            $emailElement->removeValidator('EmailAddress')
+                         ->setLabel('Email or Username'); // @TODO: make translation-friendly
+        }
+
         
         $this->addElement('password', 'password', array(
             'filters'    => array('StringTrim'),
