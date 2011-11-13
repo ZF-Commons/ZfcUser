@@ -29,11 +29,11 @@ return array(
             'doctrine_driver_chain' => array(
                 'parameters' => array(
                     'drivers' => array(
-						'edpuserbase_annotationdriver' => array(
-							'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-							'namespace'       => 'EdpUser\ModelBase',
-							'paths'           => array(__DIR__ . '/../src/EdpUser/ModelBase'),
-						),
+                        'edpuserbase_annotationdriver' => array(
+                            'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                            'namespace'       => 'EdpUser\ModelBase',
+                            'paths'           => array(__DIR__ . '/../src/EdpUser/ModelBase'),
+                        ),
                         'edpuser_annotationdriver' => array(
                             'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                             'namespace'       => 'EdpUser\Model',
