@@ -3,22 +3,20 @@
 namespace EdpUser;
 
 use Zend\Module\Manager,
-    Zend\Loader\AutoloaderFactory,
-    EdpUser\Service\User as UserService;
+    Zend\Module\Consumer\AutoloaderProvider;
 
-class Module
+class Module implements AutoloaderProvider
 {
     protected static $options;
 
     public function init(Manager $moduleManager)
     {
-        $this->initAutoloader();
         $moduleManager->events()->attach('init.post', array($this, 'postInit'));
     }
 
-    protected function initAutoloader()
+    public function getAutoloaderConfig()
     {
-        AutoloaderFactory::factory(array(
+        return array(
             'Zend\Loader\ClassMapAutoloader' => array(
                 __DIR__ . '/autoload_classmap.php',
             ),
@@ -27,7 +25,7 @@ class Module
                     __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
                 ),
             ),
-        ));
+        );
     }
 
     public function getConfig($env = null)
