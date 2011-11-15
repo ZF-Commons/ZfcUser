@@ -75,8 +75,8 @@ Installation (Zend\Db)
                 'instance' => array(
                     'alias' => array(
                         'masterdb'            => 'PDO',
-                        'edpuser-pdo'         => 'masterdb',
-                        'edpuser-user-mapper' => 'EdpUser\Mapper\UserZendDb',
+                        'edpuser_pdo'         => 'masterdb',
+                        'edpuser_user_mapper' => 'EdpUser\Mapper\UserZendDb',
                     ),
                     'masterdb' => array(
                         'parameters' => array(
