@@ -3,7 +3,8 @@
 namespace EdpUser\Mapper;
 
 use EdpCommon\Mapper\DbMapperAbstract,
-    EdpUser\Model\User as UserModel,
+    EdpUser\Module,
+    EdpUser\ModelBase\UserBase,
     Zend\Authentication\Adapter\DbTable as DbAdapter,
     ArrayObject;
 
@@ -13,18 +14,21 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
     protected $authAdapter;
     protected $emailValidator;
 
-    public function persist(UserModel $user)
+    public function persist(UserBase $user)
     {
         $data = new ArrayObject(array(
-            'user_id'       => $user->getUserId(),
-            'email'         => $user->getEmail(),
-            'display_name'  => $user->getDisplayName(),
-            'password'      => $user->getPassword(),
-            'salt'          => $user->getSalt(),
-            'register_time' => $user->getRegisterTime()->format('Y-m-d H:i:s'),
-            'register_ip'   => $user->getRegisterIp(true),
-            'last_login'    => $user->getLastLogin() ? $user->getLastLogin()->format('Y-m-d H:i:s') : null,
-            'last_ip'       => $user->getLastIp() ? $user->getLastIp(true) : null,
+            'user_id'        => $user->getUserId(),
+            'email'          => $user->getEmail(),
+            'display_name'   => $user->getDisplayName(),
+            'password'       => $user->getPassword(),
+            'salt'           => $user->getSalt(),
+            'hash_algorithm' => $user->getHashAlgorithm(),
+            'last_login'     => $user->getLastLogin() ? $user->getLastLogin()->format('Y-m-d H:i:s') : null,
+            'last_ip'        => $user->getLastIp(true),
+            'register_time'  => $user->getRegisterTime()->format('Y-m-d H:i:s'),
+            'register_ip'    => $user->getRegisterIp(true),
+            'active'         => $user->getActive(),
+            'enabled'        => $user->getEnabled(),
         ));
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'user' => $user));
         $db = $this->getWriteAdapter();
@@ -46,7 +50,8 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
             ->where('email = ?', $email);
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
-        $user = UserModel::fromArray($row);
+        $userModelClass = Module::getOption('user_model_class');
+        $user = $userModelClass::fromArray($row);
         $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user, 'row' => $row));
         return $user;
     }
@@ -59,7 +64,8 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
             ->where('username = ?', $username);
         $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
-        return UserModel::fromArray($row);
+        $UserModelClass = Model::getOption('user_model_class');
+        return $userModelClass::fromArray($row);
     }
 
     public function getAuthAdapter($identity, $credential, $identityColumn)
