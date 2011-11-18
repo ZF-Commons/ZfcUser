@@ -2,15 +2,15 @@
 return array(
     'edpuser' => array(
         'user_model_class'          => 'EdpUser\Model\User',
-        'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
-        'blowfish_cost'             => 10,         // integer between 4 and 31
-        'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        'sha512_counds'             => 5000,       // integer between 1000 and 999,999,999
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
         'login_after_registration'  => false,
         'registration_form_captcha' => true,
+        'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
+        'blowfish_cost'             => 10,         // integer between 4 and 31
+        'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
+        'sha512_counds'             => 5000,       // integer between 1000 and 999,999,999
     ),
     'routes' => array(
         'edpuser' => array(

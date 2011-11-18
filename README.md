@@ -127,15 +127,15 @@ functionality. Options are defined in your Application module config like this:
     array(
         'edpuser' => array(
             'user_model_class'          => 'EdpUser\Model\User',
-            'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
-            'blowfish_cost'             => 10,         // integer between 4 and 31
-            'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-            'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
             'enable_username'           => false,
             'enable_display_name'       => false,
             'require_activation'        => false,
             'login_after_registration'  => false,
             'registration_form_captcha' => true,
+            'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
+            'blowfish_cost'             => 10,         // integer between 4 and 31
+            'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
+            'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
         ),
     )
 
@@ -144,19 +144,6 @@ The following options are available:
 - **user_model_class** - Name of Entity class to use. Useful for using your own
   entity class instead of the default one provided. Default is
   `EdpUser\Model\User`.
-- **password_hash_algorithm** - Name of the hashing algorithm to use for
-  hashing.  Supported algorithms are `blowfish`, `sha512`, and `sha256`. Default
-  is `blowfish`.
-- **blowfish_cost** - Only used if `password_hash_algorithm` is set to
-  `blowfish`. This should be an integer between 4 and 31. The number represents
-  the base-2 logarithm of the iteration count used for hashing.  Default is `10`
-  (about 10 hashes per second on an i5).
-- **sha256_rounds** - Only used if `password_hash_algorithm` is set to `sha256`.
-  This should be an integer between 1000 and 999,999,999. The number represents
-  the iteration count used for hashing. Default is `5000`. 
-- **sha512_rounds** - Only used if `password_hash_algorithm` is set to `sha512`.
-  This should be an integer between 1000 and 999,999,999. The number represents
-  the iteration count used for hashing. Default is `5000`. 
 - **enable_username** - Boolean value, enables username field on the
   registration form, and allows users to log in using their username _OR_ email
   address.  Default is `false`.
@@ -172,6 +159,19 @@ The following options are available:
   be utilized on the user registration form. Default value is `true`. (Note,
   right now this only utilizes a weak Zend\Text\Figlet CAPTCHA, but I have plans
   to make all Zend\Captcha adapters work.)
+- **password_hash_algorithm** - Name of the hashing algorithm to use for
+  hashing.  Supported algorithms are `blowfish`, `sha512`, and `sha256`. Default
+  is `blowfish`.
+- **blowfish_cost** - Only used if `password_hash_algorithm` is set to
+  `blowfish`. This should be an integer between 4 and 31. The number represents
+  the base-2 logarithm of the iteration count used for hashing.  Default is `10`
+  (about 10 hashes per second on an i5).
+- **sha256_rounds** - Only used if `password_hash_algorithm` is set to `sha256`.
+  This should be an integer between 1000 and 999,999,999. The number represents
+  the iteration count used for hashing. Default is `5000`. 
+- **sha512_rounds** - Only used if `password_hash_algorithm` is set to `sha512`.
+  This should be an integer between 1000 and 999,999,999. The number represents
+  the iteration count used for hashing. Default is `5000`. 
 
 Overriding / extending the User entity
 --------------------------------------
