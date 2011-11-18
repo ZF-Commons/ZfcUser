@@ -67,6 +67,7 @@ return array(
                 'edpuser_user_service'  => 'EdpUser\Service\User',
                 'edpuser_write_db'      => 'Zend\Db\Adapter\DiPdoMysql',
                 'edpuser_read_db'       => 'edpuser_write_db',
+                'edpuser_doctrine_em'   => 'doctrine_em',
             ),
             'edpuser_write_db' => array(
                 'parameters' => array(
@@ -102,7 +103,7 @@ return array(
             ),
             'EdpUser\Mapper\UserDoctrine' => array(
                 'parameters' => array(
-                    'em' => 'doctrine_em'
+                    'em' => 'edpuser_doctrine_em'
                 ),
             ),
             'EdpUser\Mapper\UserZendDb' => array(
