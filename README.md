@@ -20,7 +20,7 @@ Features / Goals
   username and use strictly email) [COMPLETE]
 * User registration [COMPLETE]
 * Forms protected against CSRF [COMPLETE]
-* Registration form protected with CAPTCHA [IN PROGRESS] (Needs more options)
+* Registration form protected with CAPTCHA [IN PROGRESS] \(Needs more options\)
 * Out-of-the-box support for Doctrine2 _and_ Zend\Db [IN PROGRESS]
 * Robust event system to allow for extending [IN PROGRESS]
 * Support for additional authentication mechanisms via plugins (Google,
