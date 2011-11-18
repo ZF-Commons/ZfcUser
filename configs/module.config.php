@@ -9,10 +9,55 @@ return array(
         'login_after_registration'  => false,
         'registration_form_captcha' => true,
     ),
+    'routes' => array(
+        'edpuser' => array(
+            'type' => 'Literal',
+            'priority' => 1000,
+            'options' => array(
+                'route' => '/user',
+                'defaults' => array(
+                    'controller' => 'edpuser',
+                ),
+            ),
+            'may_terminate' => true,
+            'child_routes' => array(
+                'login' => array(
+                    'type' => 'Literal',
+                    'options' => array(
+                        'route' => '/login',
+                        'defaults' => array(
+                            'controller' => 'edpuser',
+                            'action'     => 'login',
+                        ),
+                    ),
+                ),
+                'logout' => array(
+                    'type' => 'Literal',
+                    'options' => array(
+                        'route' => '/logout',
+                        'defaults' => array(
+                            'controller' => 'edpuser',
+                            'action'     => 'logout',
+                        ),
+                    ),
+                ),
+                'register' => array(
+                    'type' => 'Literal',
+                    'options' => array(
+                        'route' => '/register',
+                        'defaults' => array(
+                            'controller' => 'edpuser',
+                            'action'     => 'register',
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'user'                  => 'EdpUser\Controller\UserController',
+                'edpuser'               => 'EdpUser\Controller\UserController',
                 'edpuser_register_form' => 'EdpUser\Form\Register',
                 'edpuser_login_form'    => 'EdpUser\Form\Login',
                 'edpuser_user_mapper'   => 'EdpUser\Mapper\UserDoctrine',

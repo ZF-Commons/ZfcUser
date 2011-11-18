@@ -1,0 +1,7 @@
+<h1>Sign In</h1>
+<?php
+$form = $this->loginForm;
+$form->setAction($this->url('edpuser/login'));
+$form->setView($this);
+echo $form; ?>
+Not registered? <a href="<?php echo $this->url('edpuser/register') ?>">Sign up!</a>

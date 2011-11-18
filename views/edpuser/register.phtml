@@ -1,0 +1,6 @@
+<h1>Register</h1>
+<?php
+$form = $this->registerForm;
+$form->setAction($this->url('default', array('namespace' => 'edp-user', 'controller' => 'user', 'action' => 'register')));
+$form->setView($this);
+echo $form;

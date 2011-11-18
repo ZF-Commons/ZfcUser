@@ -1,7 +1,0 @@
-<h1>Sign In</h1>
-<?php
-$form = $this->loginForm;
-$form->setAction($this->url('default', array('controller' => 'user', 'action' => 'login')));
-$form->setView($this);
-echo $form; ?>
-Not registered? <a href="<?php echo $this->url('default', array('controller' => 'user', 'action' => 'register')) ?>">Sign up!</a>

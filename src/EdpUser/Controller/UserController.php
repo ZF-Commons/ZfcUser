@@ -18,10 +18,7 @@ class UserController extends ActionController
     public function indexAction()
     {
         if (!$this->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('default', array(
-                'controller' => 'user',
-                'action'     => 'login',
-            )); 
+            return $this->redirect()->toRoute('edpuser/login'); 
         }
         return array('user' => $this->getAuthService()->getIdentity());
     }
@@ -29,10 +26,7 @@ class UserController extends ActionController
     public function loginAction()
     {
         if ($this->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('default', array(
-                'controller' => 'user',
-                'action'     => 'index',
-            )); 
+            return $this->redirect()->toRoute('edpuser'); 
         }
         $request    = $this->getRequest();
         $form       = $this->getLoginForm();
@@ -45,23 +39,14 @@ class UserController extends ActionController
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
-                return $this->redirect()->toRoute('default', array(
-                    'controller' => 'user',
-                    'action'     => 'login',
-                )); 
+                return $this->redirect()->toRoute('edpuser/login'); 
             }
             $auth = $this->getUserService()->authenticate($request->post()->get('email'), $request->post()->get('password'));
             if (false === $auth) {
                 $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
-                return $this->redirect()->toRoute('default', array(
-                    'controller' => 'user',
-                    'action'     => 'login',
-                )); 
+                return $this->redirect()->toRoute('edpuser/login');
             }
-            return $this->redirect()->toRoute('default', array(
-                'controller' => 'user',
-                'action'     => 'index',
-            )); 
+            return $this->redirect()->toRoute('edpuser');
         }
         return array(
             'loginForm' => $form,
@@ -71,52 +56,34 @@ class UserController extends ActionController
     public function logoutAction()
     {
         if (!$this->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('default', array(
-                'controller' => 'user',
-                'action'     => 'login',
-            )); 
+            return $this->redirect()->toRoute('edpuser/login');
         }
 
         $this->getAuthService()->clearIdentity();
 
-        return $this->redirect()->toRoute('default', array(
-            'controller' => 'user',
-            'action'     => 'login',
-        )); 
+        return $this->redirect()->toRoute('edpuser/login');
     }
 
     public function registerAction()
     {
         if ($this->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('default', array(
-                'controller' => 'user',
-                'action'     => 'index',
-            )); 
+            return $this->redirect()->toRoute('edpuser');
         }
         $request    = $this->getRequest();
         $form       = $this->getRegisterForm();
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('edpuser-register-form')->addMessage($request->post()->toArray());
-                return $this->redirect()->toRoute('default', array(
-                    'controller' => 'user',
-                    'action'     => 'register',
-                )); 
+                return $this->redirect()->toRoute('edpuser/register');
             } else {
                 $this->getUserService()->createFromForm($form);
                 if (Module::getOption('login_after_registration')) {
                     $auth = $this->getUserService()->authenticate($request->post()->get('email'), $request->post()->get('password'));
                     if (false !== $auth) {
-                        return $this->redirect()->toRoute('default', array(
-                            'controller' => 'user',
-                            'action'     => 'index',
-                        )); 
+                        return $this->redirect()->toRoute('edpuser');
                     }
                 }
-                return $this->redirect()->toRoute('default', array(
-                    'controller' => 'user',
-                    'action'     => 'login',
-                )); 
+                return $this->redirect()->toRoute('edpuser/login');
             }
         }
         return array(
