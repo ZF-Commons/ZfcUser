@@ -39,16 +39,6 @@ class UserBase extends ModelAbstract
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=16)
-     */
-    private $salt;
-
-    /**
-     * @ORM\Column(name="hash_algorithm", type="string", length="50")
-     */
-    private $hashAlgorithm;
-
-    /**
      * @ORM\Column(name="last_login", type="datetime", nullable=true)
      */
     private $lastLogin;

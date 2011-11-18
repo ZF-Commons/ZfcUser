@@ -6,6 +6,7 @@ use Zend\Mvc\Controller\ActionController,
     Zend\Mvc\Router\RouteStack,
     EdpUser\Service\User as UserService,
     EdpUser\Module,
+    EdpUser\Util\Password,
     Zend\Controller\Action\Helper\FlashMessenger;
 
 class UserController extends ActionController

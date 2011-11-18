@@ -8,7 +8,8 @@ use Zend\Authentication\AuthenticationService,
     EdpUser\Mapper\UserInterface as UserMapper,
     EdpUser\Module,
     Zend\EventManager\EventCollection,
-    Zend\EventManager\EventManager;
+    Zend\EventManager\EventManager,
+    EdpUser\Util\Password;
 
 class User
 {
@@ -42,26 +43,28 @@ class User
         // Auth by email
         $userEntity = $this->userMapper->findByEmail($identity);
         if ($userEntity !== null) {
-            $credentialHash = $this->hashPassword($credential, $userEntity->getSalt(), $userEntity->getHashAlgorithm());
-            $adapter     = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'email');
-            $result      = $authService->authenticate($adapter);
+            $credentialHash = $this->hashPassword($credential, $userEntity->getPassword());
+            $adapter        = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'email');
+            $result         = $authService->authenticate($adapter);
             if ($result->isValid()) {
                 $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
                 $this->updateUserLastLogin($userEntity);
                 $authService->getStorage()->write($userEntity);
+                $this->updateUserPasswordHash($userEntity, $password);
                 return true;
             }
         }
         if (Module::getOption('enable_username')) {
             $userEntity = $this->userMapper->findByUsername($identity);
             if ($userEntity !== null) {
-                $credentialHash = $this->hashPassword($credential, $userEntity->getSalt(), $userEntity->getHashAlgorithm());
-                $adapter = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'username'); 
-                $result  = $authService->authenticate($adapter);
+                $credentialHash = $this->hashPassword($credential, $userEntity->getPassword());
+                $adapter        = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'username');
+                $result         = $authService->authenticate($adapter);
                 if ($result->isValid()) {
                     $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
                     $this->updateUserLastLogin($userEntity);
                     $authService->getStorage()->write($userEntity);
+                    $this->updateUserPasswordHash($userEntity, $password);
                     return true;
                 }
             }
@@ -82,6 +85,16 @@ class User
         $this->userMapper->persist($user);
     }
 
+    protected function updateUserPasswordHash($userEntity, $password)
+    {
+        $newHash = $this->hashPassword($password);
+        if ($newHash === $userEntity->getPassword()) {
+            return $this;
+        }
+        $userEntity->setPassword($newHash);
+        $this->userMapper->persist($userEntity);
+    }
+
     /**
      * createFromForm 
      * 
@@ -93,11 +106,9 @@ class User
         $class = Module::getOption('user_model_class');
         $user = new $class;
         $user->setEmail($form->getValue('email'))
-             ->setSalt($this->randomBytes(16))
-             ->setPassword($this->hashPassword($form->getValue('password'), $user->getSalt(), Module::getOption('password_hash_algorithm')))
+             ->setPassword($this->hashPassword($form->getValue('password')))
              ->setRegisterIp($_SERVER['REMOTE_ADDR'])
              ->setRegisterTime(new DateTime('now'))
-             ->setHashAlgorithm(Module::getOption('password_hash_algorithm'))
              ->setEnabled(true);
         if (Module::getOption('require_activation')) {
             $user->setActive(false);
@@ -113,6 +124,34 @@ class User
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         $this->userMapper->persist($user);
         return $user;
+    }
+
+    protected function hashPassword($password, $salt = false)
+    {
+        return Password::hash($password, $salt ?: $this->getNewSalt());
+    }
+
+    protected function getNewSalt()
+    {
+        $algorithm = strtolower(Module::getOption('password_hash_algorithm'));
+        switch ($algorithm) {
+            case 'blowfish':
+                $cost = Module::getOption('blowfish_cost');
+                break;
+            case 'sha512':
+                $cost = Module::getOption('sha512_rounds');
+                break;
+            case 'sha256':
+                $cost = Module::getOption('sha256_rounds');
+                break;
+            default:
+                throw new \Exception(sprintf(
+                    'Unsupported hashing algorithm: %s',
+                    $algorithm
+                ));
+                break;
+        }
+        return Password::getSalt($algorithm, (int) $cost);
     }
 
     /**
@@ -150,62 +189,6 @@ class User
     {
         $this->authService = $authService;
         return $this;
-    }
-
-    /**
-     * hashPassword
-     *
-     * @param string $password
-     * @param string $salt
-     * @param mixed $algorithm
-     * @return string
-     */
-    public function hashPassword($password, $salt, $algorithm)
-    {
-        if (is_string($algorithm) && in_array($algorithm, hash_algos())) {
-            return hash($algorithm, $password.$salt);
-        }
-        if (is_callable($algorithm, false, $callableName)) {
-            return $callableName($password.$salt);
-        }
-        throw new RuntimeException(sprintf(
-            'failed to call algorithm function %s(), does it exist?',
-            $callableName
-        ));
-    }
-
-    /**
-     * randomBytes
-     *
-     * returns X random raw binary bytes
-     *
-     * @param int $byteLength
-     * @return string
-     */
-    public function randomBytes($byteLength)
-    {
-        if (function_exists('openssl_random_pseudo_bytes')) {
-            $data = openssl_random_pseudo_bytes($byteLength);
-        } elseif (is_readable('/dev/urandom')) {
-            $fp = fopen('/dev/urandom','rb');
-            if ($fp !== false) {
-                $data = fread($fp, $byteLength);
-                fclose($fp);
-            }
-        } elseif(function_exists('mcrypt_create_iv') && version_compare(PHP_VERSION, '5.3.0', '>=')) {
-            $data = mcrypt_create_iv($byteLength, MCRYPT_DEV_URANDOM);
-        } elseif (class_exists('COM')) {
-            try {
-                $capi = new \COM('CAPICOM.Utilities.1');
-                $data = $capi->GetRandom($btyeLength,0);
-            } catch (\Exception $ex) {} // Fail silently
-        }
-        if(empty($data)) {
-            throw new \Exception(
-                'Unable to find a secure method for generating random bytes.'
-            );
-        }
-        return $data;
     }
 
     /**
