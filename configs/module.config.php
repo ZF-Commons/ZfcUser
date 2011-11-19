@@ -116,7 +116,7 @@ return array(
                 'parameters' => array(
                     'options'  => array(
                         'script_paths' => array(
-                            'user' => __DIR__ . '/../views',
+                            'edpuser' => __DIR__ . '/../views',
                         ),
                     ),
                 ),
