@@ -50,7 +50,7 @@ class User
                 $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
                 $this->updateUserLastLogin($userEntity);
                 $authService->getStorage()->write($userEntity);
-                $this->updateUserPasswordHash($userEntity, $password);
+                $this->updateUserPasswordHash($userEntity, $credential);
                 return true;
             }
         }
@@ -64,7 +64,7 @@ class User
                     $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
                     $this->updateUserLastLogin($userEntity);
                     $authService->getStorage()->write($userEntity);
-                    $this->updateUserPasswordHash($userEntity, $password);
+                    $this->updateUserPasswordHash($userEntity, $credential);
                     return true;
                 }
             }
