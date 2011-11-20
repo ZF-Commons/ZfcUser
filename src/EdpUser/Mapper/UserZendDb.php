@@ -21,8 +21,6 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
             'email'          => $user->getEmail(),
             'display_name'   => $user->getDisplayName(),
             'password'       => $user->getPassword(),
-            'salt'           => $user->getSalt(),
-            'hash_algorithm' => $user->getHashAlgorithm(),
             'last_login'     => $user->getLastLogin() ? $user->getLastLogin()->format('Y-m-d H:i:s') : null,
             'last_ip'        => $user->getLastIp(true),
             'register_time'  => $user->getRegisterTime()->format('Y-m-d H:i:s'),
