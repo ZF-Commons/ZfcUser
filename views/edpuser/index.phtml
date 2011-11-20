@@ -1,1 +1,2 @@
-Hello, <?php echo $user->getDisplayName(); ?>! <a href="<?php echo $this->url('edpuser/logout') ?>">[Sign Out]</a>
+<?php echo $this->gravatar($user->getEmail()) ?>
+Hello, <?php echo $user->getDisplayName() ?>! <a href="<?php echo $this->url('edpuser/logout') ?>">[Sign Out]</a>
