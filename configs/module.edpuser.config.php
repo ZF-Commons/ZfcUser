@@ -71,7 +71,7 @@ $edpUserSettings = array(
      *
      * Accepted values: boolean true or false
      */
-    'login_after_registration' => false,
+    'login_after_registration' => true,
 
     /**
      * Registration Form Captcha 

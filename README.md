@@ -201,16 +201,13 @@ First, create your extended User entity:
 
 Next, tell EdpUser to utilize your new entity class:
 
-    // Application/configs/module.config.php
-    return array(
-        'edpuser' => array(
-            'user_model_class' => 'Application\EdpUser\Model\User',
-        ),
-    ),
+    // conf.d/module.edpuser.config.php
+    'user_model_class' => 'Application\EdpUser\Model\User',
 
 If you're using Doctrine2, you'll also need to override the EdpUser entity path:
 
-    // Application/configs/module.config.php
+    // conf.d/module.edpuser.custom.config.php (New file)
+    <?php
     return array(
         'di' => array(
             'instance' => array(
@@ -227,7 +224,7 @@ If you're using Doctrine2, you'll also need to override the EdpUser entity path:
                 ),
             ),
         ),
-    ),
+    );
 
 Common Use-Cases
 ----------------

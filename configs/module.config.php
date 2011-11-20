@@ -5,7 +5,7 @@ return array(
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
-        'login_after_registration'  => false,
+        'login_after_registration'  => true,
         'registration_form_captcha' => true,
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
         'blowfish_cost'             => 10,         // integer between 4 and 31
