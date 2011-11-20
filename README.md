@@ -217,7 +217,7 @@ If you're using Doctrine2, you'll also need to override the EdpUser entity path:
                             'edpuser_annotationdriver' => array(
                                 'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                                 'namespace'       => 'Application\EdpUser\Model',
-                                'paths'           => array(__DIR__ . '/../src/Application/EdpUser/Model'),
+                                'paths'           => array(dirname(__DIR__) . '/modules/Application/src/Application/EdpUser/Model'),
                             ),
                         ),
                     ),
