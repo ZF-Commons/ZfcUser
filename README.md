@@ -67,9 +67,9 @@ Installation (Zend\Db)
     3. Enable EdpUser in your `application.config.php` modules array.
 3. Create the `user` table in your database. (The chema is located in
    `./EdpUser/data/schema.sql`)
-4. Add the following to your `Application/configs/module.config.php`:
+4. Add the following to your `Application/config/module.config.php`:
 
-        // Application/configs/module.config.php
+        // Application/config/module.config.php
         array(
             'di' => array(
                 'instance' => array(
@@ -104,7 +104,7 @@ If you are planning on changing the default password hash settings, please read
 the following:
 
 - [PHP Manual: crypt() function](http://php.net/manual/en/function.crypt.php)
-- [Securely Storing Passwords in PHP by Adrian Schneider](www.syndicatetheory.com/labs/securely-storing-passwords-in-php)
+- [Securely Storing Passwords in PHP by Adrian Schneider](http://www.syndicatetheory.com/labs/securely-storing-passwords-in-php)
 
 The password hash settings may be changed at any time without invalidating
 existing user accounts. Existing user passwords will be re-hashed automatically
@@ -121,23 +121,9 @@ Options
 -------
 
 The EdpUser module has some options to allow you to quickly customize the basic
-functionality. Options are defined in your Application module config like this:
-
-    // Application/configs/module.config.php
-    array(
-        'edpuser' => array(
-            'user_model_class'          => 'EdpUser\Model\User',
-            'enable_username'           => false,
-            'enable_display_name'       => false,
-            'require_activation'        => false,
-            'login_after_registration'  => false,
-            'registration_form_captcha' => true,
-            'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
-            'blowfish_cost'             => 10,         // integer between 4 and 31
-            'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-            'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        ),
-    )
+functionality. After installing EdpUser, copy
+`./vendor/EdpUser/config/module.edpuser.config.php` to
+`./config/autoload/module.config.php` and change the values as desired.
 
 The following options are available:
 
@@ -181,6 +167,7 @@ EdpUser, this is very easy.
 
 First, create your extended User entity:
 
+    <?php
     // Application/src/Application/EdpUser/Model/User.php
 
     namespace Application\EdpUser\Model;
@@ -201,12 +188,12 @@ First, create your extended User entity:
 
 Next, tell EdpUser to utilize your new entity class:
 
-    // conf.d/module.edpuser.config.php
+    // config/autoload/module.edpuser.config.php
     'user_model_class' => 'Application\EdpUser\Model\User',
 
 If you're using Doctrine2, you'll also need to override the EdpUser entity path:
 
-    // conf.d/module.edpuser.custom.config.php (New file)
+    // config/autoload/module.edpuser.custom.config.php (New file)
     <?php
     return array(
         'di' => array(
@@ -215,9 +202,9 @@ If you're using Doctrine2, you'll also need to override the EdpUser entity path:
                     'parameters' => array(
                         'drivers' => array(
                             'edpuser_annotationdriver' => array(
-                                'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                                'namespace'       => 'Application\EdpUser\Model',
-                                'paths'           => array(dirname(__DIR__) . '/modules/Application/src/Application/EdpUser/Model'),
+                                'class'     => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
+                                'namespace' => 'Application\EdpUser\Model',
+                                'paths'     => array(dirname(__DIR__) . '/modules/Application/src/Application/EdpUser/Model'),
                             ),
                         ),
                     ),
