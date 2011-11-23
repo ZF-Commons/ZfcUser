@@ -22,7 +22,16 @@ $edpUserSettings = array(
      * If using Zend\Db, please specify the DI alias for the configured PDO 
      * instance that EdpUser should use.
      */
-    'pdo' => 'CHANGEME',
+    'zend_db_pdo' => 'CHANGEME',
+
+    /**
+     * Doctrine Entity Manager DI alias
+     *
+     * If using Doctrine2, please specify the DI alias for the Doctrine entity
+     * manager that EdpUser should use. If using SpiffyDoctrine, this is
+     * probably 'doctrine_em', which is the default value.
+     */
+    'doctrine_em' => 'doctrine_em',
 
     /**
      * User Model Entity Class
@@ -150,7 +159,8 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'edpuser_pdo' => $edpUserSettings['pdo'],
+                'edpuser_pdo'         => $edpUserSettings['zend_db_pdo'],
+                'edpuser_doctrine_em' => $edpUserSettings['doctrine_em'],
                 'edpuser_user_mapper' => ($edpUserSettings['db_abstraction'] === 'zend_db') ? 'EdpUser\Mapper\UserZendDb' : 'EdpUser\Mapper\UserDoctrine',
             ),
         ),
