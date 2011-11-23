@@ -48,11 +48,6 @@ class Login extends ProvidesEventsForm
             'label'    => 'Sign In',
         ));
 
-        $this->addElement('hash', 'csrf', array(
-            'ignore' => true,
-            'decorators' => array('ViewHelper'),
-        ));
-
         $this->events()->trigger('init', $this);
 
     }

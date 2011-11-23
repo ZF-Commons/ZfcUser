@@ -5,13 +5,17 @@ Version 0.0.1 Created by Evan Coury
 Introduction
 ------------
 
-**NOTE:** This is a work-in-progress. The features listed may be incomplete or
-entirely missing.
-
 EdpUser is a user registration and authentication module for Zend Framework 2,
 which can utilize either Doctrine2 or Zend\Db. It provides the foundations
 for adding user authentication and registration to your ZF2 site. It is built to
 be very simple and easily to extend.
+
+Requirements
+------------
+
+* [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
+* [EdpCommon](https://github.com/EvanDotPro/EdpCommon) (latest master).
+* [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (optional).
 
 Features / Goals
 ----------------
@@ -27,56 +31,43 @@ Features / Goals
   Facebook, LDAP, etc) [INCOMPLETE]
 * Optional E-mail address verification [INCOMPLETE]
 * Forgot Password [INCOMPLETE]
+* Provide ActionController plugin and view helper [INCOMPLETE]
 
-Requirements
+Installation
 ------------
 
-* Zend Framework 2
-* [EdpCommon](https://github.com/EvanDotPro/EdpCommon) (latest master).
-* [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (optional).
+### Main Setup
 
-Installation (Doctrine2)
-------------
+1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module
+   by cloning it into `./vendors/` and enabling it in your
+   `application.config.php` file.
+2. Clone this project into your `./vendors/` directory and enable it in your
+   `application.config.php` file.
+3. Import the SQL schema located in `./vendors/EdpUser/data/schema.sql`.
+4. Copy `./vendors/EdpUser/config/module.edpuser.config.php.dist` to
+   `./config/autoload/module.edpuser.config.php`.
+5. Follow the **Post-Install** instructions below for your preferred database
+   access layer (Doctrine2 or Zend\Db)
 
-1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module.
-    1. `cd path/to/project/modules`
-    2. `git clone git://github.com/EvanDotPro/EdpCommon.git`
-    3. Enable EdpCommon in your `application.config.php` modules array.
-2. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2 
+### Post-Install: Doctrine2
+
+1. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2 
    module per the [installation instructions](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/docs/INSTALL.md).
-3. Install the [EdpUser](https://github.com/EvanDotPro/EdpUser) ZF2 module.
-    1. `cd path/to/project/modules`
-    2. `git clone git://github.com/EvanDotPro/EdpUser.git`
-    3. Enable EdpUser in your `application.config.php` modules array.
-4. Create the `user` table in your database via the Doctrine CLI:
-    1. `cd path/to/SpiffyDoctrine/bin`
-    2. `./doctrine orm:schema:update --dump-sql` (Import the schema into your DB)
     
 Navigate to http://yourproject/user and you should land on a login page.
 
-Installation (Zend\Db)
-------------
+### Post-Install: Zend\Db
 
-1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module.
-    1. `cd path/to/project/modules`
-    2. `git clone git://github.com/EvanDotPro/EdpCommon.git`
-    3. Enable EdpCommon in your `application.config.php` modules array.
-2. Install the [EdpUser](https://github.com/EvanDotPro/EdpUser) ZF2 module.
-    1. `cd path/to/project/modules`
-    2. `git clone git://github.com/EvanDotPro/EdpUser.git`
-    3. Enable EdpUser in your `application.config.php` modules array.
-3. Create the `user` table in your database. (The chema is located in
-   `./EdpUser/data/schema.sql`)
-4. Add the following to your `Application/config/module.config.php`:
+1. If you do not already have a PDO connection set up via DI, put the following
+   in `./config/autoload/database.config.php`:
 
-        // Application/config/module.config.php
-        array(
+        <?php
+        // ./config/autoload/database.config.php
+        return array(
             'di' => array(
                 'instance' => array(
                     'alias' => array(
-                        'masterdb'            => 'PDO',
-                        'edpuser_pdo'         => 'masterdb',
-                        'edpuser_user_mapper' => 'EdpUser\Mapper\UserZendDb',
+                        'masterdb' => 'PDO',
                     ),
                     'masterdb' => array(
                         'parameters' => array(
@@ -89,6 +80,14 @@ Installation (Zend\Db)
                 ),
             ),
         );
+
+2. Now, specify the DI alias for your PDO connection in
+   `./configs/autoload/module.edpuser.config.php`, under the 'pdo' setting.
+   If you created the `./configs/autoload/database.config.php` file in the
+   previous step, the alias you'll specify is 'masterdb'.
+
+3. Finally, in `./configs/autoload/module.edpuser.config.php`, change the value
+   of the `db_abstraction` setting from 'doctrine' to 'zend_db'.
 
 Navigate to http://yourproject/user and you should land on a login page.
 
