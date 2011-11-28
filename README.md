@@ -167,7 +167,7 @@ EdpUser, this is very easy.
 First, create your extended User entity:
 
     <?php
-    // Application/src/Application/EdpUser/Model/User.php
+    // ./module/Application/src/Application/EdpUser/Model/User.php
 
     namespace Application\EdpUser\Model;
 
@@ -187,12 +187,12 @@ First, create your extended User entity:
 
 Next, tell EdpUser to utilize your new entity class:
 
-    // config/autoload/module.edpuser.config.php
+    // ./config/autoload/module.edpuser.config.php
     'user_model_class' => 'Application\EdpUser\Model\User',
 
 If you're using Doctrine2, you'll also need to override the EdpUser entity path:
 
-    // config/autoload/module.edpuser.custom.config.php (New file)
+    // ./config/autoload/module.edpuser.custom.config.php (New file)
     <?php
     return array(
         'di' => array(
@@ -203,7 +203,7 @@ If you're using Doctrine2, you'll also need to override the EdpUser entity path:
                             'edpuser_annotationdriver' => array(
                                 'class'     => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                                 'namespace' => 'Application\EdpUser\Model',
-                                'paths'     => array(dirname(__DIR__) . '/modules/Application/src/Application/EdpUser/Model'),
+                                'paths'     => array(dirname(__DIR__) . '/module/Application/src/Application/EdpUser/Model'),
                             ),
                         ),
                     ),
