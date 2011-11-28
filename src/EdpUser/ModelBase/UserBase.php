@@ -9,7 +9,7 @@ use DateTime,
 /**
  * @ORM\MappedSuperclass
  */
-class UserBase extends ModelAbstract
+class UserBase extends ModelAbstract implements UserInterface
 {
     /**
      * @ORM\Id
@@ -182,49 +182,6 @@ class UserBase extends ModelAbstract
     public function setPassword($password)
     {
         $this->password = $password;
-        return $this;
-    }
- 
-    /**
-     * Get salt.
-     *
-     * @return string salt
-     */
-    public function getSalt()
-    {
-        return $this->salt;
-    }
- 
-    /**
-     * Set salt.
-     *
-     * @param string $salt the value to be set
-     * @return User
-     */
-    public function setSalt($salt)
-    {
-        $this->salt = $salt;
-        return $this;
-    }
- 
-    /**
-     * Get hashAlgorithm.
-     *
-     * @return string hashAlgorithm
-     */
-    public function getHashAlgorithm()
-    {
-        return $this->hashAlgorithm;
-    }
- 
-    /**
-     * Set hashAlgorithm.
-     *
-     * @param string $hashAlgorithm the value to be set
-     */
-    public function setHashAlgorithm($hashAlgorithm)
-    {
-        $this->hashAlgorithm = $hashAlgorithm;
         return $this;
     }
  

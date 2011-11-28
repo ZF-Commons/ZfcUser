@@ -4,7 +4,7 @@ namespace EdpUser\Mapper;
 
 use Doctrine\ORM\EntityManager,
     EdpUser\Module,
-    EdpUser\ModelBase\UserBase,
+    EdpUser\ModelBase\UserInterface as UserModelInterface,
     EdpCommon\EventManager\EventProvider,
     SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
     SpiffyDoctrine\Validator\NoEntityExists;
@@ -15,7 +15,7 @@ class UserDoctrine extends EventProvider implements UserInterface
     protected $em;
     protected $emailValidator;
 
-    public function persist(UserBase $user)
+    public function persist(UserModelInterface $user)
     {
         $em = $this->getEntityManager();
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('user' => $user, 'em' => $em));

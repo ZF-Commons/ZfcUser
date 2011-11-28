@@ -2,11 +2,11 @@
 
 namespace EdpUser\Mapper;
 
-use EdpUser\ModelBase\UserBase;
+use EdpUser\ModelBase\UserInterface as UserModelInterface;
 
 interface UserInterface
 {
-    public function persist(UserBase $user);
+    public function persist(UserModelInterface $user);
 
     public function findByEmail($email);
 

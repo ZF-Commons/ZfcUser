@@ -4,7 +4,7 @@ namespace EdpUser\Mapper;
 
 use EdpCommon\Mapper\DbMapperAbstract,
     EdpUser\Module,
-    EdpUser\ModelBase\UserBase,
+    EdpUser\ModelBase\UserInterface as UserModelInterface,
     Zend\Authentication\Adapter\DbTable as DbAdapter,
     ArrayObject;
 
@@ -14,7 +14,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
     protected $authAdapter;
     protected $emailValidator;
 
-    public function persist(UserBase $user)
+    public function persist(UserModelInterface $user)
     {
         $data = new ArrayObject(array(
             'user_id'        => $user->getUserId(),
