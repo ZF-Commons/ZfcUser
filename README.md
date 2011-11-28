@@ -217,17 +217,17 @@ Common Use-Cases
 
 ### Checking if a user is logged in from an ActionController
     
-    if ($this->getLocator()->get('edpuser-user-service')->getAuthService()->hasIdentity()) {
+    if ($this->getLocator()->get('edpuser_user_service')->getAuthService()->hasIdentity()) {
         //...
     }
 
 ### Retrieving a user's identity from an ActionController
     
-    $user = $this->getLocator()->get('edpuser-user-service')->getAuthService()->getIdentity();
+    $user = $this->getLocator()->get('edpuser_user_service')->getAuthService()->getIdentity();
     return array('user' => $user);
 
 **Note:** `getIdentity()` returns an instance of `EdpUser\Entity\User`.
 
 ### Logging a user out from an ActionController
 
-    $this->getLocator()->get('edpuser-user-service')->getAuthService()->clearIdentity();
+    $this->getLocator()->get('edpuser_user_service')->getAuthService()->clearIdentity();
