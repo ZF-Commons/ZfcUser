@@ -119,6 +119,30 @@ return array(
                             'edpuser' => __DIR__ . '/../views',
                         ),
                     ),
+                    'broker' => 'Zend\View\HelperBroker',
+                ),
+            ),
+            'Zend\View\HelperLoader' => array(
+                'parameters' => array(
+                    'map' => array(
+                        'user'        => 'EdpUser\View\Helper\User',
+                        'userService' => 'EdpUser\View\Helper\UserService',
+                    ),
+                ),
+            ),
+            'Zend\View\HelperBroker' => array(
+                'parameters' => array(
+                    'loader' => 'Zend\View\HelperLoader',
+                ),
+            ),
+            'EdpUser\View\Helper\User' => array(
+                'parameters' => array(
+                    'userService' => 'edpuser_user_service',
+                ),
+            ),
+            'EdpUser\View\Helper\UserService' => array(
+                'parameters' => array(
+                    'userService' => 'edpuser_user_service',
                 ),
             ),
         ),
