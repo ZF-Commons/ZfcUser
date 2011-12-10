@@ -11,7 +11,7 @@ class Module implements AutoloaderProvider
 
     public function init(Manager $moduleManager)
     {
-        $moduleManager->events()->attach('init.post', array($this, 'postInit'));
+        $moduleManager->events()->attach('loadModules.post', array($this, 'postInit'));
     }
 
     public function getAutoloaderConfig()
@@ -35,7 +35,7 @@ class Module implements AutoloaderProvider
 
     public function postInit($e)
     {
-        $config = $e->getTarget()->getMergedConfig();
+        $config = $e->getConfigListener()->getMergedConfig();
         static::$options = $config['edpuser'];
     }
 
