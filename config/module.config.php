@@ -125,8 +125,8 @@ return array(
             'Zend\View\HelperLoader' => array(
                 'parameters' => array(
                     'map' => array(
-                        'user'        => 'EdpUser\View\Helper\User',
-                        'userService' => 'EdpUser\View\Helper\UserService',
+                        'edpUser'        => 'EdpUser\View\Helper\EdpUser',
+                        'edpUserService' => 'EdpUser\View\Helper\EdpUserService',
                     ),
                 ),
             ),
@@ -135,12 +135,12 @@ return array(
                     'loader' => 'Zend\View\HelperLoader',
                 ),
             ),
-            'EdpUser\View\Helper\User' => array(
+            'EdpUser\View\Helper\EdpUser' => array(
                 'parameters' => array(
                     'userService' => 'edpuser_user_service',
                 ),
             ),
-            'EdpUser\View\Helper\UserService' => array(
+            'EdpUser\View\Helper\EdpUserService' => array(
                 'parameters' => array(
                     'userService' => 'edpuser_user_service',
                 ),

@@ -3,9 +3,9 @@
 namespace EdpUser\View\Helper;
 
 use Zend\View\Helper\AbstractHelper,
-    EdpUser\Service\User;
+    EdpUser\Service\User as UserService;
 
-class UserService extends AbstractHelper
+class EdpUser extends AbstractHelper
 {
     /**
      * @var UserService
@@ -15,11 +15,16 @@ class UserService extends AbstractHelper
     /**
      * __invoke 
      * 
-     * @return User
+     * @access public
+     * @return EdpUser\ModelBase\UserInterface
      */
     public function __invoke()
     {
-        return $this->getUserService();
+        if ($this->getUserService()->getAuthService()->hasIdentity()) {
+            return $this->getUserService()->getAuthService()->getIdentity();
+        } else {
+            return false;
+        }
     }
 
     public function getAuth()
@@ -30,7 +35,7 @@ class UserService extends AbstractHelper
     /**
      * Get userService.
      *
-     * @return User
+     * @return UserService
      */
     public function getUserService()
     {
@@ -40,9 +45,9 @@ class UserService extends AbstractHelper
     /**
      * Set userService.
      *
-     * @param User $userService the value to be set
+     * @param UserService $userService the value to be set
      */
-    public function setUserService(User $userService)
+    public function setUserService(UserService $userService)
     {
         $this->userService = $userService;
         return $this;
