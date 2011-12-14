@@ -32,7 +32,6 @@ class Login extends ProvidesEventsForm
             $emailElement->removeValidator('EmailAddress')
                          ->setLabel('Email or Username'); // @TODO: make translation-friendly
         }
-
         
         $this->addElement('password', 'password', array(
             'filters'    => array('StringTrim'),
@@ -43,12 +42,16 @@ class Login extends ProvidesEventsForm
             'label'      => 'Password',
         ));
 
+        $this->addElement('hash', 'csrf', array(
+            'ignore'     => true,
+            'decorators' => array('ViewHelper'),
+        ));
+
         $this->addElement('submit', 'login', array(
             'ignore'   => true,
             'label'    => 'Sign In',
         ));
 
         $this->events()->trigger('init', $this);
-
     }
 }

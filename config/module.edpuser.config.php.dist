@@ -93,6 +93,15 @@ $edpUserSettings = array(
     'registration_form_captcha' => true,
 
     /**
+     * Use Redirect Parameter If Present
+     *
+     * Upon successful authentication, check for a 'redirect' POST parameter
+     *
+     * Accepted values: boolean true or false
+     */
+    'use_redirect_parameter_if_present' => true,
+
+    /**
      * Password Security
      *
      * DO NOT CHANGE THE PASSWORD HASH SETTINGS FROM THEIR DEFAULTS 

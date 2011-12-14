@@ -47,6 +47,11 @@ class UserController extends ActionController
                 $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
                 return $this->redirect()->toRoute('edpuser/login');
             }
+            if (Module::getOption('use_redirect_parameter_if_present')
+                && $request->post()->get('redirect')
+            ) {
+                return $this->redirect()->toUrl($request->post()->get('redirect'));
+            }
             return $this->redirect()->toRoute('edpuser');
         }
         return array(
