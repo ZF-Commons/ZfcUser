@@ -4,10 +4,11 @@ namespace EdpUser\Controller;
 
 use Zend\Mvc\Controller\ActionController,
     Zend\Mvc\Router\RouteStack,
+    Zend\Session\SessionManager,
+    Zend\Session\Container,
     EdpUser\Service\User as UserService,
     EdpUser\Module,
-    EdpUser\Util\Password,
-    Zend\Controller\Action\Helper\FlashMessenger;
+    EdpUser\Util\Password;
 
 class UserController extends ActionController
 {
@@ -15,6 +16,7 @@ class UserController extends ActionController
     protected $loginForm;
     protected $userService;
     protected $authService;
+    protected $session;
 
     public function indexAction()
     {
@@ -39,12 +41,12 @@ class UserController extends ActionController
         
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
-                $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
+                $this->getSession()->edpuser_login_form = $failedLoginMessage;
                 return $this->redirect()->toRoute('edpuser/login'); 
             }
             $auth = $this->getUserService()->authenticate($request->post()->get('email'), $request->post()->get('password'));
             if (false === $auth) {
-                $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
+                $this->getSession()->edpuser_login_form = $failedLoginMessage;
                 return $this->redirect()->toRoute('edpuser/login');
             }
             return $this->redirect()->toRoute('edpuser');
@@ -74,7 +76,7 @@ class UserController extends ActionController
         $form       = $this->getRegisterForm();
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
-                $this->flashMessenger()->setNamespace('edpuser-register-form')->addMessage($request->post()->toArray());
+                $this->getSession()->edpuser_register_form = $request->post()->toArray();
                 return $this->redirect()->toRoute('edpuser/register');
             } else {
                 $this->getUserService()->createFromForm($form);
@@ -96,9 +98,9 @@ class UserController extends ActionController
     {
         if (null === $this->registerForm) {
             $this->registerForm = $this->getLocator()->get('edpuser_register_form');
-            $fm = $this->flashMessenger()->setNamespace('edpuser-register-form')->getMessages();
-            if (isset($fm[0])) {
-                $this->registerForm->isValid($fm[0]);
+            $session = $this->getSession()->edpuser_register_form;
+            if (isset($session)) {
+                $this->registerForm->isValid($session);
             }
         }
         return $this->registerForm;
@@ -108,9 +110,9 @@ class UserController extends ActionController
     {
         if (null === $this->loginForm) {
             $this->loginForm = $this->getLocator()->get('edpuser_login_form');
-            $fm = $this->flashMessenger()->setNamespace('edpuser-login-form')->getMessages();
-            if (isset($fm[0])) {
-                $this->loginForm->addErrorMessage($fm[0]);
+            $session = $this->getSession()->edpuser_login_form;
+            if (isset($session)) {
+                $this->loginForm->addErrorMessage($session);
             }
         }
         return $this->loginForm;
@@ -130,5 +132,17 @@ class UserController extends ActionController
             $this->authService = $this->getUserService()->getAuthService();
         }
         return $this->authService;
+    }
+    
+    protected function getSession()
+    {
+        if (null === $this->session) {
+            $manager = new SessionManager;
+            
+            $this->session = new Container(__NAMESPACE__, $manager);
+            $this->session->setExpirationHops(1);
+        }
+        
+        return $this->session;
     }
 }
