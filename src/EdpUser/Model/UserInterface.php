@@ -1,6 +1,6 @@
 <?php
 
-namespace EdpUser\ModelBase;
+namespace EdpUser\Model;
 
 interface UserInterface
 {
