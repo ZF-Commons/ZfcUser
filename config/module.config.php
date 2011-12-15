@@ -75,7 +75,7 @@ return array(
                     'config' => array(),
                 ),
             ),
-            'doctrine_driver_chain' => array(
+            'orm_driver_chain' => array(
                 'parameters' => array(
                     'drivers' => array(
                         'edpuserbase_annotationdriver' => array(
