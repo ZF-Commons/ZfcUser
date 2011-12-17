@@ -75,18 +75,35 @@ return array(
                     'config' => array(),
                 ),
             ),
+            'mongo_driver_chain' => array(
+                'parameters' => array(
+                    'drivers' => array(
+                        'edpuser_annotation_driver' => array(
+                            'class'     => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+                            'namespace' => 'EdpUser\Document',
+                            'paths'     => array(__DIR__ . '/src/EdpUser/Document')
+                        ),
+                        'edpuserbase_annotation_driver' => array(
+                            'class'     => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
+                            'namespace' => 'EdpUser\ModelBase',
+                            'paths'     => array(__DIR__ . '/src/EdpUser/ModelBase')
+                        ),
+                        'edpuserbase_xml_driver' => array(
+                            'class'          => 'Doctrine\ODM\MongoDB\Mapping\Driver\XmlDriver',
+                            'namespace'      => 'EdpUser\ModelBase',
+                            'paths'          => array(__DIR__ . '/xml'),
+                            'file_extension' => '.mongodb.xml',
+                        ),
+                    )
+                )
+            ),
             'orm_driver_chain' => array(
                 'parameters' => array(
                     'drivers' => array(
-                        'edpuserbase_annotationdriver' => array(
-                            'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                            'namespace'       => 'EdpUser\ModelBase',
-                            'paths'           => array(__DIR__ . '/../src/EdpUser/ModelBase'),
-                        ),
-                        'edpuser_annotationdriver' => array(
-                            'class'           => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                            'namespace'       => 'EdpUser\Model',
-                            'paths'           => array(__DIR__ . '/../src/EdpUser/Model'),
+                        'edpuser_xml_driver' => array(
+                            'class'     => 'Doctrine\ORM\Mapping\Driver\XmlDriver',
+                            'namespace' => 'EdpUser\Entity',
+                            'paths'     => array(__DIR__ . '/xml'),
                         ),
                     ),
                 )
