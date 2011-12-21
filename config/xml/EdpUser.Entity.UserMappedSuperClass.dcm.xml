@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="EdpUser\Entity\UserMappedSuperClass" table="user">
+
+        <id name="userId" type="integer" column="user_id"><generator strategy="AUTO" /></id>
+        <field name="username" column="username" type="string" unique="true" nullable="true" />
+        <field name="email" column="email" type="string" unique="true" length="100" />
+        <field name="displayName" column="display_name" type="string" length="50" nullable="true" />
+        <field name="password" column="password" type="string" length="128" />
+        <field name="lastLogin" column="last_login" type="datetime" />
+        <field name="lastIp" column="last_ip" type="integer" />
+        <field name="registerTime" column="register_time" type="datetime" />
+        <field name="registerIp" column="register_ip" type="integer" />
+        <field name="active" column="active" type="boolean" />
+        <field name="enabled" column="enabled" type="boolean" />
+
+    </mapped-superclass>
+
+</doctrine-mapping>

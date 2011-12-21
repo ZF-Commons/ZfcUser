@@ -2,7 +2,7 @@
 
 namespace EdpUser\Mapper;
 
-use EdpUser\ModelBase\UserInterface as UserModelInterface;
+use EdpUser\Model\UserInterface as UserModelInterface;
 
 interface UserInterface
 {

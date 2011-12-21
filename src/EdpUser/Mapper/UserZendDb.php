@@ -4,7 +4,7 @@ namespace EdpUser\Mapper;
 
 use EdpCommon\Mapper\DbMapperAbstract,
     EdpUser\Module,
-    EdpUser\ModelBase\UserInterface as UserModelInterface,
+    EdpUser\Model\UserInterface as UserModelInterface,
     Zend\Authentication\Adapter\DbTable as DbAdapter,
     ArrayObject;
 

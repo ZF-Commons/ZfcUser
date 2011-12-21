@@ -7,27 +7,27 @@ use DateTime,
 
 class User extends ModelAbstract implements UserInterface
 {
-    private $userId;
+    protected $userId;
 
-    private $username;
+    protected $username;
 
-    private $email;
+    protected $email;
 
-    private $displayName;
+    protected $displayName;
 
-    private $password;
+    protected $password;
 
-    private $lastLogin;
+    protected $lastLogin;
 
-    private $lastIp;
+    protected $lastIp;
 
-    private $registerTime;
+    protected $registerTime;
 
-    private $registerIp;
+    protected $registerIp;
 
-    private $active;
+    protected $active;
 
-    private $enabled;
+    protected $enabled;
  
     /**
      * Get userId.

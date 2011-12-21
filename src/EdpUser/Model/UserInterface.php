@@ -145,6 +145,11 @@ interface UserInterface
      */
     public function setRegisterIp($registerIp);
  
+    /**
+     * Get active.
+     * 
+     * @return bool
+     */
     public function getActive();
  
     /**

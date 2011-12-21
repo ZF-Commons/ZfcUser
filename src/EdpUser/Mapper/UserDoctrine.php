@@ -4,7 +4,7 @@ namespace EdpUser\Mapper;
 
 use Doctrine\ORM\EntityManager,
     EdpUser\Module,
-    EdpUser\ModelBase\UserInterface as UserModelInterface,
+    EdpUser\Model\UserInterface as UserModelInterface,
     EdpCommon\EventManager\EventProvider,
     SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
     SpiffyDoctrine\Validator\NoEntityExists;
