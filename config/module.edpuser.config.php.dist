@@ -5,7 +5,7 @@
  * If you have a ./configs/autoload/ directory set up for your project, you can 
  * drop this config file in it and change the values as you wish.
  */
-$edpUserSettings = array(
+$settings = array(
     /**
      * Database Abstraction
      *
@@ -127,9 +127,9 @@ $edpUserSettings = array(
     /**
      * Blowfish Cost
      *
-     * Only used if `password_hash_algorithm` is set to blowfish. The number represents the base-2 logarithm 
-     * of the iteration count used for hashing. Default is 10 (about 10 hashes 
-     * per second on an i5). 
+     * Only used if `password_hash_algorithm` is set to blowfish. The number
+     * represents the base-2 logarithm of the iteration count used for hashing.
+     * Default is 10 (about 10 hashes per second on an i5). 
      *
      * Accepted values: integer between 4 and 31
      */
@@ -164,13 +164,13 @@ $edpUserSettings = array(
  * You do not need to edit below this line
  */
 return array(
-    'edpuser' => $edpUserSettings,
+    'edpuser' => $settings,
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'edpuser_pdo'         => $edpUserSettings['zend_db_pdo'],
-                'edpuser_doctrine_em' => $edpUserSettings['doctrine_em'],
-                'edpuser_user_mapper' => ($edpUserSettings['db_abstraction'] === 'zend_db') ? 'EdpUser\Mapper\UserZendDb' : 'EdpUser\Mapper\UserDoctrine',
+                'edpuser_pdo'         => $settings['zend_db_pdo'],
+                'edpuser_doctrine_em' => $settings['doctrine_em'],
+                'edpuser_user_mapper' => ($settings['db_abstraction'] === 'zend_db') ? 'EdpUser\Mapper\UserZendDb' : 'EdpUser\Mapper\UserDoctrine',
             ),
         ),
     ),
