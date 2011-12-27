@@ -6,6 +6,7 @@ use Zend\Authentication\AuthenticationService,
     Zend\Form\Form,
     DateTime,
     EdpUser\Mapper\UserInterface as UserMapper,
+    EdpUser\Mapper\UserMetaInterface as UserMetaMapper,
     EdpUser\Module,
     Zend\EventManager\EventCollection,
     Zend\EventManager\EventManager,
@@ -24,6 +25,13 @@ class User
      * @var UserMapper
      */
     protected $userMapper;
+
+    /**
+     * userMetaMapper 
+     * 
+     * @var UserMetaMapper
+     */
+    protected $userMetaMapper;
 
     /**
      * @var EventCollection
@@ -126,6 +134,24 @@ class User
         return $user;
     }
 
+    public function updateMeta($key, $value)
+    {
+        $user = $this->getAuthService()->getIdentity();
+        if (!$userMeta = $this->userMetaMapper->get($user->getUserId(), $key)) {
+            $class = Module::getOption('usermeta_model_class');
+            $userMeta = new $class;
+            $userMeta->setUser($user);
+            $userMeta->setMetaKey($key);
+            $userMeta->setMeta($value);
+            $this->userMetaMapper->add($userMeta);
+        }
+        if (!$userMeta->getUser()) {
+            $userMeta->setUser($user);
+        }
+        $userMeta->setMeta($value);
+        $this->userMetaMapper->update($userMeta);
+    }
+
     protected function hashPassword($password, $salt = false)
     {
         return Password::hash($password, $salt ?: $this->getNewSalt());
@@ -163,6 +189,18 @@ class User
     public function setUserMapper(UserMapper $userMapper)
     {
         $this->userMapper = $userMapper;
+        return $this;
+    }
+
+    /**
+     * setUserMetaMapper 
+     * 
+     * @param UserMetaMapper $userMetaMapper 
+     * @return User
+     */
+    public function setUserMetaMapper(UserMetaMapper $userMetaMapper)
+    {
+        $this->userMetaMapper = $userMetaMapper;
         return $this;
     }
 

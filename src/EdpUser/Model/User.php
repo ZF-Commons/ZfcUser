@@ -47,7 +47,7 @@ class User extends ModelAbstract implements UserInterface
      */
     public function setUserId($userId)
     {
-        $this->userId = $userId;
+        $this->userId = (int) $userId;
         return $this;
     }
  

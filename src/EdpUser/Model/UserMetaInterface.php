@@ -5,21 +5,6 @@ namespace EdpUser\Model;
 interface UserMetaInterface
 {
     /**
-     * Get userMetaId.
-     *
-     * @return int
-     */
-    public function getUserMetaId();
- 
-    /**
-     * Set userMetaId.
-     *
-     * @param int $userMetaId
-     * @return UserMetaInterface
-     */
-    public function setUserMetaId($userMetaId);
-
-    /**
      * Get user.
      *
      * @return UserInterface
@@ -63,4 +48,11 @@ interface UserMetaInterface
      * @return UserMetaInterface
      */
     public function setMeta($meta);
+
+    /**
+     * Get raw meta string (serialized)
+     * 
+     * @return string
+     */
+    public function getMetaRaw();
 }

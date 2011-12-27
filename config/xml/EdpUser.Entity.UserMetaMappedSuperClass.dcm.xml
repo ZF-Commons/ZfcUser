@@ -6,11 +6,11 @@
 
     <mapped-superclass name="EdpUser\Entity\UserMetaMappedSuperClass">
 
-        <id name="userMetaId" type="integer" column="user_meta_id"><generator strategy="AUTO" /></id>
-        <many-to-one field="user" column="user_id" target-entity="EdpUser\Model\UserInterface">
+        <id name="user" association-key="true" />
+        <many-to-one field="user" column="user_id" target-entity="EdpUser\Model\UserInterface" >
             <join-column name="user_id" referenced-column-name="user_id" />
         </many-to-one>
-        <field name="metaKey" column="meta_key" type="string" />
+        <id name="metaKey" type="string" column="meta_key" />
         <field name="meta" column="meta" type="text" />
 
     </mapped-superclass>

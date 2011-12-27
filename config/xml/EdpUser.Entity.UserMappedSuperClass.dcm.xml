@@ -11,8 +11,8 @@
         <field name="email" column="email" type="string" unique="true" length="100" />
         <field name="displayName" column="display_name" type="string" length="50" nullable="true" />
         <field name="password" column="password" type="string" length="128" />
-        <field name="lastLogin" column="last_login" type="datetime" />
-        <field name="lastIp" column="last_ip" type="integer" />
+        <field name="lastLogin" column="last_login" type="datetime" nullable="true" />
+        <field name="lastIp" column="last_ip" type="integer" nullable="true" />
         <field name="registerTime" column="register_time" type="datetime" />
         <field name="registerIp" column="register_ip" type="integer" />
         <field name="active" column="active" type="boolean" />

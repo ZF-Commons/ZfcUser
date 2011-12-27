@@ -12,11 +12,6 @@ use EdpCommon\Model\ModelAbstract;
 class UserMeta extends ModelAbstract implements UserMetaInterface
 {
     /**
-     * @var int
-     */
-    protected $userMetaId;
-
-    /**
      * @var UserInterface
      */
     protected $user;
@@ -30,28 +25,6 @@ class UserMeta extends ModelAbstract implements UserMetaInterface
      * @var string
      */
     protected $meta;
-
-    /**
-     * Get userMetaId.
-     *
-     * @return int
-     */
-    public function getUserMetaId()
-    {
-        return $this->userMetaId;
-    }
- 
-    /**
-     * Set userMetaId.
-     *
-     * @param int $userMetaId
-     * @return UserMetaInterface
-     */
-    public function setUserMetaId($userMetaId)
-    {
-        $this->userMetaId = $userMetaId;
-        return $this;
-    }
 
     /**
      * Get user.
@@ -117,5 +90,15 @@ class UserMeta extends ModelAbstract implements UserMetaInterface
     {
         $this->meta = serialize($meta);
         return $this;
+    }
+
+    /**
+     * Get raw meta string (serialized)
+     *
+     * @return string
+     */
+    public function getMetaRaw()
+    {
+        return $this->meta;
     }
 }

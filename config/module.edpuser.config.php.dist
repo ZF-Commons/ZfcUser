@@ -14,7 +14,7 @@ $settings = array(
      *
      * Accepted values: 'doctrine' or 'zend_db' 
      */
-    'db_abstraction' => 'doctrine',
+    'db_abstraction' => 'zend_db',
 
     /**
      * PDO Connection DI alias
@@ -37,9 +37,17 @@ $settings = array(
      * User Model Entity Class
      *
      * Name of Entity class to use. Useful for using your own entity class 
-     * instead of the default one provided. Default is EdpUser\Model\User. 
+     * instead of the default one provided. Default is EdpUser\Entity\User. 
      */
     'user_model_class' => 'EdpUser\Model\User',
+
+    /**
+     * UserMeta Model Entity Class
+     *
+     * Name of Entity class to use. Useful for using your own entity class 
+     * instead of the default one provided. Default is EdpUser\Entity\UserMeta. 
+     */
+    'usermeta_model_class' => 'EdpUser\Model\UserMeta',
 
     /**
      * Enable Username 
@@ -59,7 +67,7 @@ $settings = array(
      *
      * Accepted values: boolean true or false
      */
-    'enable_display_name' => false,
+    'enable_display_name' => true,
 
     /**
      * Require Activation
@@ -168,9 +176,10 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'edpuser_pdo'         => $settings['zend_db_pdo'],
-                'edpuser_doctrine_em' => $settings['doctrine_em'],
-                'edpuser_user_mapper' => ($settings['db_abstraction'] === 'zend_db') ? 'EdpUser\Mapper\UserZendDb' : 'EdpUser\Mapper\UserDoctrine',
+                'edpuser_pdo'             => $settings['zend_db_pdo'],
+                'edpuser_doctrine_em'     => $settings['doctrine_em'],
+                'edpuser_user_mapper'     => ($settings['db_abstraction'] === 'zend_db') ? 'EdpUser\Mapper\UserZendDb' : 'EdpUser\Mapper\UserDoctrine',
+                'edpuser_usermeta_mapper' => ($settings['db_abstraction'] === 'zend_db') ? 'EdpUser\Mapper\UserMetaZendDb' : 'EdpUser\Mapper\UserMetaDoctrine',
             ),
         ),
     ),
