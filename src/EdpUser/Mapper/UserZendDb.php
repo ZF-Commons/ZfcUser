@@ -5,13 +5,11 @@ namespace EdpUser\Mapper;
 use EdpCommon\Mapper\DbMapperAbstract,
     EdpUser\Module,
     EdpUser\Model\UserInterface as UserModelInterface,
-    Zend\Authentication\Adapter\DbTable as DbAdapter,
     ArrayObject;
 
 class UserZendDb extends DbMapperAbstract implements UserInterface
 {
     protected $tableName = 'user';
-    protected $authAdapter;
     protected $emailValidator;
 
     public function persist(UserModelInterface $user)
@@ -64,22 +62,6 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $row = $db->fetchRow($sql);
         $UserModelClass = Model::getOption('user_model_class');
         return $userModelClass::fromArray($row);
-    }
-
-    public function getAuthAdapter($identity, $credential, $identityColumn)
-    {
-        if (null === $this->authAdapter) {
-            $this->authAdapter = new DbAdapter(
-                $this->getReadAdapter(),
-                $this->getTableName(),
-                $identityColumn,
-                'password'
-            );
-        }
-        $this->authAdapter->setIdentity($identity)
-                          ->setCredential($credential)
-                          ->setIdentityColumn($identityColumn);
-        return $this->authAdapter;
     }
 
     public function getEmailValidator()

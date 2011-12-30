@@ -6,12 +6,10 @@ use Doctrine\ORM\EntityManager,
     EdpUser\Module,
     EdpUser\Model\UserInterface as UserModelInterface,
     EdpCommon\EventManager\EventProvider,
-    SpiffyDoctrine\Authentication\Adapter\DoctrineEntity as DoctrineAuthAdapter,
     SpiffyDoctrine\Validator\NoEntityExists;
 
 class UserDoctrine extends EventProvider implements UserInterface
 {
-    protected $authAdapter;
     protected $em;
     protected $emailValidator;
 
@@ -38,22 +36,6 @@ class UserDoctrine extends EventProvider implements UserInterface
         $user = $this->getUserRepository()->findOneBy(array('username' => $username));
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'em' => $em));
         return $user;
-    }
-
-    public function getAuthAdapter($identity, $credential, $identityColumn)
-    {
-    	$class = Module::getOption('user_model_class');
-        if (null === $this->authAdapter) {
-            $authAdapter = new DoctrineAuthAdapter(
-                $this->getEntityManager(),
-                $class
-            );
-            $this->authAdapter = $authAdapter;
-        }
-        $this->authAdapter->setIdentity($identity)
-                          ->setCredential($credential)
-                          ->setIdentityColumn($identityColumn);
-        return $this->authAdapter;
     }
 
     public function getEmailValidator()

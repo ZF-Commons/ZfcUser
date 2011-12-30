@@ -12,7 +12,5 @@ interface UserInterface
 
     public function findByUsername($username);
 
-    public function getAuthAdapter($identity, $credential, $identityColumn);
-
     public function getEmailValidator();
 }

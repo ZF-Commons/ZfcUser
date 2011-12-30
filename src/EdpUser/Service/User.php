@@ -2,23 +2,17 @@
 
 namespace EdpUser\Service;
 
-use Zend\Authentication\AuthenticationService,
+use EdpUser\Authentication\AuthenticationService,
     Zend\Form\Form,
     DateTime,
+    EdpUser\Util\Password,
     EdpUser\Mapper\UserInterface as UserMapper,
     EdpUser\Mapper\UserMetaInterface as UserMetaMapper,
     EdpUser\Module,
-    Zend\EventManager\EventCollection,
-    Zend\EventManager\EventManager,
-    EdpUser\Util\Password;
+    EdpCommon\EventManager\EventProvider;
 
-class User
+class User extends EventProvider
 {
-    /**
-     * @var Zend\Authentication\AuthenticationService
-     */
-    protected $authService;
-
     /**
      * userMapper 
      * 
@@ -33,74 +27,22 @@ class User
      */
     protected $userMetaMapper;
 
-    /**
-     * @var EventCollection
-     */
-    protected $events;
-
-    /**
-     * authenticate 
-     * 
-     * @param string $identity 
-     * @param string $credential 
-     * @return bool
-     */
-    public function authenticate($identity, $credential)
+    public function updateMeta($key, $value)
     {
-        $authService = $this->getAuthService();
-        // Auth by email
-        $userEntity = $this->userMapper->findByEmail($identity);
-        if ($userEntity !== null) {
-            $credentialHash = $this->hashPassword($credential, $userEntity->getPassword());
-            $adapter        = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'email');
-            $result         = $authService->authenticate($adapter);
-            if ($result->isValid()) {
-                $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
-                $this->updateUserLastLogin($userEntity);
-                $authService->getStorage()->write($userEntity);
-                $this->updateUserPasswordHash($userEntity, $credential);
-                return true;
-            }
+        $user = $this->getAuthService()->getIdentity();
+        if (!$userMeta = $this->userMetaMapper->get($user->getUserId(), $key)) {
+            $class = Module::getOption('usermeta_model_class');
+            $userMeta = new $class;
+            $userMeta->setUser($user);
+            $userMeta->setMetaKey($key);
+            $userMeta->setMeta($value);
+            $this->userMetaMapper->add($userMeta);
         }
-        if (Module::getOption('enable_username')) {
-            $userEntity = $this->userMapper->findByUsername($identity);
-            if ($userEntity !== null) {
-                $credentialHash = $this->hashPassword($credential, $userEntity->getPassword());
-                $adapter        = $this->userMapper->getAuthAdapter($identity, $credentialHash, 'username');
-                $result         = $authService->authenticate($adapter);
-                if ($result->isValid()) {
-                    $this->events()->trigger(__FUNCTION__ . '.success', $this, array('user' => $userEntity));
-                    $this->updateUserLastLogin($userEntity);
-                    $authService->getStorage()->write($userEntity);
-                    $this->updateUserPasswordHash($userEntity, $credential);
-                    return true;
-                }
-            }
+        if (!$userMeta->getUser()) {
+            $userMeta->setUser($user);
         }
-        return false;
-    }
-
-    /**
-     * updateUserLastLogin 
-     * 
-     * @param EdpUser\Entity\User $user 
-     * @return void
-     */
-    protected function updateUserLastLogin($user)
-    {
-        $user->setLastLogin(new DateTime('now'));
-        $user->setLastIp($_SERVER['REMOTE_ADDR']);
-        $this->userMapper->persist($user);
-    }
-
-    protected function updateUserPasswordHash($userEntity, $password)
-    {
-        $newHash = $this->hashPassword($password);
-        if ($newHash === $userEntity->getPassword()) {
-            return $this;
-        }
-        $userEntity->setPassword($newHash);
-        $this->userMapper->persist($userEntity);
+        $userMeta->setMeta($value);
+        $this->userMetaMapper->update($userMeta);
     }
 
     /**
@@ -132,24 +74,6 @@ class User
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         $this->userMapper->persist($user);
         return $user;
-    }
-
-    public function updateMeta($key, $value)
-    {
-        $user = $this->getAuthService()->getIdentity();
-        if (!$userMeta = $this->userMetaMapper->get($user->getUserId(), $key)) {
-            $class = Module::getOption('usermeta_model_class');
-            $userMeta = new $class;
-            $userMeta->setUser($user);
-            $userMeta->setMetaKey($key);
-            $userMeta->setMeta($value);
-            $this->userMetaMapper->add($userMeta);
-        }
-        if (!$userMeta->getUser()) {
-            $userMeta->setUser($user);
-        }
-        $userMeta->setMeta($value);
-        $this->userMetaMapper->update($userMeta);
     }
 
     protected function hashPassword($password, $salt = false)
@@ -204,14 +128,10 @@ class User
         return $this;
     }
 
-    /**
-     * getAuthService 
-     * 
-     * @return mixed
-     */
     public function getAuthService()
     {
         if (null === $this->authService) {
+            die('asd');
             $this->authService = new AuthenticationService;
         }
         return $this->authService;
@@ -227,44 +147,5 @@ class User
     {
         $this->authService = $authService;
         return $this;
-    }
-
-    /**
-     * Set the event manager instance used by this context
-     * 
-     * @param  EventCollection $events 
-     * @return mixed
-     */
-    public function setEventManager(EventCollection $events)
-    {
-        $this->events = $events;
-        return $this;
-    }
-
-    /**
-     * Retrieve the event manager
-     *
-     * Lazy-loads an EventManager instance if none registered.
-     * 
-     * @return EventCollection
-     */
-    public function events()
-    {
-        if (!$this->events instanceof EventCollection) {
-            $identifiers = array(__CLASS__, get_class($this));
-            if (isset($this->eventIdentifier)) {
-                if ((is_string($this->eventIdentifier))
-                    || (is_array($this->eventIdentifier))
-                    || ($this->eventIdentifier instanceof Traversable)
-                ) {
-                    $identifiers = array_unique($identifiers + (array) $this->eventIdentifier);
-                } elseif (is_object($this->eventIdentifier)) {
-                    $identifiers[] = $this->eventIdentifier;
-                }
-                // silently ignore invalid eventIdentifier types
-            }
-            $this->setEventManager(new EventManager($identifiers));
-        }
-        return $this->events;
     }
 }

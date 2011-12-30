@@ -67,9 +67,24 @@ return array(
                 'edpuser_user_mapper'     => 'EdpUser\Mapper\UserZendDb',
                 'edpuser_usermeta_mapper' => 'EdpUser\Mapper\UserMetaZendDb',
                 'edpuser_user_service'    => 'EdpUser\Service\User',
+                'edpuser_auth_service'    => 'EdpUser\Authentication\AuthenticationService',
                 'edpuser_write_db'        => 'Zend\Db\Adapter\DiPdoMysql',
                 'edpuser_read_db'         => 'edpuser_write_db',
                 'edpuser_doctrine_em'     => 'doctrine_em',
+                'edpuser_db_auth_adapter' => 'EdpUser\Authentication\Adapter\Db',
+            ),
+            'edpuser' => array(
+                'parameters' => array(
+                    'loginForm'    => 'edpuser_login_form',
+                    'registerForm' => 'edpuser_register_form',
+                    'authAdapter'  => 'edpuser_db_auth_adapter',
+                    'authService'  => 'edpuser_auth_service',
+                ),
+            ),
+            'edpuser_db_auth_adapter' => array(
+                'parameters' => array(
+                    'mapper' => 'edpuser_user_mapper',
+                ),
             ),
             'edpuser_write_db' => array(
                 'parameters' => array(
@@ -112,6 +127,7 @@ return array(
             ),
             'edpuser_user_service' => array(
                 'parameters' => array(
+                    'authService'    => 'edpuser_auth_service',
                     'userMapper'     => 'edpuser_user_mapper',
                     'userMetaMapper' => 'edpuser_usermeta_mapper',
                 ),

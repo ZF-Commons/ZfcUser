@@ -3,18 +3,21 @@
 namespace EdpUser\Controller;
 
 use Zend\Mvc\Controller\ActionController,
-    Zend\Mvc\Router\RouteStack,
+    Zend\Controller\Action\Helper\FlashMessenger,
+    Zend\Form\Form,
+    Zend\Stdlib\ResponseDescription as Response,
     EdpUser\Service\User as UserService,
-    EdpUser\Module,
-    EdpUser\Util\Password,
-    Zend\Controller\Action\Helper\FlashMessenger;
+    EdpUser\Authentication\AuthenticationService,
+    EdpUser\Authentication\Adapter,
+    EdpUser\Module;
 
 class UserController extends ActionController
 {
     protected $registerForm;
-    protected $loginForm;
     protected $userService;
+    protected $loginForm;
     protected $authService;
+    protected $authAdapter;
 
     public function indexAction()
     {
@@ -29,8 +32,8 @@ class UserController extends ActionController
         if ($this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute('edpuser'); 
         }
-        $request    = $this->getRequest();
-        $form       = $this->getLoginForm();
+        $request = $this->getRequest();
+        $form    = $this->getLoginForm();
 
         /**
          * @TODO: Make this dynamic / translation-friendly 
@@ -38,22 +41,34 @@ class UserController extends ActionController
         $failedLoginMessage = 'Authentication failed. Please try again.';
         
         if ($request->isPost()) {
-            if (false === $form->isValid($request->post()->toArray())) {
+
+            // Validate form
+            if (!$form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
                 return $this->redirect()->toRoute('edpuser/login'); 
             }
-            $auth = $this->getUserService()->authenticate($request->post()->get('email'), $request->post()->get('password'));
-            if (false === $auth) {
+
+            $result = $this->getAuthService()->add($this->getDbAuthAdapter())->authenticate($request);
+
+            // Return early if an adapter returned a response
+            if ($result instanceof Response) {
+                return $result;
+            }
+
+            if (!$this->getAuthService()->hasIdentity()) {
                 $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($failedLoginMessage);
                 return $this->redirect()->toRoute('edpuser/login');
             }
+
             if (Module::getOption('use_redirect_parameter_if_present')
                 && $request->post()->get('redirect')
             ) {
                 return $this->redirect()->toUrl($request->post()->get('redirect'));
             }
+
             return $this->redirect()->toRoute('edpuser');
         }
+
         return array(
             'loginForm' => $form,
         );
@@ -75,8 +90,8 @@ class UserController extends ActionController
         if ($this->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute('edpuser');
         }
-        $request    = $this->getRequest();
-        $form       = $this->getRegisterForm();
+        $request = $this->getRequest();
+        $form    = $this->getRegisterForm();
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('edpuser-register-form')->addMessage($request->post()->toArray());
@@ -84,8 +99,14 @@ class UserController extends ActionController
             } else {
                 $this->getUserService()->createFromForm($form);
                 if (Module::getOption('login_after_registration')) {
-                    $auth = $this->getUserService()->authenticate($request->post()->get('email'), $request->post()->get('password'));
-                    if (false !== $auth) {
+                    $result = $this->getAuthService()->add($this->getDbAuthAdapter())->authenticate($request);
+
+                    // Return early if an adapter returned a response
+                    if ($result instanceof Response) {
+                        return $result;
+                    }
+
+                    if ($this->getAuthService()->hasIdentity()) {
                         return $this->redirect()->toRoute('edpuser');
                     }
                 }
@@ -97,30 +118,6 @@ class UserController extends ActionController
         );
     }
 
-    public function getRegisterForm()
-    {
-        if (null === $this->registerForm) {
-            $this->registerForm = $this->getLocator()->get('edpuser_register_form');
-            $fm = $this->flashMessenger()->setNamespace('edpuser-register-form')->getMessages();
-            if (isset($fm[0])) {
-                $this->registerForm->isValid($fm[0]);
-            }
-        }
-        return $this->registerForm;
-    }
-
-    public function getLoginForm()
-    {
-        if (null === $this->loginForm) {
-            $this->loginForm = $this->getLocator()->get('edpuser_login_form');
-            $fm = $this->flashMessenger()->setNamespace('edpuser-login-form')->getMessages();
-            if (isset($fm[0])) {
-                $this->loginForm->addErrorMessage($fm[0]);
-            }
-        }
-        return $this->loginForm;
-    }
-
     public function getUserService()
     {
         if (null === $this->userService) {
@@ -129,11 +126,57 @@ class UserController extends ActionController
         return $this->userService;
     }
 
+    public function getRegisterForm()
+    {
+        return $this->registerForm;
+    }
+
+    public function setRegisterForm(Form $registerForm)
+    {
+        $this->registerForm = $registerForm;
+        $fm = $this->flashMessenger()->setNamespace('edpuser-register-form')->getMessages();
+        if (isset($fm[0])) {
+            $this->registerForm->isValid($fm[0]);
+        }
+        return $this;
+    }
+
+    public function getLoginForm()
+    {
+        return $this->loginForm;
+    }
+
+    public function setLoginForm(Form $loginForm)
+    {
+        $this->loginForm = $loginForm;
+        $fm = $this->flashMessenger()->setNamespace('edpuser-login-form')->getMessages();
+        if (isset($fm[0])) {
+            $this->loginForm->addErrorMessage($fm[0]);
+        }
+        return $this;
+    }
+
+    public function getDbAuthAdapter()
+    {
+        return $this->authAdapter;
+    }
+
+    public function setDbAuthAdaper(Adapter $authAdapter)
+    {
+        $this->authAdapter = $authAdapter;
+    }
+
     public function getAuthService()
     {
         if (null === $this->authService) {
-            $this->authService = $this->getUserService()->getAuthService();
+            $this->authService = new AuthenticationService;
         }
         return $this->authService;
+    }
+
+    public function setAuthSerivce(AuthenticationService $authService)
+    {
+        $this->authService = $authService;
+        return $this;
     }
 }
