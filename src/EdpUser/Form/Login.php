@@ -10,12 +10,9 @@ class Login extends ProvidesEventsForm
 {
     public function init()
     {
-        $this->setMethod('post');
-
-        $this->addDecorator('FormErrors')
-             ->addDecorator('FormElements')
-             ->addDecorator('HtmlTag', array('tag' => 'dl', 'class' => 'login_form'))
-             ->addDecorator('FormDecorator');
+        $this->setMethod('post')
+             ->loadDefaultDecorators()
+             ->setDecorators(array('FormErrors') + $this->getDecorators());
 
         $this->addElement('text', 'email', array(
             'filters'    => array('StringTrim'),
