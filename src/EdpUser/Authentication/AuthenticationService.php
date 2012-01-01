@@ -5,7 +5,8 @@ namespace EdpUser\Authentication;
 use EdpCommon\EventManager\EventProvider,
     Zend\Stdlib\RequestDescription as Request,
     Zend\Stdlib\ResponseDescription as Response,
-    Zend\Authentication\Storage;
+    Zend\Authentication\Storage,
+    Zend\EventManager\ListenerAggregate;
 
 class AuthenticationService extends EventProvider
 {
@@ -20,6 +21,11 @@ class AuthenticationService extends EventProvider
      * @var Storage
      */
     protected $storage;
+
+    /**
+     * @var mixed
+     */
+    protected $resolvedIdentity;
 
     /**
      * Constructor
@@ -77,18 +83,34 @@ class AuthenticationService extends EventProvider
             return ($test instanceof Response);
         });
 
-        if ($result->stopped()) {
-            return $result->last();
-        }
-
         if ($e->getIdentity()) {
             $this->getStorage()->write($e->getIdentity());
         } else {
             $this->clearIdentity();
         }
+
+        if ($result->stopped() && $result->last() instanceof Response) {
+            return $result->last();
+        }
+
         // k, now what???
 
         // return AuthenticationResult
+    }
+
+    // TODO: Figure out when the adapter's internal storage should be cleared?
+    public function clearAdapterStorage()
+    {
+        foreach ($this->events()->getListeners('authenticate') as $adapter) {
+            $adapter = $adapter->getCallback();
+            if (is_array($adapter)) {
+                $adapter = $adapter[0];
+            }
+            if ($adapter instanceof Adapter\AbstractAdapter) {
+                $adapter->setSatisfied(false);
+            }
+        }
+        return $this;
     }
 
     /**
@@ -106,7 +128,7 @@ class AuthenticationService extends EventProvider
         if (!$adapter instanceof Adapter) {
             throw new \InvalidArgumentException(sprintf(
                 "Invalid auth adapter provided. Expected instance of EdpUser\Athentication\Adapter, received %s.",
-                get_class($adapter)
+                gettype($adapter)
             ));
         }
         $this->events()->attach('authenticate', array($adapter, 'authenticate'), $priority);
@@ -130,25 +152,49 @@ class AuthenticationService extends EventProvider
      */
     public function getIdentity()
     {
-        $storage = $this->getStorage();
+        if (null !== $this->resolvedIdentity) {
+            return $this->resolvedIdentity;
+        }
 
+        $storage = $this->getStorage();
         if ($storage->isEmpty()) {
             return null;
         }
 
-        return $storage->read();
+        $e = $this->getAuthEvent();
+        $e->setIdentity($storage->read());
+
+        $this->events()->trigger(__FUNCTION__ . '.resolve', $e);
+
+        $this->resolvedIdentity = $e->getIdentity();
+
+        return $this->resolvedIdentity;
     }
 
     /**
      * Clears the identity from persistent storage
      *
-     * @return void
+     * @return AuthenticationService
      */
     public function clearIdentity()
     {
+        $this->resolvedIdentity = null;
         $this->getStorage()->clear();
+        return $this;
     }
 
+    /**
+     * Attach the default listener to use for resolving the identity.
+     * This mainly exists to allow attaching the listener via DI.
+     * 
+     * @param ListenerAggregate $identityResolver 
+     * @return AuthenticationService
+     */
+    public function setDefaultIdentityResolver(ListenerAggregate $identityResolver)
+    {
+        $this->events()->attachAggregate($identityResolver);
+        return $this;
+    }
     
     /**
      * Get the auth event 

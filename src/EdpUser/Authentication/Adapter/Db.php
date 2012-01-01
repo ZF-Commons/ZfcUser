@@ -14,7 +14,11 @@ class Db extends AbstractAdapter
 
     public function authenticate(AuthEvent $e)
     {
-        if ($this->isSatisfied()) return;
+        if ($this->isSatisfied()) {
+            $storage = $this->getStorage()->read();
+            $e->setIdentity($storage['identity']);
+            return;
+        }
 
         $identity   = $e->getRequest()->post()->get('email'); // change field name to 'identity'
         $credential = $e->getRequest()->post()->get('password'); // change field name to 'credential'
@@ -34,12 +38,17 @@ class Db extends AbstractAdapter
         $credentialHash = $this->hashPassword($credential, $userObject->getPassword());
 
         if ($credentialHash === $userObject->getPassword()) {
-            $e->setIdentity($userObject);
+            $e->setIdentity($userObject->getUserId());
             $this->updateUserPasswordHash($userObject, $credential)
                  ->updateUserLastLogin($userObject)
                  ->setSatisfied(true);
+            $storage = $this->getStorage()->read();
+            $storage['identity'] = $e->getIdentity();
+            $this->getStorage()->write($storage);
+        } else {
+            $this->setSatisfied(false);
+            return false;
         }
-        $this->setSatisfied(false);
 
         // do stuff
     }

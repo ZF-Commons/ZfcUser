@@ -81,6 +81,16 @@ return array(
                     'authService'  => 'edpuser_auth_service',
                 ),
             ),
+            'edpuser_auth_service' => array(
+                'parameters' => array(
+                    'identityResolver' => 'EdpUser\Event\DbIdentityResolver',
+                ),
+            ),
+            'EdpUser\Event\DbIdentityResolver' => array(
+                'parameters' => array(
+                    'mapper' => 'edpuser_user_mapper',
+                ),
+            ),
             'edpuser_db_auth_adapter' => array(
                 'parameters' => array(
                     'mapper' => 'edpuser_user_mapper',

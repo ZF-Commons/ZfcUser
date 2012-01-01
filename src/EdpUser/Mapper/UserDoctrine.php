@@ -37,6 +37,14 @@ class UserDoctrine extends EventProvider implements UserInterface
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'em' => $em));
         return $user;
     }
+    
+    public function findById($id)
+    {
+        $em = $this->getEntityManager();
+        $user = $this->getUserRepository()->find($id);
+        $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'em' => $em));
+        return $user;
+    }
 
     public function getEmailValidator()
     {

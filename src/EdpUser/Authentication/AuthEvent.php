@@ -3,7 +3,6 @@
 namespace EdpUser\Authentication;
 
 use Zend\EventManager\Event,
-    EdpUser\Model\UserInterface,
     Zend\Stdlib\RequestDescription as Request;
 
 class AuthEvent extends Event
@@ -11,7 +10,7 @@ class AuthEvent extends Event
     /**
      * getIdentity 
      * 
-     * @return UserInterface
+     * @return mixed
      */
     public function getIdentity()
     {
@@ -21,10 +20,10 @@ class AuthEvent extends Event
     /**
      * setIdentity 
      * 
-     * @param UserInterface $identity 
+     * @param mixed $identity 
      * @return AuthEvent
      */
-    public function setIdentity(UserInterface $identity)
+    public function setIdentity($identity = null)
     {
         $this->setParam('identity', $identity);
         return $this;

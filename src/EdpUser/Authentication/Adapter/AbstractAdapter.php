@@ -22,7 +22,7 @@ abstract class AbstractAdapter implements Adapter
     public function getStorage()
     {
         if (null === $this->storage) {
-            $this->setStorage(new Storage\Session(Storage\Session::NAMESPACE_DEFAULT), __CLASS__);
+            $this->setStorage(new Storage\Session(get_class($this)));
         }
 
         return $this->storage;

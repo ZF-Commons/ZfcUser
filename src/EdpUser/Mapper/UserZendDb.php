@@ -64,6 +64,18 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         return $userModelClass::fromArray($row);
     }
 
+    public function findById($id)
+    {
+        $db = $this->getReadAdapter();
+        $sql = $db->select()
+            ->from($this->getTableName())
+            ->where('user_id = ?', $id);
+        $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
+        $row = $db->fetchRow($sql);
+        $UserModelClass = Model::getOption('user_model_class');
+        return $userModelClass::fromArray($row);
+    }
+
     public function getEmailValidator()
     {
         if (null === $this->emailValidator) {

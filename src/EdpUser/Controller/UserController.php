@@ -48,7 +48,10 @@ class UserController extends ActionController
                 return $this->redirect()->toRoute('edpuser/login'); 
             }
 
-            $result = $this->getAuthService()->add($this->getDbAuthAdapter())->authenticate($request);
+            $result = $this->getAuthService()
+                           ->add($this->getDbAuthAdapter())
+                           ->clearAdapterStorage()
+                           ->authenticate($request);
 
             // Return early if an adapter returned a response
             if ($result instanceof Response) {
