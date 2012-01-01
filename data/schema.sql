@@ -11,7 +11,7 @@ CREATE TABLE user
     register_ip   INTEGER NOT NULL,
     active        TINYINT(1) NOT NULL,
     enabled       TINYINT(1) NOT NULL
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE user_meta 
 (
@@ -20,4 +20,4 @@ CREATE TABLE user_meta
     meta     LONGTEXT NOT NULL,
     PRIMARY KEY(meta_key, user_id),
     FOREIGN KEY (user_id) REFERENCES user (user_id)
-);
+) ENGINE=InnoDB;
