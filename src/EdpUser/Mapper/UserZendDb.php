@@ -14,18 +14,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
 
     public function persist(UserModelInterface $user)
     {
-        $data = new ArrayObject(array(
-            'user_id'        => $user->getUserId(),
-            'email'          => $user->getEmail(),
-            'display_name'   => $user->getDisplayName(),
-            'password'       => $user->getPassword(),
-            'last_login'     => $user->getLastLogin() ? $user->getLastLogin()->format('Y-m-d H:i:s') : null,
-            'last_ip'        => $user->getLastIp(true),
-            'register_time'  => $user->getRegisterTime()->format('Y-m-d H:i:s'),
-            'register_ip'    => $user->getRegisterIp(true),
-            'active'         => $user->getActive(),
-            'enabled'        => $user->getEnabled(),
-        ));
+        $data = new ArrayObject($user->toArray());
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'user' => $user));
         $db = $this->getWriteAdapter();
         if ($user->getUserId() > 0) {

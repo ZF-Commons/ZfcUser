@@ -172,4 +172,20 @@ interface UserInterface
      * @param bool $enabled the value to be set
      */
     public function setEnabled($enabled);
+
+    /**
+     * Convert the model to an array 
+     * 
+     * @return array
+     */
+    public function toArray();
+
+    /**
+     * Convert an array into a model instance 
+     * 
+     * @param array $array 
+     * @static
+     * @return UserInterface
+     */
+    public static function fromArray($array);
 }
