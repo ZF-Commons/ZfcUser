@@ -3,7 +3,6 @@
 namespace EdpUser\Event;
 
 use EdpUser\Authentication\AuthEvent,
-    EdpUser\Module,
     EdpUser\Mapper\UserInterface as UserMapper,
     EdpUser\Model\UserInterface as UserModel,
     Zend\EventManager\EventCollection,

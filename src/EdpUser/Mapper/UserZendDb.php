@@ -49,7 +49,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
             ->where('username = ?', $username);
         $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
-        $UserModelClass = Model::getOption('user_model_class');
+        $userModelClass = Module::getOption('user_model_class');
         return $userModelClass::fromArray($row);
     }
 
@@ -61,7 +61,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
             ->where('user_id = ?', $id);
         $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
-        $UserModelClass = Model::getOption('user_model_class');
+        $userModelClass = Module::getOption('user_model_class');
         return $userModelClass::fromArray($row);
     }
 
