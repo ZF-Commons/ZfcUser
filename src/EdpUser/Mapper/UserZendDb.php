@@ -10,6 +10,9 @@ use EdpCommon\Mapper\DbMapperAbstract,
 class UserZendDb extends DbMapperAbstract implements UserInterface
 {
     protected $tableName = 'user';
+    protected $userIDField= 'user_id';
+    protected $userEmailField= 'email';
+    protected $userUsernameField= 'username';
     protected $emailValidator;
 
     public function persist(UserModelInterface $user)
@@ -18,7 +21,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'user' => $user));
         $db = $this->getWriteAdapter();
         if ($user->getUserId() > 0) {
-            $db->update($this->getTableName(), (array) $data, $db->quoteInto('user_id = ?', $user->getUserId()));
+            $db->update($this->getTableName(), (array) $data, $db->quoteInto($this->userIDField.' = ?', $user->getUserId()));
         } else {
             $db->insert($this->getTableName(), (array) $data);
             $userId = $db->lastInsertId();
@@ -32,7 +35,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $db = $this->getReadAdapter();
         $sql = $db->select()
             ->from($this->getTableName())
-            ->where('email = ?', $email);
+            ->where($this->userEmailField. ' = ?', $email);
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
         $userModelClass = Module::getOption('user_model_class');
@@ -46,7 +49,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $db = $this->getReadAdapter();
         $sql = $db->select()
             ->from($this->getTableName())
-            ->where('username = ?', $username);
+            ->where($this->userUsernameField.' = ?', $username);
         $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
         $userModelClass = Module::getOption('user_model_class');
@@ -58,7 +61,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $db = $this->getReadAdapter();
         $sql = $db->select()
             ->from($this->getTableName())
-            ->where('user_id = ?', $id);
+            ->where($this->userIDField.' = ?', $id);
         $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
         $userModelClass = Module::getOption('user_model_class');
@@ -71,7 +74,7 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
             $this->emailValidator = array('Db\NoRecordExists', true, array(
                 'adapter'   => $this->getReadAdapter(),
                 'table'     => $this->getTableName(),
-                'field'     => 'email'
+                'field'     => $this->userEmailField
             ));
         }
         return $this->emailValidator;
