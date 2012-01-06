@@ -2,104 +2,100 @@
 
 namespace EdpUser\Authentication\Adapter;
 
-use EdpUser\Authentication\AuthEvent,
-    EdpUser\Module,
+use EdpUser\Authentication\Adapter\AdapterChainEvent as AuthEvent,
+    Zend\Authentication\Result as AuthenticationResult,
+    EdpUser\Module as EdpUser,
     EdpUser\Mapper\UserInterface as UserMapper,
     EdpUser\Util\Password,
     DateTime;
 
 class Db extends AbstractAdapter
 {
+    /**
+     * @var UserMapper
+     */
     protected $mapper;
 
     public function authenticate(AuthEvent $e)
     {
         if ($this->isSatisfied()) {
+            die('fake');
             $storage = $this->getStorage()->read();
-            $e->setIdentity($storage['identity']);
+            $e->setIdentity($storage['identity'])
+              ->setCode(AuthenticationResult::SUCCESS)
+              ->setMessages(array('Authentication successful.'));
             return;
         }
 
-        $identity   = $e->getRequest()->post()->get('email'); // change field name to 'identity'
-        $credential = $e->getRequest()->post()->get('password'); // change field name to 'credential'
+        $identity   = $e->getRequest()->post()->get('identity');
+        $credential = $e->getRequest()->post()->get('credential');
 
         $userObject = $this->getMapper()->findByEmail($identity);
 
-        if (!$userObject && Module::getOption('enable_username')) {
+        if (!$userObject && EdpUser::getOption('enable_username')) {
             // Auth by username
             $userObject = $this->getMapper()->findByUsername($identity);
         }
         if (!$userObject) {
-            $this->setSatisfied(false);
-            // return redirect response?
-            return false; // no identity match
-        }
-
-        $credentialHash = $this->hashPassword($credential, $userObject->getPassword());
-
-        if ($credentialHash === $userObject->getPassword()) {
-            $e->setIdentity($userObject->getUserId());
-            $this->updateUserPasswordHash($userObject, $credential)
-                 ->updateUserLastLogin($userObject)
-                 ->setSatisfied(true);
-            $storage = $this->getStorage()->read();
-            $storage['identity'] = $e->getIdentity();
-            $this->getStorage()->write($storage);
-        } else {
+            $e->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND)
+              ->setMessages(array('A record with the supplied identity could not be found.'));
             $this->setSatisfied(false);
             return false;
         }
 
-        // do stuff
+        $credentialHash = Password::hash($credential, $userObject->getPassword());
+
+        if ($credentialHash !== $userObject->getPassword()) {
+            // Password does not match
+            $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
+              ->setMessages(array('Supplied credential is invalid.'));
+            $this->setSatisfied(false);
+            return false;
+        }
+
+        // Success!
+        $e->setIdentity($userObject->getUserId());
+        $this->updateUserPasswordHash($userObject, $credential)
+             ->updateUserLastLogin($userObject)
+             ->setSatisfied(true);
+        $storage = $this->getStorage()->read();
+        $storage['identity'] = $e->getIdentity();
+        $this->getStorage()->write($storage);
+        $e->setCode(AuthenticationResult::SUCCESS)
+          ->setMessages(array('Authentication successful.'));
     }
 
+    /**
+     * getMapper 
+     * 
+     * @return UserMapper
+     */
     public function getMapper()
     {
         return $this->mapper;
     }
 
+    /**
+     * setMapper 
+     * 
+     * @param UserMapper $mapper 
+     * @return Db
+     */
     public function setMapper(UserMapper $mapper)
     {
         $this->mapper = $mapper;
-    }
-
-    protected function hashPassword($password, $salt = false)
-    {
-        return Password::hash($password, $salt ?: $this->getNewSalt());
+        return $this;
     }
 
     protected function updateUserPasswordHash($userObject, $password)
     {
-        $newHash = $this->hashPassword($password);
+        $newHash = Password::hash($password);
         if ($newHash === $userObject->getPassword()) return $this;
 
         $userObject->setPassword($newHash);
 
         $this->getMapper()->persist($userObject);
         return $this;
-    }
-
-    protected function getNewSalt()
-    {
-        $algorithm = strtolower(Module::getOption('password_hash_algorithm'));
-        switch ($algorithm) {
-            case 'blowfish':
-                $cost = Module::getOption('blowfish_cost');
-                break;
-            case 'sha512':
-                $cost = Module::getOption('sha512_rounds');
-                break;
-            case 'sha256':
-                $cost = Module::getOption('sha256_rounds');
-                break;
-            default:
-                throw new \Exception(sprintf(
-                    'Unsupported hashing algorithm: %s',
-                    $algorithm
-                ));
-                break;
-        }
-        return Password::getSalt($algorithm, (int) $cost);
     }
 
     protected function updateUserLastLogin($userObject)

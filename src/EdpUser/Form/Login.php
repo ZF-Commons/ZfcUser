@@ -4,7 +4,7 @@ namespace EdpUser\Form;
 
 use Zend\Form\Form,
     EdpCommon\Form\ProvidesEventsForm,
-    EdpUser\Module;
+    EdpUser\Module as EdpUser;
 
 class Login extends ProvidesEventsForm
 {
@@ -14,7 +14,7 @@ class Login extends ProvidesEventsForm
              ->loadDefaultDecorators()
              ->setDecorators(array('FormErrors') + $this->getDecorators());
 
-        $this->addElement('text', 'email', array(
+        $this->addElement('text', 'identity', array(
             'filters'    => array('StringTrim'),
             'validators' => array(
                 'EmailAddress',
@@ -24,13 +24,13 @@ class Login extends ProvidesEventsForm
         ));
         
 
-        if (Module::getOption('enable_username')) {
-            $emailElement = $this->getElement('email');
+        if (EdpUser::getOption('enable_username')) {
+            $emailElement = $this->getElement('identity');
             $emailElement->removeValidator('EmailAddress')
                          ->setLabel('Email or Username'); // @TODO: make translation-friendly
         }
         
-        $this->addElement('password', 'password', array(
+        $this->addElement('password', 'credential', array(
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('StringLength', true, array(6, 999))

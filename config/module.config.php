@@ -35,6 +35,16 @@ return array(
                         ),
                     ),
                 ),
+                'authenticate' => array(
+                    'type' => 'Literal',
+                    'options' => array(
+                        'route' => '/authenticate',
+                        'defaults' => array(
+                            'controller' => 'edpuser',
+                            'action'     => 'authenticate',
+                        ),
+                    ),
+                ),
                 'logout' => array(
                     'type' => 'Literal',
                     'options' => array(
@@ -61,41 +71,80 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'edpuser'                 => 'EdpUser\Controller\UserController',
-                'edpuser_register_form'   => 'EdpUser\Form\Register',
-                'edpuser_login_form'      => 'EdpUser\Form\Login',
-                'edpuser_user_mapper'     => 'EdpUser\Mapper\UserZendDb',
-                'edpuser_usermeta_mapper' => 'EdpUser\Mapper\UserMetaZendDb',
-                'edpuser_user_service'    => 'EdpUser\Service\User',
-                'edpuser_auth_service'    => 'EdpUser\Authentication\AuthenticationService',
-                'edpuser_write_db'        => 'Zend\Db\Adapter\DiPdoMysql',
-                'edpuser_read_db'         => 'edpuser_write_db',
-                'edpuser_doctrine_em'     => 'doctrine_em',
-                'edpuser_db_auth_adapter' => 'EdpUser\Authentication\Adapter\Db',
+                'edpuser'                          => 'EdpUser\Controller\UserController',
+                'edpuser_user_mapper'              => 'EdpUser\Mapper\UserZendDb',
+                'edpuser_usermeta_mapper'          => 'EdpUser\Mapper\UserMetaZendDb',
+                'edpuser_user_service'             => 'EdpUser\Service\User',
+                'edpuser_write_db'                 => 'Zend\Db\Adapter\DiPdoMysql',
+                'edpuser_read_db'                  => 'edpuser_write_db',
+                'edpuser_doctrine_em'              => 'doctrine_em',
+                'edpuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
+                'edpuser_controller_plugin_broker' => 'Zend\Mvc\Controller\PluginBroker',
+                'edpuser_controller_plugin_loader' => 'Zend\Mvc\Controller\PluginLoader',
             ),
             'edpuser' => array(
                 'parameters' => array(
-                    'loginForm'    => 'edpuser_login_form',
-                    'registerForm' => 'edpuser_register_form',
-                    'authAdapter'  => 'edpuser_db_auth_adapter',
-                    'authService'  => 'edpuser_auth_service',
+                    'loginForm'    => 'EdpUser\Form\Login',
+                    'registerForm' => 'EdpUser\Form\Register',
+                    'userService'  => 'EdpUser\Service\User',
+                    'broker'       => 'edpuser_controller_plugin_broker',
+                ),
+            ),
+            'edpuser_controller_plugin_broker' => array(
+                'parameters' => array(
+                    'loader' => 'edpuser_controller_plugin_loader',
+                ),
+            ),
+            'edpuser_controller_plugin_loader' => array(
+                'parameters' => array(
+                    'map' => array(
+                        'edpUserAuthentication' => 'EdpUser\Controller\Plugin\EdpUserAuthentication',
+                    ),
+                ),
+            ),
+            'EdpUser\Controller\Plugin\EdpUserAuthentication' => array(
+                'parameters' => array(
+                    'authAdapter' => 'EdpUser\Authentication\Adapter\AdapterChain',
+                    'authService' => 'edpuser_auth_service',
+                ),
+            ),
+            'EdpUser\Authentication\Adapter\AdapterChain' => array(
+                'parameters' => array(
+                    'defaultAdapter' => 'EdpUser\Authentication\Adapter\Db',
+                ),
+            ),
+            'EdpUser\Authentication\Adapter\Db' => array(
+                'parameters' => array(
+                    'mapper' => 'edpuser_user_mapper',
                 ),
             ),
             'edpuser_auth_service' => array(
                 'parameters' => array(
-                    'identityResolver' => 'EdpUser\Event\DbIdentityResolver',
+                    'storage' => 'EdpUser\Authentication\Storage\Db',
                 ),
             ),
-            'EdpUser\Event\DbIdentityResolver' => array(
+            'EdpUser\Authentication\Storage\Db' => array(
                 'parameters' => array(
                     'mapper' => 'edpuser_user_mapper',
                 ),
             ),
-            'edpuser_db_auth_adapter' => array(
+            'EdpUser\Service\User' => array(
                 'parameters' => array(
-                    'mapper' => 'edpuser_user_mapper',
+                    'authService'    => 'edpuser_auth_service',
+                    'userMapper'     => 'edpuser_user_mapper',
+                    'userMetaMapper' => 'edpuser_usermeta_mapper',
                 ),
             ),
+            'EdpUser\Form\Register' => array(
+                'parameters' => array(
+                    'userMapper' => 'edpuser_user_mapper',
+                ),
+            ),
+
+            /**
+             * Mapper / DB
+             */
+
             'edpuser_write_db' => array(
                 'parameters' => array(
                     'pdo'    => 'edpuser_pdo',
@@ -135,18 +184,6 @@ return array(
                     ),
                 )
             ),
-            'edpuser_user_service' => array(
-                'parameters' => array(
-                    'authService'    => 'edpuser_auth_service',
-                    'userMapper'     => 'edpuser_user_mapper',
-                    'userMetaMapper' => 'edpuser_usermeta_mapper',
-                ),
-            ),
-            'edpuser_register_form' => array(
-                'parameters' => array(
-                    'userMapper' => 'edpuser_user_mapper',
-                ),
-            ),
             'EdpUser\Mapper\UserDoctrine' => array(
                 'parameters' => array(
                     'em' => 'edpuser_doctrine_em',
@@ -169,6 +206,11 @@ return array(
                     'writeAdapter' => 'edpuser_write_db',
                 ),
             ),
+            
+            /**
+             * View helper(s)
+             */
+
             'Zend\View\PhpRenderer' => array(
                 'parameters' => array(
                     'options'  => array(
@@ -182,8 +224,7 @@ return array(
             'Zend\View\HelperLoader' => array(
                 'parameters' => array(
                     'map' => array(
-                        'edpUser'        => 'EdpUser\View\Helper\EdpUser',
-                        'edpUserService' => 'EdpUser\View\Helper\EdpUserService',
+                        'edpUserIdentity' => 'EdpUser\View\Helper\EdpUserIdentity',
                     ),
                 ),
             ),
@@ -192,14 +233,9 @@ return array(
                     'loader' => 'Zend\View\HelperLoader',
                 ),
             ),
-            'EdpUser\View\Helper\EdpUser' => array(
+            'EdpUser\View\Helper\EdpUserIdentity' => array(
                 'parameters' => array(
-                    'userService' => 'edpuser_user_service',
-                ),
-            ),
-            'EdpUser\View\Helper\EdpUserService' => array(
-                'parameters' => array(
-                    'userService' => 'edpuser_user_service',
+                    'authService' => 'edpuser_auth_service',
                 ),
             ),
         ),

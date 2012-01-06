@@ -2,10 +2,9 @@
 
 namespace EdpUser\Authentication\Adapter;
 
-use Zend\Authentication\Storage,
-    EdpUser\Authentication\Adapter;
+use Zend\Authentication\Storage;
 
-abstract class AbstractAdapter implements Adapter
+abstract class AbstractAdapter implements ChainableAdapter
 {
     /**
      * @var Storage

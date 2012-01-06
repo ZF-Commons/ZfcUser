@@ -2,13 +2,16 @@
 
 namespace EdpUser\Util;
 
-use EdpCommon\Util\String;
+use EdpCommon\Util\String,
+    EdpUser\Module as EdpUser;
 
 abstract class Password
 {
-
-    public static function hash($password, $salt)
+    public static function hash($password, $salt = false)
     {
+        if (!$salt) {
+            $salt = static::getPreferredSalt();
+        }
         return crypt($password, $salt);
     }
 
@@ -33,6 +36,29 @@ abstract class Password
                 ));
                 break;
         }
+    }
+
+    public static function getPreferredSalt()
+    {
+        $algorithm = strtolower(EdpUser::getOption('password_hash_algorithm'));
+        switch ($algorithm) {
+            case 'blowfish':
+                $cost = EdpUser::getOption('blowfish_cost');
+                break;
+            case 'sha512':
+                $cost = EdpUser::getOption('sha512_rounds');
+                break;
+            case 'sha256':
+                $cost = EdpUser::getOption('sha256_rounds');
+                break;
+            default:
+                throw new \Exception(sprintf(
+                    'Unsupported hashing algorithm: %s',
+                    $algorithm
+                ));
+                break;
+        }
+        return static::getSalt($algorithm, (int) $cost);
     }
 
     protected static function generateBlowfishSalt($cost = 10)
