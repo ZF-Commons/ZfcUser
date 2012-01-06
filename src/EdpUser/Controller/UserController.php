@@ -82,6 +82,7 @@ class UserController extends ActionController
      */
     public function authenticateAction()
     {
+        $request = $this->getRequest();
         $adapter = $this->edpUserAuthentication()->getAuthAdapter();
 
         $result = $adapter->prepareForAuthentication($this->getRequest());
