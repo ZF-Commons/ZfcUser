@@ -19,7 +19,6 @@ class Db extends AbstractAdapter
     public function authenticate(AuthEvent $e)
     {
         if ($this->isSatisfied()) {
-            die('fake');
             $storage = $this->getStorage()->read();
             $e->setIdentity($storage['identity'])
               ->setCode(AuthenticationResult::SUCCESS)
