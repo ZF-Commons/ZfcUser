@@ -85,7 +85,7 @@ class UserController extends ActionController
         $request = $this->getRequest();
         $adapter = $this->edpUserAuthentication()->getAuthAdapter();
 
-        $result = $adapter->prepareForAuthentication($this->getRequest());
+        $result = $adapter->prepareForAuthentication($request);
 
         // Return early if an adapter returned a response
         if ($result instanceof Response) {
