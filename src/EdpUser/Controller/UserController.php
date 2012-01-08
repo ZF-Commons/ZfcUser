@@ -59,6 +59,7 @@ class UserController extends ActionController
             $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($this->failedLoginMessage);
             return $this->redirect()->toRoute('edpuser/login'); 
         }
+        // clear adapters
 
         return $this->forward()->dispatch('edpuser', array('action' => 'authenticate'));
     }
@@ -68,6 +69,7 @@ class UserController extends ActionController
      */
     public function logoutAction()
     {
+        //$this->edpUserAuthentication()->getAuthAdapter()->resetAdapters();
         if (!$this->edpUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute('edpuser/login');
         }
@@ -96,6 +98,7 @@ class UserController extends ActionController
 
         if (!$auth->isValid()) {
             $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($this->failedLoginMessage);
+            $adapter->resetAdapters();
             return $this->redirect()->toRoute('edpuser/login');
         }
 

@@ -25,17 +25,25 @@ class AdapterChain extends EventProvider implements Adapter
     {
         $e = $this->getEvent();
 
-        return new AuthenticationResult(
+        $result = new AuthenticationResult(
             $e->getCode(),
             $e->getIdentity(),
             $e->getMessages()
         );
+
+        if (!$result->isValid()) {
+            $this->resetAdapters();
+        }
+
+        return $result;
     }
 
     public function prepareForAuthentication(Request $request)
     {
-        $e = $this->getEvent();
-        $e->setRequest($request);
+        $e = $this->getEvent()
+                  ->setRequest($request);
+
+        $this->events()->trigger('authenticate.pre', $e);
 
         $result = $this->events()->trigger('authenticate', $e, function($test) {
             return ($test instanceof Response);
@@ -64,9 +72,38 @@ class AdapterChain extends EventProvider implements Adapter
      */
     public function setDefaultAdapter(ChainableAdapter $defaultAdapter)
     {
-        $defaultAdapter->getStorage()->clear();
-        $this->events()->attach('authenticate', array($defaultAdapter, 'authenticate'));
+        $this->attach($defaultAdapter);
         return $this;
+    }
+
+    /**
+     * attach 
+     * 
+     * @param ChainableAdapter $adapter 
+     * @return AdapterChain
+     */
+    public function attach(ChainableAdapter $adapter)
+    {
+        //$adapter->getStorage()->clear();
+        $this->events()->attach('authenticate', array($adapter, 'authenticate'));
+        return $this;
+    }
+
+    /**
+     * resetAdapters 
+     * 
+     * @return AdapterChain
+     */
+    public function resetAdapters()
+    {
+        $listeners = $this->events()->getListeners('authenticate');
+        foreach ($listeners as $listener) {
+            $listener = $listener->getCallback();
+            if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
+                $listener[0]->getStorage()->clear();
+            }
+        }
+        $this;
     }
 
     /**
@@ -78,6 +115,7 @@ class AdapterChain extends EventProvider implements Adapter
     {
         if (null === $this->event) {
             $this->setEvent(new AdapterChainEvent);
+            $this->event->setTarget($this);
         }
         return $this->event;
     }
