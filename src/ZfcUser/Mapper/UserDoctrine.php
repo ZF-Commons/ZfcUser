@@ -1,10 +1,10 @@
 <?php
 
-namespace EdpUser\Mapper;
+namespace ZfcUser\Mapper;
 
 use Doctrine\ORM\EntityManager,
-    EdpUser\Module,
-    EdpUser\Model\UserInterface as UserModelInterface,
+    ZfcUser\Module,
+    ZfcUser\Model\UserInterface as UserModelInterface,
     EdpCommon\EventManager\EventProvider,
     SpiffyDoctrine\Validator\NoEntityExists;
 

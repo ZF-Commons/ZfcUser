@@ -1,9 +1,9 @@
 <?php
 
-namespace EdpUser\Util;
+namespace ZfcUser\Util;
 
 use EdpCommon\Util\String,
-    EdpUser\Module as EdpUser;
+    ZfcUser\Module as ZfcUser;
 
 abstract class Password
 {
@@ -40,16 +40,16 @@ abstract class Password
 
     public static function getPreferredSalt()
     {
-        $algorithm = strtolower(EdpUser::getOption('password_hash_algorithm'));
+        $algorithm = strtolower(ZfcUser::getOption('password_hash_algorithm'));
         switch ($algorithm) {
             case 'blowfish':
-                $cost = EdpUser::getOption('blowfish_cost');
+                $cost = ZfcUser::getOption('blowfish_cost');
                 break;
             case 'sha512':
-                $cost = EdpUser::getOption('sha512_rounds');
+                $cost = ZfcUser::getOption('sha512_rounds');
                 break;
             case 'sha256':
-                $cost = EdpUser::getOption('sha256_rounds');
+                $cost = ZfcUser::getOption('sha256_rounds');
                 break;
             default:
                 throw new \Exception(sprintf(

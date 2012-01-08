@@ -1,8 +1,8 @@
 <?php
 
-namespace EdpUser\Entity;
+namespace ZfcUser\Entity;
 
-use EdpUser\Model\UserMeta as UserMetaModel;
+use ZfcUser\Model\UserMeta as UserMetaModel;
 
 class UserMetaMappedSuperClass extends UserMetaModel
 {}

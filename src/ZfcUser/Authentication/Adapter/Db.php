@@ -1,12 +1,12 @@
 <?php
 
-namespace EdpUser\Authentication\Adapter;
+namespace ZfcUser\Authentication\Adapter;
 
-use EdpUser\Authentication\Adapter\AdapterChainEvent as AuthEvent,
+use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent,
     Zend\Authentication\Result as AuthenticationResult,
-    EdpUser\Module as EdpUser,
-    EdpUser\Mapper\UserInterface as UserMapper,
-    EdpUser\Util\Password,
+    ZfcUser\Module as ZfcUser,
+    ZfcUser\Mapper\UserInterface as UserMapper,
+    ZfcUser\Util\Password,
     DateTime;
 
 class Db extends AbstractAdapter
@@ -31,7 +31,7 @@ class Db extends AbstractAdapter
 
         $userObject = $this->getMapper()->findByEmail($identity);
 
-        if (!$userObject && EdpUser::getOption('enable_username')) {
+        if (!$userObject && ZfcUser::getOption('enable_username')) {
             // Auth by username
             $userObject = $this->getMapper()->findByUsername($identity);
         }

@@ -1,12 +1,12 @@
 <?php
 
-namespace EdpUser\Controller\Plugin;
+namespace ZfcUser\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin,
     Zend\Authentication\AuthenticationService,
-    EdpUser\Authentication\Adapter\AdapterChain as AuthAdapter;
+    ZfcUser\Authentication\Adapter\AdapterChain as AuthAdapter;
 
-class EdpUserAuthentication extends AbstractPlugin
+class ZfcUserAuthentication extends AbstractPlugin
 {
     /**
      * @var AuthAdapter
@@ -41,7 +41,7 @@ class EdpUserAuthentication extends AbstractPlugin
     /**
      * Get authAdapter.
      *
-     * @return EdpUserAuthentication
+     * @return ZfcUserAuthentication
      */
     public function getAuthAdapter()
     {

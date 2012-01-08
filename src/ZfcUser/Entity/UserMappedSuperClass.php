@@ -1,8 +1,8 @@
 <?php
 
-namespace EdpUser\Entity;
+namespace ZfcUser\Entity;
 
-use EdpUser\Model\User as UserModel;
+use ZfcUser\Model\User as UserModel;
 
 class UserMappedSuperClass extends UserModel
 {}

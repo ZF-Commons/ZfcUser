@@ -1,8 +1,8 @@
 <?php
 
-namespace EdpUser\Mapper;
+namespace ZfcUser\Mapper;
 
-use EdpUser\Model\UserMetaInterface as UserMetaModelInterface;
+use ZfcUser\Model\UserMetaInterface as UserMetaModelInterface;
 
 interface UserMetaInterface
 {

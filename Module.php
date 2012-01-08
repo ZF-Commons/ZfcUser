@@ -1,10 +1,10 @@
 <?php
 
-namespace EdpUser;
+namespace ZfcUser;
 
 use Zend\Module\Manager,
     Zend\EventManager\StaticEventManager,
-    EdpUser\Event\ResolveTargetEntityListener,
+    ZfcUser\Event\ResolveTargetEntityListener,
     Doctrine\ORM\Events,
     Zend\Module\Consumer\AutoloaderProvider;
 
@@ -41,23 +41,23 @@ class Module implements AutoloaderProvider
     public function modulesLoaded($e)
     {
         $config = $e->getConfigListener()->getMergedConfig();
-        static::$options = $config['edpuser'];
+        static::$options = $config['zfcuser'];
     }
 
     public function attachDoctrineEvents($e)
     {
-        if (('EdpUser\Model\User' === static::getOption('user_model_class'))
+        if (('ZfcUser\Model\User' === static::getOption('user_model_class'))
             || ('doctrine' !== static::getOption('db_abstraction'))
         ) {
             return;
         }
         $app      = $e->getParam('application');
         $locator  = $app->getLocator();
-        $em       = $locator->get('edpuser_doctrine_em');
+        $em       = $locator->get('zfcuser_doctrine_em');
         $evm      = $em->getEventManager();
         $listener = new ResolveTargetEntityListener;
         $listener->addResolveTargetEntity(
-            'EdpUser\Model\UserInterface',
+            'ZfcUser\Model\UserInterface',
             static::getOption('user_model_class'),
             array()
         );

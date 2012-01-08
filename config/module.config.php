@@ -1,8 +1,8 @@
 <?php
 return array(
-    'edpuser' => array(
-        'user_model_class'          => 'EdpUser\Model\User',
-        'usermeta_model_class'      => 'EdpUser\Model\UserMeta',
+    'zfcuser' => array(
+        'user_model_class'          => 'ZfcUser\Model\User',
+        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
@@ -14,13 +14,13 @@ return array(
         'sha512_counds'             => 5000,       // integer between 1000 and 999,999,999
     ),
     'routes' => array(
-        'edpuser' => array(
+        'zfcuser' => array(
             'type' => 'Literal',
             'priority' => 1000,
             'options' => array(
                 'route' => '/user',
                 'defaults' => array(
-                    'controller' => 'edpuser',
+                    'controller' => 'zfcuser',
                 ),
             ),
             'may_terminate' => true,
@@ -30,7 +30,7 @@ return array(
                     'options' => array(
                         'route' => '/login',
                         'defaults' => array(
-                            'controller' => 'edpuser',
+                            'controller' => 'zfcuser',
                             'action'     => 'login',
                         ),
                     ),
@@ -40,7 +40,7 @@ return array(
                     'options' => array(
                         'route' => '/authenticate',
                         'defaults' => array(
-                            'controller' => 'edpuser',
+                            'controller' => 'zfcuser',
                             'action'     => 'authenticate',
                         ),
                     ),
@@ -50,7 +50,7 @@ return array(
                     'options' => array(
                         'route' => '/logout',
                         'defaults' => array(
-                            'controller' => 'edpuser',
+                            'controller' => 'zfcuser',
                             'action'     => 'logout',
                         ),
                     ),
@@ -60,7 +60,7 @@ return array(
                     'options' => array(
                         'route' => '/register',
                         'defaults' => array(
-                            'controller' => 'edpuser',
+                            'controller' => 'zfcuser',
                             'action'     => 'register',
                         ),
                     ),
@@ -71,73 +71,73 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'edpuser'                          => 'EdpUser\Controller\UserController',
-                'edpuser_user_mapper'              => 'EdpUser\Mapper\UserZendDb',
-                'edpuser_usermeta_mapper'          => 'EdpUser\Mapper\UserMetaZendDb',
-                'edpuser_user_service'             => 'EdpUser\Service\User',
-                'edpuser_write_db'                 => 'Zend\Db\Adapter\DiPdoMysql',
-                'edpuser_read_db'                  => 'edpuser_write_db',
-                'edpuser_doctrine_em'              => 'doctrine_em',
-                'edpuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
-                'edpuser_controller_plugin_broker' => 'Zend\Mvc\Controller\PluginBroker',
-                'edpuser_controller_plugin_loader' => 'Zend\Mvc\Controller\PluginLoader',
+                'zfcuser'                          => 'ZfcUser\Controller\UserController',
+                'zfcuser_user_mapper'              => 'ZfcUser\Mapper\UserZendDb',
+                'zfcuser_usermeta_mapper'          => 'ZfcUser\Mapper\UserMetaZendDb',
+                'zfcuser_user_service'             => 'ZfcUser\Service\User',
+                'zfcuser_write_db'                 => 'Zend\Db\Adapter\DiPdoMysql',
+                'zfcuser_read_db'                  => 'zfcuser_write_db',
+                'zfcuser_doctrine_em'              => 'doctrine_em',
+                'zfcuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
+                'zfcuser_controller_plugin_broker' => 'Zend\Mvc\Controller\PluginBroker',
+                'zfcuser_controller_plugin_loader' => 'Zend\Mvc\Controller\PluginLoader',
             ),
-            'edpuser' => array(
+            'zfcuser' => array(
                 'parameters' => array(
-                    'loginForm'    => 'EdpUser\Form\Login',
-                    'registerForm' => 'EdpUser\Form\Register',
-                    'userService'  => 'EdpUser\Service\User',
-                    'broker'       => 'edpuser_controller_plugin_broker',
+                    'loginForm'    => 'ZfcUser\Form\Login',
+                    'registerForm' => 'ZfcUser\Form\Register',
+                    'userService'  => 'ZfcUser\Service\User',
+                    'broker'       => 'zfcuser_controller_plugin_broker',
                 ),
             ),
-            'edpuser_controller_plugin_broker' => array(
+            'zfcuser_controller_plugin_broker' => array(
                 'parameters' => array(
-                    'loader' => 'edpuser_controller_plugin_loader',
+                    'loader' => 'zfcuser_controller_plugin_loader',
                 ),
             ),
-            'edpuser_controller_plugin_loader' => array(
+            'zfcuser_controller_plugin_loader' => array(
                 'parameters' => array(
                     'map' => array(
-                        'edpUserAuthentication' => 'EdpUser\Controller\Plugin\EdpUserAuthentication',
+                        'zfcUserAuthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
                     ),
                 ),
             ),
-            'EdpUser\Controller\Plugin\EdpUserAuthentication' => array(
+            'ZfcUser\Controller\Plugin\ZfcUserAuthentication' => array(
                 'parameters' => array(
-                    'authAdapter' => 'EdpUser\Authentication\Adapter\AdapterChain',
-                    'authService' => 'edpuser_auth_service',
+                    'authAdapter' => 'ZfcUser\Authentication\Adapter\AdapterChain',
+                    'authService' => 'zfcuser_auth_service',
                 ),
             ),
-            'EdpUser\Authentication\Adapter\AdapterChain' => array(
+            'ZfcUser\Authentication\Adapter\AdapterChain' => array(
                 'parameters' => array(
-                    'defaultAdapter' => 'EdpUser\Authentication\Adapter\Db',
+                    'defaultAdapter' => 'ZfcUser\Authentication\Adapter\Db',
                 ),
             ),
-            'EdpUser\Authentication\Adapter\Db' => array(
+            'ZfcUser\Authentication\Adapter\Db' => array(
                 'parameters' => array(
-                    'mapper' => 'edpuser_user_mapper',
+                    'mapper' => 'zfcuser_user_mapper',
                 ),
             ),
-            'edpuser_auth_service' => array(
+            'zfcuser_auth_service' => array(
                 'parameters' => array(
-                    'storage' => 'EdpUser\Authentication\Storage\Db',
+                    'storage' => 'ZfcUser\Authentication\Storage\Db',
                 ),
             ),
-            'EdpUser\Authentication\Storage\Db' => array(
+            'ZfcUser\Authentication\Storage\Db' => array(
                 'parameters' => array(
-                    'mapper' => 'edpuser_user_mapper',
+                    'mapper' => 'zfcuser_user_mapper',
                 ),
             ),
-            'EdpUser\Service\User' => array(
+            'ZfcUser\Service\User' => array(
                 'parameters' => array(
-                    'authService'    => 'edpuser_auth_service',
-                    'userMapper'     => 'edpuser_user_mapper',
-                    'userMetaMapper' => 'edpuser_usermeta_mapper',
+                    'authService'    => 'zfcuser_auth_service',
+                    'userMapper'     => 'zfcuser_user_mapper',
+                    'userMetaMapper' => 'zfcuser_usermeta_mapper',
                 ),
             ),
-            'EdpUser\Form\Register' => array(
+            'ZfcUser\Form\Register' => array(
                 'parameters' => array(
-                    'userMapper' => 'edpuser_user_mapper',
+                    'userMapper' => 'zfcuser_user_mapper',
                 ),
             ),
 
@@ -145,28 +145,28 @@ return array(
              * Mapper / DB
              */
 
-            'edpuser_write_db' => array(
+            'zfcuser_write_db' => array(
                 'parameters' => array(
-                    'pdo'    => 'edpuser_pdo',
+                    'pdo'    => 'zfcuser_pdo',
                     'config' => array(),
                 ),
             ),
             'mongo_driver_chain' => array(
                 'parameters' => array(
                     'drivers' => array(
-                        'edpuser_annotation_driver' => array(
+                        'zfcuser_annotation_driver' => array(
                             'class'     => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
-                            'namespace' => 'EdpUser\Document',
-                            'paths'     => array(__DIR__ . '/src/EdpUser/Document')
+                            'namespace' => 'ZfcUser\Document',
+                            'paths'     => array(__DIR__ . '/src/ZfcUser/Document')
                         ),
-                        'edpuserbase_annotation_driver' => array(
+                        'zfcuserbase_annotation_driver' => array(
                             'class'     => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
-                            'namespace' => 'EdpUser\ModelBase',
-                            'paths'     => array(__DIR__ . '/src/EdpUser/ModelBase')
+                            'namespace' => 'ZfcUser\ModelBase',
+                            'paths'     => array(__DIR__ . '/src/ZfcUser/ModelBase')
                         ),
-                        'edpuserbase_xml_driver' => array(
+                        'zfcuserbase_xml_driver' => array(
                             'class'          => 'Doctrine\ODM\MongoDB\Mapping\Driver\XmlDriver',
-                            'namespace'      => 'EdpUser\ModelBase',
+                            'namespace'      => 'ZfcUser\ModelBase',
                             'paths'          => array(__DIR__ . '/xml'),
                             'file_extension' => '.mongodb.xml',
                         ),
@@ -176,34 +176,34 @@ return array(
             'orm_driver_chain' => array(
                 'parameters' => array(
                     'drivers' => array(
-                        'edpuser_xml_driver' => array(
+                        'zfcuser_xml_driver' => array(
                             'class'     => 'Doctrine\ORM\Mapping\Driver\XmlDriver',
-                            'namespace' => 'EdpUser\Entity',
+                            'namespace' => 'ZfcUser\Entity',
                             'paths'     => array(__DIR__ . '/xml'),
                         ),
                     ),
                 )
             ),
-            'EdpUser\Mapper\UserDoctrine' => array(
+            'ZfcUser\Mapper\UserDoctrine' => array(
                 'parameters' => array(
-                    'em' => 'edpuser_doctrine_em',
+                    'em' => 'zfcuser_doctrine_em',
                 ),
             ),
-            'EdpUser\Mapper\UserZendDb' => array(
+            'ZfcUser\Mapper\UserZendDb' => array(
                 'parameters' => array(
-                    'readAdapter'  => 'edpuser_read_db',
-                    'writeAdapter' => 'edpuser_write_db',
+                    'readAdapter'  => 'zfcuser_read_db',
+                    'writeAdapter' => 'zfcuser_write_db',
                 ),
             ),
-            'EdpUser\Mapper\UserMetaDoctrine' => array(
+            'ZfcUser\Mapper\UserMetaDoctrine' => array(
                 'parameters' => array(
-                    'em' => 'edpuser_doctrine_em',
+                    'em' => 'zfcuser_doctrine_em',
                 ),
             ),
-            'EdpUser\Mapper\UserMetaZendDb' => array(
+            'ZfcUser\Mapper\UserMetaZendDb' => array(
                 'parameters' => array(
-                    'readAdapter'  => 'edpuser_read_db',
-                    'writeAdapter' => 'edpuser_write_db',
+                    'readAdapter'  => 'zfcuser_read_db',
+                    'writeAdapter' => 'zfcuser_write_db',
                 ),
             ),
             
@@ -215,7 +215,7 @@ return array(
                 'parameters' => array(
                     'options'  => array(
                         'script_paths' => array(
-                            'edpuser' => __DIR__ . '/../views',
+                            'zfcuser' => __DIR__ . '/../views',
                         ),
                     ),
                     'broker' => 'Zend\View\HelperBroker',
@@ -224,7 +224,7 @@ return array(
             'Zend\View\HelperLoader' => array(
                 'parameters' => array(
                     'map' => array(
-                        'edpUserIdentity' => 'EdpUser\View\Helper\EdpUserIdentity',
+                        'zfcUserIdentity' => 'ZfcUser\View\Helper\ZfcUserIdentity',
                     ),
                 ),
             ),
@@ -233,9 +233,9 @@ return array(
                     'loader' => 'Zend\View\HelperLoader',
                 ),
             ),
-            'EdpUser\View\Helper\EdpUserIdentity' => array(
+            'ZfcUser\View\Helper\ZfcUserIdentity' => array(
                 'parameters' => array(
-                    'authService' => 'edpuser_auth_service',
+                    'authService' => 'zfcuser_auth_service',
                 ),
             ),
         ),

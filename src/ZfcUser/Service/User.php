@@ -1,15 +1,15 @@
 <?php
 
-namespace EdpUser\Service;
+namespace ZfcUser\Service;
 
 use Zend\Authentication\AuthenticationService,
     Zend\Form\Form,
     Zend\EventManager\ListenerAggregate,
     DateTime,
-    EdpUser\Util\Password,
-    EdpUser\Mapper\UserInterface as UserMapper,
-    EdpUser\Mapper\UserMetaInterface as UserMetaMapper,
-    EdpUser\Module as EdpUser,
+    ZfcUser\Util\Password,
+    ZfcUser\Mapper\UserInterface as UserMapper,
+    ZfcUser\Mapper\UserMetaInterface as UserMetaMapper,
+    ZfcUser\Module as ZfcUser,
     EdpCommon\EventManager\EventProvider;
 
 class User extends EventProvider
@@ -33,7 +33,7 @@ class User extends EventProvider
     {
         $user = $this->getAuthService()->getIdentity();
         if (!$userMeta = $this->userMetaMapper->get($user->getUserId(), $key)) {
-            $class = EdpUser::getOption('usermeta_model_class');
+            $class = ZfcUser::getOption('usermeta_model_class');
             $userMeta = new $class;
             $userMeta->setUser($user);
             $userMeta->setMetaKey($key);
@@ -51,26 +51,26 @@ class User extends EventProvider
      * createFromForm 
      * 
      * @param Form $form 
-     * @return EdpUser\Entity\User
+     * @return ZfcUser\Entity\User
      */
     public function createFromForm(Form $form)
     {
-        $class = EdpUser::getOption('user_model_class');
+        $class = ZfcUser::getOption('user_model_class');
         $user = new $class;
         $user->setEmail($form->getValue('email'))
              ->setPassword(Password::hash($form->getValue('password')))
              ->setRegisterIp($_SERVER['REMOTE_ADDR'])
              ->setRegisterTime(new DateTime('now'))
              ->setEnabled(true);
-        if (EdpUser::getOption('require_activation')) {
+        if (ZfcUser::getOption('require_activation')) {
             $user->setActive(false);
         } else {
             $user->setActive(true);
         }
-        if (EdpUser::getOption('enable_username')) {
+        if (ZfcUser::getOption('enable_username')) {
             $user->setUsername($form->getValue('username'));
         }
-        if (EdpUser::getOption('enable_display_name')) {
+        if (ZfcUser::getOption('enable_display_name')) {
             $user->setDisplayName($form->getValue('display_name'));
         }
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));

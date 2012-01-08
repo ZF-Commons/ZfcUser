@@ -1,8 +1,8 @@
 <?php
 
-namespace EdpUser\Mapper;
+namespace ZfcUser\Mapper;
 
-use EdpUser\Model\UserInterface as UserModelInterface;
+use ZfcUser\Model\UserInterface as UserModelInterface;
 
 interface UserInterface
 {

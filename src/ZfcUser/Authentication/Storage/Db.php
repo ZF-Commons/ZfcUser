@@ -1,9 +1,9 @@
 <?php
 
-namespace EdpUser\Authentication\Storage;
+namespace ZfcUser\Authentication\Storage;
 
 use Zend\Authentication\Storage,
-    EdpUser\Mapper\UserInterface as UserMapper;
+    ZfcUser\Mapper\UserInterface as UserMapper;
 
 class Db implements Storage
 {

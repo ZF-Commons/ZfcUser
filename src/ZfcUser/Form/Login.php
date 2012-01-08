@@ -1,10 +1,10 @@
 <?php
 
-namespace EdpUser\Form;
+namespace ZfcUser\Form;
 
 use Zend\Form\Form,
     EdpCommon\Form\ProvidesEventsForm,
-    EdpUser\Module as EdpUser;
+    ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm
 {
@@ -24,7 +24,7 @@ class Login extends ProvidesEventsForm
         ));
         
 
-        if (EdpUser::getOption('enable_username')) {
+        if (ZfcUser::getOption('enable_username')) {
             $emailElement = $this->getElement('identity');
             $emailElement->removeValidator('EmailAddress')
                          ->setLabel('Email or Username'); // @TODO: make translation-friendly

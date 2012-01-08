@@ -1,11 +1,11 @@
-EdpUser
+ZfcUser
 =======
 Version 0.0.1 Created by Evan Coury
 
 Introduction
 ------------
 
-EdpUser is a user registration and authentication module for Zend Framework 2,
+ZfcUser is a user registration and authentication module for Zend Framework 2,
 which can utilize either Doctrine2 or Zend\Db. It provides the foundations
 for adding user authentication and registration to your ZF2 site. It is built to
 be very simple and easily to extend.
@@ -43,8 +43,8 @@ Installation
    `application.config.php` file.
 2. Clone this project into your `./vendors/` directory and enable it in your
    `application.config.php` file.
-3. Import the SQL schema located in `./vendors/EdpUser/data/schema.sql`.
-4. Copy `./vendors/EdpUser/config/module.edpuser.config.php.dist` to
+3. Import the SQL schema located in `./vendors/ZfcUser/data/schema.sql`.
+4. Copy `./vendors/ZfcUser/config/module.edpuser.config.php.dist` to
    `./config/autoload/module.edpuser.config.php`.
 5. Follow the **Post-Install** instructions below for your preferred database
    access layer (Doctrine2 or Zend\Db)
@@ -119,16 +119,16 @@ suitable for computing power in 2011.
 Options
 -------
 
-The EdpUser module has some options to allow you to quickly customize the basic
-functionality. After installing EdpUser, copy
-`./vendor/EdpUser/config/module.edpuser.config.php` to
+The ZfcUser module has some options to allow you to quickly customize the basic
+functionality. After installing ZfcUser, copy
+`./vendor/ZfcUser/config/module.edpuser.config.php` to
 `./config/autoload/module.config.php` and change the values as desired.
 
 The following options are available:
 
 - **user_model_class** - Name of Entity class to use. Useful for using your own
   entity class instead of the default one provided. Default is
-  `EdpUser\Model\User`.
+  `ZfcUser\Model\User`.
 - **enable_username** - Boolean value, enables username field on the
   registration form, and allows users to log in using their username _OR_ email
   address.  Default is `false`.
@@ -162,17 +162,17 @@ Overriding / extending the User entity
 --------------------------------------
 
 Sometimes you may want to override the default user entity with your own. With
-EdpUser, this is very easy.
+ZfcUser, this is very easy.
 
 First, create your extended User entity:
 
     <?php
-    // ./module/Application/src/Application/EdpUser/Model/User.php
+    // ./module/Application/src/Application/ZfcUser/Model/User.php
 
-    namespace Application\EdpUser\Model;
+    namespace Application\ZfcUser\Model;
 
     use Doctrine\ORM\Mapping as ORM,
-        EdpUser\ModelBase\UserBase;
+        ZfcUser\ModelBase\UserBase;
 
     /**
      * @ORM\Entity
@@ -185,12 +185,12 @@ First, create your extended User entity:
          */
     }
 
-Next, tell EdpUser to utilize your new entity class:
+Next, tell ZfcUser to utilize your new entity class:
 
     // ./config/autoload/module.edpuser.config.php
-    'user_model_class' => 'Application\EdpUser\Model\User',
+    'user_model_class' => 'Application\ZfcUser\Model\User',
 
-If you're using Doctrine2, you'll also need to override the EdpUser entity path:
+If you're using Doctrine2, you'll also need to override the ZfcUser entity path:
 
     // ./config/autoload/module.edpuser.custom.config.php (New file)
     <?php
@@ -202,8 +202,8 @@ If you're using Doctrine2, you'll also need to override the EdpUser entity path:
                         'drivers' => array(
                             'edpuser_annotationdriver' => array(
                                 'class'     => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                                'namespace' => 'Application\EdpUser\Model',
-                                'paths'     => array(dirname(__DIR__) . '/module/Application/src/Application/EdpUser/Model'),
+                                'namespace' => 'Application\ZfcUser\Model',
+                                'paths'     => array(dirname(__DIR__) . '/module/Application/src/Application/ZfcUser/Model'),
                             ),
                         ),
                     ),
@@ -226,7 +226,7 @@ Common Use-Cases
     $user = $this->getLocator()->get('edpuser_user_service')->getAuthService()->getIdentity();
     return array('user' => $user);
 
-**Note:** `getIdentity()` returns an instance of `EdpUser\Entity\User`.
+**Note:** `getIdentity()` returns an instance of `ZfcUser\Entity\User`.
 
 ### Logging a user out from an ActionController
 

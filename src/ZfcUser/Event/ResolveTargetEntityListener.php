@@ -1,5 +1,5 @@
 <?php
-namespace EdpUser\Event;
+namespace ZfcUser\Event;
 
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;

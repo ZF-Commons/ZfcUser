@@ -1,6 +1,6 @@
 <?php
 
-namespace EdpUser\Authentication\Adapter;
+namespace ZfcUser\Authentication\Adapter;
 
 use Zend\Authentication\Adapter,
     Zend\Authentication\Result as AuthenticationResult,

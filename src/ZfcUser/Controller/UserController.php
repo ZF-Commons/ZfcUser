@@ -1,12 +1,12 @@
 <?php
 
-namespace EdpUser\Controller;
+namespace ZfcUser\Controller;
 
 use Zend\Mvc\Controller\ActionController,
     Zend\Form\Form,
     Zend\Stdlib\ResponseDescription as Response,
-    EdpUser\Service\User as UserService,
-    EdpUser\Module as EdpUser;
+    ZfcUser\Service\User as UserService,
+    ZfcUser\Module as ZfcUser;
 
 class UserController extends ActionController
 {
@@ -36,8 +36,8 @@ class UserController extends ActionController
      */
     public function indexAction()
     {
-        if (!$this->edpUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('edpuser/login'); 
+        if (!$this->zfcUserAuthentication()->hasIdentity()) {
+            return $this->redirect()->toRoute('zfcuser/login'); 
         }
     }
 
@@ -56,12 +56,12 @@ class UserController extends ActionController
         }
 
         if (!$form->isValid($request->post()->toArray())) {
-            $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toRoute('edpuser/login'); 
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
+            return $this->redirect()->toRoute('zfcuser/login'); 
         }
         // clear adapters
 
-        return $this->forward()->dispatch('edpuser', array('action' => 'authenticate'));
+        return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
     }
 
     /**
@@ -69,14 +69,14 @@ class UserController extends ActionController
      */
     public function logoutAction()
     {
-        $this->edpUserAuthentication()->getAuthAdapter()->resetAdapters();
-        if (!$this->edpUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('edpuser/login');
+        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+        if (!$this->zfcUserAuthentication()->hasIdentity()) {
+            return $this->redirect()->toRoute('zfcuser/login');
         }
 
-        $this->edpUserAuthentication()->getAuthService()->clearIdentity();
+        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
-        return $this->redirect()->toRoute('edpuser/login');
+        return $this->redirect()->toRoute('zfcuser/login');
     }
 
     /**
@@ -84,11 +84,11 @@ class UserController extends ActionController
      */
     public function authenticateAction()
     {
-        if ($this->edpUserAuthentication()->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('edpuser');
+        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute('zfcuser');
         }
         $request = $this->getRequest();
-        $adapter = $this->edpUserAuthentication()->getAuthAdapter();
+        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
 
         $result = $adapter->prepareForAuthentication($request);
 
@@ -97,19 +97,19 @@ class UserController extends ActionController
             return $result;
         }
 
-        $auth = $this->edpUserAuthentication()->getAuthService()->authenticate($adapter);
+        $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
 
         if (!$auth->isValid()) {
-            $this->flashMessenger()->setNamespace('edpuser-login-form')->addMessage($this->failedLoginMessage);
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
-            return $this->redirect()->toRoute('edpuser/login');
+            return $this->redirect()->toRoute('zfcuser/login');
         }
 
-        if (EdpUser::getOption('use_redirect_parameter_if_present') && $request->post()->get('redirect')) {
+        if (ZfcUser::getOption('use_redirect_parameter_if_present') && $request->post()->get('redirect')) {
             return $this->redirect()->toUrl($request->post()->get('redirect'));
         }
 
-        return $this->redirect()->toRoute('edpuser');
+        return $this->redirect()->toRoute('zfcuser');
     }
 
     /**
@@ -117,24 +117,24 @@ class UserController extends ActionController
      */
     public function registerAction()
     {
-        if ($this->edpUserAuthentication()->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('edpuser');
+        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute('zfcuser');
         }
         $request = $this->getRequest();
         $form    = $this->getRegisterForm();
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
-                $this->flashMessenger()->setNamespace('edpuser-register-form')->addMessage($request->post()->toArray());
-                return $this->redirect()->toRoute('edpuser/register');
+                $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
+                return $this->redirect()->toRoute('zfcuser/register');
             } else {
                 $this->getUserService()->createFromForm($form);
-                if (EdpUser::getOption('login_after_registration')) {
+                if (ZfcUser::getOption('login_after_registration')) {
                     $post = $request->post();
                     $post['identity']   = $post['email'];
                     $post['credential'] = $post['password'];
-                    return $this->forward()->dispatch('edpuser', array('action' => 'authenticate'));
+                    return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
                 }
-                return $this->redirect()->toRoute('edpuser/login');
+                return $this->redirect()->toRoute('zfcuser/login');
             }
         }
         return array(
@@ -165,7 +165,7 @@ class UserController extends ActionController
     public function setRegisterForm(Form $registerForm)
     {
         $this->registerForm = $registerForm;
-        $fm = $this->flashMessenger()->setNamespace('edpuser-register-form')->getMessages();
+        $fm = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
         if (isset($fm[0])) {
             $this->registerForm->isValid($fm[0]);
         }
@@ -180,7 +180,7 @@ class UserController extends ActionController
     public function setLoginForm(Form $loginForm)
     {
         $this->loginForm = $loginForm;
-        $fm = $this->flashMessenger()->setNamespace('edpuser-login-form')->getMessages();
+        $fm = $this->flashMessenger()->setNamespace('zfcuser-login-form')->getMessages();
         if (isset($fm[0])) {
             $this->loginForm->addErrorMessage($fm[0]);
         }

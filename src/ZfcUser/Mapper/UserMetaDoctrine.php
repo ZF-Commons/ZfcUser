@@ -1,10 +1,10 @@
 <?php
 
-namespace EdpUser\Mapper;
+namespace ZfcUser\Mapper;
 
 use Doctrine\ORM\EntityManager,
-    EdpUser\Module,
-    EdpUser\Model\UserMetaInterface as UserMetaModelInterface,
+    ZfcUser\Module,
+    ZfcUser\Model\UserMetaInterface as UserMetaModelInterface,
     EdpCommon\EventManager\EventProvider;
 
 class UserMetaDoctrine extends EventProvider implements UserMetaInterface

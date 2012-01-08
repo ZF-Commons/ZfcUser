@@ -1,11 +1,11 @@
 <?php
 
-namespace EdpUser\View\Helper;
+namespace ZfcUser\View\Helper;
 
 use Zend\View\Helper\AbstractHelper,
     Zend\Authentication\AuthenticationService;
 
-class EdpUserIdentity extends AbstractHelper
+class ZfcUserIdentity extends AbstractHelper
 {
     /**
      * @var AuthenticationService
@@ -16,7 +16,7 @@ class EdpUserIdentity extends AbstractHelper
      * __invoke 
      * 
      * @access public
-     * @return EdpUser\Model\UserInterface
+     * @return ZfcUser\Model\UserInterface
      */
     public function __invoke()
     {

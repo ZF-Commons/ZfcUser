@@ -1,9 +1,9 @@
 <?php
 
-namespace EdpUser\Form;
+namespace ZfcUser\Form;
 
 use Zend\Form\Form,
-    EdpUser\Module;
+    ZfcUser\Module;
 
 class Register extends Base
 {

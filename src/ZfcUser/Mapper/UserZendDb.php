@@ -1,10 +1,10 @@
 <?php
 
-namespace EdpUser\Mapper;
+namespace ZfcUser\Mapper;
 
 use EdpCommon\Mapper\DbMapperAbstract,
-    EdpUser\Module,
-    EdpUser\Model\UserInterface as UserModelInterface,
+    ZfcUser\Module,
+    ZfcUser\Model\UserInterface as UserModelInterface,
     ArrayObject;
 
 class UserZendDb extends DbMapperAbstract implements UserInterface

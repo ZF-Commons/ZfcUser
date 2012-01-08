@@ -1,9 +1,9 @@
 <?php
 
-namespace EdpUser\Form;
+namespace ZfcUser\Form;
 
 use Zend\Form\Form,
-    EdpUser\Mapper\UserInterface as UserMapper,
+    ZfcUser\Mapper\UserInterface as UserMapper,
     EdpCommon\Form\ProvidesEventsForm;
 
 class Base extends ProvidesEventsForm
@@ -21,7 +21,7 @@ class Base extends ProvidesEventsForm
                 array('StringLength', true, array(3, 255)),
                 //array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
                 //    'em'      => $this->getEntityManager(),
-                //    'entity'  => 'EdpUser\Entity\User',
+                //    'entity'  => 'ZfcUser\Entity\User',
                 //    'field'   => 'username'
                 //))
             ),

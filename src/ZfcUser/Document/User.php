@@ -1,8 +1,8 @@
 <?php
 
-namespace EdpUser\Document;
+namespace ZfcUser\Document;
 
-use EdpUser\Model\User as UserModel;
+use ZfcUser\Model\User as UserModel;
 
 abstract class User extends UserModel
 {}

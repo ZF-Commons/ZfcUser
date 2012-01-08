@@ -1,6 +1,6 @@
 <?php
 
-namespace EdpUser\Entity;
+namespace ZfcUser\Entity;
 
 class UserMeta extends UserMetaMappedSuperClass
 {}

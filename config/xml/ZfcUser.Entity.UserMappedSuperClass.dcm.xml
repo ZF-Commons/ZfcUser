@@ -4,7 +4,7 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                   http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="EdpUser\Entity\UserMappedSuperClass">
+    <mapped-superclass name="ZfcUser\Entity\UserMappedSuperClass">
 
         <id name="userId" type="integer" column="user_id"><generator strategy="AUTO" /></id>
         <field name="username" column="username" type="string" unique="true" nullable="true" />

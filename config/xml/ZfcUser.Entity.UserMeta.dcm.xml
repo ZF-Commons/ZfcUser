@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
         http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
                   
-    <entity name="EdpUser\Entity\UserMeta" table="user_meta">
+    <entity name="ZfcUser\Entity\UserMeta" table="user_meta">
 
     </entity>
 
