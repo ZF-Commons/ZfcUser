@@ -69,7 +69,7 @@ class UserController extends ActionController
      */
     public function logoutAction()
     {
-        //$this->edpUserAuthentication()->getAuthAdapter()->resetAdapters();
+        $this->edpUserAuthentication()->getAuthAdapter()->resetAdapters();
         if (!$this->edpUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute('edpuser/login');
         }
@@ -84,6 +84,9 @@ class UserController extends ActionController
      */
     public function authenticateAction()
     {
+        if ($this->edpUserAuthentication()->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute('edpuser');
+        }
         $request = $this->getRequest();
         $adapter = $this->edpUserAuthentication()->getAuthAdapter();
 

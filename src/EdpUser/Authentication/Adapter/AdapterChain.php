@@ -31,9 +31,7 @@ class AdapterChain extends EventProvider implements Adapter
             $e->getMessages()
         );
 
-        if (!$result->isValid()) {
-            $this->resetAdapters();
-        }
+        $this->resetAdapters();
 
         return $result;
     }
