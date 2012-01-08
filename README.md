@@ -1,6 +1,6 @@
 ZfcUser
 =======
-Version 0.0.1 Created by Evan Coury
+Version 0.0.1 Created by Evan Coury and the ZF-Commons team
 
 Introduction
 ------------
@@ -14,7 +14,7 @@ Requirements
 ------------
 
 * [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
-* [EdpCommon](https://github.com/EvanDotPro/EdpCommon) (latest master).
+* [ZfcBase](https://github.com/ZF-Commons/ZfcBase) (latest master).
 * [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (optional).
 
 Features / Goals
@@ -38,8 +38,8 @@ Installation
 
 ### Main Setup
 
-1. Install the [EdpCommon](https://github.com/EvanDotPro/EdpCommon) ZF2 module
-   by cloning it into `./vendors/` and enabling it in your
+1. Install the [ZfcBase](https://github.com/ZF-Commons/ZfcBase) ZF2 module
+   by cloning it into `./vendor/` and enabling it in your
    `application.config.php` file.
 2. Clone this project into your `./vendors/` directory and enable it in your
    `application.config.php` file.
@@ -82,11 +82,11 @@ Navigate to http://yourproject/user and you should land on a login page.
         );
 
 2. Now, specify the DI alias for your PDO connection in
-   `./configs/autoload/module.edpuser.config.php`, under the 'pdo' setting.
+   `./configs/autoload/module.zfcuser.config.php`, under the 'pdo' setting.
    If you created the `./configs/autoload/database.config.php` file in the
    previous step, the alias you'll specify is 'masterdb'.
 
-3. Finally, in `./configs/autoload/module.edpuser.config.php`, change the value
+3. Finally, in `./config/autoload/module.zfcuser.config.php`, change the value
    of the `db_abstraction` setting from 'doctrine' to 'zend_db'.
 
 Navigate to http://yourproject/user and you should land on a login page.
@@ -121,7 +121,7 @@ Options
 
 The ZfcUser module has some options to allow you to quickly customize the basic
 functionality. After installing ZfcUser, copy
-`./vendor/ZfcUser/config/module.edpuser.config.php` to
+`./vendor/ZfcUser/config/module.zfcuser.config.php` to
 `./config/autoload/module.config.php` and change the values as desired.
 
 The following options are available:
@@ -187,12 +187,12 @@ First, create your extended User entity:
 
 Next, tell ZfcUser to utilize your new entity class:
 
-    // ./config/autoload/module.edpuser.config.php
+    // ./config/autoload/module.zfcuser.config.php
     'user_model_class' => 'Application\ZfcUser\Model\User',
 
 If you're using Doctrine2, you'll also need to override the ZfcUser entity path:
 
-    // ./config/autoload/module.edpuser.custom.config.php (New file)
+    // ./config/autoload/module.zfcuser.custom.config.php (New file)
     <?php
     return array(
         'di' => array(
@@ -200,7 +200,7 @@ If you're using Doctrine2, you'll also need to override the ZfcUser entity path:
                 'doctrine_driver_chain' => array(
                     'parameters' => array(
                         'drivers' => array(
-                            'edpuser_annotationdriver' => array(
+                            'zfcuser_annotationdriver' => array(
                                 'class'     => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
                                 'namespace' => 'Application\ZfcUser\Model',
                                 'paths'     => array(dirname(__DIR__) . '/module/Application/src/Application/ZfcUser/Model'),
@@ -217,17 +217,17 @@ Common Use-Cases
 
 ### Checking if a user is logged in from an ActionController
     
-    if ($this->getLocator()->get('edpuser_user_service')->getAuthService()->hasIdentity()) {
+    if ($this->getLocator()->get('zfcuser_user_service')->getAuthService()->hasIdentity()) {
         //...
     }
 
 ### Retrieving a user's identity from an ActionController
     
-    $user = $this->getLocator()->get('edpuser_user_service')->getAuthService()->getIdentity();
+    $user = $this->getLocator()->get('zfcuser_user_service')->getAuthService()->getIdentity();
     return array('user' => $user);
 
 **Note:** `getIdentity()` returns an instance of `ZfcUser\Entity\User`.
 
 ### Logging a user out from an ActionController
 
-    $this->getLocator()->get('edpuser_user_service')->getAuthService()->clearIdentity();
+    $this->getLocator()->get('zfcuser_user_service')->getAuthService()->clearIdentity();
