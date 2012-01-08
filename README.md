@@ -20,7 +20,7 @@ Requirements
 Features / Goals
 ----------------
 
-* Authenticate via username, email, or both (can opt out of the concept of 
+* Authenticate via username, email, or both (can opt out of the concept of
   username and use strictly email) [COMPLETE]
 * User registration [COMPLETE]
 * Forms protected against CSRF [COMPLETE]
@@ -44,16 +44,16 @@ Installation
 2. Clone this project into your `./vendors/` directory and enable it in your
    `application.config.php` file.
 3. Import the SQL schema located in `./vendors/ZfcUser/data/schema.sql`.
-4. Copy `./vendors/ZfcUser/config/module.edpuser.config.php.dist` to
-   `./config/autoload/module.edpuser.config.php`.
+4. Copy `./vendors/ZfcUser/config/module.zfcuser.config.php.dist` to
+   `./config/autoload/module.zfcuser.config.php`.
 5. Follow the **Post-Install** instructions below for your preferred database
    access layer (Doctrine2 or Zend\Db)
 
 ### Post-Install: Doctrine2
 
-1. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2 
+1. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2
    module per the [installation instructions](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/docs/INSTALL.md).
-    
+
 Navigate to http://yourproject/user and you should land on a login page.
 
 ### Post-Install: Zend\Db
@@ -114,7 +114,7 @@ problems such as making your hashed passwords more vulnerable to brute force
 attacks or making hashing so expesnive that login and registration is
 unacceptably slow for users and produces a large burden on your server(s). The
 default settings provided are a very reasonable balance between the two,
-suitable for computing power in 2011. 
+suitable for computing power in 2011.
 
 Options
 -------
@@ -153,10 +153,10 @@ The following options are available:
   (about 10 hashes per second on an i5).
 - **sha256_rounds** - Only used if `password_hash_algorithm` is set to `sha256`.
   This should be an integer between 1000 and 999,999,999. The number represents
-  the iteration count used for hashing. Default is `5000`. 
+  the iteration count used for hashing. Default is `5000`.
 - **sha512_rounds** - Only used if `password_hash_algorithm` is set to `sha512`.
   This should be an integer between 1000 and 999,999,999. The number represents
-  the iteration count used for hashing. Default is `5000`. 
+  the iteration count used for hashing. Default is `5000`.
 
 Overriding / extending the User entity
 --------------------------------------
@@ -216,13 +216,13 @@ Common Use-Cases
 ----------------
 
 ### Checking if a user is logged in from an ActionController
-    
+
     if ($this->getLocator()->get('zfcuser_user_service')->getAuthService()->hasIdentity()) {
         //...
     }
 
 ### Retrieving a user's identity from an ActionController
-    
+
     $user = $this->getLocator()->get('zfcuser_user_service')->getAuthService()->getIdentity();
     return array('user' => $user);
 
