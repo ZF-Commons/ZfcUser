@@ -5,7 +5,7 @@ namespace ZfcUser\Mapper;
 use Doctrine\ORM\EntityManager,
     ZfcUser\Module,
     ZfcUser\Model\UserInterface as UserModelInterface,
-    EdpCommon\EventManager\EventProvider,
+    ZfcBase\EventManager\EventProvider,
     SpiffyDoctrine\Validator\NoEntityExists;
 
 class UserDoctrine extends EventProvider implements UserInterface

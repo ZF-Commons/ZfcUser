@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Model;
 
-use EdpCommon\Model\ModelAbstract;
+use ZfcBase\Model\ModelAbstract;
 
 /**
  * This concept is shamlessly borrowed from Wordpress.

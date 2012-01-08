@@ -5,7 +5,7 @@ namespace ZfcUser\Mapper;
 use Doctrine\ORM\EntityManager,
     ZfcUser\Module,
     ZfcUser\Model\UserMetaInterface as UserMetaModelInterface,
-    EdpCommon\EventManager\EventProvider;
+    ZfcBase\EventManager\EventProvider;
 
 class UserMetaDoctrine extends EventProvider implements UserMetaInterface
 {

@@ -3,7 +3,7 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Form,
-    EdpCommon\Form\ProvidesEventsForm,
+    ZfcBase\Form\ProvidesEventsForm,
     ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm

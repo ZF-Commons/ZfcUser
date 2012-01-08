@@ -4,7 +4,7 @@ namespace ZfcUser\Form;
 
 use Zend\Form\Form,
     ZfcUser\Mapper\UserInterface as UserMapper,
-    EdpCommon\Form\ProvidesEventsForm;
+    ZfcBase\Form\ProvidesEventsForm;
 
 class Base extends ProvidesEventsForm
 {

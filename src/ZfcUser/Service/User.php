@@ -10,7 +10,7 @@ use Zend\Authentication\AuthenticationService,
     ZfcUser\Mapper\UserInterface as UserMapper,
     ZfcUser\Mapper\UserMetaInterface as UserMetaMapper,
     ZfcUser\Module as ZfcUser,
-    EdpCommon\EventManager\EventProvider;
+    ZfcBase\EventManager\EventProvider;
 
 class User extends EventProvider
 {

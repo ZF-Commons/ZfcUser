@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Util;
 
-use EdpCommon\Util\String,
+use ZfcBase\Util\String,
     ZfcUser\Module as ZfcUser;
 
 abstract class Password

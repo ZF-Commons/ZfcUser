@@ -3,7 +3,7 @@
 namespace ZfcUser\Model;
 
 use DateTime,
-    EdpCommon\Model\ModelAbstract;
+    ZfcBase\Model\ModelAbstract;
 
 class User extends ModelAbstract implements UserInterface
 {

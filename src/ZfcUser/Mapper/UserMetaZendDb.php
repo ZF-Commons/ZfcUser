@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Mapper;
 
-use EdpCommon\Mapper\DbMapperAbstract,
+use ZfcBase\Mapper\DbMapperAbstract,
     ZfcUser\Module,
     ZfcUser\Model\UserMetaInterface as UserMetaModelInterface,
     ArrayObject;

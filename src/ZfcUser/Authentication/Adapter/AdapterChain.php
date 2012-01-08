@@ -7,7 +7,7 @@ use Zend\Authentication\Adapter,
     Zend\EventManager\Event,
     Zend\Stdlib\RequestDescription as Request,
     Zend\Stdlib\ResponseDescription as Response,
-    EdpCommon\EventManager\EventProvider;
+    ZfcBase\EventManager\EventProvider;
 
 class AdapterChain extends EventProvider implements Adapter
 {
