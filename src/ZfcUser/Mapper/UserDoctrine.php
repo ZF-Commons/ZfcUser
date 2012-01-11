@@ -5,13 +5,11 @@ namespace ZfcUser\Mapper;
 use Doctrine\ORM\EntityManager,
     ZfcUser\Module,
     ZfcUser\Model\UserInterface as UserModelInterface,
-    ZfcBase\EventManager\EventProvider,
-    SpiffyDoctrine\Validator\NoEntityExists;
+    ZfcBase\EventManager\EventProvider;
 
 class UserDoctrine extends EventProvider implements UserInterface
 {
     protected $em;
-    protected $emailValidator;
 
     public function persist(UserModelInterface $user)
     {
@@ -44,18 +42,6 @@ class UserDoctrine extends EventProvider implements UserInterface
         $user = $this->getUserRepository()->find($id);
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'em' => $em));
         return $user;
-    }
-
-    public function getEmailValidator()
-    {
-        if (null === $this->emailValidator) {
-            $this->emailValidator = new NoEntityExists(array(
-                'em'     => $this->getEntityManager(),
-                'entity' => Module::getOption('user_model_class'),
-                'field'  => 'email',
-            ));
-        }
-        return $this->emailValidator;
     }
 
     public function getEntityManager()

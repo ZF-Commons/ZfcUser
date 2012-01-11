@@ -16,6 +16,11 @@ class Db extends AbstractAdapter
      */
     protected $mapper;
 
+    /**
+     * @var closure / invokable object
+     */
+    protected $credentialPreprocessor;
+
     public function authenticate(AuthEvent $e)
     {
         if ($this->isSatisfied()) {
@@ -28,7 +33,8 @@ class Db extends AbstractAdapter
 
         $identity   = $e->getRequest()->post()->get('identity');
         $credential = $e->getRequest()->post()->get('credential');
-
+        $credential = $this->preProcessCredential($credential);
+        
         $userObject = $this->getMapper()->findByEmail($identity);
 
         if (!$userObject && ZfcUser::getOption('enable_username')) {
@@ -103,6 +109,36 @@ class Db extends AbstractAdapter
                    ->setLastIp($_SERVER['REMOTE_ADDR']);
 
         $this->getMapper()->persist($userObject);
+        return $this;
+    }
+
+    public function preprocessCredential($credential)
+    {
+        $processor = $this->getCredentialPreprocessor();
+        if (is_callable($processor)) {
+            return $processor($credential);
+        }
+        return $credential;
+    }
+ 
+    /**
+     * Get credentialPreprocessor.
+     *
+     * @return credentialPreprocessor
+     */
+    public function getCredentialPreprocessor()
+    {
+        return $this->credentialPreprocessor;
+    }
+ 
+    /**
+     * Set credentialPreprocessor.
+     *
+     * @param $credentialPreprocessor the value to be set
+     */
+    public function setCredentialPreprocessor($credentialPreprocessor)
+    {
+        $this->credentialPreprocessor = $credentialPreprocessor;
         return $this;
     }
 }

@@ -81,6 +81,8 @@ return array(
                 'zfcuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
                 'zfcuser_controller_plugin_broker' => 'Zend\Mvc\Controller\PluginBroker',
                 'zfcuser_controller_plugin_loader' => 'Zend\Mvc\Controller\PluginLoader',
+                'zfcuser_uemail_validator'         => 'ZfcUser\Validator\NoRecordExists',
+                'zfcuser_uusername_validator'      => 'ZfcUser\Validator\NoRecordExists',
             ),
             'zfcuser' => array(
                 'parameters' => array(
@@ -137,7 +139,24 @@ return array(
             ),
             'ZfcUser\Form\Register' => array(
                 'parameters' => array(
-                    'userMapper' => 'zfcuser_user_mapper',
+                    'emailValidator'    => 'zfcuser_uemail_validator',
+                    'usernameValidator' => 'zfcuser_uusername_validator',
+                ),
+            ),
+            'zfcuser_uemail_validator' => array(
+                'parameters' => array(
+                    'mapper'  => 'zfcuser_user_mapper',
+                    'options' => array(
+                        'key' => 'email',
+                    ),
+                ),
+            ),
+            'zfcuser_uusername_validator' => array(
+                'parameters' => array(
+                    'mapper'  => 'zfcuser_user_mapper',
+                    'options' => array(
+                        'key' => 'username',
+                    ),
                 ),
             ),
 

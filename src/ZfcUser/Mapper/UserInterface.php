@@ -13,6 +13,4 @@ interface UserInterface
     public function findByUsername($username);
 
     public function findById($id);
-
-    public function getEmailValidator();
 }

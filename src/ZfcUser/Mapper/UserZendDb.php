@@ -13,7 +13,6 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
     protected $userIDField= 'user_id';
     protected $userEmailField= 'email';
     protected $userUsernameField= 'username';
-    protected $emailValidator;
 
     public function persist(UserModelInterface $user)
     {
@@ -66,17 +65,5 @@ class UserZendDb extends DbMapperAbstract implements UserInterface
         $row = $db->fetchRow($sql);
         $userModelClass = Module::getOption('user_model_class');
         return $userModelClass::fromArray($row);
-    }
-
-    public function getEmailValidator()
-    {
-        if (null === $this->emailValidator) {
-            $this->emailValidator = array('Db\NoRecordExists', true, array(
-                'adapter'   => $this->getReadAdapter(),
-                'table'     => $this->getTableName(),
-                'field'     => $this->userEmailField
-            ));
-        }
-        return $this->emailValidator;
     }
 }

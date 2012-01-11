@@ -9,7 +9,7 @@ use Zend\Form\Form,
 class Base extends ProvidesEventsForm
 {
     protected $emailValidator;
-    protected $userMapper;
+    protected $usernameValidator;
 
     public function initLate()
     {
@@ -19,11 +19,7 @@ class Base extends ProvidesEventsForm
             'filters'    => array('StringTrim'),
             'validators' => array(
                 array('StringLength', true, array(3, 255)),
-                //array('\SpiffyDoctrine\Validator\NoEntityExists', true, array(
-                //    'em'      => $this->getEntityManager(),
-                //    'entity'  => 'ZfcUser\Entity\User',
-                //    'field'   => 'username'
-                //))
+                $this->usernameValidator,
             ),
             'required'   => true,
             'label'      => 'Username',
@@ -91,23 +87,16 @@ class Base extends ProvidesEventsForm
         $this->events()->trigger('init', $this);
     }
 
-    /**
-     * setUserMapper 
-     * 
-     * @param UserMapper $userMapper 
-     * @return User
-     */
-    public function setUserMapper(UserMapper $userMapper)
-    {
-        $this->userMapper = $userMapper;
-        $this->setEmailValidator($this->userMapper->getEmailValidator());
-        $this->initLate();
-        return $this;
-    }
-
     public function setEmailValidator($emailValidator)
     {
         $this->emailValidator = $emailValidator;
+        return $this;
+    }
+
+    public function setUsernameValidator($usernameValidator)
+    {
+        $this->usernameValidator = $usernameValidator;
+        $this->initLate(); // yuck
         return $this;
     }
 }
