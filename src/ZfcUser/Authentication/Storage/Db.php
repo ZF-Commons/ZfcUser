@@ -49,7 +49,7 @@ class Db implements Storage
 
         $identity = $this->getStorage()->read();
 
-        if (is_int($identity)) {
+        if (is_int($identity) || is_scalar($identity)) {
             $identity = $this->getMapper()->findById($identity);
         }
 
@@ -58,7 +58,7 @@ class Db implements Storage
         } else {
             $this->resolvedIdentity = null;
         }
-
+        
         return $this->resolvedIdentity;
     }
 

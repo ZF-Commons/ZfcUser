@@ -78,6 +78,7 @@ return array(
                 'zfcuser_write_db'                 => 'Zend\Db\Adapter\DiPdoMysql',
                 'zfcuser_read_db'                  => 'zfcuser_write_db',
                 'zfcuser_doctrine_em'              => 'doctrine_em',
+                'zfcuser_mongo_dm'                 => 'mongo_dm',
                 'zfcuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
                 'zfcuser_controller_plugin_broker' => 'Zend\Mvc\Controller\PluginBroker',
                 'zfcuser_controller_plugin_loader' => 'Zend\Mvc\Controller\PluginLoader',
@@ -173,19 +174,9 @@ return array(
             'mongo_driver_chain' => array(
                 'parameters' => array(
                     'drivers' => array(
-                        'zfcuser_annotation_driver' => array(
-                            'class'     => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
-                            'namespace' => 'ZfcUser\Document',
-                            'paths'     => array(__DIR__ . '/src/ZfcUser/Document')
-                        ),
-                        'zfcuserbase_annotation_driver' => array(
-                            'class'     => 'Doctrine\ODM\MongoDB\Mapping\Driver\AnnotationDriver',
-                            'namespace' => 'ZfcUser\ModelBase',
-                            'paths'     => array(__DIR__ . '/src/ZfcUser/ModelBase')
-                        ),
-                        'zfcuserbase_xml_driver' => array(
+                        'zfcuser_xml_driver' => array(
                             'class'          => 'Doctrine\ODM\MongoDB\Mapping\Driver\XmlDriver',
-                            'namespace'      => 'ZfcUser\ModelBase',
+                            'namespace'      => 'ZfcUser\Document',
                             'paths'          => array(__DIR__ . '/xml'),
                             'file_extension' => '.mongodb.xml',
                         ),
@@ -199,9 +190,15 @@ return array(
                             'class'     => 'Doctrine\ORM\Mapping\Driver\XmlDriver',
                             'namespace' => 'ZfcUser\Entity',
                             'paths'     => array(__DIR__ . '/xml'),
+                            'file_extension' => '.orm.xml',
                         ),
                     ),
                 )
+            ),
+            'ZfcUser\Mapper\UserMongoDB' => array(
+                'parameters' => array(
+                    'dm' => 'zfcuser_mongo_dm',
+                ),
             ),
             'ZfcUser\Mapper\UserDoctrine' => array(
                 'parameters' => array(
@@ -212,6 +209,11 @@ return array(
                 'parameters' => array(
                     'readAdapter'  => 'zfcuser_read_db',
                     'writeAdapter' => 'zfcuser_write_db',
+                ),
+            ),
+            'ZfcUser\Mapper\UserMetaMongoDB' => array(
+                'parameters' => array(
+                    'dm' => 'zfcuser_mongo_dm',
                 ),
             ),
             'ZfcUser\Mapper\UserMetaDoctrine' => array(

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
+                  http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+
+    <mapped-superclass name="ZfcUser\Entity\UserMetaMappedSuperClass">
+
+        <id name="user" association-key="true" />
+        <many-to-one field="user" column="user_id" target-entity="ZfcUser\Model\UserInterface" >
+            <join-column name="user_id" referenced-column-name="user_id" />
+        </many-to-one>
+        <id name="metaKey" type="string" column="meta_key" />
+        <field name="meta" column="meta" type="text" />
+
+    </mapped-superclass>
+
+</doctrine-mapping>
