@@ -6,18 +6,17 @@ Introduction
 ------------
 
 ZfcUser is a user registration and authentication module for Zend Framework 2.
-Out of the box, ZfcUser works with Zend\Db, however adapter modules are
-available for Doctrine2 ORM and the Doctrine2
-which can utilize either Doctrine2 or Zend\Db. It provides the foundations
-for adding user authentication and registration to your ZF2 site. It is built to
-be very simple and easily to extend.
+Out of the box, ZfcUser works with Zend\Db, however alternative storage adapter
+modules are available (see below). ZfcUser provides the foundations for adding
+user authentication and registration to your ZF2 site. It is designed to be very
+simple and easily to extend.
 
 Storage Adapter Modules
 -----------------------
 
 By default, ZfcUser ships with support for using Zend\Db for persisting users.
-However, by installing an alternative storage adapter module, you can take
-advantage of other methods of persisting users:
+However, by installing an optional alternative storage adapter module, you can
+take advantage of other methods of persisting users:
 
 - [ZfcUserDoctrineORM](https://github.com/ZF-Commons/ZfcUserDoctrineORM) - Doctrine2 ORM
 - [ZfcUserDoctrineMongoODM](https://github.com/ZF-Commons/ZfcUserDoctrineMongoODM) - Doctrine2 MongoDB ODM
@@ -27,7 +26,6 @@ Requirements
 
 * [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
 * [ZfcBase](https://github.com/ZF-Commons/ZfcBase) (latest master).
-* [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) (optional).
 
 Features / Goals
 ----------------
@@ -36,8 +34,8 @@ Features / Goals
   username and use strictly email) [COMPLETE]
 * User registration [COMPLETE]
 * Forms protected against CSRF [COMPLETE]
+* Out-of-the-box support for Doctrine2 _and_ Zend\Db [COMPLETE]
 * Registration form protected with CAPTCHA [IN PROGRESS] \(Needs more options\)
-* Out-of-the-box support for Doctrine2 _and_ Zend\Db [IN PROGRESS]
 * Robust event system to allow for extending [IN PROGRESS]
 * Support for additional authentication mechanisms via plugins (Google,
   Facebook, LDAP, etc) [INCOMPLETE]
@@ -53,20 +51,19 @@ Installation
 1. Install the [ZfcBase](https://github.com/ZF-Commons/ZfcBase) ZF2 module
    by cloning it into `./vendor/` and enabling it in your
    `application.config.php` file.
-2. Clone this project into your `./vendors/` directory and enable it in your
+2. Clone this project into your `./vendor/` directory and enable it in your
    `application.config.php` file.
-3. Import the SQL schema located in `./vendors/ZfcUser/data/schema.sql`.
-4. Copy `./vendors/ZfcUser/config/module.zfcuser.config.php.dist` to
+3. Import the SQL schema located in `./vendor/ZfcUser/data/schema.sql`.
+4. Copy `./vendor/ZfcUser/config/module.zfcuser.config.php.dist` to
    `./config/autoload/module.zfcuser.config.php`.
-5. Follow the **Post-Install** instructions below for your preferred database
-   access layer (Doctrine2 or Zend\Db)
 
-### Post-Install: Doctrine2
+### Post-Install: Doctrine2 ORM
 
-1. Install and configure the [SpiffyDoctrine](https://github.com/SpiffyJr/SpiffyDoctrine) ZF2
-   module per the [installation instructions](https://github.com/SpiffyJr/SpiffyDoctrine/blob/master/docs/INSTALL.md).
+Coming soon...
 
-Navigate to http://yourproject/user and you should land on a login page.
+### Post-Install: Doctrine2 MongoDB ODM
+
+Coming soon...
 
 ### Post-Install: Zend\Db
 
@@ -95,11 +92,8 @@ Navigate to http://yourproject/user and you should land on a login page.
 
 2. Now, specify the DI alias for your PDO connection in
    `./configs/autoload/module.zfcuser.config.php`, under the 'pdo' setting.
-   If you created the `./configs/autoload/database.config.php` file in the
+   If you created the `./config/autoload/database.config.php` file in the
    previous step, the alias you'll specify is 'masterdb'.
-
-3. Finally, in `./config/autoload/module.zfcuser.config.php`, change the value
-   of the `db_abstraction` setting from 'doctrine' to 'zend_db'.
 
 Navigate to http://yourproject/user and you should land on a login page.
 
@@ -169,77 +163,3 @@ The following options are available:
 - **sha512_rounds** - Only used if `password_hash_algorithm` is set to `sha512`.
   This should be an integer between 1000 and 999,999,999. The number represents
   the iteration count used for hashing. Default is `5000`.
-
-Overriding / extending the User entity
---------------------------------------
-
-Sometimes you may want to override the default user entity with your own. With
-ZfcUser, this is very easy.
-
-First, create your extended User entity:
-
-    <?php
-    // ./module/Application/src/Application/ZfcUser/Model/User.php
-
-    namespace Application\ZfcUser\Model;
-
-    use Doctrine\ORM\Mapping as ORM,
-        ZfcUser\ModelBase\UserBase;
-
-    /**
-     * @ORM\Entity
-     * @ORM\Table(name="user")
-     */
-    class User extends UserBase
-    {
-        /**
-         * You can add more stuff to the User entity here.
-         */
-    }
-
-Next, tell ZfcUser to utilize your new entity class:
-
-    // ./config/autoload/module.zfcuser.config.php
-    'user_model_class' => 'Application\ZfcUser\Model\User',
-
-If you're using Doctrine2, you'll also need to override the ZfcUser entity path:
-
-    // ./config/autoload/module.zfcuser.custom.config.php (New file)
-    <?php
-    return array(
-        'di' => array(
-            'instance' => array(
-                'doctrine_driver_chain' => array(
-                    'parameters' => array(
-                        'drivers' => array(
-                            'zfcuser_annotationdriver' => array(
-                                'class'     => 'Doctrine\ORM\Mapping\Driver\AnnotationDriver',
-                                'namespace' => 'Application\ZfcUser\Model',
-                                'paths'     => array(dirname(__DIR__) . '/module/Application/src/Application/ZfcUser/Model'),
-                            ),
-                        ),
-                    ),
-                ),
-            ),
-        ),
-    );
-
-Common Use-Cases
-----------------
-
-### Checking if a user is logged in from an ActionController
-
-    if ($this->getLocator()->get('zfcuser_user_service')->getAuthService()->hasIdentity()) {
-        //...
-    }
-
-### Retrieving a user's identity from an ActionController
-
-    $user = $this->getLocator()->get('zfcuser_user_service')->getAuthService()->getIdentity();
-    return array('user' => $user);
-
-**Note:** `getIdentity()` returns an instance of `ZfcUser\Entity\User`.
-
-### Logging a user out from an ActionController
-
-    $this->getLocator()->get('zfcuser_user_service')->getAuthService()->clearIdentity();
