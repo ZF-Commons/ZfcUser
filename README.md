@@ -5,10 +5,22 @@ Version 0.0.1 Created by Evan Coury and the ZF-Commons team
 Introduction
 ------------
 
-ZfcUser is a user registration and authentication module for Zend Framework 2,
+ZfcUser is a user registration and authentication module for Zend Framework 2.
+Out of the box, ZfcUser works with Zend\Db, however adapter modules are
+available for Doctrine2 ORM and the Doctrine2
 which can utilize either Doctrine2 or Zend\Db. It provides the foundations
 for adding user authentication and registration to your ZF2 site. It is built to
 be very simple and easily to extend.
+
+Storage Adapter Modules
+-----------------------
+
+By default, ZfcUser ships with support for using Zend\Db for persisting users.
+However, by installing an alternative storage adapter module, you can take
+advantage of other methods of persisting users:
+
+- [ZfcUserDoctrineORM](https://github.com/ZF-Commons/ZfcUserDoctrineORM) - Doctrine2 ORM
+- [ZfcUserDoctrineMongoODM](https://github.com/ZF-Commons/ZfcUserDoctrineMongoODM) - Doctrine2 MongoDB ODM
 
 Requirements
 ------------

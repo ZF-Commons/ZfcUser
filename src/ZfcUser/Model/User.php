@@ -2,42 +2,14 @@
 
 namespace ZfcUser\Model;
 
-use DateTime,
-    ZfcBase\Model\ModelAbstract;
-
-class User extends ModelAbstract implements UserInterface
+interface User
 {
-    protected $userId;
-
-    protected $username;
-
-    protected $email;
-
-    protected $displayName;
-
-    protected $password;
-
-    protected $lastLogin;
-
-    protected $lastIp;
-
-    protected $registerTime;
-
-    protected $registerIp;
-
-    protected $active;
-
-    protected $enabled;
- 
     /**
      * Get userId.
      *
      * @return int userId
      */
-    public function getUserId()
-    {
-        return $this->userId;
-    }
+    public function getUserId();
  
     /**
      * Set userId.
@@ -45,21 +17,14 @@ class User extends ModelAbstract implements UserInterface
      * @param int $userId the value to be set
      * @return User
      */
-    public function setUserId($userId)
-    {
-        $this->userId = (int) $userId;
-        return $this;
-    }
+    public function setUserId($userId);
  
     /**
      * Get username.
      *
      * @return string username
      */
-    public function getUsername()
-    {
-        return $this->username;
-    }
+    public function getUsername();
  
     /**
      * Set username.
@@ -67,21 +32,14 @@ class User extends ModelAbstract implements UserInterface
      * @param string $username the value to be set
      * @return User
      */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-        return $this;
-    }
+    public function setUsername($username);
  
     /**
      * Get email.
      *
      * @return string email
      */
-    public function getEmail()
-    {
-        return $this->email;
-    }
+    public function getEmail();
  
     /**
      * Set email.
@@ -89,28 +47,14 @@ class User extends ModelAbstract implements UserInterface
      * @param string $email the value to be set
      * @return User
      */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-        return $this;
-    }
+    public function setEmail($email);
  
     /**
      * Get displayName.
      *
      * @return string displayName
      */
-    public function getDisplayName()
-    {
-        if ($this->displayName !== null) {
-            return $this->displayName;
-        } elseif ($this->username !== null) {
-            return $this->username;
-        } elseif ($this->email !== null) {
-            return $this->email;
-        }
-        return null;
-    }
+    public function getDisplayName();
  
     /**
      * Set displayName.
@@ -118,21 +62,14 @@ class User extends ModelAbstract implements UserInterface
      * @param string $displayName the value to be set
      * @return User
      */
-    public function setDisplayName($displayName)
-    {
-        $this->displayName = $displayName;
-        return $this;
-    }
+    public function setDisplayName($displayName);
  
     /**
      * Get password.
      *
      * @return string password
      */
-    public function getPassword()
-    {
-        return $this->password;
-    }
+    public function getPassword();
  
     /**
      * Set password.
@@ -140,21 +77,14 @@ class User extends ModelAbstract implements UserInterface
      * @param string $password the value to be set
      * @return User
      */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-        return $this;
-    }
+    public function setPassword($password);
  
     /**
      * Get lastLogin.
      *
      * @return DateTime lastLogin
      */
-    public function getLastLogin()
-    {
-        return $this->lastLogin;
-    }
+    public function getLastLogin();
  
     /**
      * Set lastLogin.
@@ -162,15 +92,7 @@ class User extends ModelAbstract implements UserInterface
      * @param mixed $lastLogin the value to be set
      * @return User
      */
-    public function setLastLogin($lastLogin)
-    {
-        if ($lastLogin instanceof DateTime) {
-            $this->lastLogin = $lastLogin;
-        } else {
-            $this->lastLogin = new DateTime($lastLogin);
-        }
-        return $this;
-    }
+    public function setLastLogin($lastLogin);
  
     /**
      * Get lastIp.
@@ -179,13 +101,7 @@ class User extends ModelAbstract implements UserInterface
      * @param bool $long
      * @return lastIp
      */
-    public function getLastIp($long = false)
-    {
-        if (true === $long) {
-            return $this->lastIp;
-        }
-        return long2ip($this->lastIp);
-    }
+    public function getLastIp($long = false);
  
     /**
      * Set lastIp.
@@ -194,21 +110,14 @@ class User extends ModelAbstract implements UserInterface
      * @param $lastIp the value to be set
      * @return User
      */
-    public function setLastIp($lastIp)
-    {
-        $this->lastIp = ip2long($lastIp);
-        return $this;
-    }
+    public function setLastIp($lastIp);
  
     /**
      * Get registerTime.
      *
      * @return DateTime registerTime
      */
-    public function getRegisterTime()
-    {
-        return $this->registerTime;
-    }
+    public function getRegisterTime();
  
     /**
      * Set registerTime.
@@ -216,15 +125,7 @@ class User extends ModelAbstract implements UserInterface
      * @param string $registerTime the value to be set
      * @return User
      */
-    public function setRegisterTime($registerTime)
-    {
-        if ($registerTime instanceof DateTime) {
-            $this->registerTime = $registerTime;
-        } else {
-            $this->registerTime = new DateTime($registerTime);
-        }
-        return $this;
-    }
+    public function setRegisterTime($registerTime);
  
     /**
      * Get registerIp.
@@ -233,13 +134,7 @@ class User extends ModelAbstract implements UserInterface
      * @param bool $long
      * @return registerIp
      */
-    public function getRegisterIp($long = false)
-    {
-        if (true === $long) {
-            return $this->registerIp;
-        }
-        return long2ip($this->registerIp);
-    }
+    public function getRegisterIp($long = false);
  
     /**
      * Set registerIp.
@@ -248,51 +143,49 @@ class User extends ModelAbstract implements UserInterface
      * @param $registerIp the value to be set
      * @return User
      */
-    public function setRegisterIp($registerIp)
-    {
-        $this->registerIp = ip2long($registerIp);
-        return $this;
-    }
+    public function setRegisterIp($registerIp);
  
     /**
      * Get active.
-     *
-     * @return bool active
+     * 
+     * @return bool
      */
-    public function getActive()
-    {
-        return $this->active;
-    }
+    public function getActive();
  
     /**
      * Set active.
      *
      * @param bool $active the value to be set
      */
-    public function setActive($active)
-    {
-        $this->active = $active;
-        return $this;
-    }
+    public function setActive($active);
  
     /**
      * Get enabled.
      *
      * @return bool enabled
      */
-    public function getEnabled()
-    {
-        return $this->enabled;
-    }
+    public function getEnabled();
  
     /**
      * Set enabled.
      *
      * @param bool $enabled the value to be set
      */
-    public function setEnabled($enabled)
-    {
-        $this->enabled = $enabled;
-        return $this;
-    }
+    public function setEnabled($enabled);
+
+    /**
+     * Convert the model to an array 
+     * 
+     * @return array
+     */
+    public function toArray();
+
+    /**
+     * Convert an array into a model instance 
+     * 
+     * @param array $array 
+     * @static
+     * @return User
+     */
+    public static function fromArray($array);
 }

@@ -7,8 +7,8 @@ use Zend\Authentication\AuthenticationService,
     Zend\EventManager\ListenerAggregate,
     DateTime,
     ZfcUser\Util\Password,
-    ZfcUser\Mapper\UserInterface as UserMapper,
-    ZfcUser\Mapper\UserMetaInterface as UserMetaMapper,
+    ZfcUser\Model\Mapper\User as UserMapper,
+    ZfcUser\Model\Mapper\UserMeta as UserMetaMapper,
     ZfcUser\Module as ZfcUser,
     ZfcBase\EventManager\EventProvider;
 
@@ -51,7 +51,7 @@ class User extends EventProvider
      * createFromForm 
      * 
      * @param Form $form 
-     * @return ZfcUser\Entity\User
+     * @return ZfcUser\Model\User
      */
     public function createFromForm(Form $form)
     {

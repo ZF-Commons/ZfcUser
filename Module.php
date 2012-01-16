@@ -4,8 +4,6 @@ namespace ZfcUser;
 
 use Zend\Module\Manager,
     Zend\EventManager\StaticEventManager,
-    ZfcUser\Event\ResolveTargetEntityListener,
-    Doctrine\ORM\Events,
     Zend\Module\Consumer\AutoloaderProvider;
 
 class Module implements AutoloaderProvider
@@ -15,8 +13,6 @@ class Module implements AutoloaderProvider
     public function init(Manager $moduleManager)
     {
         $moduleManager->events()->attach('loadModules.post', array($this, 'modulesLoaded'));
-        $events = StaticEventManager::getInstance();
-        $events->attach('bootstrap', 'bootstrap', array($this, 'attachDoctrineEvents'), 100);
     }
 
     public function getAutoloaderConfig()
@@ -42,26 +38,6 @@ class Module implements AutoloaderProvider
     {
         $config = $e->getConfigListener()->getMergedConfig();
         static::$options = $config['zfcuser'];
-    }
-
-    public function attachDoctrineEvents($e)
-    {
-        if (('ZfcUser\Model\User' === static::getOption('user_model_class'))
-            || ('doctrine' !== static::getOption('db_abstraction'))
-        ) {
-            return;
-        }
-        $app      = $e->getParam('application');
-        $locator  = $app->getLocator();
-        $em       = $locator->get('zfcuser_doctrine_em');
-        $evm      = $em->getEventManager();
-        $listener = new ResolveTargetEntityListener;
-        $listener->addResolveTargetEntity(
-            'ZfcUser\Model\UserInterface',
-            static::getOption('user_model_class'),
-            array()
-        );
-        $evm->addEventListener(Events::loadClassMetadata, $listener);
     }
 
     /**

@@ -3,7 +3,7 @@
 namespace ZfcUser\Authentication\Storage;
 
 use Zend\Authentication\Storage,
-    ZfcUser\Mapper\UserInterface as UserMapper;
+    ZfcUser\Model\Mapper\User as UserMapper;
 
 class Db implements Storage
 {

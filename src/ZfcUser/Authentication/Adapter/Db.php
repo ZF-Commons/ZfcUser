@@ -5,7 +5,7 @@ namespace ZfcUser\Authentication\Adapter;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent,
     Zend\Authentication\Result as AuthenticationResult,
     ZfcUser\Module as ZfcUser,
-    ZfcUser\Mapper\UserInterface as UserMapper,
+    ZfcUser\Model\Mapper\User as UserMapper,
     ZfcUser\Util\Password,
     DateTime;
 

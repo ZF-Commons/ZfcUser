@@ -2,52 +2,33 @@
 /**
  * ZfcUser Configuration
  *
- * If you have a ./configs/autoload/ directory set up for your project, you can 
+ * If you have a ./config/autoload/ directory set up for your project, you can 
  * drop this config file in it and change the values as you wish.
  */
 $settings = array(
     /**
-     * Database Abstraction
-     *
-     * Specify which of the database abstraction layers (Doctrine2 or Zend\Db) 
-     * that you would like ZfcUser to utilize.
-     *
-     * Accepted values: 'doctrine' or 'zend_db' 
-     */
-    'db_abstraction' => 'zend_db',
-
-    /**
      * PDO Connection DI alias
      *
-     * If using Zend\Db, please specify the DI alias for the configured PDO 
-     * instance that ZfcUser should use.
+     * Please specify the DI alias for the configured PDO instance that ZfcUser 
+     * should use.
      */
     'zend_db_pdo' => 'CHANGEME',
-
-    /**
-     * Doctrine Entity Manager DI alias
-     *
-     * If using Doctrine2, please specify the DI alias for the Doctrine entity
-     * manager that ZfcUser should use. If using SpiffyDoctrine, this is
-     * probably 'doctrine_em', which is the default value.
-     */
-    'doctrine_em' => 'doctrine_em',
 
     /**
      * User Model Entity Class
      *
      * Name of Entity class to use. Useful for using your own entity class 
-     * instead of the default one provided. Default is ZfcUser\Entity\User. 
+     * instead of the default one provided. Default is ZfcUser\Model\UserBase. 
      */
-    'user_model_class' => 'ZfcUser\Model\User',
+    'user_model_class' => 'ZfcUser\Model\UserBase',
 
     /**
      * UserMeta Model Entity Class
      *
      * Name of Entity class to use. Useful for using your own entity class 
-     * instead of the default one provided. Default is ZfcUser\Entity\UserMeta. 
+     * instead of the default one provided. Default is ZfcUser\Model\UserMetaBase.
      */
-    'usermeta_model_class' => 'ZfcUser\Model\UserMeta',
+    'usermeta_model_class' => 'ZfcUser\Model\UserMetaBase',
 
     /**
      * Enable Username 
@@ -176,10 +157,7 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'zfcuser_pdo'             => $settings['zend_db_pdo'],
-                'zfcuser_doctrine_em'     => $settings['doctrine_em'],
-                'zfcuser_user_mapper'     => ($settings['db_abstraction'] === 'zend_db') ? 'ZfcUser\Mapper\UserZendDb' : 'ZfcUser\Mapper\UserDoctrine',
-                'zfcuser_usermeta_mapper' => ($settings['db_abstraction'] === 'zend_db') ? 'ZfcUser\Mapper\UserMetaZendDb' : 'ZfcUser\Mapper\UserMetaDoctrine',
+                'zfcuser_pdo' => $settings['zend_db_pdo'],
             ),
         ),
     ),

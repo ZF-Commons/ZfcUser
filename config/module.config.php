@@ -72,18 +72,18 @@ return array(
         'instance' => array(
             'alias' => array(
                 'zfcuser'                          => 'ZfcUser\Controller\UserController',
-                'zfcuser_user_mapper'              => 'ZfcUser\Mapper\UserZendDb',
-                'zfcuser_usermeta_mapper'          => 'ZfcUser\Mapper\UserMetaZendDb',
                 'zfcuser_user_service'             => 'ZfcUser\Service\User',
-                'zfcuser_write_db'                 => 'Zend\Db\Adapter\DiPdoMysql',
-                'zfcuser_read_db'                  => 'zfcuser_write_db',
-                'zfcuser_doctrine_em'              => 'doctrine_em',
-                'zfcuser_mongo_dm'                 => 'mongo_dm',
                 'zfcuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
                 'zfcuser_controller_plugin_broker' => 'Zend\Mvc\Controller\PluginBroker',
                 'zfcuser_controller_plugin_loader' => 'Zend\Mvc\Controller\PluginLoader',
                 'zfcuser_uemail_validator'         => 'ZfcUser\Validator\NoRecordExists',
                 'zfcuser_uusername_validator'      => 'ZfcUser\Validator\NoRecordExists',
+
+                // Default Zend\Db
+                'zfcuser_write_db'        => 'Zend\Db\Adapter\DiPdoMysql',
+                'zfcuser_read_db'         => 'zfcuser_write_db',
+                'zfcuser_user_mapper'     => 'ZfcUser\Model\Mapper\UserZendDb',
+                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\Mapper\UserMetaZendDb',
             ),
             'zfcuser' => array(
                 'parameters' => array(
@@ -164,70 +164,25 @@ return array(
             /**
              * Mapper / DB
              */
-
             'zfcuser_write_db' => array(
                 'parameters' => array(
                     'pdo'    => 'zfcuser_pdo',
                     'config' => array(),
                 ),
             ),
-            'mongo_driver_chain' => array(
-                'parameters' => array(
-                    'drivers' => array(
-                        'zfcuser_xml_driver' => array(
-                            'class'          => 'Doctrine\ODM\MongoDB\Mapping\Driver\XmlDriver',
-                            'namespace'      => 'ZfcUser\Document',
-                            'paths'          => array(__DIR__ . '/xml'),
-                            'file_extension' => '.mongodb.xml',
-                        ),
-                    )
-                )
-            ),
-            'orm_driver_chain' => array(
-                'parameters' => array(
-                    'drivers' => array(
-                        'zfcuser_xml_driver' => array(
-                            'class'     => 'Doctrine\ORM\Mapping\Driver\XmlDriver',
-                            'namespace' => 'ZfcUser\Entity',
-                            'paths'     => array(__DIR__ . '/xml'),
-                            'file_extension' => '.orm.xml',
-                        ),
-                    ),
-                )
-            ),
-            'ZfcUser\Mapper\UserMongoDB' => array(
-                'parameters' => array(
-                    'dm' => 'zfcuser_mongo_dm',
-                ),
-            ),
-            'ZfcUser\Mapper\UserDoctrine' => array(
-                'parameters' => array(
-                    'em' => 'zfcuser_doctrine_em',
-                ),
-            ),
-            'ZfcUser\Mapper\UserZendDb' => array(
+            'ZfcUser\Model\Mapper\UserZendDb' => array(
                 'parameters' => array(
                     'readAdapter'  => 'zfcuser_read_db',
                     'writeAdapter' => 'zfcuser_write_db',
                 ),
             ),
-            'ZfcUser\Mapper\UserMetaMongoDB' => array(
-                'parameters' => array(
-                    'dm' => 'zfcuser_mongo_dm',
-                ),
-            ),
-            'ZfcUser\Mapper\UserMetaDoctrine' => array(
-                'parameters' => array(
-                    'em' => 'zfcuser_doctrine_em',
-                ),
-            ),
-            'ZfcUser\Mapper\UserMetaZendDb' => array(
+            'ZfcUser\Model\Mapper\UserMetaZendDb' => array(
                 'parameters' => array(
                     'readAdapter'  => 'zfcuser_read_db',
                     'writeAdapter' => 'zfcuser_write_db',
                 ),
             ),
-            
+
             /**
              * View helper(s)
              */

@@ -1,22 +1,23 @@
 <?php
 
-namespace ZfcUser\Mapper;
+namespace ZfcUser\Model\Mapper;
 
 use ZfcBase\Mapper\DbMapperAbstract,
-    ZfcUser\Module,
-    ZfcUser\Model\UserMetaInterface as UserMetaModelInterface,
+    ZfcUser\Module as ZfcUser,
+    ZfcUser\Model\UserMeta as UserMetaModel,
+    ZfcUser\Model\Mapper\UserMeta as UserMetaMapper,
     ArrayObject;
 
-class UserMetaZendDb extends DbMapperAbstract implements UserMetaInterface
+class UserMetaZendDb extends DbMapperAbstract implements UserMetaMapper
 {
     protected $tableName = 'user_meta';
 
-    public function add(UserMetaModelInterface $userMeta)
+    public function add(UserMetaModel $userMeta)
     {
         return $this->persist($userMeta);
     }
 
-    public function update(UserMetaModelInterface $userMeta)
+    public function update(UserMetaModel $userMeta)
     {
         return $this->persist($userMeta, 'update');
     }
@@ -30,13 +31,13 @@ class UserMetaZendDb extends DbMapperAbstract implements UserMetaInterface
             ->where('meta_key = ?', $metaKey);
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('query' => $sql));
         $row = $db->fetchRow($sql);
-        $userMetaModelClass = Module::getOption('usermeta_model_class');
+        $userMetaModelClass = ZfcUser::getOption('usermeta_model_class');
         $userMeta = $userMetaModelClass::fromArray($row);
         $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $userId, 'row' => $row));
         return $userMeta;
     }
 
-    public function persist(UserMetaModelInterface $userMeta, $mode = 'insert')
+    public function persist(UserMetaModel $userMeta, $mode = 'insert')
     {
         $data = new ArrayObject(array(
             'user_id'  => $userMeta->getUser()->getUserId(),

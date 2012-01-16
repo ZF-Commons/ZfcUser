@@ -3,7 +3,7 @@
 namespace ZfcUser\Validator;
 
 use Zend\Validator\AbstractValidator,
-    ZfcUser\Mapper\UserInterface as UserMapper;
+    ZfcUser\Model\Mapper\User as UserMapper;
 
 abstract class AbstractRecord extends AbstractValidator
 {
