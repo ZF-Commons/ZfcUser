@@ -74,8 +74,6 @@ return array(
                 'zfcuser'                          => 'ZfcUser\Controller\UserController',
                 'zfcuser_user_service'             => 'ZfcUser\Service\User',
                 'zfcuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
-                'zfcuser_controller_plugin_broker' => 'Zend\Mvc\Controller\PluginBroker',
-                'zfcuser_controller_plugin_loader' => 'Zend\Mvc\Controller\PluginLoader',
                 'zfcuser_uemail_validator'         => 'ZfcUser\Validator\NoRecordExists',
                 'zfcuser_uusername_validator'      => 'ZfcUser\Validator\NoRecordExists',
 
@@ -90,15 +88,15 @@ return array(
                     'loginForm'    => 'ZfcUser\Form\Login',
                     'registerForm' => 'ZfcUser\Form\Register',
                     'userService'  => 'ZfcUser\Service\User',
-                    'broker'       => 'zfcuser_controller_plugin_broker',
+                    'broker'       => 'Zend\Mvc\Controller\PluginBroker',
                 ),
             ),
-            'zfcuser_controller_plugin_broker' => array(
+            'Zend\Mvc\Controller\PluginBroker' => array(
                 'parameters' => array(
-                    'loader' => 'zfcuser_controller_plugin_loader',
+                    'loader' => 'Zend\Mvc\Controller\PluginLoader',
                 ),
             ),
-            'zfcuser_controller_plugin_loader' => array(
+            'Zend\Mvc\Controller\PluginLoader' => array(
                 'parameters' => array(
                     'map' => array(
                         'zfcUserAuthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
