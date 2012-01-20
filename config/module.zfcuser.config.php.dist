@@ -2,61 +2,33 @@
 /**
  * ZfcUser Configuration
  *
- * If you have a ./configs/autoload/ directory set up for your project, you can 
+ * If you have a ./config/autoload/ directory set up for your project, you can 
  * drop this config file in it and change the values as you wish.
  */
 $settings = array(
     /**
-     * Database Abstraction
-     *
-     * Specify which of the database abstraction layers (Doctrine2 or Zend\Db) 
-     * that you would like ZfcUser to utilize.
-     *
-     * Accepted values: 'doctrine', 'mongo' or 'zend_db' 
-     */
-    'db_abstraction' => 'zend_db',
-
-    /**
      * PDO Connection DI alias
      *
-     * If using Zend\Db, please specify the DI alias for the configured PDO 
-     * instance that ZfcUser should use.
+     * Please specify the DI alias for the configured PDO instance that ZfcUser 
+     * should use.
      */
     'zend_db_pdo' => 'CHANGEME',
 
     /**
-     * Doctrine Entity Manager DI alias
+     * User Model Entity Class
      *
-     * If using Doctrine 2, please specify the DI alias for the Doctrine entity
-     * manager that ZfcUser should use. If using DoctrineModule, this is
-     * probably 'doctrine_em', which is the default value.
+     * Name of Entity class to use. Useful for using your own entity class 
+     * instead of the default one provided. Default is ZfcUser\Model\UserBase. 
      */
-    'doctrine_em' => 'doctrine_em',
-    
-    /**
-     * Doctrine Document Manager DI alias
-     *
-     * If using Doctrine MongoDB, please specify the DI alias for the Doctrine document
-     * manager that ZfcUser should use. If using DoctrineModule, this is
-     * probably 'mongo_dm', which is the default value.
-     */
-    'mongo_dm' => 'mongo_dm',
-
-    /**
-     * User Model Class
-     *
-     * Name of model class to use. Useful for using your own model class 
-     * instead of the default one provided. Default is ZfcUser\Model\User. 
-     */
-    'user_model_class' => 'ZfcUser\Model\User',
+    'user_model_class' => 'ZfcUser\Model\UserBase',
 
     /**
      * UserMeta Model Entity Class
      *
      * Name of Entity class to use. Useful for using your own entity class 
-     * instead of the default one provided. Default is ZfcUser\Entity\UserMeta. 
+     * instead of the default one provided. Default is ZfcUser\Model\UserMetaBase.
      */
-    'usermeta_model_class' => 'ZfcUser\Model\UserMeta',
+    'usermeta_model_class' => 'ZfcUser\Model\UserMetaBase',
 
     /**
      * Enable Username 
@@ -107,7 +79,7 @@ $settings = array(
      * Zend\Text\Figlet CAPTCHA, but I have plans to make all Zend\Captcha 
      * adapters work.)
      */
-    'registration_form_captcha' => false,
+    'registration_form_captcha' => true,
 
     /**
      * Use Redirect Parameter If Present
@@ -180,31 +152,12 @@ $settings = array(
 /**
  * You do not need to edit below this line
  */
-switch(strtolower($settings['db_abstraction'])) {
-    case 'doctrine':
-        $userMapper     = 'ZfcUserDoctrineORM\Mapper\UserDoctrine';
-        $userMetaMapper = 'ZfcUserDoctrineORM\Mapper\UserMetaDoctrine';
-        break;
-    case 'mongo':
-        $userMapper     = 'ZfcUserDoctrineMongoODM\Mapper\UserMongoDB';
-        $userMetaMapper = 'ZfcUserDoctrineMongoODM\Mapper\UserMetaMongoDB';
-        break;
-    default:
-        $userMapper     = 'ZfcUser\Model\Mapper\UserZendDb';
-        $userMetaMapper = 'ZfcUser\Model\Mapper\UserMetaZendDb';
-        break; 
-}
- 
 return array(
     'zfcuser' => $settings,
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'zfcuser_pdo'             => $settings['zend_db_pdo'],
-                'zfcuser_doctrine_em'     => $settings['doctrine_em'],
-                'zfcuser_mongo_dm'        => $settings['mongo_dm'],
-                'zfcuser_user_mapper'     => $userMapper,
-                'zfcuser_usermeta_mapper' => $userMetaMapper,
+                'zfcuser_pdo' => $settings['zend_db_pdo'],
             ),
         ),
     ),
