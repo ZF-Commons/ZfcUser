@@ -79,6 +79,17 @@ class User extends EventProvider
     }
 
     /**
+     * Get a user entity by their username 
+     * 
+     * @param string $username 
+     * @return ZfcUser\Model\User
+     */
+    public function getByUsername($username)
+    {
+        return $this->userMapper->findByUsername($username);
+    }
+
+    /**
      * setUserMapper 
      * 
      * @param UserMapper $userMapper 
