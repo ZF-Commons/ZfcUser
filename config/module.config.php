@@ -88,12 +88,6 @@ return array(
                     'loginForm'    => 'ZfcUser\Form\Login',
                     'registerForm' => 'ZfcUser\Form\Register',
                     'userService'  => 'ZfcUser\Service\User',
-                    'broker'       => 'Zend\Mvc\Controller\PluginBroker',
-                ),
-            ),
-            'Zend\Mvc\Controller\PluginBroker' => array(
-                'parameters' => array(
-                    'loader' => 'Zend\Mvc\Controller\PluginLoader',
                 ),
             ),
             'Zend\Mvc\Controller\PluginLoader' => array(

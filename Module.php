@@ -50,5 +50,4 @@ class Module implements AutoloaderProvider
         }
         return static::$options[$option];
     }
-
 }
