@@ -3,10 +3,18 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Form,
-    ZfcUser\Module;
+    ZfcUser\Module,
+    Zend\Form\Element\Captcha as Captcha;
 
 class Register extends Base
 {
+    protected $captcha_element= null;
+
+    public function setCaptchaElement(Captcha $captcha_element)
+    {
+        $this->captcha_element= $captcha_element;
+    }
+    
     public function initLate()
     {
         parent::initLate();
@@ -17,17 +25,8 @@ class Register extends Base
         if (!Module::getOption('enable_display_name')) {
             $this->removeElement('display_name');
         }
-        if (Module::getOption('registration_form_captcha')) {
-            $this->addElement('captcha', 'captcha', array(
-                'label'      => 'Please enter the 5 letters displayed below:',
-                'required'   => true,
-                'captcha'    => array(
-                    'captcha' => 'Figlet',
-                    'wordLen' => 5,
-                    'timeout' => 300
-                ),
-                'order'      => 500,
-            ));
+        if (Module::getOption('registration_form_captcha') && $this->captcha_element) {
+            $this->addElement($this->captcha_element, 'captcha');
         }
         $this->getElement('submit')->setLabel('Register');
     }
