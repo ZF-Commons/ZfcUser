@@ -11,8 +11,7 @@ abstract class Password
     {
         if (!$salt) {
             $salt = static::getPreferredSalt();
-        } 
-
+        }
         return crypt($password, $salt);
     }
 
