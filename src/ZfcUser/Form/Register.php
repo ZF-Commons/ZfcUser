@@ -25,22 +25,7 @@ class Register extends Base
         if (!Module::getOption('enable_display_name')) {
             $this->removeElement('display_name');
         }
-        if (Module::getOption('registration_form_captcha')) {
-            if($this->captcha_element==null)
-            {
-                $this->captcha_element= new Captcha('captcha', 
-                    array(
-                        'label'      => 'Please enter the 5 letters displayed below:',
-                        'required'   => true,
-                        'captcha'    => array(
-                            'captcha' => 'Figlet',
-                            'wordlen'=>5,
-                            'timeout'=>300,
-                        ),
-                        'order'      => 500,
-                    )
-                );
-            }
+        if (Module::getOption('registration_form_captcha') && $this->captcha_element) {
             $this->addElement($this->captcha_element, 'captcha');
         }
         $this->getElement('submit')->setLabel('Register');
