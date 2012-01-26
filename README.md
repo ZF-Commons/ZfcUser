@@ -173,35 +173,35 @@ out the captcha engine with DI.  For example, to change to Recaptcha, you would
 add this to one of your configuration files (global.config.php,
 module.config.php, or a dedicated recaptcha.config.php):
 
-    <?php
-    // ./config/autoload/recaptcha.config.php
-    return array(
-        'di'=> array(
-            'instance'=>array(
-                'alias'=>array(
-                    // OTHER ELEMENTS....
-                    'recaptcha_element' => 'Zend\Form\Element\Captcha',
-                ),
-                'recaptcha_element' => array(
-                    'parameters' => array(
-                        'spec' => 'captcha',
-                        'options'=>array(
-                            'label'      => '',
-                            'required'   => true,
-                            'order'      => 500,
-                            'captcha'    => array(
-                                'captcha' => 'ReCaptcha',
-                                'privkey' => RECAPTCHA_PRIVATE_KEY,
-                                'pubkey'  => RECAPTCHA_PUBLIC_KEY,
+        <?php
+        // ./config/autoload/recaptcha.config.php
+        return array(
+            'di'=> array(
+                'instance'=>array(
+                    'alias'=>array(
+                        // OTHER ELEMENTS....
+                        'recaptcha_element' => 'Zend\Form\Element\Captcha',
+                    ),
+                    'recaptcha_element' => array(
+                        'parameters' => array(
+                            'spec' => 'captcha',
+                            'options'=>array(
+                                'label'      => '',
+                                'required'   => true,
+                                'order'      => 500,
+                                'captcha'    => array(
+                                    'captcha' => 'ReCaptcha',
+                                    'privkey' => RECAPTCHA_PRIVATE_KEY,
+                                    'pubkey'  => RECAPTCHA_PUBLIC_KEY,
+                                ),
                             ),
                         ),
                     ),
-                ),
-                'ZfcUser\Form\Register' => array(
-                    'parameters' => array(
-                        'captcha_element'=>'recaptcha_element',
+                    'ZfcUser\Form\Register' => array(
+                        'parameters' => array(
+                            'captcha_element'=>'recaptcha_element',
+                        ),
                     ),
                 ),
             ),
-        ),
-    );
+        );
