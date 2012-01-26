@@ -12,12 +12,6 @@ abstract class Password
         if (!$salt) {
             $salt = static::getPreferredSalt();
         } 
-		else if(strlen($salt)==32 && preg_match('#^[a-f0-9]{32}$#i', $salt))
-		{
-			// $salt is a legacy password- an md5 one.
-			// this will be updated with the "New" password
-			return md5($password);
-		}
 
         return crypt($password, $salt);
     }
