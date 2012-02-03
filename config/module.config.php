@@ -76,6 +76,7 @@ return array(
                 'zfcuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
                 'zfcuser_uemail_validator'         => 'ZfcUser\Validator\NoRecordExists',
                 'zfcuser_uusername_validator'      => 'ZfcUser\Validator\NoRecordExists',
+                'zfcuser_captcha_element'          => 'Zend\Form\Element\Captcha',
 
                 // Default Zend\Db
                 'zfcuser_write_db'        => 'Zend\Db\Adapter\DiPdoMysql',
@@ -83,17 +84,26 @@ return array(
                 'zfcuser_user_mapper'     => 'ZfcUser\Model\Mapper\UserZendDb',
                 'zfcuser_usermeta_mapper' => 'ZfcUser\Model\Mapper\UserMetaZendDb',
             ),
+            'zfcuser_captcha_element' => array(
+                'parameters' => array(
+                    'spec' => 'captcha',
+                    'options'=>array(
+                        'label'      => 'Please enter the 5 letters displayed below:',
+                        'required'   => true,
+                        'captcha'    => array(
+                            'captcha' => 'Figlet',
+                            'wordlen' => 5,
+                            'timeout '=> 300,
+                        ),
+                        'order'      => 500,
+                    ),
+                ),
+            ),
             'zfcuser' => array(
                 'parameters' => array(
                     'loginForm'    => 'ZfcUser\Form\Login',
                     'registerForm' => 'ZfcUser\Form\Register',
                     'userService'  => 'ZfcUser\Service\User',
-                    'broker'       => 'Zend\Mvc\Controller\PluginBroker',
-                ),
-            ),
-            'Zend\Mvc\Controller\PluginBroker' => array(
-                'parameters' => array(
-                    'loader' => 'Zend\Mvc\Controller\PluginLoader',
                 ),
             ),
             'Zend\Mvc\Controller\PluginLoader' => array(
@@ -140,6 +150,7 @@ return array(
                 'parameters' => array(
                     'emailValidator'    => 'zfcuser_uemail_validator',
                     'usernameValidator' => 'zfcuser_uusername_validator',
+                    'captcha_element'   => 'zfcuser_captcha_element'
                 ),
             ),
             'zfcuser_uemail_validator' => array(
