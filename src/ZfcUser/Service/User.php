@@ -29,6 +29,11 @@ class User extends EventProvider
      */
     protected $resolvedIdentity;
 
+    /**
+     * @var authService
+     */
+    protected $authService;
+
     public function updateMeta($key, $value)
     {
         $user = $this->getAuthService()->getIdentity();
@@ -48,9 +53,9 @@ class User extends EventProvider
     }
 
     /**
-     * createFromForm 
-     * 
-     * @param Form $form 
+     * createFromForm
+     *
+     * @param Form $form
      * @return ZfcUser\Model\User
      */
     public function createFromForm(Form $form)
@@ -79,9 +84,9 @@ class User extends EventProvider
     }
 
     /**
-     * Get a user entity by their username 
-     * 
-     * @param string $username 
+     * Get a user entity by their username
+     *
+     * @param string $username
      * @return ZfcUser\Model\User
      */
     public function getByUsername($username)
@@ -90,9 +95,9 @@ class User extends EventProvider
     }
 
     /**
-     * setUserMapper 
-     * 
-     * @param UserMapper $userMapper 
+     * setUserMapper
+     *
+     * @param UserMapper $userMapper
      * @return User
      */
     public function setUserMapper(UserMapper $userMapper)
@@ -102,9 +107,9 @@ class User extends EventProvider
     }
 
     /**
-     * setUserMetaMapper 
-     * 
-     * @param UserMetaMapper $userMetaMapper 
+     * setUserMetaMapper
+     *
+     * @param UserMetaMapper $userMetaMapper
      * @return User
      */
     public function setUserMetaMapper(UserMetaMapper $userMetaMapper)
@@ -114,8 +119,8 @@ class User extends EventProvider
     }
 
     /**
-     * getAuthService 
-     * 
+     * getAuthService
+     *
      * @return AuthenticationService
      */
     public function getAuthService()
@@ -127,9 +132,9 @@ class User extends EventProvider
     }
 
     /**
-     * setAuthenticationService 
-     * 
-     * @param AuthenticationService $authService 
+     * setAuthenticationService
+     *
+     * @param AuthenticationService $authService
      * @return User
      */
     public function setAuthService(AuthenticationService $authService)
