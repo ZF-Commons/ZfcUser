@@ -49,7 +49,6 @@ class User extends EventProvider
     }
 
     /**
-     * createFromForm 
      * 
      * @param Form $form 
      * @return ZfcUser\Model\User
