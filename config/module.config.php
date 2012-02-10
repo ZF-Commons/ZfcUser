@@ -14,59 +14,6 @@ return array(
         'sha512_counds'             => 5000,       // integer between 1000 and 999,999,999
     ),
     'routes' => array(
-        'zfcuser' => array(
-            'type' => 'Literal',
-            'priority' => 1000,
-            'options' => array(
-                'route' => '/user',
-                'defaults' => array(
-                    'controller' => 'zfcuser',
-                ),
-            ),
-            'may_terminate' => true,
-            'child_routes' => array(
-                'login' => array(
-                    'type' => 'Literal',
-                    'options' => array(
-                        'route' => '/login',
-                        'defaults' => array(
-                            'controller' => 'zfcuser',
-                            'action'     => 'login',
-                        ),
-                    ),
-                ),
-                'authenticate' => array(
-                    'type' => 'Literal',
-                    'options' => array(
-                        'route' => '/authenticate',
-                        'defaults' => array(
-                            'controller' => 'zfcuser',
-                            'action'     => 'authenticate',
-                        ),
-                    ),
-                ),
-                'logout' => array(
-                    'type' => 'Literal',
-                    'options' => array(
-                        'route' => '/logout',
-                        'defaults' => array(
-                            'controller' => 'zfcuser',
-                            'action'     => 'logout',
-                        ),
-                    ),
-                ),
-                'register' => array(
-                    'type' => 'Literal',
-                    'options' => array(
-                        'route' => '/register',
-                        'defaults' => array(
-                            'controller' => 'zfcuser',
-                            'action'     => 'register',
-                        ),
-                    ),
-                ),
-            ),
-        ),
     ),
     'di' => array(
         'instance' => array(
@@ -221,6 +168,70 @@ return array(
             'ZfcUser\View\Helper\ZfcUserIdentity' => array(
                 'parameters' => array(
                     'authService' => 'zfcuser_auth_service',
+                ),
+            ),
+
+            /**
+             * Routes
+             */
+
+            'Zend\Mvc\Router\RouteStack' => array(
+                'parameters' => array(
+                    'routes' => array(
+                        'zfcuser' => array(
+                            'type' => 'Literal',
+                            'priority' => 1000,
+                            'options' => array(
+                                'route' => '/user',
+                                'defaults' => array(
+                                    'controller' => 'zfcuser',
+                                ),
+                            ),
+                            'may_terminate' => true,
+                            'child_routes' => array(
+                                'login' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/login',
+                                        'defaults' => array(
+                                            'controller' => 'zfcuser',
+                                            'action'     => 'login',
+                                        ),
+                                    ),
+                                ),
+                                'authenticate' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/authenticate',
+                                        'defaults' => array(
+                                            'controller' => 'zfcuser',
+                                            'action'     => 'authenticate',
+                                        ),
+                                    ),
+                                ),
+                                'logout' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/logout',
+                                        'defaults' => array(
+                                            'controller' => 'zfcuser',
+                                            'action'     => 'logout',
+                                        ),
+                                    ),
+                                ),
+                                'register' => array(
+                                    'type' => 'Literal',
+                                    'options' => array(
+                                        'route' => '/register',
+                                        'defaults' => array(
+                                            'controller' => 'zfcuser',
+                                            'action'     => 'register',
+                                        ),
+                                    ),
+                                ),
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
