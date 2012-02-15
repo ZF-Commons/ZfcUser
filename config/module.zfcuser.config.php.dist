@@ -70,6 +70,30 @@ $settings = array(
      * Accepted values: boolean true or false
      */
     //'login_after_registration' => true,
+    
+    /**
+     * Register route
+     *
+     * If you want to use a custom route you can change it here. 
+     * Default value is `zfcuser/register
+     */
+    //'route_register' => 'zfcuser/register',
+    
+    /**
+     * Login route
+     *
+     * If you want to use a custom route you can change it here. 
+     * Default value is `zfcuser/login
+     */
+    //'route_login' => 'zfcuser/login',
+
+    /**
+     * User route
+     *
+     * If you want to use a custom route you can change it here. 
+     * Default value is `zfcuser
+     */
+    //'route_user' => 'zfcuser',
 
     /**
      * Registration Form Captcha 
