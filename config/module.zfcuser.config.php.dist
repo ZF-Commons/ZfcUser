@@ -75,7 +75,7 @@ $settings = array(
      * Register route
      *
      * If you want to use a custom route you can change it here. 
-     * Default value is `zfcuser/register
+     * Default value is `zfcuser/register`
      */
     //'route_register' => 'zfcuser/register',
     
@@ -83,7 +83,7 @@ $settings = array(
      * Login route
      *
      * If you want to use a custom route you can change it here. 
-     * Default value is `zfcuser/login
+     * Default value is `zfcuser/login`
      */
     //'route_login' => 'zfcuser/login',
 
@@ -91,7 +91,7 @@ $settings = array(
      * User route
      *
      * If you want to use a custom route you can change it here. 
-     * Default value is `zfcuser
+     * Default value is `zfcuser`
      */
     //'route_user' => 'zfcuser',
 

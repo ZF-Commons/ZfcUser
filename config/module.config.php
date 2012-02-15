@@ -3,7 +3,7 @@ return array(
     'zfcuser' => array(
         'user_model_class'          => 'ZfcUser\Model\UserBase',
         'usermeta_model_class'      => 'ZfcUser\Model\UserMetaBase',
-    	'route_login'               => 'zfcuser/login',
+        'route_login'               => 'zfcuser/login',
         'route_register'            => 'zfcuser/register',
         'route_user'                => 'zfcuser',
         'enable_username'           => false,
