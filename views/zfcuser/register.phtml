@@ -1,7 +1,7 @@
 <h1>Register</h1>
 
 <?php 
-if(!ZfcUser::getOption('enable_registration'))
+if(!\ZfcUser\Module::getOption('enable_registration'))
 {
     print "Registration is disabled";
     return;       
