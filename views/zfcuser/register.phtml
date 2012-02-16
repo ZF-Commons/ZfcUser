@@ -1,2 +1,11 @@
 <h1>Register</h1>
+
+<?php 
+if(!ZfcUser::getOption('enable_registration'))
+{
+    print "Registration is disabled";
+    return;       
+}
+?>
+
 <?php echo $registerForm->setAction($this->url('zfcuser/register'))->setView($this); ?>
