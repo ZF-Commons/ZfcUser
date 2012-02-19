@@ -84,6 +84,38 @@ class User extends EventProvider
     }
 
     /**
+     * @param $userId
+     * @param $code
+     * @return bool
+     */
+    public function activateUser($userId, $code)
+    {
+        if (!ZfcUser::getOption('require_activation')) {
+            return false;
+        }
+
+        $user = $this->userMapper->findById($userId);
+        if (!$user) {
+            return false;
+        }
+
+        $expectedCode = $this->generateActivationCode($user->getEmail());
+        if ($expectedCode != $code) {
+            return false;
+        }
+
+        $user->setActive(true);
+        $this->userMapper->persist($user);
+
+        return true;
+    }
+
+    public function generateActivationCode($email)
+    {
+        return sha1($email);
+    }
+
+    /**
      * Get a user entity by their username
      *
      * @param string $username

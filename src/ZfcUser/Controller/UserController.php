@@ -145,6 +145,23 @@ class UserController extends ActionController
     }
 
     /**
+     * Confirm user email
+     */
+    public function confirmAction()
+    {
+        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+            return $this->redirect()->toRoute('zfcuser');
+        }
+        $event   = $this->getEvent();
+        $matches = $event->getRouteMatch();
+        $user = $matches->getParam('user');
+        $code = $matches->getParam('code');
+        return array(
+            'success' => $this->getUserService()->activateUser($user, $code),
+        );
+    }
+
+    /**
      * Getters/setters for DI stuff
      */
 

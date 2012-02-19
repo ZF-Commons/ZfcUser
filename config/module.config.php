@@ -221,6 +221,22 @@ return array(
                                         ),
                                     ),
                                 ),
+                                'confirm' => array(
+                                     'type'    => 'Segment',
+                                     'options' => array(
+                                         'route'    => '/confirm/:user/:code',
+                                         'constraints' => array(
+                                             'user' => '[a-zA-Z0-9]+',
+                                             'code' => '[a-zA-Z0-9]+',
+                                         ),
+                                         'defaults' => array(
+                                             'controller' => 'zfcuser',
+                                             'action'     => 'confirm',
+                                             'user'       => null,
+                                             'code'       => null,
+                                         ),
+                                     ),
+                                ),
                             ),
                         ),
                     ),
