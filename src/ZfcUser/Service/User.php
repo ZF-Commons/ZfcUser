@@ -9,6 +9,7 @@ use Zend\Authentication\AuthenticationService,
     ZfcUser\Util\Password,
     ZfcUser\Model\Mapper\User as UserMapper,
     ZfcUser\Model\Mapper\UserMeta as UserMetaMapper,
+    ZfcUser\Model\User as UserModel,
     ZfcUser\Module as ZfcUser,
     ZfcBase\EventManager\EventProvider;
 
@@ -108,6 +109,10 @@ class User extends EventProvider
         $this->userMapper->persist($user);
 
         return true;
+    }
+
+    public function sendConfirmation(UserModel $user)
+    {
     }
 
     public function generateActivationCode($email)

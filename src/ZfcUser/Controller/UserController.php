@@ -129,14 +129,19 @@ class UserController extends ActionController
                 $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
                 return $this->redirect()->toRoute('zfcuser/register');
             } else {
-                $this->getUserService()->createFromForm($form);
-                if (ZfcUser::getOption('login_after_registration')) {
-                    $post = $request->post();
-                    $post['identity']   = $post['email'];
-                    $post['credential'] = $post['password'];
-                    return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
+                $user = $this->getUserService()->createFromForm($form);
+                if (ZfcUser::getOption('require_activation')) {
+                    $this->getUserService()->sendConfirmation($user);
+                    return array('success' => true);
+                } else {
+                    if (ZfcUser::getOption('login_after_registration')) {
+                        $post = $request->post();
+                        $post['identity']   = $post['email'];
+                        $post['credential'] = $post['password'];
+                        return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
+                    }
+                    return $this->redirect()->toRoute('zfcuser/login');
                 }
-                return $this->redirect()->toRoute('zfcuser/login');
             }
         }
         return array(
