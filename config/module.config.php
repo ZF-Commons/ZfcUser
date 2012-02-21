@@ -53,6 +53,13 @@ return array(
                     'userService'  => 'ZfcUser\Service\User',
                 ),
             ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'zfcuser' => __DIR__ . '/../view',
+                    ),
+                ),
+            ),
             'Zend\Mvc\Controller\PluginLoader' => array(
                 'parameters' => array(
                     'map' => array(
@@ -142,27 +149,11 @@ return array(
             /**
              * View helper(s)
              */
-
-            'Zend\View\PhpRenderer' => array(
-                'parameters' => array(
-                    'options'  => array(
-                        'script_paths' => array(
-                            'zfcuser' => __DIR__ . '/../views',
-                        ),
-                    ),
-                    'broker' => 'Zend\View\HelperBroker',
-                ),
-            ),
             'Zend\View\HelperLoader' => array(
                 'parameters' => array(
                     'map' => array(
                         'zfcUserIdentity' => 'ZfcUser\View\Helper\ZfcUserIdentity',
                     ),
-                ),
-            ),
-            'Zend\View\HelperBroker' => array(
-                'parameters' => array(
-                    'loader' => 'Zend\View\HelperLoader',
                 ),
             ),
             'ZfcUser\View\Helper\ZfcUserIdentity' => array(
@@ -185,6 +176,7 @@ return array(
                                 'route' => '/user',
                                 'defaults' => array(
                                     'controller' => 'zfcuser',
+                                    'action'     => 'index',
                                 ),
                             ),
                             'may_terminate' => true,
