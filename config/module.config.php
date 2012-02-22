@@ -11,7 +11,7 @@ return array(
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
         'blowfish_cost'             => 10,         // integer between 4 and 31
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        'sha512_counds'             => 5000,       // integer between 1000 and 999,999,999
+        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
     ),
     'routes' => array(
     ),
