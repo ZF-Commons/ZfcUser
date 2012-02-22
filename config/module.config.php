@@ -3,6 +3,7 @@ return array(
     'zfcuser' => array(
         'user_model_class'          => 'ZfcUser\Model\UserBase',
         'usermeta_model_class'      => 'ZfcUser\Model\UserMetaBase',
+        'enable_registration'       => true,
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
