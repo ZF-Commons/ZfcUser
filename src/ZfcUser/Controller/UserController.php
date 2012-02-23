@@ -5,6 +5,7 @@ namespace ZfcUser\Controller;
 use Zend\Mvc\Controller\ActionController,
     Zend\Form\Form,
     Zend\Stdlib\ResponseDescription as Response,
+    Zend\View\Model\ViewModel,
     ZfcUser\Service\User as UserService,
     ZfcUser\Module as ZfcUser;
 
@@ -39,6 +40,7 @@ class UserController extends ActionController
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute('zfcuser/login'); 
         }
+        return new ViewModel();
     }
 
     /**
