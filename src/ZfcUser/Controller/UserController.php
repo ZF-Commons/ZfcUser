@@ -38,7 +38,7 @@ class UserController extends ActionController
     public function indexAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser/login'); 
+            return $this->redirect()->toRoute(ZfcUser::getOption('route_login')); 
         }
         return new ViewModel();
     }
@@ -59,7 +59,7 @@ class UserController extends ActionController
 
         if (!$form->isValid($request->post()->toArray())) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toRoute('zfcuser/login'); 
+            return $this->redirect()->toRoute(ZfcUser::getOption('route_login')); 
         }
         // clear adapters
 
@@ -73,12 +73,12 @@ class UserController extends ActionController
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser/login');
+            return $this->redirect()->toRoute(ZfcUser::getOption('route_login'));
         }
 
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
-        return $this->redirect()->toRoute('zfcuser/login');
+        return $this->redirect()->toRoute(ZfcUser::getOption('route_login'));
     }
 
     /**
@@ -87,7 +87,7 @@ class UserController extends ActionController
     public function authenticateAction()
     {
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser');
+            return $this->redirect()->toRoute(ZfcUser::getOption('router_user'));
         }
         $request = $this->getRequest();
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
@@ -104,14 +104,14 @@ class UserController extends ActionController
         if (!$auth->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
-            return $this->redirect()->toRoute('zfcuser/login');
+            return $this->redirect()->toRoute(ZfcUser::getOption('route_login'));
         }
 
         if (ZfcUser::getOption('use_redirect_parameter_if_present') && $request->post()->get('redirect')) {
             return $this->redirect()->toUrl($request->post()->get('redirect'));
         }
 
-        return $this->redirect()->toRoute('zfcuser');
+        return $this->redirect()->toRoute(ZfcUser::getOption('route_user'));
     }
 
     /**
@@ -120,14 +120,14 @@ class UserController extends ActionController
     public function registerAction()
     {
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser');
+            return $this->redirect()->toRoute(ZfcUser::getOption('router_user'));
         }
         $request = $this->getRequest();
         $form    = $this->getRegisterForm();
         if ($request->isPost()) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
-                return $this->redirect()->toRoute('zfcuser/register');
+                return $this->redirect()->toRoute(ZfcUser::getOption('route_register'));
             } else {
                 $this->getUserService()->createFromForm($form);
                 if (ZfcUser::getOption('login_after_registration')) {
@@ -136,7 +136,7 @@ class UserController extends ActionController
                     $post['credential'] = $post['password'];
                     return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
                 }
-                return $this->redirect()->toRoute('zfcuser/login');
+                return $this->redirect()->toRoute(ZfcUser::getOption('route_login'));
             }
         }
         return array(
