@@ -161,9 +161,9 @@ class UserController extends ActionController
         $matches = $event->getRouteMatch();
         $user = $matches->getParam('user');
         $code = $matches->getParam('code');
-        return array(
+        return new ViewModel(array(
             'success' => $this->getUserService()->activateUser($user, $code),
-        );
+        ));
     }
 
     /**
