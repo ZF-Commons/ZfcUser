@@ -1,10 +1,10 @@
 <article>
     <h1>Account activation</h1>
     <?php if ($success) { ?>
-    <h2>Congratulation!</h2>
-    <p>
-        Account successfuly activated. You can login now.
-    </p>
+        <h2>Congratulation!</h2>
+        <p>
+            Account successfuly activated. You can <a href="<?php echo $this->url('zfcuser/login'); ?>">login</a> now.
+        </p>
     <?php } else { ?>
         <p>
             Username or activation code wrong. Activation failed.
