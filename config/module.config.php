@@ -8,6 +8,10 @@ return array(
         'require_activation'        => false,
         'login_after_registration'  => true,
         'registration_form_captcha' => true,
+        'mail_transport'            => 'Zend\Mail\Transport\Sendmail',
+        'email_activation_from'     => 'no-answer@project.com',
+        'email_activation_subject'  => '[Project] Confirm your email',
+        'email_activation_body'     => 'zfcuser/_activation_email',
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
         'blowfish_cost'             => 10,         // integer between 4 and 31
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999

@@ -91,6 +91,38 @@ $settings = array(
     //'use_redirect_parameter_if_present' => true,
 
     /**
+     * Mail
+     */
+
+    /**
+     * Mail Transport Class
+     *
+     * Name of mail transport class. You can use your own trnsport.
+     * Default is  Zend\Mail\Transport\Sendmail.
+     */
+    //'mail_transport' => 'Zend\Mail\Transport\Sendmail',
+
+    /**
+     * Options for Mail Transport
+     */
+    //'mail_transport_options' => array(),
+
+    /**
+     * Email address for mail field 'From'
+     */
+    //'email_activation_from' => 'no-answer@project.com',
+
+    /**
+     * Subject of activation email
+     */
+    //'email_activation_subject' => '[Project] Confirm your email',
+
+    /**
+     * Template for activation email
+     */
+    //'email_activation_body' => __DIR__ . '/../view/zfcuser/_activation_email.txt',
+
+    /**
      * Password Security
      *
      * DO NOT CHANGE THE PASSWORD HASH SETTINGS FROM THEIR DEFAULTS 

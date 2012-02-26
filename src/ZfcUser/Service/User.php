@@ -5,6 +5,8 @@ namespace ZfcUser\Service;
 use Zend\Authentication\AuthenticationService,
     Zend\Form\Form,
     Zend\EventManager\ListenerAggregate,
+    Zend\Mail\Transport,
+    Zend\Mail\Message as MailMessage,
     DateTime,
     ZfcUser\Util\Password,
     ZfcUser\Model\Mapper\User as UserMapper,
@@ -34,6 +36,21 @@ class User extends EventProvider
      * @var authService
      */
     protected $authService;
+
+    /**
+     * @var \Zend\Di\Locator
+     */
+    protected $locator;
+
+    /**
+     * @var \Zend\Mail\Transport
+     */
+    protected $mailTransport;
+
+    /**
+     * @var \Zend\Mail\Message
+     */
+    protected $message;
 
     public function updateMeta($key, $value)
     {
@@ -111,10 +128,33 @@ class User extends EventProvider
         return true;
     }
 
+    /**
+     * @param \ZfcUser\Model\User $user
+     * @return bool
+     */
     public function sendConfirmation(UserModel $user)
     {
+        $transport = $this->getMailTransport();
+
+        $template = ZfcUser::getOption('email_activation_body');
+        $renderer = $this->getLocator()->get('Zend\View\Renderer\PhpRenderer');
+        $viewParams = array('code' => $this->generateActivationCode($user->getEmail()),
+                            'user' => $user->getUserId());
+        $body = $renderer->render($template, $viewParams);
+
+        $message = $this->getMailMessage()->setTo($user->getEmail())->setBody($body);
+        try {
+            $transport->send($message);
+        } catch (\Exception $e) {
+            return false;
+        }
+        return true;
     }
 
+    /**
+     * @param $email
+     * @return string
+     */
     public function generateActivationCode($email)
     {
         return sha1($email);
@@ -177,6 +217,82 @@ class User extends EventProvider
     public function setAuthService(AuthenticationService $authService)
     {
         $this->authService = $authService;
+        return $this;
+    }
+
+    /**
+     * Retrieve locator instance
+     *
+     * @return \Zend\Di\Locator
+     */
+    public function getLocator()
+    {
+        return $this->locator;
+    }
+
+    /**
+     * Set locator instance
+     *
+     * @param  \Zend\Di\Locator $locator
+     * @return User
+     */
+    public function setLocator(\Zend\Di\Locator $locator)
+    {
+        $this->locator = $locator;
+        return $this;
+    }
+
+    /**
+     * Return instance of mail transport
+     *
+     * @return \Zend\Mail\Transport
+     */
+    protected function getMailTransport()
+    {
+        if (null === $this->mailTransport) {
+            $class = ZfcUser::getOption('mail_transport');
+            $this->mailTransport = new $class;
+        }
+        return $this->mailTransport;
+    }
+
+    /**
+     * Set mail transport instance
+     *
+     * @param \Zend\Mail\Transport $mailTransport
+     * @return User
+     */
+    public function setMailTransport(\Zend\Mail\Transport $mailTransport)
+    {
+        $this->mailTransport = $mailTransport;
+        return $this;
+    }
+
+    /**
+     * Get or prepare mail message
+     *
+     * @return \Zend\Mail\Message
+     */
+    protected function getMailMessage()
+    {
+        if (null === $this->message) {
+            $message = new \Zend\Mail\Message();
+            $message->setFrom(ZfcUser::getOption('email_activation_from'))
+                ->setSubject(ZfcUser::getOption('email_activation_subject'));
+            $this->message = $message;
+        }
+        return $this->message;
+    }
+
+    /**
+     * Set mail message instance
+     *
+     * @param \Zend\Mail\Message $message
+     * @return User
+     */
+    public function setMessage(\Zend\Mail\Message $message)
+    {
+        $this->message = $message;
         return $this;
     }
 }
