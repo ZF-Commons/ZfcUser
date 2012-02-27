@@ -13,8 +13,6 @@ return array(
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
         'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
     ),
-    'routes' => array(
-    ),
     'di' => array(
         'instance' => array(
             'alias' => array(
@@ -26,10 +24,11 @@ return array(
                 'zfcuser_captcha_element'          => 'Zend\Form\Element\Captcha',
 
                 // Default Zend\Db
-                'zfcuser_write_db'        => 'Zend\Db\Adapter\DiPdoMysql',
-                'zfcuser_read_db'         => 'zfcuser_write_db',
                 'zfcuser_user_mapper'     => 'ZfcUser\Model\Mapper\UserZendDb',
                 'zfcuser_usermeta_mapper' => 'ZfcUser\Model\Mapper\UserMetaZendDb',
+                'zfcuser_db_adapter'      => 'Zend\Db\Adapter\Adapter',
+                'zfcuser_user_tg'         => 'Zend\Db\TableGateway\TableGateway',
+                'zfcuser_usermeta_tg'     => 'Zend\Db\TableGateway\TableGateway',
             ),
             'zfcuser_captcha_element' => array(
                 'parameters' => array(
@@ -127,22 +126,44 @@ return array(
             /**
              * Mapper / DB
              */
-            'zfcuser_write_db' => array(
-                'parameters' => array(
-                    'pdo'    => 'zfcuser_pdo',
-                    'config' => array(),
-                ),
-            ),
             'ZfcUser\Model\Mapper\UserZendDb' => array(
                 'parameters' => array(
-                    'readAdapter'  => 'zfcuser_read_db',
-                    'writeAdapter' => 'zfcuser_write_db',
+                    'tableGateway'  => 'zfcuser_user_tg',
                 ),
             ),
             'ZfcUser\Model\Mapper\UserMetaZendDb' => array(
                 'parameters' => array(
-                    'readAdapter'  => 'zfcuser_read_db',
-                    'writeAdapter' => 'zfcuser_write_db',
+                    'tableGateway'  => 'zfcuser_usermeta_tg',
+                ),
+            ),
+            'zfcuser_user_tg' => array(
+                'parameters' => array(
+                    'tableName' => 'user',
+                ),
+            ),
+            'zfcuser_usermeta_tg' => array(
+                'parameters' => array(
+                    'tableName' => 'user_meta',
+                ),
+            ),
+            'Zend\Db\TableGateway\TableGateway' => array(
+                'parameters' => array(
+                    'adapter' => 'zfcuser_db_adapter',
+                ),
+            ),
+            'zfcuser_db_adapter' => array(
+                'parameters' => array(
+                    'driver' => 'Zend\Db\Adapter\Driver\Pdo\Pdo',
+                ),
+            ),
+            'Zend\Db\Adapter\Driver\Pdo\Pdo' => array(
+                'parameters' => array(
+                    'connection' => 'Zend\Db\Adapter\Driver\Pdo\Connection',
+                ),
+            ),
+            'Zend\Db\Adapter\Driver\Pdo\Connection' => array(
+                'parameters' => array(
+                    'connectionInfo' => 'zfcuser_pdo',
                 ),
             ),
 
