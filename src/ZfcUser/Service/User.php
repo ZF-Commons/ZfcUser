@@ -11,6 +11,7 @@ use Zend\Authentication\AuthenticationService,
     ZfcUser\Util\Password,
     ZfcUser\Model\Mapper\User as UserMapper,
     ZfcUser\Model\Mapper\UserMeta as UserMetaMapper,
+    ZfcUser\Model\Mapper\UserActivation as UserActivationMapper,
     ZfcUser\Model\User as UserModel,
     ZfcUser\Module as ZfcUser,
     ZfcBase\EventManager\EventProvider;
@@ -26,6 +27,11 @@ class User extends EventProvider
      * @var UserMetaMapper
      */
     protected $userMetaMapper;
+
+    /**
+     * @var UserActivationMapper
+     */
+    protected $userActivationMapper;
 
     /**
      * @var mixed
@@ -192,6 +198,18 @@ class User extends EventProvider
     public function setUserMetaMapper(UserMetaMapper $userMetaMapper)
     {
         $this->userMetaMapper = $userMetaMapper;
+        return $this;
+    }
+
+    /**
+     * setUserActivationMapper
+     *
+     * @param UserActivationMapper $userActivationMapper
+     * @return User
+     */
+    public function setUserActivationMapper(UserActivationMapper $userActivationMapper)
+    {
+        $this->userActivationMapper = $userActivationMapper;
         return $this;
     }
 
