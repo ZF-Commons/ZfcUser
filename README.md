@@ -39,7 +39,7 @@ Features / Goals
 * Robust event system to allow for extending [IN PROGRESS]
 * Support for additional authentication mechanisms via plugins (Google,
   Facebook, LDAP, etc) [INCOMPLETE]
-* Optional E-mail address verification [INCOMPLETE]
+* Optional E-mail address verification [IN PROGRESS]
 * Forgot Password [INCOMPLETE]
 * Provide ActionController plugin and view helper [INCOMPLETE]
 

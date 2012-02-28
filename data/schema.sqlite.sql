@@ -13,7 +13,21 @@ CREATE TABLE user
     enabled       TINYINT(1) NOT NULL
 );
 
-CREATE TABLE user_meta 
+CREATE TABLE user_activation
+(
+    id            INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+    user_id       INTEGER NOT NULL,
+    token         VARCHAR(16) NOT NULL,
+    request_time  DATETIME DEFAULT NULL,
+    valid_to      DATETIME NOT NULL,
+    request_ip    INTEGER NOT NULL,
+    confirm_time  DATETIME NOT NULL,
+    confirm_ip    INTEGER NOT NULL,
+    active        TINYINT(1) NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user (user_id)
+) ENGINE=InnoDB;
+
+CREATE TABLE user_meta
 (
     meta_key VARCHAR(255) NOT NULL,
     user_id  INTEGER NOT NULL,
