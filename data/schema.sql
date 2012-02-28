@@ -23,7 +23,7 @@ CREATE TABLE user_activation
     request_ip    INTEGER NOT NULL,
     confirm_time  DATETIME NOT NULL,
     confirm_ip    INTEGER NOT NULL,
-    active        TINYINT(1) NOT NULL
+    active        TINYINT(1) NOT NULL,
     KEY `token_uq` (token),
     KEY `fk_user_activation_user` (user_id),
     CONSTRAINT `fk_user_activation_user` FOREIGN KEY (user_id) REFERENCES `user` (user_id)

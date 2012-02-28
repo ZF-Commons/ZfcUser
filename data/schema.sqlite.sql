@@ -23,7 +23,7 @@ CREATE TABLE user_activation
     request_ip    INTEGER NOT NULL,
     confirm_time  DATETIME NOT NULL,
     confirm_ip    INTEGER NOT NULL,
-    active        TINYINT(1) NOT NULL
+    active        TINYINT(1) NOT NULL,
     FOREIGN KEY (user_id) REFERENCES user (user_id)
 ) ENGINE=InnoDB;
 
