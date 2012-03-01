@@ -53,12 +53,22 @@ return array(
                     'userService'  => 'ZfcUser\Service\User',
                 ),
             ),
-            'Zend\View\Resolver\TemplatePathStack' => array(
-                'parameters' => array(
-                    'paths'  => array(
-                        'zfcuser' => __DIR__ . '/../view',
+            'Zend\View\Resolver\AggregateResolver' => array(
+                    'injections' => array(
+                            'Zend\View\Resolver\TemplatePathStack',
                     ),
-                ),
+            ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                    'parameters' => array(
+                            'paths'  => array(
+                                    'zfcuser' => __DIR__ . '/../view',
+                            ),
+                    ),
+            ),
+            'Zend\View\Renderer\PhpRenderer' => array(
+                    'parameters' => array(
+                            'resolver' => 'Zend\View\Resolver\AggregateResolver',
+                    ),
             ),
             'Zend\Mvc\Controller\PluginLoader' => array(
                 'parameters' => array(
