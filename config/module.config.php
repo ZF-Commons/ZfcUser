@@ -11,7 +11,7 @@ return array(
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
         'blowfish_cost'             => 10,         // integer between 4 and 31
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        'sha512_counds'             => 5000,       // integer between 1000 and 999,999,999
+        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
     ),
     'routes' => array(
     ),
@@ -51,6 +51,13 @@ return array(
                     'loginForm'    => 'ZfcUser\Form\Login',
                     'registerForm' => 'ZfcUser\Form\Register',
                     'userService'  => 'ZfcUser\Service\User',
+                ),
+            ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'zfcuser' => __DIR__ . '/../view',
+                    ),
                 ),
             ),
             'Zend\Mvc\Controller\PluginLoader' => array(
@@ -142,27 +149,11 @@ return array(
             /**
              * View helper(s)
              */
-
-            'Zend\View\PhpRenderer' => array(
-                'parameters' => array(
-                    'options'  => array(
-                        'script_paths' => array(
-                            'zfcuser' => __DIR__ . '/../views',
-                        ),
-                    ),
-                    'broker' => 'Zend\View\HelperBroker',
-                ),
-            ),
             'Zend\View\HelperLoader' => array(
                 'parameters' => array(
                     'map' => array(
                         'zfcUserIdentity' => 'ZfcUser\View\Helper\ZfcUserIdentity',
                     ),
-                ),
-            ),
-            'Zend\View\HelperBroker' => array(
-                'parameters' => array(
-                    'loader' => 'Zend\View\HelperLoader',
                 ),
             ),
             'ZfcUser\View\Helper\ZfcUserIdentity' => array(
@@ -185,6 +176,7 @@ return array(
                                 'route' => '/user',
                                 'defaults' => array(
                                     'controller' => 'zfcuser',
+                                    'action'     => 'index',
                                 ),
                             ),
                             'may_terminate' => true,
