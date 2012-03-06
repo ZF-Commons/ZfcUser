@@ -28,8 +28,8 @@ return array(
                 // Default Zend\Db
                 'zfcuser_write_db'        => 'Zend\Db\Adapter\DiPdoMysql',
                 'zfcuser_read_db'         => 'zfcuser_write_db',
-                'zfcuser_user_mapper'     => 'ZfcUser\Model\Mapper\UserZendDb',
-                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\Mapper\UserMetaZendDb',
+                'zfcuser_user_mapper'     => 'ZfcUser\Model\UserMapper',
+                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\UserMetaMapper',
             ),
             'zfcuser_captcha_element' => array(
                 'parameters' => array(
@@ -133,13 +133,13 @@ return array(
                     'config' => array(),
                 ),
             ),
-            'ZfcUser\Model\Mapper\UserZendDb' => array(
+            'ZfcUser\Model\UserMapper' => array(
                 'parameters' => array(
                     'readAdapter'  => 'zfcuser_read_db',
                     'writeAdapter' => 'zfcuser_write_db',
                 ),
             ),
-            'ZfcUser\Model\Mapper\UserMetaZendDb' => array(
+            'ZfcUser\Model\UserMetaMapper' => array(
                 'parameters' => array(
                     'readAdapter'  => 'zfcuser_read_db',
                     'writeAdapter' => 'zfcuser_write_db',
