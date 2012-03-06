@@ -24,9 +24,9 @@ return array(
                 'zfcuser_captcha_element'          => 'Zend\Form\Element\Captcha',
 
                 // Default Zend\Db
+                'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
                 'zfcuser_user_mapper'     => 'ZfcUser\Model\Mapper\UserZendDb',
                 'zfcuser_usermeta_mapper' => 'ZfcUser\Model\Mapper\UserMetaZendDb',
-                'zfcuser_db_adapter'      => 'Zend\Db\Adapter\Adapter',
                 'zfcuser_user_tg'         => 'Zend\Db\TableGateway\TableGateway',
                 'zfcuser_usermeta_tg'     => 'Zend\Db\TableGateway\TableGateway',
             ),
@@ -148,22 +148,7 @@ return array(
             ),
             'Zend\Db\TableGateway\TableGateway' => array(
                 'parameters' => array(
-                    'adapter' => 'zfcuser_db_adapter',
-                ),
-            ),
-            'zfcuser_db_adapter' => array(
-                'parameters' => array(
-                    'driver' => 'Zend\Db\Adapter\Driver\Pdo\Pdo',
-                ),
-            ),
-            'Zend\Db\Adapter\Driver\Pdo\Pdo' => array(
-                'parameters' => array(
-                    'connection' => 'Zend\Db\Adapter\Driver\Pdo\Connection',
-                ),
-            ),
-            'Zend\Db\Adapter\Driver\Pdo\Connection' => array(
-                'parameters' => array(
-                    'connectionInfo' => 'zfcuser_pdo',
+                    'adapter' => 'zfcuser_zend_db_adapter',
                 ),
             ),
 
