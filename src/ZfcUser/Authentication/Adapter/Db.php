@@ -60,8 +60,8 @@ class Db extends AbstractAdapter
 
         // Success!
         $e->setIdentity($userObject->getUserId());
-        $this->updateUserPasswordHash($userObject, $credential)
-             ->updateUserLastLogin($userObject)
+        $this->updateUserLastLogin($userObject)
+             ->updateUserPasswordHash($userObject, $credential)
              ->setSatisfied(true);
         $storage = $this->getStorage()->read();
         $storage['identity'] = $e->getIdentity();
