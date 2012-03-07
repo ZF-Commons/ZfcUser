@@ -22,13 +22,8 @@ class UserMetaMapper extends DbMapperAbstract implements UserMetaMapperInterface
 
     public function get($userId, $metaKey)
     {
-        $db = $this->getReadAdapter();
-        $sql = $db->select()
-            ->from($this->getTableName())
-            ->where('user_id = ?', $userId)
-            ->where('meta_key = ?', $metaKey);
-        $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('query' => $sql));
-        $row = $db->fetchRow($sql);
+        $rowset = $this->getTableGateway()->select(array('user_id' => $userId));
+        $row = $rowset->current();
         $userMetaModelClass = ZfcUser::getOption('usermeta_model_class');
         $userMeta = $userMetaModelClass::fromArray($row);
         $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $userId, 'row' => $row));
@@ -43,11 +38,10 @@ class UserMetaMapper extends DbMapperAbstract implements UserMetaMapperInterface
             'meta'     => $userMeta->getMetaRaw(),
         ));
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'userMeta' => $userMeta));
-        $db = $this->getWriteAdapter();
         if ('update' === $mode) {
-            $db->update($this->getTableName(), (array) $data, $db->quoteInto('user_id = ? AND ', $userMeta->getUser()->getUserId()) . $db->quoteInto('meta_key = ?', $userMeta->getMetaKey()));
+            $this->getTableGateway()->update((array) $data, array('user_id' => $userMeta->getUser()->getUserId(), 'meta_key' => $userMeta->getMetaKey()));
         } elseif ('insert' === $mode) {
-            $db->insert($this->getTableName(), (array) $data);
+            $this->getTableGateway()->insert((array) $data);
         }
         return $userMeta;
     }

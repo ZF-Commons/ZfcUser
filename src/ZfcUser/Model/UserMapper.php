@@ -17,12 +17,11 @@ class UserMapper extends DbMapperAbstract implements UserMapperInterface
     {
         $data = new ArrayObject($user->toArray()); // or perhaps pass it by reference?
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'user' => $user));
-        $db = $this->getWriteAdapter();
         if ($user->getUserId() > 0) {
-            $db->update($this->getTableName(), (array) $data, $db->quoteInto($this->userIDField.' = ?', $user->getUserId()));
+            $this->getTableGateway()->update((array) $data, array($this->userIDField => $user->getUserId()));
         } else {
-            $db->insert($this->getTableName(), (array) $data);
-            $userId = $db->lastInsertId();
+            $this->getTableGateway()->insert((array) $data);
+            $userId = $this->getTableGateway()->getAdapter()->getDriver()->getConnection()->getLastGeneratedId();
             $user->setUserId($userId);
         }
         return $user;
@@ -30,12 +29,8 @@ class UserMapper extends DbMapperAbstract implements UserMapperInterface
 
     public function findByEmail($email)
     {
-        $db = $this->getReadAdapter();
-        $sql = $db->select()
-            ->from($this->getTableName())
-            ->where($this->userEmailField. ' = ?', $email);
-        $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('query' => $sql));
-        $row = $db->fetchRow($sql);
+        $rowset = $this->getTableGateway()->select(array($this->userEmailField => $email));
+        $row = $rowset->current();
         $userModelClass = ZfcUser::getOption('user_model_class');
         $user = $userModelClass::fromArray($row);
         $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user, 'row' => $row));
@@ -44,25 +39,21 @@ class UserMapper extends DbMapperAbstract implements UserMapperInterface
 
     public function findByUsername($username)
     {
-        $db = $this->getReadAdapter();
-        $sql = $db->select()
-            ->from($this->getTableName())
-            ->where($this->userUsernameField.' = ?', $username);
-        $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
-        $row = $db->fetchRow($sql);
+        $rowset = $this->getTableGateway()->select(array($this->userUsernameField => $username));
+        $row = $rowset->current();
         $userModelClass = ZfcUser::getOption('user_model_class');
-        return $userModelClass::fromArray($row);
+        $user = $userModelClass::fromArray($row);
+        $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user, 'row' => $row));
+        return $user;
     }
 
     public function findById($id)
     {
-        $db = $this->getReadAdapter();
-        $sql = $db->select()
-            ->from($this->getTableName())
-            ->where($this->userIDField.' = ?', $id);
-        $this->events()->trigger(__FUNCTION__, $this, array('query' => $sql));
-        $row = $db->fetchRow($sql);
+        $rowset = $this->getTableGateway()->select(array($this->userIDField => $id));
+        $row = $rowset->current();
         $userModelClass = ZfcUser::getOption('user_model_class');
-        return $userModelClass::fromArray($row);
+        $user = $userModelClass::fromArray($row);
+        $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user, 'row' => $row));
+        return $user;
     }
 }
