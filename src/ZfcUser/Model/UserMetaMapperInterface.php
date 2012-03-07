@@ -1,14 +1,12 @@
 <?php
 
-namespace ZfcUser\Model\Mapper;
+namespace ZfcUser\Model;
 
-use ZfcUser\Model\UserMeta as UserMetaModel;
-
-interface UserMeta
+interface UserMetaMapperInterface
 {
-    public function add(UserMetaModel $userMeta);
+    public function add(UserMeta $userMeta);
 
-    public function update(UserMetaModel $userMeta);
+    public function update(UserMeta $userMeta);
 
     public function get($userId, $metaKey);
 }
