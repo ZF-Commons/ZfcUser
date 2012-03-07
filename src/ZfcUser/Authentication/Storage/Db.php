@@ -3,7 +3,7 @@
 namespace ZfcUser\Authentication\Storage;
 
 use Zend\Authentication\Storage,
-    ZfcUser\Model\Mapper\User as UserMapper;
+    ZfcUser\Model\UserMapperInterface;
 
 class Db implements Storage
 {
@@ -126,10 +126,10 @@ class Db implements Storage
     /**
      * setMapper 
      * 
-     * @param UserMapper $mapper 
+     * @param UserMapperInterface $mapper 
      * @return Db
      */
-    public function setMapper(UserMapper $mapper)
+    public function setMapper(UserMapperInterface $mapper)
     {
         $this->mapper = $mapper;
         return $this;
