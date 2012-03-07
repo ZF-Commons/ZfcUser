@@ -1,23 +1,21 @@
 <?php
 
-namespace ZfcUser\Model\Mapper;
+namespace ZfcUser\Model;
 
 use ZfcBase\Mapper\DbMapperAbstract,
     ZfcUser\Module as ZfcUser,
-    ZfcUser\Model\UserMeta as UserMetaModel,
-    ZfcUser\Model\Mapper\UserMeta as UserMetaMapper,
     ArrayObject;
 
-class UserMetaZendDb extends DbMapperAbstract implements UserMetaMapper
+class UserMetaMapper extends DbMapperAbstract implements UserMetaMapperInterface
 {
     protected $tableName = 'user_meta';
 
-    public function add(UserMetaModel $userMeta)
+    public function add(UserMeta $userMeta)
     {
         return $this->persist($userMeta);
     }
 
-    public function update(UserMetaModel $userMeta)
+    public function update(UserMeta $userMeta)
     {
         return $this->persist($userMeta, 'update');
     }
@@ -32,7 +30,7 @@ class UserMetaZendDb extends DbMapperAbstract implements UserMetaMapper
         return $userMeta;
     }
 
-    public function persist(UserMetaModel $userMeta, $mode = 'insert')
+    public function persist(UserMeta $userMeta, $mode = 'insert')
     {
         $data = new ArrayObject(array(
             'user_id'  => $userMeta->getUser()->getUserId(),

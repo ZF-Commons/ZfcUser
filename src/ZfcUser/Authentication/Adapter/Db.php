@@ -5,14 +5,14 @@ namespace ZfcUser\Authentication\Adapter;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent,
     Zend\Authentication\Result as AuthenticationResult,
     ZfcUser\Module as ZfcUser,
-    ZfcUser\Model\Mapper\User as UserMapper,
+    ZfcUser\Model\UserMapperInterface,
     ZfcUser\Util\Password,
     DateTime;
 
 class Db extends AbstractAdapter
 {
     /**
-     * @var UserMapper
+     * @var UserMapperInterface
      */
     protected $mapper;
 
@@ -73,7 +73,7 @@ class Db extends AbstractAdapter
     /**
      * getMapper 
      * 
-     * @return UserMapper
+     * @return UserMapperInterface
      */
     public function getMapper()
     {
@@ -83,10 +83,10 @@ class Db extends AbstractAdapter
     /**
      * setMapper 
      * 
-     * @param UserMapper $mapper 
+     * @param UserMapperInterface $mapper 
      * @return Db
      */
-    public function setMapper(UserMapper $mapper)
+    public function setMapper(UserMapperInterface $mapper)
     {
         $this->mapper = $mapper;
         return $this;

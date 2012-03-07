@@ -3,7 +3,7 @@
 namespace ZfcUser\Validator;
 
 use Zend\Validator\AbstractValidator,
-    ZfcUser\Model\Mapper\User as UserMapper;
+    ZfcUser\Model\UserMapperInterface;
 
 abstract class AbstractRecord extends AbstractValidator
 {
@@ -22,7 +22,7 @@ abstract class AbstractRecord extends AbstractValidator
     );
 
     /**
-     * @var UserMapper
+     * @var UserMapperInterface
      */
     protected $mapper;
 
@@ -49,7 +49,7 @@ abstract class AbstractRecord extends AbstractValidator
     /**
      * getMapper 
      * 
-     * @return UserMapper
+     * @return UserMapperInterface
      */
     public function getMapper()
     {
@@ -59,10 +59,10 @@ abstract class AbstractRecord extends AbstractValidator
     /**
      * setMapper 
      * 
-     * @param UserMapper $mapper 
+     * @param UserMapperInterface $mapper 
      * @return Db
      */
-    public function setMapper(UserMapper $mapper)
+    public function setMapper(UserMapperInterface $mapper)
     {
         $this->mapper = $mapper;
         return $this;

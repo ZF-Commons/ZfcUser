@@ -1,8 +1,8 @@
 <?php
 return array(
     'zfcuser' => array(
-        'user_model_class'          => 'ZfcUser\Model\UserBase',
-        'usermeta_model_class'      => 'ZfcUser\Model\UserMetaBase',
+        'user_model_class'          => 'ZfcUser\Model\User',
+        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
@@ -25,8 +25,8 @@ return array(
 
                 // Default Zend\Db
                 'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
-                'zfcuser_user_mapper'     => 'ZfcUser\Model\Mapper\UserZendDb',
-                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\Mapper\UserMetaZendDb',
+                'zfcuser_user_mapper'     => 'ZfcUser\Model\UserMapper',
+                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\UserMetaMapper',
                 'zfcuser_user_tg'         => 'Zend\Db\TableGateway\TableGateway',
                 'zfcuser_usermeta_tg'     => 'Zend\Db\TableGateway\TableGateway',
             ),
@@ -126,12 +126,12 @@ return array(
             /**
              * Mapper / DB
              */
-            'ZfcUser\Model\Mapper\UserZendDb' => array(
+            'ZfcUser\Model\UserMapper' => array(
                 'parameters' => array(
                     'tableGateway'  => 'zfcuser_user_tg',
                 ),
             ),
-            'ZfcUser\Model\Mapper\UserMetaZendDb' => array(
+            'ZfcUser\Model\UserMetaMapper' => array(
                 'parameters' => array(
                     'tableGateway'  => 'zfcuser_usermeta_tg',
                 ),
