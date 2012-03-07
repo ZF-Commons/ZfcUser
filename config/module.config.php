@@ -139,16 +139,13 @@ return array(
             'zfcuser_user_tg' => array(
                 'parameters' => array(
                     'tableName' => 'user',
+                    'adapter'   => 'zfcuser_zend_db_adapter',
                 ),
             ),
             'zfcuser_usermeta_tg' => array(
                 'parameters' => array(
                     'tableName' => 'user_meta',
-                ),
-            ),
-            'Zend\Db\TableGateway\TableGateway' => array(
-                'parameters' => array(
-                    'adapter' => 'zfcuser_zend_db_adapter',
+                    'adapter'   => 'zfcuser_zend_db_adapter',
                 ),
             ),
 

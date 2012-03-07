@@ -72,12 +72,7 @@ class UserController extends ActionController
     public function logoutAction()
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-        if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser/login');
-        }
-
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-
         return $this->redirect()->toRoute('zfcuser/login');
     }
 
