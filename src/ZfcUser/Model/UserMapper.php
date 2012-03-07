@@ -1,21 +1,19 @@
 <?php
 
-namespace ZfcUser\Model\Mapper;
+namespace ZfcUser\Model;
 
 use ZfcBase\Mapper\DbMapperAbstract,
     ZfcUser\Module as ZfcUser,
-    ZfcUser\Model\User as UserModel,
-    ZfcUser\Model\Mapper\User as UserMapper,
     ArrayObject;
 
-class UserZendDb extends DbMapperAbstract implements UserMapper
+class UserMapper extends DbMapperAbstract implements UserMapperInterface
 {
     protected $tableName         = 'user';
     protected $userIDField       = 'user_id';
     protected $userEmailField    = 'email';
     protected $userUsernameField = 'username';
 
-    public function persist(UserModel $user)
+    public function persist(User $user)
     {
         $data = new ArrayObject($user->toArray()); // or perhaps pass it by reference?
         $this->events()->trigger(__FUNCTION__ . '.pre', $this, array('data' => $data, 'user' => $user));
