@@ -140,6 +140,8 @@ The following options are available:
   address.  Default is `false`.
 - **enable_display_name** - Boolean value, enables a display name field on the
   registration form. Default value is `false`.
+- **enable_registration** - Boolean value, Determines if a user should be
+  allowed to register. Default value is `true`.
 - **require_activation** - Boolean value, require that the user verify their
   email address to 'activate' their account. Default value is `false`. (Note,
   this doesn't actually work yet, but defaults an 'active' field in the DB to

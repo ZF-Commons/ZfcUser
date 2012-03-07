@@ -23,6 +23,15 @@ $settings = array(
     //'user_model_class' => 'ZfcUser\Model\UserBase',
 
     /**
+     * Enable registration 
+     *
+     * Allows users to register through the website.
+     *
+     * Accepted values: boolean true or false
+     */
+    //'enable_registration' => true,
+
+    /**
      * UserMeta Model Entity Class
      *
      * Name of Entity class to use. Useful for using your own entity class 
