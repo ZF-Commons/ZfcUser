@@ -7,20 +7,20 @@ use Zend\Authentication\AuthenticationService,
     Zend\EventManager\ListenerAggregate,
     DateTime,
     ZfcUser\Util\Password,
-    ZfcUser\Model\Mapper\User as UserMapper,
-    ZfcUser\Model\Mapper\UserMeta as UserMetaMapper,
+    ZfcUser\Model\UserMapperInterface,
+    ZfcUser\Model\UserMetaMapperInterface,
     ZfcUser\Module as ZfcUser,
     ZfcBase\EventManager\EventProvider;
 
 class User extends EventProvider
 {
     /**
-     * @var UserMapper
+     * @var UserMapperInterface
      */
     protected $userMapper;
 
     /**
-     * @var UserMetaMapper
+     * @var UserMetaMapperInterface
      */
     protected $userMetaMapper;
 
@@ -102,10 +102,10 @@ class User extends EventProvider
     /**
      * setUserMapper
      *
-     * @param UserMapper $userMapper
+     * @param UserMapperInterface $userMapper
      * @return User
      */
-    public function setUserMapper(UserMapper $userMapper)
+    public function setUserMapper(UserMapperInterface $userMapper)
     {
         $this->userMapper = $userMapper;
         return $this;
@@ -114,10 +114,10 @@ class User extends EventProvider
     /**
      * setUserMetaMapper
      *
-     * @param UserMetaMapper $userMetaMapper
+     * @param UserMetaMapperInterface $userMetaMapper
      * @return User
      */
-    public function setUserMetaMapper(UserMetaMapper $userMetaMapper)
+    public function setUserMetaMapper(UserMetaMapperInterface $userMetaMapper)
     {
         $this->userMetaMapper = $userMetaMapper;
         return $this;

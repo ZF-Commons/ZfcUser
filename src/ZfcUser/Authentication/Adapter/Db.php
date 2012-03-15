@@ -5,14 +5,14 @@ namespace ZfcUser\Authentication\Adapter;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent,
     Zend\Authentication\Result as AuthenticationResult,
     ZfcUser\Module as ZfcUser,
-    ZfcUser\Model\Mapper\User as UserMapper,
+    ZfcUser\Model\UserMapperInterface,
     ZfcUser\Util\Password,
     DateTime;
 
 class Db extends AbstractAdapter
 {
     /**
-     * @var UserMapper
+     * @var UserMapperInterface
      */
     protected $mapper;
 
@@ -60,8 +60,8 @@ class Db extends AbstractAdapter
 
         // Success!
         $e->setIdentity($userObject->getUserId());
-        $this->updateUserPasswordHash($userObject, $credential)
-             ->updateUserLastLogin($userObject)
+        $this->updateUserLastLogin($userObject)
+             ->updateUserPasswordHash($userObject, $credential)
              ->setSatisfied(true);
         $storage = $this->getStorage()->read();
         $storage['identity'] = $e->getIdentity();
@@ -73,7 +73,7 @@ class Db extends AbstractAdapter
     /**
      * getMapper 
      * 
-     * @return UserMapper
+     * @return UserMapperInterface
      */
     public function getMapper()
     {
@@ -83,10 +83,10 @@ class Db extends AbstractAdapter
     /**
      * setMapper 
      * 
-     * @param UserMapper $mapper 
+     * @param UserMapperInterface $mapper 
      * @return Db
      */
-    public function setMapper(UserMapper $mapper)
+    public function setMapper(UserMapperInterface $mapper)
     {
         $this->mapper = $mapper;
         return $this;

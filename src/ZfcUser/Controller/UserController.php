@@ -72,12 +72,7 @@ class UserController extends ActionController
     public function logoutAction()
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-        if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser/login');
-        }
-
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-
         return $this->redirect()->toRoute('zfcuser/login');
     }
 
@@ -122,9 +117,10 @@ class UserController extends ActionController
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute('zfcuser');
         }
+        
         $request = $this->getRequest();
         $form    = $this->getRegisterForm();
-        if ($request->isPost()) {
+        if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
                 $this->events()->trigger('register-validate-error', $this, array('form' => $form));
