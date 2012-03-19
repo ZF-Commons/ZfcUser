@@ -166,7 +166,7 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'zfcuser_zend_db_adapter' => $settings['zend_db_adapter'],
+                'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: '',
             ),
         ),
     ),
