@@ -17,7 +17,7 @@ interface UserMetaInterface
      * @param User $user
      * @return UserMeta
      */
-    public function setUser(User $user);
+    public function setUser(UserInterface $user);
  
     /**
      * Get metaKey.
