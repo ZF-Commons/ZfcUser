@@ -67,7 +67,7 @@ Coming soon...
 
 ### Post-Install: Zend\Db
 
-1. If you do not already have a connection set up via DI, put the following
+1. If you do not already have a PDO connection set up via DI, put the following
    in `./config/autoload/database.config.php`:
 
         <?php
@@ -116,7 +116,7 @@ Coming soon...
             ),
         );
 
-2. Now, specify the DI alias for your connection in
+2. Now, specify the DI alias for your PDO connection in
    `./configs/autoload/module.zfcuser.config.php`, under the 'zend_db_adapter' setting.
    If you created the `./config/autoload/database.config.php` file in the
    previous step, the alias you'll specify is 'masterdb'.
