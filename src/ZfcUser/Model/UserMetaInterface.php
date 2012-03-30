@@ -7,17 +7,17 @@ interface UserMetaInterface
     /**
      * Get user.
      *
-     * @return User
+     * @return UserInterface
      */
     public function getUser();
  
     /**
      * Set user.
      *
-     * @param User $user
+     * @param UserInterface $user
      * @return UserMeta
      */
-    public function setUser(User $user);
+    public function setUser(UserInterface $user);
  
     /**
      * Get metaKey.
