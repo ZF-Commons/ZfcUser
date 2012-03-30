@@ -157,12 +157,18 @@ return array(
                 'parameters' => array(
                     'map' => array(
                         'zfcUserIdentity' => 'ZfcUser\View\Helper\ZfcUserIdentity',
+                        'zfcUserLoginWidget' => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
                     ),
                 ),
             ),
             'ZfcUser\View\Helper\ZfcUserIdentity' => array(
                 'parameters' => array(
                     'authService' => 'zfcuser_auth_service',
+                ),
+            ),
+            'ZfcUser\View\Helper\ZfcUserLoginWidget' => array(
+                'parameters' => array(
+                    'loginForm'      => 'ZfcUser\Form\Login',
                 ),
             ),
 
