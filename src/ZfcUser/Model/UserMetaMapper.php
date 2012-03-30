@@ -10,12 +10,12 @@ class UserMetaMapper extends DbMapperAbstract implements UserMetaMapperInterface
 {
     protected $tableName = 'user_meta';
 
-    public function add(UserMeta $userMeta)
+    public function add(UserMetaInterface $userMeta)
     {
         return $this->persist($userMeta);
     }
 
-    public function update(UserMeta $userMeta)
+    public function update(UserMetaInterface $userMeta)
     {
         return $this->persist($userMeta, 'update');
     }
@@ -30,7 +30,7 @@ class UserMetaMapper extends DbMapperAbstract implements UserMetaMapperInterface
         return $userMeta;
     }
 
-    public function persist(UserMeta $userMeta, $mode = 'insert')
+    public function persist(UserMetaInterface $userMeta, $mode = 'insert')
     {
         $data = new ArrayObject(array(
             'user_id'  => $userMeta->getUser()->getUserId(),

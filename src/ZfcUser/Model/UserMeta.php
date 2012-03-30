@@ -19,7 +19,7 @@ class UserMeta extends ModelAbstract implements UserMetaInterface
     /**
      * @var string
      */
-    protected $metaKey;
+    protected $meta_key;
 
     /**
      * @var string
@@ -49,24 +49,24 @@ class UserMeta extends ModelAbstract implements UserMetaInterface
     }
  
     /**
-     * Get metaKey.
+     * Get meta_key.
      *
      * @return string
      */
     public function getMetaKey()
     {
-        return $this->metaKey;
+        return $this->meta_key;
     }
  
     /**
-     * Set metaKey.
+     * Set meta_key.
      *
      * @param string $metaKey
      * @return UserMeta
      */
     public function setMetaKey($metaKey)
     {
-        $this->metaKey = $metaKey;
+        $this->meta_key = $metaKey;
         return $this;
     }
  

@@ -4,7 +4,7 @@ namespace ZfcUser\Model;
 
 interface UserMapperInterface
 {
-    public function persist(User $user);
+    public function persist(UserInterface $user);
 
     public function findByEmail($email);
 

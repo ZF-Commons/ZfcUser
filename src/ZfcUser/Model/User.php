@@ -7,47 +7,47 @@ use DateTime,
 
 class User extends ModelAbstract implements UserInterface
 {
-    protected $userId;
+    protected $user_id;
 
     protected $username;
 
     protected $email;
 
-    protected $displayName;
+    protected $display_name;
 
     protected $password;
 
-    protected $lastLogin;
+    protected $last_login;
 
-    protected $lastIp;
+    protected $last_ip;
 
-    protected $registerTime;
+    protected $register_time;
 
-    protected $registerIp;
+    protected $register_ip;
 
     protected $active;
 
     protected $enabled;
  
     /**
-     * Get userId.
+     * Get user_id.
      *
-     * @return int userId
+     * @return int user_id
      */
     public function getUserId()
     {
-        return $this->userId;
+        return $this->user_id;
     }
  
     /**
-     * Set userId.
+     * Set user_id.
      *
      * @param int $userId the value to be set
      * @return UserBase
      */
     public function setUserId($userId)
     {
-        $this->userId = (int) $userId;
+        $this->user_id = (int) $userId;
         return $this;
     }
  
@@ -96,14 +96,14 @@ class User extends ModelAbstract implements UserInterface
     }
  
     /**
-     * Get displayName.
+     * Get display_name.
      *
-     * @return string displayName
+     * @return string display_name
      */
     public function getDisplayName()
     {
-        if ($this->displayName !== null) {
-            return $this->displayName;
+        if ($this->display_name !== null) {
+            return $this->display_name;
         } elseif ($this->username !== null) {
             return $this->username;
         } elseif ($this->email !== null) {
@@ -113,14 +113,14 @@ class User extends ModelAbstract implements UserInterface
     }
  
     /**
-     * Set displayName.
+     * Set display_name.
      *
      * @param string $displayName the value to be set
      * @return UserBase
      */
     public function setDisplayName($displayName)
     {
-        $this->displayName = $displayName;
+        $this->display_name = $displayName;
         return $this;
     }
  
@@ -147,17 +147,17 @@ class User extends ModelAbstract implements UserInterface
     }
  
     /**
-     * Get lastLogin.
+     * Get last_login.
      *
-     * @return DateTime lastLogin
+     * @return DateTime last_login
      */
     public function getLastLogin()
     {
-        return $this->lastLogin;
+        return $this->last_login;
     }
  
     /**
-     * Set lastLogin.
+     * Set last_login.
      *
      * @param mixed $lastLogin the value to be set
      * @return UserBase
@@ -165,30 +165,30 @@ class User extends ModelAbstract implements UserInterface
     public function setLastLogin($lastLogin)
     {
         if ($lastLogin instanceof DateTime) {
-            $this->lastLogin = $lastLogin;
+            $this->last_login = $lastLogin;
         } else {
-            $this->lastLogin = new DateTime($lastLogin);
+            $this->last_login = new DateTime($lastLogin);
         }
         return $this;
     }
  
     /**
-     * Get lastIp.
+     * Get last_ip.
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param bool $long
-     * @return lastIp
+     * @return last_ip
      */
     public function getLastIp($long = false)
     {
         if (true === $long) {
-            return $this->lastIp;
+            return $this->last_ip;
         }
-        return long2ip($this->lastIp);
+        return long2ip($this->last_ip);
     }
  
     /**
-     * Set lastIp.
+     * Set last_ip.
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param $lastIp the value to be set
@@ -196,22 +196,22 @@ class User extends ModelAbstract implements UserInterface
      */
     public function setLastIp($lastIp)
     {
-        $this->lastIp = ip2long($lastIp);
+        $this->last_ip = ip2long($lastIp);
         return $this;
     }
  
     /**
-     * Get registerTime.
+     * Get register_time.
      *
-     * @return DateTime registerTime
+     * @return DateTime register_time
      */
     public function getRegisterTime()
     {
-        return $this->registerTime;
+        return $this->register_time;
     }
  
     /**
-     * Set registerTime.
+     * Set register_time.
      *
      * @param string $registerTime the value to be set
      * @return UserBase
@@ -219,30 +219,30 @@ class User extends ModelAbstract implements UserInterface
     public function setRegisterTime($registerTime)
     {
         if ($registerTime instanceof DateTime) {
-            $this->registerTime = $registerTime;
+            $this->register_time = $registerTime;
         } else {
-            $this->registerTime = new DateTime($registerTime);
+            $this->register_time = new DateTime($registerTime);
         }
         return $this;
     }
  
     /**
-     * Get registerIp.
+     * Get register_ip.
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param bool $long
-     * @return registerIp
+     * @return register_ip
      */
     public function getRegisterIp($long = false)
     {
         if (true === $long) {
-            return $this->registerIp;
+            return $this->register_ip;
         }
-        return long2ip($this->registerIp);
+        return long2ip($this->register_ip);
     }
  
     /**
-     * Set registerIp.
+     * Set register_ip.
      *
      * @TODO: Map custom IP field type with inet_pton() and inet_ntop()
      * @param $registerIp the value to be set
@@ -250,7 +250,7 @@ class User extends ModelAbstract implements UserInterface
      */
     public function setRegisterIp($registerIp)
     {
-        $this->registerIp = ip2long($registerIp);
+        $this->register_ip = ip2long($registerIp);
         return $this;
     }
  
