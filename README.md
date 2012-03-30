@@ -54,8 +54,8 @@ Installation
 2. Clone this project into your `./vendor/` directory and enable it in your
    `application.config.php` file.
 3. Import the SQL schema located in `./vendor/ZfcUser/data/schema.sql`.
-4. Copy `./vendor/ZfcUser/config/module.zfcuser.config.php.dist` to
-   `./config/autoload/module.zfcuser.config.php`.
+4. Copy `./vendor/ZfcUser/config/module.zfcuser.local.config.php.dist` to
+   `./config/autoload/module.zfcuser.local.config.php`.
 
 ### Post-Install: Doctrine2 ORM
 
