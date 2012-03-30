@@ -24,6 +24,7 @@ return array(
     'ZfcUser\Authentication\Adapter\Db'                => __DIR__ . '/src/ZfcUser/Authentication/Adapter/Db.php',
     'ZfcUser\Authentication\Storage\Db'                => __DIR__ . '/src/ZfcUser/Authentication/Storage/Db.php',
     'ZfcUser\View\Helper\ZfcUserIdentity'              => __DIR__ . '/src/ZfcUser/View/Helper/ZfcUserIdentity.php',
+    'ZfcUser\View\Helper\ZfcUserLoginWidget'           => __DIR__ . '/src/ZfcUser/View/Helper/ZfcUserLoginWidget.php',
     'ZfcUser\Form\Login'                               => __DIR__ . '/src/ZfcUser/Form/Login.php',
     'ZfcUser\Form\Register'                            => __DIR__ . '/src/ZfcUser/Form/Register.php',
     'ZfcUser\Form\Base'                                => __DIR__ . '/src/ZfcUser/Form/Base.php',
