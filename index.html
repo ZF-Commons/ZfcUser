@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="ZfcUser : A generic user registration and authentication module for ZF2." />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>ZfcUser</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/ZF-Commons/ZfcUser">Fork Me on GitHub</a>
+
+          <h1 id="project_title">ZfcUser</h1>
+          <h2 id="project_tagline">A generic user registration and authentication module for ZF2.</h2>
+
+          <section id="downloads">
+            <a class="zip_download_link" href="https://github.com/ZF-Commons/ZfcUser/zipball/master">Download this project as a .zip file</a>
+            <a class="tar_download_link" href="https://github.com/ZF-Commons/ZfcUser/tarball/master">Download this project as a tar.gz file</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>Introduction</h2>
+
+<p>ZfcUser is a user registration and authentication module for Zend Framework 2.
+Out of the box, ZfcUser works with Zend\Db, however alternative storage adapter
+modules are available (see below). ZfcUser provides the foundations for adding
+user authentication and registration to your ZF2 site. It is designed to be very
+simple and easily to extend.</p>
+
+<h2>Storage Adapter Modules</h2>
+
+<p>By default, ZfcUser ships with support for using Zend\Db for persisting users.
+However, by installing an optional alternative storage adapter module, you can
+take advantage of other methods of persisting users:</p>
+
+<ul>
+<li>
+<a href="https://github.com/ZF-Commons/ZfcUserDoctrineORM">ZfcUserDoctrineORM</a> - Doctrine2 ORM</li>
+<li>
+<a href="https://github.com/ZF-Commons/ZfcUserDoctrineMongoODM">ZfcUserDoctrineMongoODM</a> - Doctrine2 MongoDB ODM</li>
+</ul><h2>Requirements</h2>
+
+<ul>
+<li>
+<a href="https://github.com/zendframework/zf2">Zend Framework 2</a> (latest master)</li>
+<li>
+<a href="https://github.com/ZF-Commons/ZfcBase">ZfcBase</a> (latest master).</li>
+</ul><h2>Features / Goals</h2>
+
+<ul>
+<li>Authenticate via username, email, or both (can opt out of the concept of
+username and use strictly email) [COMPLETE]</li>
+<li>User registration [COMPLETE]</li>
+<li>Forms protected against CSRF [COMPLETE]</li>
+<li>Out-of-the-box support for Doctrine2 <em>and</em> Zend\Db [COMPLETE]</li>
+<li>Registration form protected with CAPTCHA [IN PROGRESS] (Needs more options)</li>
+<li>Robust event system to allow for extending [IN PROGRESS]</li>
+<li>Support for additional authentication mechanisms via plugins (Google,
+Facebook, LDAP, etc) [INCOMPLETE]</li>
+<li>Optional E-mail address verification [INCOMPLETE]</li>
+<li>Forgot Password [INCOMPLETE]</li>
+<li>Provide ActionController plugin and view helper [INCOMPLETE]</li>
+</ul><h2>Installation</h2>
+
+<h3>Main Setup</h3>
+
+<ol>
+<li>Install the <a href="https://github.com/ZF-Commons/ZfcBase">ZfcBase</a> ZF2 module
+by cloning it into <code>./vendor/</code> and enabling it in your
+<code>application.config.php</code> file.</li>
+<li>Clone this project into your <code>./vendor/</code> directory and enable it in your
+<code>application.config.php</code> file.</li>
+<li>Import the SQL schema located in <code>./vendor/ZfcUser/data/schema.sql</code>.</li>
+<li>Copy <code>./vendor/ZfcUser/config/module.zfcuser.config.php.dist</code> to
+<code>./config/autoload/module.zfcuser.config.php</code>.</li>
+</ol><h3>Post-Install: Doctrine2 ORM</h3>
+
+<p>Coming soon...</p>
+
+<h3>Post-Install: Doctrine2 MongoDB ODM</h3>
+
+<p>Coming soon...</p>
+
+<h3>Post-Install: Zend\Db</h3>
+
+<ol>
+<li>
+<p>If you do not already have a PDO connection set up via DI, put the following
+in <code>./config/autoload/database.config.php</code>:</p>
+
+<pre><code>&lt;?php
+// ./config/autoload/database.config.php
+
+$mdb = array(
+    'dbname' =&gt; 'CHANGEME',
+    'user'   =&gt; 'CHANGEME',
+    'pass'   =&gt; 'CHANGEME',
+    'host'   =&gt; 'CHANGEME',
+);
+
+/**
+ * No need to edit below this line 
+ */
+return array(
+    'di' =&gt; array(
+        'instance' =&gt; array(
+            'alias' =&gt; array(
+                'masterdb' =&gt; 'PDO',
+            ),
+            'masterdb' =&gt; array(
+                'parameters' =&gt; array(
+                    'dsn'            =&gt; "mysql:dbname={$mdb['dbname']};host={$mdb['host']}",
+                    'username'       =&gt; $mdb['user'],
+                    'passwd'         =&gt; $mdb['pass'],
+                    'driver_options' =&gt; array(PDO::MYSQL_ATTR_INIT_COMMAND =&gt; 'SET NAMES \'UTF8\''),
+                ),
+            ),
+            'Zend\Db\Adapter\Adapter' =&gt; array(
+                'parameters' =&gt; array(
+                    'driver' =&gt; 'Zend\Db\Adapter\Driver\Pdo\Pdo',
+                ),
+            ),
+            'Zend\Db\Adapter\Driver\Pdo\Pdo' =&gt; array(
+                'parameters' =&gt; array(
+                    'connection' =&gt; 'Zend\Db\Adapter\Driver\Pdo\Connection',
+                ),
+            ),
+            'Zend\Db\Adapter\Driver\Pdo\Connection' =&gt; array(
+                'parameters' =&gt; array(
+                    'connectionInfo' =&gt; 'masterdb',
+                ),
+            ),
+        ),
+    ),
+);
+</code></pre>
+</li>
+<li><p>Now, specify the DI alias for your PDO connection in
+<code>./configs/autoload/module.zfcuser.config.php</code>, under the 'zend_db_adapter' setting.
+If you created the <code>./config/autoload/database.config.php</code> file in the
+previous step, the alias you'll specify is 'masterdb'.</p></li>
+</ol><p>Navigate to http://yourproject/user and you should land on a login page.</p>
+
+<h2>Password Security</h2>
+
+<p><strong>DO NOT CHANGE THE PASSWORD HASH SETTINGS FROM THEIR DEFAULTS</strong> unless A) you
+have done sufficient research and fully understand exactly what you are
+changing, <strong>AND</strong> B) you have a <strong>very</strong> specific reason to deviate from the
+default settings.</p>
+
+<p>If you are planning on changing the default password hash settings, please read
+the following:</p>
+
+<ul>
+<li><a href="http://php.net/manual/en/function.crypt.php">PHP Manual: crypt() function</a></li>
+<li><a href="http://www.syndicatetheory.com/labs/securely-storing-passwords-in-php">Securely Storing Passwords in PHP by Adrian Schneider</a></li>
+</ul><p>The password hash settings may be changed at any time without invalidating
+existing user accounts. Existing user passwords will be re-hashed automatically
+on their next successful login.</p>
+
+<p><strong>WARNING:</strong> Changing the default password hash settings can cause serious
+problems such as making your hashed passwords more vulnerable to brute force
+attacks or making hashing so expesnive that login and registration is
+unacceptably slow for users and produces a large burden on your server(s). The
+default settings provided are a very reasonable balance between the two,
+suitable for computing power in 2011.</p>
+
+<h2>Options</h2>
+
+<p>The ZfcUser module has some options to allow you to quickly customize the basic
+functionality. After installing ZfcUser, copy
+<code>./vendor/ZfcUser/config/module.zfcuser.config.php</code> to
+<code>./config/autoload/module.config.php</code> and change the values as desired.</p>
+
+<p>The following options are available:</p>
+
+<ul>
+<li>
+<strong>user_model_class</strong> - Name of Entity class to use. Useful for using your own
+entity class instead of the default one provided. Default is
+<code>ZfcUser\Model\User</code>.</li>
+<li>
+<strong>enable_username</strong> - Boolean value, enables username field on the
+registration form, and allows users to log in using their username <em>OR</em> email
+address.  Default is <code>false</code>.</li>
+<li>
+<strong>enable_display_name</strong> - Boolean value, enables a display name field on the
+registration form. Default value is <code>false</code>.</li>
+<li>
+<strong>enable_registration</strong> - Boolean value, Determines if a user should be
+allowed to register. Default value is <code>true</code>.</li>
+<li>
+<strong>require_activation</strong> - Boolean value, require that the user verify their
+email address to 'activate' their account. Default value is <code>false</code>. (Note,
+this doesn't actually work yet, but defaults an 'active' field in the DB to
+0.)</li>
+<li>
+<strong>login_after_registration</strong> - Boolean value, automatically logs the user in
+after they successfully register. Default value is <code>false</code>.</li>
+<li>
+<strong>registration_form_captcha</strong> - Boolean value, determines if a captcha should
+be utilized on the user registration form. Default value is <code>true</code>. (Note,
+right now this only utilizes a weak Zend\Text\Figlet CAPTCHA, but I have plans
+to make all Zend\Captcha adapters work.)</li>
+<li>
+<strong>password_hash_algorithm</strong> - Name of the hashing algorithm to use for
+hashing.  Supported algorithms are <code>blowfish</code>, <code>sha512</code>, and <code>sha256</code>. Default
+is <code>blowfish</code>.</li>
+<li>
+<strong>blowfish_cost</strong> - Only used if <code>password_hash_algorithm</code> is set to
+<code>blowfish</code>. This should be an integer between 4 and 31. The number represents
+the base-2 logarithm of the iteration count used for hashing.  Default is <code>10</code>
+(about 10 hashes per second on an i5).</li>
+<li>
+<strong>sha256_rounds</strong> - Only used if <code>password_hash_algorithm</code> is set to <code>sha256</code>.
+This should be an integer between 1000 and 999,999,999. The number represents
+the iteration count used for hashing. Default is <code>5000</code>.</li>
+<li>
+<strong>sha512_rounds</strong> - Only used if <code>password_hash_algorithm</code> is set to <code>sha512</code>.
+This should be an integer between 1000 and 999,999,999. The number represents
+the iteration count used for hashing. Default is <code>5000</code>.</li>
+</ul><h2>Changing Registration Captcha Element</h2>
+
+<p>By default, the user registration uses the Figlet captcha engine.  This is
+because it's the only one that doesn't require API keys.  It's possible to change
+out the captcha engine with DI.  For example, to change to Recaptcha, you would
+add this to one of your configuration files (global.config.php,
+module.config.php, or a dedicated recaptcha.config.php):</p>
+
+<pre><code>&lt;?php
+// ./config/autoload/recaptcha.config.php
+return array(
+    'di'=&gt; array(
+        'instance'=&gt;array(
+            'alias'=&gt;array(
+                // OTHER ELEMENTS....
+                'recaptcha_element' =&gt; 'Zend\Form\Element\Captcha',
+            ),
+            'recaptcha_element' =&gt; array(
+                'parameters' =&gt; array(
+                    'spec' =&gt; 'captcha',
+                    'options'=&gt;array(
+                        'label'      =&gt; '',
+                        'required'   =&gt; true,
+                        'order'      =&gt; 500,
+                        'captcha'    =&gt; array(
+                            'captcha' =&gt; 'ReCaptcha',
+                            'privkey' =&gt; RECAPTCHA_PRIVATE_KEY,
+                            'pubkey'  =&gt; RECAPTCHA_PUBLIC_KEY,
+                        ),
+                    ),
+                ),
+            ),
+            'ZfcUser\Form\Register' =&gt; array(
+                'parameters' =&gt; array(
+                    'captcha_element'=&gt;'recaptcha_element',
+                ),
+            ),
+        ),
+    ),
+);
+</code></pre>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">ZfcUser maintained by <a href="https://github.com/ZF-Commons">ZF-Commons</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
