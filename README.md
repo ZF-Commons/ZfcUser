@@ -72,6 +72,17 @@ Coming soon...
 
         <?php
         // ./config/autoload/database.config.php
+
+        $mdb = array(
+            'dbname' => 'CHANGEME',
+            'user'   => 'CHANGEME',
+            'pass'   => 'CHANGEME',
+            'host'   => 'CHANGEME',
+        );
+
+        /**
+         * No need to edit below this line 
+         */
         return array(
             'di' => array(
                 'instance' => array(
@@ -80,10 +91,25 @@ Coming soon...
                     ),
                     'masterdb' => array(
                         'parameters' => array(
-                            'dsn'            => 'mysql:dbname=CHANGEME;host=CHANGEME',
-                            'username'       => 'CHANGEME',
-                            'passwd'         => 'CHANGEME',
+                            'dsn'            => "mysql:dbname={$mdb['dbname']};host={$mdb['host']}",
+                            'username'       => $mdb['user'],
+                            'passwd'         => $mdb['pass'],
                             'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
+                        ),
+                    ),
+                    'Zend\Db\Adapter\Adapter' => array(
+                        'parameters' => array(
+                            'driver' => 'Zend\Db\Adapter\Driver\Pdo\Pdo',
+                        ),
+                    ),
+                    'Zend\Db\Adapter\Driver\Pdo\Pdo' => array(
+                        'parameters' => array(
+                            'connection' => 'Zend\Db\Adapter\Driver\Pdo\Connection',
+                        ),
+                    ),
+                    'Zend\Db\Adapter\Driver\Pdo\Connection' => array(
+                        'parameters' => array(
+                            'connectionInfo' => 'masterdb',
                         ),
                     ),
                 ),
@@ -91,7 +117,7 @@ Coming soon...
         );
 
 2. Now, specify the DI alias for your PDO connection in
-   `./configs/autoload/module.zfcuser.config.php`, under the 'pdo' setting.
+   `./configs/autoload/module.zfcuser.config.php`, under the 'zend_db_adapter' setting.
    If you created the `./config/autoload/database.config.php` file in the
    previous step, the alias you'll specify is 'masterdb'.
 
@@ -140,6 +166,8 @@ The following options are available:
   address.  Default is `false`.
 - **enable_display_name** - Boolean value, enables a display name field on the
   registration form. Default value is `false`.
+- **enable_registration** - Boolean value, Determines if a user should be
+  allowed to register. Default value is `true`.
 - **require_activation** - Boolean value, require that the user verify their
   email address to 'activate' their account. Default value is `false`. (Note,
   this doesn't actually work yet, but defaults an 'active' field in the DB to

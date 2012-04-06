@@ -1,8 +1,9 @@
 <?php
 return array(
     'zfcuser' => array(
-        'user_model_class'          => 'ZfcUser\Model\UserBase',
-        'usermeta_model_class'      => 'ZfcUser\Model\UserMetaBase',
+        'user_model_class'          => 'ZfcUser\Model\User',
+        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
+        'enable_registration'       => true,
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
@@ -11,9 +12,7 @@ return array(
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
         'blowfish_cost'             => 10,         // integer between 4 and 31
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        'sha512_counds'             => 5000,       // integer between 1000 and 999,999,999
-    ),
-    'routes' => array(
+        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
     ),
     'di' => array(
         'instance' => array(
@@ -26,10 +25,11 @@ return array(
                 'zfcuser_captcha_element'          => 'Zend\Form\Element\Captcha',
 
                 // Default Zend\Db
-                'zfcuser_write_db'        => 'Zend\Db\Adapter\DiPdoMysql',
-                'zfcuser_read_db'         => 'zfcuser_write_db',
-                'zfcuser_user_mapper'     => 'ZfcUser\Model\Mapper\UserZendDb',
-                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\Mapper\UserMetaZendDb',
+                'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
+                'zfcuser_user_mapper'     => 'ZfcUser\Model\UserMapper',
+                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\UserMetaMapper',
+                'zfcuser_user_tg'         => 'Zend\Db\TableGateway\TableGateway',
+                'zfcuser_usermeta_tg'     => 'Zend\Db\TableGateway\TableGateway',
             ),
             'zfcuser_captcha_element' => array(
                 'parameters' => array(
@@ -51,6 +51,13 @@ return array(
                     'loginForm'    => 'ZfcUser\Form\Login',
                     'registerForm' => 'ZfcUser\Form\Register',
                     'userService'  => 'ZfcUser\Service\User',
+                ),
+            ),
+            'Zend\View\Resolver\TemplatePathStack' => array(
+                'parameters' => array(
+                    'paths'  => array(
+                        'zfcuser' => __DIR__ . '/../view',
+                    ),
                 ),
             ),
             'Zend\Mvc\Controller\PluginLoader' => array(
@@ -120,54 +127,48 @@ return array(
             /**
              * Mapper / DB
              */
-            'zfcuser_write_db' => array(
+            'ZfcUser\Model\UserMapper' => array(
                 'parameters' => array(
-                    'pdo'    => 'zfcuser_pdo',
-                    'config' => array(),
+                    'tableGateway'  => 'zfcuser_user_tg',
                 ),
             ),
-            'ZfcUser\Model\Mapper\UserZendDb' => array(
+            'ZfcUser\Model\UserMetaMapper' => array(
                 'parameters' => array(
-                    'readAdapter'  => 'zfcuser_read_db',
-                    'writeAdapter' => 'zfcuser_write_db',
+                    'tableGateway'  => 'zfcuser_usermeta_tg',
                 ),
             ),
-            'ZfcUser\Model\Mapper\UserMetaZendDb' => array(
+            'zfcuser_user_tg' => array(
                 'parameters' => array(
-                    'readAdapter'  => 'zfcuser_read_db',
-                    'writeAdapter' => 'zfcuser_write_db',
+                    'tableName' => 'user',
+                    'adapter'   => 'zfcuser_zend_db_adapter',
+                ),
+            ),
+            'zfcuser_usermeta_tg' => array(
+                'parameters' => array(
+                    'tableName' => 'user_meta',
+                    'adapter'   => 'zfcuser_zend_db_adapter',
                 ),
             ),
 
             /**
              * View helper(s)
              */
-
-            'Zend\View\PhpRenderer' => array(
-                'parameters' => array(
-                    'options'  => array(
-                        'script_paths' => array(
-                            'zfcuser' => __DIR__ . '/../views',
-                        ),
-                    ),
-                    'broker' => 'Zend\View\HelperBroker',
-                ),
-            ),
             'Zend\View\HelperLoader' => array(
                 'parameters' => array(
                     'map' => array(
                         'zfcUserIdentity' => 'ZfcUser\View\Helper\ZfcUserIdentity',
+                        'zfcUserLoginWidget' => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
                     ),
-                ),
-            ),
-            'Zend\View\HelperBroker' => array(
-                'parameters' => array(
-                    'loader' => 'Zend\View\HelperLoader',
                 ),
             ),
             'ZfcUser\View\Helper\ZfcUserIdentity' => array(
                 'parameters' => array(
                     'authService' => 'zfcuser_auth_service',
+                ),
+            ),
+            'ZfcUser\View\Helper\ZfcUserLoginWidget' => array(
+                'parameters' => array(
+                    'loginForm'      => 'ZfcUser\Form\Login',
                 ),
             ),
 
@@ -185,6 +186,7 @@ return array(
                                 'route' => '/user',
                                 'defaults' => array(
                                     'controller' => 'zfcuser',
+                                    'action'     => 'index',
                                 ),
                             ),
                             'may_terminate' => true,

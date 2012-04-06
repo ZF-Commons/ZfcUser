@@ -7,12 +7,12 @@
  */
 $settings = array(
     /**
-     * PDO Connection DI alias
+     * Zend\Db\Adapter\Adapter DI Alias
      *
-     * Please specify the DI alias for the configured PDO instance that ZfcUser 
-     * should use.
+     * Please specify the DI alias for the configured Zend\Db\Adapter\Adapter
+     * instance that ZfcUser should use.
      */
-    'zend_db_pdo' => 'CHANGEME',
+    //'zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
 
     /**
      * User Model Entity Class
@@ -21,6 +21,15 @@ $settings = array(
      * instead of the default one provided. Default is ZfcUser\Model\UserBase. 
      */
     //'user_model_class' => 'ZfcUser\Model\UserBase',
+
+    /**
+     * Enable registration 
+     *
+     * Allows users to register through the website.
+     *
+     * Accepted values: boolean true or false
+     */
+    //'enable_registration' => true,
 
     /**
      * UserMeta Model Entity Class
@@ -157,7 +166,7 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'zfcuser_pdo' => $settings['zend_db_pdo'],
+                'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: '',
             ),
         ),
     ),

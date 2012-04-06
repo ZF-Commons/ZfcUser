@@ -5,6 +5,7 @@ namespace ZfcUser\Controller;
 use Zend\Mvc\Controller\ActionController,
     Zend\Form\Form,
     Zend\Stdlib\ResponseDescription as Response,
+    Zend\View\Model\ViewModel,
     ZfcUser\Service\User as UserService,
     ZfcUser\Module as ZfcUser;
 
@@ -39,6 +40,7 @@ class UserController extends ActionController
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute('zfcuser/login'); 
         }
+        return new ViewModel();
     }
 
     /**
@@ -70,12 +72,7 @@ class UserController extends ActionController
     public function logoutAction()
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-        if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser/login');
-        }
-
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-
         return $this->redirect()->toRoute('zfcuser/login');
     }
 
@@ -120,9 +117,10 @@ class UserController extends ActionController
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute('zfcuser');
         }
+        
         $request = $this->getRequest();
         $form    = $this->getRegisterForm();
-        if ($request->isPost()) {
+        if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
                 return $this->redirect()->toRoute('zfcuser/register');

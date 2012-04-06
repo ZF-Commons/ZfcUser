@@ -1,12 +1,10 @@
 <?php
 
-namespace ZfcUser\Model\Mapper;
+namespace ZfcUser\Model;
 
-use ZfcUser\Model\User as UserModel;
-
-interface User
+interface UserMapperInterface
 {
-    public function persist(UserModel $user);
+    public function persist(UserInterface $user);
 
     public function findByEmail($email);
 
