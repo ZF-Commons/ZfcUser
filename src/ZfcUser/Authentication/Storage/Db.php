@@ -2,10 +2,11 @@
 
 namespace ZfcUser\Authentication\Storage;
 
-use Zend\Authentication\Storage,
+use Zend\Authentication\Storage\Session as SessionStorage,
+    Zend\Authentication\Storage\StorageInterface,
     ZfcUser\Model\UserMapperInterface;
 
-class Db implements Storage
+class Db implements StorageInterface
 {
     /**
      * @var Storage
@@ -90,12 +91,12 @@ class Db implements Storage
     /**
      * getStorage 
      * 
-     * @return Storage
+     * @return StorageInterface
      */
     public function getStorage()
     {
         if (null === $this->storage) {
-            $this->setStorage(new Storage\Session);
+            $this->setStorage(new SessionStorage);
         }
         return $this->storage;
     }
@@ -103,11 +104,11 @@ class Db implements Storage
     /**
      * setStorage
      * 
-     * @param Storage $storage 
+     * @param StorageInterface $storage 
      * @access public
      * @return void
      */
-    public function setStorage(Storage $storage)
+    public function setStorage(StorageInterface $storage)
     {
         $this->storage = $storage;
         return $this;
