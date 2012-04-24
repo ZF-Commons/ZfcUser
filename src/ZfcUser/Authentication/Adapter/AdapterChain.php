@@ -2,14 +2,14 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\Authentication\Adapter,
+use Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Result as AuthenticationResult,
     Zend\EventManager\Event,
     Zend\Stdlib\RequestDescription as Request,
     Zend\Stdlib\ResponseDescription as Response,
     ZfcBase\EventManager\EventProvider;
 
-class AdapterChain extends EventProvider implements Adapter
+class AdapterChain extends EventProvider implements AdapterInterface
 {
     /**
      * @var AdapterChainEvent
