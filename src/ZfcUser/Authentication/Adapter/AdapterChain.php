@@ -77,6 +77,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
     public function setDefaultAdapter(ChainableAdapter $defaultAdapter)
     {
         $this->defaultAdapter = $defaultAdapter;
+        $this->attachDefaultAdapter();
         return $this;
     }
 
@@ -89,22 +90,22 @@ class AdapterChain extends EventProvider implements AdapterInterface
     public function setEventManager(EventCollection $events)
     {
         $return = parent::setEventManager($events);
-        if ($this->defaultAdapter) {
-            $this->attach($this->defaultAdapter);
-        }
+        $this->attachDefaultAdapter();
         return $return;
     }
 
     /**
      * attach 
      * 
-     * @param ChainableAdapter $adapter 
      * @return AdapterChain
      */
-    public function attach(ChainableAdapter $adapter)
+    public function attachDefaultAdapter()
     {
         //$adapter->getStorage()->clear();
-        $this->events()->attach('authenticate', array($adapter, 'authenticate'));
+        if (!$this->defaultAdapter || !$this->events) {
+            return;
+        }
+        $this->events()->attach('authenticate', array($this->defaultAdapter, 'authenticate'));
         return $this;
     }
 
