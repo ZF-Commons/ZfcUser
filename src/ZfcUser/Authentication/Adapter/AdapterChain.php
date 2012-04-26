@@ -7,7 +7,8 @@ use Zend\Authentication\Adapter\AdapterInterface,
     Zend\EventManager\Event,
     Zend\Stdlib\RequestDescription as Request,
     Zend\Stdlib\ResponseDescription as Response,
-    ZfcBase\EventManager\EventProvider;
+    ZfcBase\EventManager\EventProvider,
+    Zend\EventManager\EventCollection;
 
 class AdapterChain extends EventProvider implements AdapterInterface
 {
@@ -15,6 +16,11 @@ class AdapterChain extends EventProvider implements AdapterInterface
      * @var AdapterChainEvent
      */
     protected $event;
+
+    /**
+     * @var ChainableAdapter
+     */
+    protected $defaultAdapter;
 
     /**
      * Returns the authentication result 
@@ -70,8 +76,23 @@ class AdapterChain extends EventProvider implements AdapterInterface
      */
     public function setDefaultAdapter(ChainableAdapter $defaultAdapter)
     {
-        $this->attach($defaultAdapter);
+        $this->defaultAdapter = $defaultAdapter;
         return $this;
+    }
+
+    /**
+     * Set the event manager instance used by this context
+     * 
+     * @param  EventCollection $events 
+     * @return mixed
+     */
+    public function setEventManager(EventCollection $events)
+    {
+        $return = parent::setEventManager($events);
+        if ($this->defaultAdapter) {
+            $this->attach($this->defaultAdapter);
+        }
+        return $return;
     }
 
     /**
