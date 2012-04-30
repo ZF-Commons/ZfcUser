@@ -165,7 +165,7 @@ class UserController extends ActionController
         $this->registerForm = $registerForm;
         $fm = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
         if (isset($fm[0])) {
-            $this->registerForm->isValid($fm[0]);
+            $this->registerForm->addErrorMessage($fm[0]);
         }
         return $this;
     }
