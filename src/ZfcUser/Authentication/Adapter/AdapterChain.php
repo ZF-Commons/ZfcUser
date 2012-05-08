@@ -5,10 +5,10 @@ namespace ZfcUser\Authentication\Adapter;
 use Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Result as AuthenticationResult,
     Zend\EventManager\Event,
-    Zend\Stdlib\RequestDescription as Request,
-    Zend\Stdlib\ResponseDescription as Response,
+    Zend\Stdlib\RequestInterface as Request,
+    Zend\Stdlib\ResponseInterface as Response,
     ZfcBase\EventManager\EventProvider,
-    Zend\EventManager\EventCollection;
+    Zend\EventManager\EventManagerInterface;
 
 class AdapterChain extends EventProvider implements AdapterInterface
 {
@@ -84,10 +84,10 @@ class AdapterChain extends EventProvider implements AdapterInterface
     /**
      * Set the event manager instance used by this context
      * 
-     * @param  EventCollection $events 
+     * @param  EventManagerInterface $events 
      * @return mixed
      */
-    public function setEventManager(EventCollection $events)
+    public function setEventManager(EventManagerInterface $events)
     {
         $return = parent::setEventManager($events);
         $this->attachDefaultAdapter();
