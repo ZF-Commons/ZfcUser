@@ -139,13 +139,13 @@ return array(
             ),
             'zfcuser_user_tg' => array(
                 'parameters' => array(
-                    'tableName' => 'user',
+                    'table' => 'user',
                     'adapter'   => 'zfcuser_zend_db_adapter',
                 ),
             ),
             'zfcuser_usermeta_tg' => array(
                 'parameters' => array(
-                    'tableName' => 'user_meta',
+                    'table' => 'user_meta',
                     'adapter'   => 'zfcuser_zend_db_adapter',
                 ),
             ),
@@ -176,7 +176,7 @@ return array(
              * Routes
              */
 
-            'Zend\Mvc\Router\RouteStack' => array(
+            'Zend\Mvc\Router\RouteStackInterface' => array(
                 'parameters' => array(
                     'routes' => array(
                         'zfcuser' => array(
