@@ -2,19 +2,25 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\Authentication\Adapter,
+use Zend\Authentication\Adapter\AdapterInterface,
     Zend\Authentication\Result as AuthenticationResult,
     Zend\EventManager\Event,
-    Zend\Stdlib\RequestDescription as Request,
-    Zend\Stdlib\ResponseDescription as Response,
-    ZfcBase\EventManager\EventProvider;
+    Zend\Stdlib\RequestInterface as Request,
+    Zend\Stdlib\ResponseInterface as Response,
+    ZfcBase\EventManager\EventProvider,
+    Zend\EventManager\EventManagerInterface;
 
-class AdapterChain extends EventProvider implements Adapter
+class AdapterChain extends EventProvider implements AdapterInterface
 {
     /**
      * @var AdapterChainEvent
      */
     protected $event;
+
+    /**
+     * @var ChainableAdapter
+     */
+    protected $defaultAdapter;
 
     /**
      * Returns the authentication result 
@@ -70,20 +76,36 @@ class AdapterChain extends EventProvider implements Adapter
      */
     public function setDefaultAdapter(ChainableAdapter $defaultAdapter)
     {
-        $this->attach($defaultAdapter);
+        $this->defaultAdapter = $defaultAdapter;
+        $this->attachDefaultAdapter();
         return $this;
+    }
+
+    /**
+     * Set the event manager instance used by this context
+     * 
+     * @param  EventManagerInterface $events 
+     * @return mixed
+     */
+    public function setEventManager(EventManagerInterface $events)
+    {
+        $return = parent::setEventManager($events);
+        $this->attachDefaultAdapter();
+        return $return;
     }
 
     /**
      * attach 
      * 
-     * @param ChainableAdapter $adapter 
      * @return AdapterChain
      */
-    public function attach(ChainableAdapter $adapter)
+    public function attachDefaultAdapter()
     {
         //$adapter->getStorage()->clear();
-        $this->events()->attach('authenticate', array($adapter, 'authenticate'));
+        if (!$this->defaultAdapter || !$this->events) {
+            return;
+        }
+        $this->events()->attach('authenticate', array($this->defaultAdapter, 'authenticate'));
         return $this;
     }
 

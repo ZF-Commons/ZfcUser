@@ -5,7 +5,7 @@ namespace ZfcUser\Authentication\Storage;
 use Zend\Authentication\Storage,
     ZfcUser\Model\UserMapperInterface;
 
-class Db implements Storage
+class Db implements Storage\StorageInterface
 {
     /**
      * @var Storage
@@ -90,7 +90,7 @@ class Db implements Storage
     /**
      * getStorage 
      * 
-     * @return Storage
+     * @return Storage\StorageInterface
      */
     public function getStorage()
     {
@@ -103,11 +103,11 @@ class Db implements Storage
     /**
      * setStorage
      * 
-     * @param Storage $storage 
+     * @param Storage\StorageInterface $storage 
      * @access public
      * @return void
      */
-    public function setStorage(Storage $storage)
+    public function setStorage(Storage\StorageInterface $storage)
     {
         $this->storage = $storage;
         return $this;
