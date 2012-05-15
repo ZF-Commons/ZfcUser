@@ -78,8 +78,13 @@ class User extends EventProvider
         if (ZfcUser::getOption('enable_display_name')) {
             $user->setDisplayName($form->getValue('display_name'));
         }
-        $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
+
+        //trigger pre save event and return the modified user
+        $returnUser = $this->events()->trigger('register-pre-save', $this, array('user' => $user, 'form' => $form))->last();
+        $user = $returnUser ? $returnUser : $user;
         $this->userMapper->persist($user);
+        $this->events()->trigger('register-post-save', $this, array('user' => $user, 'form' => $form));
+
         return $user;
     }
 

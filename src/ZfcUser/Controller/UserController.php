@@ -123,6 +123,7 @@ class UserController extends ActionController
         if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
             if (false === $form->isValid($request->post()->toArray())) {
                 $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
+                $this->events()->trigger('register-validate-error', $this, array('form' => $form));
                 return $this->redirect()->toRoute('zfcuser/register');
             } else {
                 $this->getUserService()->createFromForm($form);
