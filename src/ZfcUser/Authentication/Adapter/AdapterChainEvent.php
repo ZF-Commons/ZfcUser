@@ -3,7 +3,7 @@
 namespace ZfcUser\Authentication\Adapter;
 
 use Zend\EventManager\Event,
-    Zend\Stdlib\RequestDescription as Request;
+    Zend\Stdlib\RequestInterface as Request;
 
 class AdapterChainEvent extends Event
 {
