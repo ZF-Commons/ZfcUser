@@ -4,9 +4,10 @@ namespace ZfcUser;
 
 use Zend\Module\Manager,
     Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+    Zend\Module\Feature\AutoloaderProviderInterface,
+    Zend\Module\Feature\ConfigProviderInterface;
 
-class Module implements AutoloaderProvider
+class Module implements AutoloaderProviderInterface, ConfigProviderInterface
 {
     protected static $options;
 
