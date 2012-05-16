@@ -22,7 +22,7 @@ class UserMapper extends DbMapperAbstract implements UserMapperInterface
             $this->getTableGateway()->update((array) $data, array($this->userIDField => $user->getUserId()));
         } else {
             $this->getTableGateway()->insert((array) $data);
-            $userId = $this->getTableGateway()->getAdapter()->getDriver()->getConnection()->getLastGeneratedId();
+            $userId = $this->getTableGateway()->getAdapter()->getDriver()->getLastGeneratedValue();
             $user->setUserId($userId);
         }
         return $user;
