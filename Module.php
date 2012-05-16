@@ -5,9 +5,13 @@ namespace ZfcUser;
 use Zend\Module\Manager,
     Zend\EventManager\StaticEventManager,
     Zend\Module\Feature\AutoloaderProviderInterface,
-    Zend\Module\Feature\ConfigProviderInterface;
+    Zend\Module\Feature\ConfigProviderInterface,
+    Zend\Module\Feature\ServiceProviderInterface;
 
-class Module implements AutoloaderProviderInterface, ConfigProviderInterface
+class Module implements 
+    AutoloaderProviderInterface, 
+    ConfigProviderInterface, 
+    ServiceProviderInterface
 {
     protected static $options;
 
@@ -33,6 +37,22 @@ class Module implements AutoloaderProviderInterface, ConfigProviderInterface
     public function getConfig($env = null)
     {
         return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function getServiceConfiguration()
+    {
+        return array(
+            'factories' => array(
+                'zfcUserAuthentication' => function ($sm) {
+                    $plugin = new Controller\Plugin\ZfcUserAuthentication();
+                    $authAdapter = $sm->get('ZfcUser\Authentication\Adapter\AdapterChain');
+                    $authService = $sm->get('Zend\Authentication\AuthenticationService');
+                    $plugin->setAuthAdapter($authAdapter);
+                    $plugin->setAuthService($authService);
+                    return $plugin;
+                },
+            ),
+        );
     }
 
     public function modulesLoaded($e)
