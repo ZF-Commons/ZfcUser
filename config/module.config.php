@@ -22,9 +22,11 @@ return array(
     ),
 
     'controller' => array(
-        'factories' => array(
-            'zfcuser' => 'ZfcUser\Service\ControllerFactory',
-        ),
+        // We _could_ use a factory to create the controller
+        // 'factories' => array(
+        //     'zfcuser' => 'ZfcUser\Service\ControllerFactory',
+        // ),
+        // Below is a plugin map for the controller plugin broker
         'map' => array(
             'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
         ),

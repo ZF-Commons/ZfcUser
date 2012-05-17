@@ -21,7 +21,6 @@ class ControllerFactory implements FactoryInterface
         $controller->setLoginForm($loginForm);
         $controller->setRegisterForm($registerForm);
         $controller->setServiceLocator($sm);
-        $controller->setBroker($sm->get('ControllerPluginBroker'));
         return $controller;
     }
 }
