@@ -18,16 +18,16 @@ class Register extends Base
     public function initLate()
     {
         parent::initLate();
-        $this->removeElement('userId');
+        $this->remove('userId');
         if (!Module::getOption('enable_username')) {
-            $this->removeElement('username');
+            $this->remove('username');
         }
         if (!Module::getOption('enable_display_name')) {
-            $this->removeElement('display_name');
+            $this->remove('display_name');
         }
         if (Module::getOption('registration_form_captcha') && $this->captcha_element) {
-            $this->addElement($this->captcha_element, 'captcha');
+            $this->add($this->captcha_element, array('name'=>'captcha'));
         }
-        $this->getElement('submit')->setLabel('Register');
+        $this->get('submit')->setAttribute('Label', 'Register');
     }
 }

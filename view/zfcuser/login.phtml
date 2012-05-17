@@ -1,3 +1,21 @@
 <h1>Sign In</h1>
-<?php echo $loginForm->setAction($this->url('zfcuser/login'))->setView($this); ?>
+<?php
+
+$form = $this->loginForm;
+
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/login'));
+$form->setAttribute('method', 'post');
+
+$this->form()->openTag($form);
+
+$elements = $form->getElements();
+
+foreach ($elements as $i) {
+    $this->formInput($i);
+}
+
+?>
+
+<?php //echo $loginForm->setAction($this->url('zfcuser/login'))->setView($this); ?>
 Not registered? <a href="<?php echo $this->url('zfcuser/register') ?>">Sign up!</a>
