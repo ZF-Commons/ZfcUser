@@ -10,7 +10,12 @@ class ControllerFactory implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $sm)
     {
-        $userService  = $sm->get('ZfcUser\Service\User');
+        $di         = $sm->get('Di');
+        $controller = $di->get('zfcuser');
+        return $controller;
+
+        // This was what I tried before.
+        $userService  = $sm->get('zfcuser_user_service');
         $loginEvents  = $sm->get('EventManager');
         $loginForm    = $sm->get('ZfcUser\Form\Login');
         $loginForm->setEventManager($loginEvents);

@@ -43,12 +43,9 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserAuthentication' => function ($sm) {
-                    $plugin = new Controller\Plugin\ZfcUserAuthentication();
-                    $authAdapter = $sm->get('ZfcUser\Authentication\Adapter\AdapterChain');
-                    $authService = $sm->get('Zend\Authentication\AuthenticationService');
-                    $plugin->setAuthAdapter($authAdapter);
-                    $plugin->setAuthService($authService);
+                'ZfcUser\Controller\Plugin\ZfcUserAuthentication' => function ($sm) {
+                    $di = $sm->get('Di');
+                    $plugin = $di->get('zfcUserAuthentication');
                     return $plugin;
                 },
             ),

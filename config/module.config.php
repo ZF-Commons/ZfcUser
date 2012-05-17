@@ -25,6 +25,9 @@ return array(
         'factories' => array(
             'zfcuser' => 'ZfcUser\Service\ControllerFactory',
         ),
+        'map' => array(
+            'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
+        ),
     ),
 
     'router' => array(
