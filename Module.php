@@ -2,11 +2,11 @@
 
 namespace ZfcUser;
 
-use Zend\Module\Manager,
+use Zend\ModuleManager\ModuleManager,
     Zend\EventManager\StaticEventManager,
-    Zend\Module\Feature\AutoloaderProviderInterface,
-    Zend\Module\Feature\ConfigProviderInterface,
-    Zend\Module\Feature\ServiceProviderInterface;
+    Zend\ModuleManager\Feature\AutoloaderProviderInterface,
+    Zend\ModuleManager\Feature\ConfigProviderInterface,
+    Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements 
     AutoloaderProviderInterface, 
@@ -15,7 +15,7 @@ class Module implements
 {
     protected static $options;
 
-    public function init(Manager $moduleManager)
+    public function init(ModuleManager $moduleManager)
     {
         $moduleManager->events()->attach('loadModules.post', array($this, 'modulesLoaded'));
     }
