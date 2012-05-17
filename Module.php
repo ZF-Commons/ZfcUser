@@ -43,9 +43,9 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'ZfcUser\Controller\Plugin\ZfcUserAuthentication' => function ($sm) {
+                'zfcUserAuthentication' => function ($sm) {
                     $di = $sm->get('Di');
-                    $plugin = $di->get('zfcUserAuthentication');
+                    $plugin = $di->get('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
                     return $plugin;
                 },
             ),
