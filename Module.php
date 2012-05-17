@@ -2,15 +2,20 @@
 
 namespace ZfcUser;
 
-use Zend\Module\Manager,
+use Zend\ModuleManager\ModuleManager,
     Zend\EventManager\StaticEventManager,
-    Zend\Module\Consumer\AutoloaderProvider;
+    Zend\ModuleManager\Feature\AutoloaderProviderInterface,
+    Zend\ModuleManager\Feature\ConfigProviderInterface,
+    Zend\ModuleManager\Feature\ServiceProviderInterface;
 
-class Module implements AutoloaderProvider
+class Module implements 
+    AutoloaderProviderInterface, 
+    ConfigProviderInterface, 
+    ServiceProviderInterface
 {
     protected static $options;
 
-    public function init(Manager $moduleManager)
+    public function init(ModuleManager $moduleManager)
     {
         $moduleManager->events()->attach('loadModules.post', array($this, 'modulesLoaded'));
     }
@@ -32,6 +37,19 @@ class Module implements AutoloaderProvider
     public function getConfig($env = null)
     {
         return include __DIR__ . '/config/module.config.php';
+    }
+
+    public function getServiceConfiguration()
+    {
+        return array(
+            'factories' => array(
+                'zfcUserAuthentication' => function ($sm) {
+                    $di = $sm->get('Di');
+                    $plugin = $di->get('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
+                    return $plugin;
+                },
+            ),
+        );
     }
 
     public function modulesLoaded($e)

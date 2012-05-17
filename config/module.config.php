@@ -14,6 +14,83 @@ return array(
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
         'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
     ),
+
+    'view_manager' => array(
+        'template_path_stack' => array(
+            'zfcuser' => __DIR__ . '/../view',
+        ),
+    ),
+
+    'controller' => array(
+        // We _could_ use a factory to create the controller
+        // 'factories' => array(
+        //     'zfcuser' => 'ZfcUser\Service\ControllerFactory',
+        // ),
+        // Below is a plugin map for the controller plugin broker
+        'map' => array(
+            'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
+        ),
+    ),
+
+    'router' => array(
+        'routes' => array(
+            'zfcuser' => array(
+                'type' => 'Literal',
+                'priority' => 1000,
+                'options' => array(
+                    'route' => '/user',
+                    'defaults' => array(
+                        'controller' => 'zfcuser',
+                        'action'     => 'index',
+                    ),
+                ),
+                'may_terminate' => true,
+                'child_routes' => array(
+                    'login' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/login',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'login',
+                            ),
+                        ),
+                    ),
+                    'authenticate' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/authenticate',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'authenticate',
+                            ),
+                        ),
+                    ),
+                    'logout' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/logout',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'logout',
+                            ),
+                        ),
+                    ),
+                    'register' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/register',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'register',
+                            ),
+                        ),
+                    ),
+                ),
+            ),
+        ),
+    ),
+
     'di' => array(
         'instance' => array(
             'alias' => array(
@@ -46,7 +123,7 @@ return array(
                     ),
                 ),
             ),
-            'zfcuser' => array(
+            'ZfcUser\Controller\UserController' => array(
                 'parameters' => array(
                     'loginForm'    => 'ZfcUser\Form\Login',
                     'registerForm' => 'ZfcUser\Form\Register',
@@ -60,13 +137,13 @@ return array(
                     ),
                 ),
             ),
-            'Zend\Mvc\Controller\PluginLoader' => array(
-                'parameters' => array(
-                    'map' => array(
-                        'zfcUserAuthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
-                    ),
-                ),
-            ),
+            //'Zend\Mvc\Controller\PluginLoader' => array(
+            //    'parameters' => array(
+            //        'map' => array(
+            //            'zfcUserAuthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
+            //        ),
+            //    ),
+            //),
             'ZfcUser\Controller\Plugin\ZfcUserAuthentication' => array(
                 'parameters' => array(
                     'authAdapter' => 'ZfcUser\Authentication\Adapter\AdapterChain',
@@ -169,71 +246,6 @@ return array(
             'ZfcUser\View\Helper\ZfcUserLoginWidget' => array(
                 'parameters' => array(
                     'loginForm'      => 'ZfcUser\Form\Login',
-                ),
-            ),
-
-            /**
-             * Routes
-             */
-
-            'Zend\Mvc\Router\RouteStackInterface' => array(
-                'parameters' => array(
-                    'routes' => array(
-                        'zfcuser' => array(
-                            'type' => 'Literal',
-                            'priority' => 1000,
-                            'options' => array(
-                                'route' => '/user',
-                                'defaults' => array(
-                                    'controller' => 'zfcuser',
-                                    'action'     => 'index',
-                                ),
-                            ),
-                            'may_terminate' => true,
-                            'child_routes' => array(
-                                'login' => array(
-                                    'type' => 'Literal',
-                                    'options' => array(
-                                        'route' => '/login',
-                                        'defaults' => array(
-                                            'controller' => 'zfcuser',
-                                            'action'     => 'login',
-                                        ),
-                                    ),
-                                ),
-                                'authenticate' => array(
-                                    'type' => 'Literal',
-                                    'options' => array(
-                                        'route' => '/authenticate',
-                                        'defaults' => array(
-                                            'controller' => 'zfcuser',
-                                            'action'     => 'authenticate',
-                                        ),
-                                    ),
-                                ),
-                                'logout' => array(
-                                    'type' => 'Literal',
-                                    'options' => array(
-                                        'route' => '/logout',
-                                        'defaults' => array(
-                                            'controller' => 'zfcuser',
-                                            'action'     => 'logout',
-                                        ),
-                                    ),
-                                ),
-                                'register' => array(
-                                    'type' => 'Literal',
-                                    'options' => array(
-                                        'route' => '/register',
-                                        'defaults' => array(
-                                            'controller' => 'zfcuser',
-                                            'action'     => 'register',
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
                 ),
             ),
         ),
