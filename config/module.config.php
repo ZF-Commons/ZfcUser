@@ -19,13 +19,14 @@ return array(
         'template_path_stack' => array(
             'zfcuser' => __DIR__ . '/../view',
         ),
+        'helper_map' => new Zend\Form\View\HelperLoader(),
     ),
 
     'controller' => array(
         // We _could_ use a factory to create the controller
-        // 'factories' => array(
-        //     'zfcuser' => 'ZfcUser\Service\ControllerFactory',
-        // ),
+        'factories' => array(
+            'zfcuser' => 'ZfcUser\Service\ControllerFactory',
+        ),
         // Below is a plugin map for the controller plugin broker
         'map' => array(
             'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
