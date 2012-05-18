@@ -7,6 +7,7 @@ use Zend\Mvc\Controller\ActionController,
     Zend\Stdlib\ResponseDescription as Response,
     Zend\View\Model\ViewModel,
     ZfcUser\Service\User as UserService,
+    ZfcUser\Form\LoginFilter,
     ZfcUser\Module as ZfcUser;
 
 class UserController extends ActionController
@@ -57,7 +58,10 @@ class UserController extends ActionController
             );
         }
 
-        if (!$form->isValid($request->post()->toArray())) {
+        $form->setInputFilter(new LoginFilter());
+        $form->setData($request->post());
+
+        if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             return $this->redirect()->toRoute('zfcuser/login'); 
         }
@@ -180,7 +184,9 @@ class UserController extends ActionController
         $this->loginForm = $loginForm;
         $fm = $this->flashMessenger()->setNamespace('zfcuser-login-form')->getMessages();
         if (isset($fm[0])) {
-            $this->loginForm->addErrorMessage($fm[0]);
+            $this->loginForm->setMessages(
+                array('identity' => array($fm[0]))
+            );
         }
         return $this;
     }

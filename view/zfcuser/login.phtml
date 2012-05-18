@@ -7,27 +7,25 @@ $form->prepare();
 $form->setAttribute('action', $this->url('zfcuser/login'));
 $form->setAttribute('method', 'post');
 
-$this->form()->openTag($form);
+echo $this->form()->openTag($form);
 
 $elements = $form->getElements();
 ?>
 <dl class="zend_form">
+<?php echo $this->formElementErrors($form->get('identity')); ?>
 <dt><?php echo $this->formLabel($form->get('identity')); ?></dt>
-<dd><?php
-echo $this->formInput($form->get('identity'));
-echo $this->formElementErrors($form->get('identity'));
-?></dd>
+<dd><?php echo $this->formInput($form->get('identity')); ?></dd>
 
 <dt><?php echo $this->formLabel($form->get('credential')); ?></dt>
 <dd><?php
 echo $this->formInput($form->get('credential'));
-echo $this->formElementErrors($form->get('credential'));
+//echo $this->formElementErrors($form->get('credential'));
 ?></dd>
 
 <dd><?php
 echo $this->formInput($form->get('csrf'));
 echo $this->formInput($form->get('submit'));
-echo $this->formElementErrors($form->get('submit'));
+//echo $this->formElementErrors($form->get('submit'));
 ?></dd>
 
 </dl>
