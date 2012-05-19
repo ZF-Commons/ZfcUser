@@ -20,50 +20,7 @@ return array(
             'zfcuser' => __DIR__ . '/../view',
         ),
         'helper_map' => array(
-            'form'                   => 'Zend\Form\View\Helper\Form',
-            'formcaptcha'            => 'Zend\Form\View\Helper\FormCaptcha',
-            'form_captcha'           => 'Zend\Form\View\Helper\FormCaptcha',
-            'captcha/dumb'           => 'Zend\Form\View\Helper\Captcha\Dumb',
-            'captcha_dumb'           => 'Zend\Form\View\Helper\Captcha\Dumb',
-            'captchadumb'            => 'Zend\Form\View\Helper\Captcha\Dumb',
-            'formcaptchadumb'        => 'Zend\Form\View\Helper\Captcha\Dumb',
-            'formcaptcha_dumb'       => 'Zend\Form\View\Helper\Captcha\Dumb',
-            'form_captcha_dumb'      => 'Zend\Form\View\Helper\Captcha\Dumb',
-            'captcha/figlet'         => 'Zend\Form\View\Helper\Captcha\Figlet',
-            'captcha_figlet'         => 'Zend\Form\View\Helper\Captcha\Figlet',
-            'captchafiglet'          => 'Zend\Form\View\Helper\Captcha\Figlet',
-            'formcaptchafiglet'      => 'Zend\Form\View\Helper\Captcha\Figlet',
-            'formcaptcha_figlet'     => 'Zend\Form\View\Helper\Captcha\Figlet',
-            'form_captcha_figlet'    => 'Zend\Form\View\Helper\Captcha\Figlet',
-            'captcha/image'          => 'Zend\Form\View\Helper\Captcha\Image',
-            'captcha_image'          => 'Zend\Form\View\Helper\Captcha\Image',
-            'captchaimage'           => 'Zend\Form\View\Helper\Captcha\Image',
-            'formcaptchaimage'       => 'Zend\Form\View\Helper\Captcha\Image',
-            'formcaptcha_image'      => 'Zend\Form\View\Helper\Captcha\Image',
-            'form_captcha_image'     => 'Zend\Form\View\Helper\Captcha\Image',
-            'captcha/recaptcha'      => 'Zend\Form\View\Helper\Captcha\ReCaptcha',
-            'captcha_recaptcha'      => 'Zend\Form\View\Helper\Captcha\ReCaptcha',
-            'captcharecaptcha'       => 'Zend\Form\View\Helper\Captcha\ReCaptcha',
-            'formcaptcharecaptcha'   => 'Zend\Form\View\Helper\Captcha\ReCaptcha',
-            'formcaptcha_recaptcha'  => 'Zend\Form\View\Helper\Captcha\ReCaptcha',
-            'form_captcha_recaptcha' => 'Zend\Form\View\Helper\Captcha\ReCaptcha',
-            'formelement'            => 'Zend\Form\View\Helper\FormElement',
-            'form_element'           => 'Zend\Form\View\Helper\FormElement',
-            'formelementerrors'      => 'Zend\Form\View\Helper\FormElementErrors',
-            'form_element_errors'    => 'Zend\Form\View\Helper\FormElementErrors',
-            'forminput'              => 'Zend\Form\View\Helper\FormInput',
-            'form_input'             => 'Zend\Form\View\Helper\FormInput',
-            'formlabel'              => 'Zend\Form\View\Helper\FormLabel',
-            'form_label'             => 'Zend\Form\View\Helper\FormLabel',
-            'formmulticheckbox'      => 'Zend\Form\View\Helper\FormMultiCheckbox',
-            'form_multicheckbox'     => 'Zend\Form\View\Helper\FormMultiCheckbox',
-            'form_multi_checkbox'    => 'Zend\Form\View\Helper\FormMultiCheckbox',
-            'formradio'              => 'Zend\Form\View\Helper\FormRadio',
-            'form_radio'             => 'Zend\Form\View\Helper\FormRadio',
-            'formselect'             => 'Zend\Form\View\Helper\FormSelect',
-            'form_select'            => 'Zend\Form\View\Helper\FormSelect',
-            'formtextarea'           => 'Zend\Form\View\Helper\FormTextarea',
-            'form_textarea'          => 'Zend\Form\View\Helper\FormTextarea',
+            'Zend\Form\View\HelperLoader',
             'zfcUserIdentity'        => 'ZfcUser\View\Helper\ZfcUserIdentity',
             'zfcUserLoginWidget'     => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
         ),
@@ -71,9 +28,9 @@ return array(
 
     'controller' => array(
         // We _could_ use a factory to create the controller
-        //'factories' => array(
-        //    'zfcuser' => 'ZfcUser\Service\ControllerFactory',
-        //),
+        'factories' => array(
+            'zfcuser' => 'ZfcUser\Service\ControllerFactory',
+        ),
         // Below is a plugin map for the controller plugin broker
         'map' => array(
             'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
@@ -142,19 +99,11 @@ return array(
     'di' => array(
         'instance' => array(
             'alias' => array(
-                'zfcuser'                          => 'ZfcUser\Controller\UserController',
-                'zfcuser_user_service'             => 'ZfcUser\Service\User',
-                'zfcuser_auth_service'             => 'Zend\Authentication\AuthenticationService',
                 'zfcuser_uemail_validator'         => 'ZfcUser\Validator\NoRecordExists',
                 'zfcuser_uusername_validator'      => 'ZfcUser\Validator\NoRecordExists',
                 'zfcuser_captcha_element'          => 'Zend\Form\Element\Captcha',
-
                 // Default Zend\Db
                 'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
-                'zfcuser_user_mapper'     => 'ZfcUser\Model\UserMapper',
-                'zfcuser_usermeta_mapper' => 'ZfcUser\Model\UserMetaMapper',
-                'zfcuser_user_tg'         => 'Zend\Db\TableGateway\TableGateway',
-                'zfcuser_usermeta_tg'     => 'Zend\Db\TableGateway\TableGateway',
             ),
             'zfcuser_captcha_element' => array(
                 'parameters' => array(
@@ -169,60 +118,6 @@ return array(
                         ),
                         'order'      => 500,
                     ),
-                ),
-            ),
-            'ZfcUser\Controller\UserController' => array(
-                'parameters' => array(
-                    'loginForm'    => 'ZfcUser\Form\Login',
-                    'registerForm' => 'ZfcUser\Form\Register',
-                    'userService'  => 'ZfcUser\Service\User',
-                ),
-            ),
-            'Zend\View\Resolver\TemplatePathStack' => array(
-                'parameters' => array(
-                    'paths'  => array(
-                        'zfcuser' => __DIR__ . '/../view',
-                    ),
-                ),
-            ),
-            //'Zend\Mvc\Controller\PluginLoader' => array(
-            //    'parameters' => array(
-            //        'map' => array(
-            //            'zfcUserAuthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
-            //        ),
-            //    ),
-            //),
-            'ZfcUser\Controller\Plugin\ZfcUserAuthentication' => array(
-                'parameters' => array(
-                    'authAdapter' => 'ZfcUser\Authentication\Adapter\AdapterChain',
-                    'authService' => 'zfcuser_auth_service',
-                ),
-            ),
-            'ZfcUser\Authentication\Adapter\AdapterChain' => array(
-                'parameters' => array(
-                    'defaultAdapter' => 'ZfcUser\Authentication\Adapter\Db',
-                ),
-            ),
-            'ZfcUser\Authentication\Adapter\Db' => array(
-                'parameters' => array(
-                    'mapper' => 'zfcuser_user_mapper',
-                ),
-            ),
-            'zfcuser_auth_service' => array(
-                'parameters' => array(
-                    'storage' => 'ZfcUser\Authentication\Storage\Db',
-                ),
-            ),
-            'ZfcUser\Authentication\Storage\Db' => array(
-                'parameters' => array(
-                    'mapper' => 'zfcuser_user_mapper',
-                ),
-            ),
-            'ZfcUser\Service\User' => array(
-                'parameters' => array(
-                    'authService'    => 'zfcuser_auth_service',
-                    'userMapper'     => 'zfcuser_user_mapper',
-                    'userMetaMapper' => 'zfcuser_usermeta_mapper',
                 ),
             ),
             'ZfcUser\Form\Register' => array(
@@ -246,49 +141,6 @@ return array(
                     'options' => array(
                         'key' => 'username',
                     ),
-                ),
-            ),
-
-            /**
-             * Mapper / DB
-             */
-            'ZfcUser\Model\UserMapper' => array(
-                'parameters' => array(
-                    'tableGateway'  => 'zfcuser_user_tg',
-                ),
-            ),
-            'ZfcUser\Model\UserMetaMapper' => array(
-                'parameters' => array(
-                    'tableGateway'  => 'zfcuser_usermeta_tg',
-                ),
-            ),
-            'zfcuser_user_tg' => array(
-                'parameters' => array(
-                    'table' => 'user',
-                    'adapter'   => 'zfcuser_zend_db_adapter',
-                ),
-            ),
-            'zfcuser_usermeta_tg' => array(
-                'parameters' => array(
-                    'table' => 'user_meta',
-                    'adapter'   => 'zfcuser_zend_db_adapter',
-                ),
-            ),
-
-            /**
-             * View helper(s)
-             */
-            'Zend\View\HelperLoader' => array(
-                'parameters' => array(
-                    'map' => array(
-                        'zfcUserIdentity' => 'ZfcUser\View\Helper\ZfcUserIdentity',
-                        'zfcUserLoginWidget' => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
-                    ),
-                ),
-            ),
-            'ZfcUser\View\Helper\ZfcUserIdentity' => array(
-                'parameters' => array(
-                    'authService' => 'zfcuser_auth_service',
                 ),
             ),
             'ZfcUser\View\Helper\ZfcUserLoginWidget' => array(
