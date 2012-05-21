@@ -7,6 +7,7 @@ use Zend\Mvc\Controller\ActionController,
     Zend\Stdlib\ResponseDescription as Response,
     Zend\View\Model\ViewModel,
     ZfcUser\Service\User as UserService,
+    ZfcUser\Form\LoginFilter,
     ZfcUser\Module as ZfcUser;
 
 class UserController extends ActionController
@@ -25,6 +26,11 @@ class UserController extends ActionController
      * @var Form
      */
     protected $registerForm;
+
+    /**
+     * @var ZfcUser\Form\RegisterFilter
+     */
+    protected $registerFilter;
 
     /**
      * @todo Make this dynamic / translation-friendly
@@ -57,7 +63,10 @@ class UserController extends ActionController
             );
         }
 
-        if (!$form->isValid($request->post()->toArray())) {
+        $form->setInputFilter(new LoginFilter());
+        $form->setData($request->post());
+
+        if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             return $this->redirect()->toRoute('zfcuser/login'); 
         }
@@ -120,8 +129,18 @@ class UserController extends ActionController
         
         $request = $this->getRequest();
         $form    = $this->getRegisterForm();
+        $form->setInputFilter($this->getServiceLocator()->get('ZfcUser\Form\RegisterFilter'));
+
+        try {
+            $form->isValid();
+        } catch (\Zend\Form\Exception\DomainException $e) {
+            // ignore this exception
+        }
+
         if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
-            if (false === $form->isValid($request->post()->toArray())) {
+            $form->setData($request->post());
+
+            if (false === $form->isValid()) {
                 $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
                 return $this->redirect()->toRoute('zfcuser/register');
             } else {
@@ -165,7 +184,7 @@ class UserController extends ActionController
         $this->registerForm = $registerForm;
         $fm = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
         if (isset($fm[0])) {
-            $this->registerForm->isValid($fm[0]);
+            $this->registerForm->setData($fm[0]);
         }
         return $this;
     }
@@ -180,8 +199,21 @@ class UserController extends ActionController
         $this->loginForm = $loginForm;
         $fm = $this->flashMessenger()->setNamespace('zfcuser-login-form')->getMessages();
         if (isset($fm[0])) {
-            $this->loginForm->addErrorMessage($fm[0]);
+            $this->loginForm->setMessages(
+                array('identity' => array($fm[0]))
+            );
         }
+        return $this;
+    }
+ 
+    public function getRegisterFilter()
+    {
+        return $this->registerFilter;
+    }
+ 
+    public function setRegisterFilter($registerFilter)
+    {
+        $this->registerFilter = $registerFilter;
         return $this;
     }
 }

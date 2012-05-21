@@ -3,50 +3,45 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Form,
+    Zend\Form\Element\Csrf,
     ZfcBase\Form\ProvidesEventsForm,
     ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm
 {
-    public function init()
+    public function __construct($name = null)
     {
-        $this->setMethod('post')
-             ->loadDefaultDecorators()
-             ->setDecorators(array('FormErrors') + $this->getDecorators());
+        parent::__construct($name);
 
-        $this->addElement('text', 'identity', array(
-            'filters'    => array('StringTrim'),
-            'validators' => array(
-                'EmailAddress',
+        $this->add(array(
+            'name' => 'identity',
+            'attributes' => array(
+                'label' => 'Email',
+                'type' => 'text'
             ),
-            'required'   => true,
-            'label'      => 'Email',
         ));
-        
 
         if (ZfcUser::getOption('enable_username')) {
             $emailElement = $this->getElement('identity');
-            $emailElement->removeValidator('EmailAddress')
-                         ->setLabel('Email or Username'); // @TODO: make translation-friendly
+            $emailElement->setLabel('Email or Username'); // @TODO: make translation-friendly
         }
         
-        $this->addElement('password', 'credential', array(
-            'filters'    => array('StringTrim'),
-            'validators' => array(
-                array('StringLength', true, array(6, 999))
+        $this->add(array(
+            'name' => 'credential',
+            'attributes' => array(
+                'label' => 'Password',
+                'type' => 'password',
             ),
-            'required'   => true,
-            'label'      => 'Password',
         ));
 
-        $this->addElement('hash', 'csrf', array(
-            'ignore'     => true,
-            'decorators' => array('ViewHelper'),
-        ));
+        $this->add(new Csrf('csrf'));
 
-        $this->addElement('submit', 'login', array(
-            'ignore'   => true,
-            'label'    => 'Sign In',
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'label' => 'Submit',
+                'type' => 'submit'
+            ),
         ));
 
         $this->events()->trigger('init', $this);

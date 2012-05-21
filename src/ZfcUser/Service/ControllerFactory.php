@@ -15,10 +15,12 @@ class ControllerFactory implements FactoryInterface
         $loginForm    = $sm->get('ZfcUser\Form\Login');
         $loginForm->setEventManager($loginEvents);
         $registerForm = $sm->get('ZfcUser\Form\Register');
+        //$registerFilter = $sm->get('ZfcUser\Form\RegisterFilter');
 
         $controller = new UserController();
         $controller->setUserService($userService);
         $controller->setLoginForm($loginForm);
+        //$controller->setRegisterFilter($registerFilter);
         $controller->setRegisterForm($registerForm);
         $controller->setServiceLocator($sm);
         return $controller;
