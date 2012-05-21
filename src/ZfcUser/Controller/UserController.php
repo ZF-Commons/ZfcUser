@@ -28,6 +28,11 @@ class UserController extends ActionController
     protected $registerForm;
 
     /**
+     * @var ZfcUser\Form\RegisterFilter
+     */
+    protected $registerFilter;
+
+    /**
      * @todo Make this dynamic / translation-friendly
      * @var string
      */
@@ -124,8 +129,18 @@ class UserController extends ActionController
         
         $request = $this->getRequest();
         $form    = $this->getRegisterForm();
+        $form->setInputFilter($this->getServiceLocator()->get('ZfcUser\Form\RegisterFilter'));
+
+        try {
+            $form->isValid();
+        } catch (\Zend\Form\Exception\DomainException $e) {
+            // ignore this exception
+        }
+
         if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
-            if (false === $form->isValid($request->post()->toArray())) {
+            $form->setData($request->post());
+
+            if (false === $form->isValid()) {
                 $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
                 return $this->redirect()->toRoute('zfcuser/register');
             } else {
@@ -169,7 +184,7 @@ class UserController extends ActionController
         $this->registerForm = $registerForm;
         $fm = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
         if (isset($fm[0])) {
-            $this->registerForm->isValid($fm[0]);
+            $this->registerForm->setData($fm[0]);
         }
         return $this;
     }
@@ -188,6 +203,17 @@ class UserController extends ActionController
                 array('identity' => array($fm[0]))
             );
         }
+        return $this;
+    }
+ 
+    public function getRegisterFilter()
+    {
+        return $this->registerFilter;
+    }
+ 
+    public function setRegisterFilter($registerFilter)
+    {
+        $this->registerFilter = $registerFilter;
         return $this;
     }
 }

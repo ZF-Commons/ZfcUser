@@ -122,8 +122,6 @@ return array(
             ),
             'ZfcUser\Form\Register' => array(
                 'parameters' => array(
-                    'emailValidator'    => 'zfcuser_uemail_validator',
-                    'usernameValidator' => 'zfcuser_uusername_validator',
                     'captcha_element'   => 'zfcuser_captcha_element'
                 ),
             ),
@@ -146,6 +144,12 @@ return array(
             'ZfcUser\View\Helper\ZfcUserLoginWidget' => array(
                 'parameters' => array(
                     'loginForm'      => 'ZfcUser\Form\Login',
+                ),
+            ),
+            'ZfcUser\Form\RegisterFilter' => array(
+                'parameters' => array(
+                    'emailValidator'    => 'zfcuser_uemail_validator',
+                    'usernameValidator' => 'zfcuser_uusername_validator',
                 ),
             ),
         ),

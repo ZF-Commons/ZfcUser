@@ -100,6 +100,29 @@ class Module implements
                     $tg = new \Zend\Db\TableGateway\TableGateway('user_meta', $adapter);
                     return new Model\UserMetaMapper($tg);
                 },
+
+                'zfcuser_uemail_validator' => function($sm) {
+                    $mapper = $sm->get('zfcuser_user_mapper');
+                    return new \ZfcUser\Validator\NoRecordExists(array(
+                        'mapper'    => $mapper,
+                        'key'       => 'email'
+                    ));
+                },
+
+                'zfcuser_uusername_validator' => function($sm) {
+                    $mapper = $sm->get('zfcuser_user_mapper');
+                    return new \ZfcUser\Validator\NoRecordExists(array(
+                        'mapper'    => $mapper,
+                        'key'       => 'username'
+                    ));
+                },
+
+                'ZfcUser\Form\RegisterFilter' => function($sm) {
+                    return new \ZfcUser\Form\RegisterFilter(
+                        $sm->get('zfcuser_uemail_validator'),
+                        $sm->get('zfcuser_uusername_validator')
+                    );
+                },
             ),
         );
     }

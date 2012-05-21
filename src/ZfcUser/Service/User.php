@@ -62,8 +62,11 @@ class User extends EventProvider
     {
         $class = ZfcUser::getOption('user_model_class');
         $user = new $class;
-        $user->setEmail($form->getValue('email'))
-             ->setPassword(Password::hash($form->getValue('password')))
+
+        $data = $form->getData();
+
+        $user->setEmail($data['email'])
+             ->setPassword(Password::hash($data['password']))
              ->setRegisterIp($_SERVER['REMOTE_ADDR'])
              ->setRegisterTime(new DateTime('now'))
              ->setEnabled(true);
@@ -73,10 +76,10 @@ class User extends EventProvider
             $user->setActive(true);
         }
         if (ZfcUser::getOption('enable_username')) {
-            $user->setUsername($form->getValue('username'));
+            $user->setUsername($data['username']);
         }
         if (ZfcUser::getOption('enable_display_name')) {
-            $user->setDisplayName($form->getValue('display_name'));
+            $user->setDisplayName($data['display_name']);
         }
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         $this->userMapper->persist($user);
