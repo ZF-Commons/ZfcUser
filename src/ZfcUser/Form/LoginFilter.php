@@ -9,7 +9,6 @@ class LoginFilter extends InputFilter
 {
     public function __construct()
     {
-
         if (ZfcUser::getOption('enable_username')) {
             $this->add(array(
                 'name'          => 'identity',

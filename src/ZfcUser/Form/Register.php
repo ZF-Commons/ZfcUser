@@ -10,14 +10,10 @@ class Register extends Base
 {
     protected $captcha_element= null;
 
-    public function setCaptchaElement(Captcha $captcha_element)
+    public function __construct()
     {
-        $this->captcha_element= $captcha_element;
-    }
-    
-    public function initLate()
-    {
-        parent::initLate();
+        parent::__construct();
+        
         $this->remove('userId');
         if (!Module::getOption('enable_username')) {
             $this->remove('username');
@@ -29,5 +25,15 @@ class Register extends Base
             $this->add($this->captcha_element, array('name'=>'captcha'));
         }
         $this->get('submit')->setAttribute('Label', 'Register');
+    }
+
+    public function setCaptchaElement(Captcha $captcha_element)
+    {
+        $this->captcha_element= $captcha_element;
+    }
+    
+    public function initLate()
+    {
+        parent::initLate();
     }
 }
