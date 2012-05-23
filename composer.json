@@ -25,7 +25,10 @@
     },
     "autoload": {
         "psr-0": {
-            "ZfcUser": "module/ZfcUser/src"
-        }
+            "ZfcUser": "src/"
+        },
+        "classmap": [
+            "./"
+        ]
     }
 }
