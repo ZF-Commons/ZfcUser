@@ -88,15 +88,13 @@ class Module implements
                 },
 
                 'zfcuser_user_mapper' => function ($sm) {
-                    $di = $sm->get('Di');
-                    $adapter = $di->get('zfcuser_zend_db_adapter');
+                    $adapter = $sm->get('zfcuser_zend_db_adapter');
                     $tg = new \Zend\Db\TableGateway\TableGateway('user', $adapter);
                     return new Model\UserMapper($tg);
                 },
 
                 'zfcuser_usermeta_mapper' => function ($sm) {
-                    $di = $sm->get('Di');
-                    $adapter = $di->get('zfcuser_zend_db_adapter');
+                    $adapter = $sm->get('zfcuser_zend_db_adapter');
                     $tg = new \Zend\Db\TableGateway\TableGateway('user_meta', $adapter);
                     return new Model\UserMetaMapper($tg);
                 },
