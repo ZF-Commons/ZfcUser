@@ -81,35 +81,21 @@ Coming soon...
         );
 
         /**
-         * No need to edit below this line 
+         * No need to edit below this line
          */
         return array(
             'di' => array(
                 'instance' => array(
-                    'alias' => array(
-                        'masterdb' => 'PDO',
-                    ),
-                    'masterdb' => array(
-                        'parameters' => array(
-                            'dsn'            => "mysql:dbname={$mdb['dbname']};host={$mdb['host']}",
-                            'username'       => $mdb['user'],
-                            'passwd'         => $mdb['pass'],
-                            'driver_options' => array(PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES \'UTF8\''),
-                        ),
-                    ),
                     'Zend\Db\Adapter\Adapter' => array(
                         'parameters' => array(
-                            'driver' => 'Zend\Db\Adapter\Driver\Pdo\Pdo',
-                        ),
-                    ),
-                    'Zend\Db\Adapter\Driver\Pdo\Pdo' => array(
-                        'parameters' => array(
-                            'connection' => 'Zend\Db\Adapter\Driver\Pdo\Connection',
-                        ),
-                    ),
-                    'Zend\Db\Adapter\Driver\Pdo\Connection' => array(
-                        'parameters' => array(
-                            'connectionInfo' => 'masterdb',
+                            'driver' => array(
+                                'driver'    => 'pdo',
+                                'dsn'       => "mysql:dbname={$mdb['dbname']};host={$mdb['host']}",
+                                'database'  => $mdb['dbname'],
+                                'username'  => $mdb['user'],
+                                'password'  => $mdb['pass'],
+                                'hostname'  => $mdb['host'],
+                            ),
                         ),
                     ),
                 ),
