@@ -24,8 +24,8 @@
 	"zf-commons/zfc-base": "dev-master"
     },
     "autoload": {
-        "classmap": [
-            "./"
-        ]
+        "psr-0": {
+            "ZfcUser": "module/ZfcUser/src"
+        }
     }
 }
