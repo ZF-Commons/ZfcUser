@@ -37,6 +37,12 @@ return array(
         ),
     ),
 
+    'service_manager' => array(
+        'alias' => array(
+            'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
+        ),
+    ),
+
     'router' => array(
         'routes' => array(
             'zfcuser' => array(
