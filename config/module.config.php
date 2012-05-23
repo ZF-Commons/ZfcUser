@@ -38,7 +38,7 @@ return array(
     ),
 
     'service_manager' => array(
-        'alias' => array(
+        'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
         ),
     ),
@@ -108,8 +108,6 @@ return array(
                 'zfcuser_uemail_validator'         => 'ZfcUser\Validator\NoRecordExists',
                 'zfcuser_uusername_validator'      => 'ZfcUser\Validator\NoRecordExists',
                 'zfcuser_captcha_element'          => 'Zend\Form\Element\Captcha',
-                // Default Zend\Db
-                'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
             ),
             'zfcuser_captcha_element' => array(
                 'parameters' => array(
