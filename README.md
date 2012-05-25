@@ -102,10 +102,10 @@ Coming soon...
             ),
         );
 
-2. Now, specify the DI alias for your PDO connection in
+2. Now, specify the Zend\Db adapter to use in your 
    `./configs/autoload/module.zfcuser.config.php`, under the 'zend_db_adapter' setting.
    If you created the `./config/autoload/database.config.php` file in the
-   previous step, the alias you'll specify is 'masterdb'.
+   previous step, the adapter you'll specify is 'Zend\Db\Adapter\Adapter'.
 
 Navigate to http://yourproject/user and you should land on a login page.
 
