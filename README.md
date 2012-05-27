@@ -54,8 +54,6 @@ Installation
 2. Clone this project into your `./vendor/` directory and enable it in your
    `application.config.php` file.
 3. Import the SQL schema located in `./vendor/ZfcUser/data/schema.sql`.
-4. Copy `./vendor/ZfcUser/config/module.zfcuser.config.php.dist` to
-   `./config/autoload/module.zfcuser.config.php`.
 
 ### Post-Install: Doctrine2 ORM
 
@@ -67,45 +65,34 @@ Coming soon...
 
 ### Post-Install: Zend\Db
 
-1. If you do not already have a PDO connection set up via DI, put the following
-   in `./config/autoload/database.config.php`:
+1. If you do not already have a valid Zend\Db\Adapter\Adapter in your service
+   manager configuration, put the following in `./config/autoload/database.local.php`:
 
         <?php
-        // ./config/autoload/database.config.php
 
-        $mdb = array(
-            'dbname' => 'CHANGEME',
-            'user'   => 'CHANGEME',
-            'pass'   => 'CHANGEME',
-            'host'   => 'CHANGEME',
+        $dbParams = array(
+            'database'  => 'changeme',
+            'username'  => 'changeme',
+            'password'  => 'changeme',
+            'hostname'  => 'changeme',
         );
 
-        /**
-         * No need to edit below this line
-         */
         return array(
-            'di' => array(
-                'instance' => array(
-                    'Zend\Db\Adapter\Adapter' => array(
-                        'parameters' => array(
-                            'driver' => array(
-                                'driver'    => 'pdo',
-                                'dsn'       => "mysql:dbname={$mdb['dbname']};host={$mdb['host']}",
-                                'database'  => $mdb['dbname'],
-                                'username'  => $mdb['user'],
-                                'password'  => $mdb['pass'],
-                                'hostname'  => $mdb['host'],
-                            ),
-                        ),
-                    ),
+            'service_manager' => array(
+                'factories' => array(
+                    'Zend\Db\Adapter\Adapter' => function ($sm) use ($dbParams) {
+                        return new Zend\Db\Adapter\Adapter(array(
+                            'driver'    => 'pdo',
+                            'dsn'       => 'mysql:dbname='.$dbParams['database'].';host='.$dbParams['hostname'],
+                            'database'  => $dbParams['database'],
+                            'username'  => $dbParams['username'],
+                            'password'  => $dbParams['password'],
+                            'hostname'  => $dbParams['hostname'],
+                        ));
+                    },
                 ),
             ),
         );
-
-2. Now, specify the DI alias for your PDO connection in
-   `./configs/autoload/module.zfcuser.config.php`, under the 'zend_db_adapter' setting.
-   If you created the `./config/autoload/database.config.php` file in the
-   previous step, the alias you'll specify is 'masterdb'.
 
 Navigate to http://yourproject/user and you should land on a login page.
 
