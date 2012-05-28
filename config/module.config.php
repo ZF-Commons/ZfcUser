@@ -124,9 +124,11 @@ return array(
                     ),
                 ),
             ),
+
             'ZfcUser\Form\Register' => array(
                 'parameters' => array(
-                    'captcha_element'   => 'zfcuser_captcha_element'
+                    'captcha_element'   => 'zfcuser_captcha_element',
+                    'input_filter' => 'ZfcUser\Form\RegisterFilter'
                 ),
             ),
             'zfcuser_uemail_validator' => array(

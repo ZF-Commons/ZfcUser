@@ -2,13 +2,14 @@
 
 namespace ZfcUser\Authentication\Storage;
 
-use Zend\Authentication\Storage,
-    ZfcUser\Model\UserMapperInterface;
+use Zend\Authentication\Storage;
+use Zend\Authentication\Storage\StorageInterface;
+use ZfcBase\Mapper\DataMapperInterface as UserMapper;
 
 class Db implements Storage\StorageInterface
 {
     /**
-     * @var Storage
+     * @var StorageInterface
      */
     protected $storage;
 
@@ -25,7 +26,7 @@ class Db implements Storage\StorageInterface
     /**
      * Returns true if and only if storage is empty
      *
-     * @throws Zend\Authentication\Storage\Exception If it is impossible to determine whether storage is empty
+     * @throws \Zend\Authentication\Exception\InvalidArgumentException If it is impossible to determine whether storage is empty
      * @return boolean
      */
     public function isEmpty()
@@ -38,7 +39,7 @@ class Db implements Storage\StorageInterface
      *
      * Behavior is undefined when storage is empty.
      *
-     * @throws Zend\Authentication\Storage\Exception If reading contents from storage is impossible
+     * @throws \Zend\Authentication\Exception\InvalidArgumentException If reading contents from storage is impossible
      * @return mixed
      */
     public function read()
@@ -50,7 +51,7 @@ class Db implements Storage\StorageInterface
         $identity = $this->getStorage()->read();
 
         if (is_int($identity) || is_scalar($identity)) {
-            $identity = $this->getMapper()->findById($identity);
+            $identity = $this->getMapper()->find($identity);
         }
 
         if ($identity) {
@@ -66,7 +67,7 @@ class Db implements Storage\StorageInterface
      * Writes $contents to storage
      *
      * @param  mixed $contents
-     * @throws Zend\Authentication\Storage\Exception If writing $contents to storage is impossible
+     * @throws \Zend\Authentication\Exception\InvalidArgumentException If writing $contents to storage is impossible
      * @return void
      */
     public function write($contents)
@@ -78,7 +79,7 @@ class Db implements Storage\StorageInterface
     /**
      * Clears contents from storage
      *
-     * @throws Zend\Authentication\Storage\Exception If clearing contents from storage is impossible
+     * @throws \Zend\Authentication\Exception\InvalidArgumentException If clearing contents from storage is impossible
      * @return void
      */
     public function clear()
@@ -105,7 +106,7 @@ class Db implements Storage\StorageInterface
      * 
      * @param Storage\StorageInterface $storage 
      * @access public
-     * @return void
+     * @return Db
      */
     public function setStorage(Storage\StorageInterface $storage)
     {
@@ -126,10 +127,10 @@ class Db implements Storage\StorageInterface
     /**
      * setMapper 
      * 
-     * @param UserMapperInterface $mapper 
+     * @param UserMapper $mapper
      * @return Db
      */
-    public function setMapper(UserMapperInterface $mapper)
+    public function setMapper(UserMapper $mapper)
     {
         $this->mapper = $mapper;
         return $this;

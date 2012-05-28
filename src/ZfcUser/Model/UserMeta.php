@@ -2,14 +2,14 @@
 
 namespace ZfcUser\Model;
 
-use ZfcBase\Model\ModelAbstract;
+use ZfcBase\Model\AbstractModel;
 
 /**
  * This concept is shamlessly borrowed from Wordpress.
  * @see http://codex.wordpress.org/Function_Reference/get_user_meta
  * @see http://codex.wordpress.org/Database_Description#Table:_wp_usermeta
  */
-class UserMeta extends ModelAbstract implements UserMetaInterface
+class UserMeta extends AbstractModel implements UserMetaInterface
 {
     /**
      * @var User

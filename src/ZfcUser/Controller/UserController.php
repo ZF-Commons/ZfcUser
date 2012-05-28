@@ -2,13 +2,13 @@
 
 namespace ZfcUser\Controller;
 
-use Zend\Mvc\Controller\ActionController,
-    Zend\Form\Form,
-    Zend\Stdlib\ResponseDescription as Response,
-    Zend\View\Model\ViewModel,
-    ZfcUser\Service\User as UserService,
-    ZfcUser\Form\LoginFilter,
-    ZfcUser\Module as ZfcUser;
+use Zend\Form\Form;
+use Zend\Mvc\Controller\ActionController;
+use Zend\Stdlib\ResponseInterface as Response;
+use Zend\View\Model\ViewModel;
+use ZfcUser\Service\User as UserService;
+use ZfcUser\Form\LoginFilter;
+use ZfcUser\Module as ZfcUser;
 
 class UserController extends ActionController
 {
@@ -28,7 +28,7 @@ class UserController extends ActionController
     protected $registerForm;
 
     /**
-     * @var ZfcUser\Form\RegisterFilter
+     * @var \ZfcUser\Form\RegisterFilter
      */
     protected $registerFilter;
 
@@ -126,25 +126,15 @@ class UserController extends ActionController
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute('zfcuser');
         }
-        
-        $request = $this->getRequest();
-        $form    = $this->getRegisterForm();
-        $form->setInputFilter($this->getServiceLocator()->get('ZfcUser\Form\RegisterFilter'));
 
-        try {
-            $form->isValid();
-        } catch (\Zend\Form\Exception\DomainException $e) {
-            // ignore this exception
-        }
+        $request = $this->getRequest();
+        $service = $this->getUserService();
+        $form = $service->getRegisterForm();
 
         if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
-            $form->setData($request->post());
-
-            if (false === $form->isValid()) {
-                $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
-                return $this->redirect()->toRoute('zfcuser/register');
-            } else {
-                $this->getUserService()->createFromForm($form);
+            $data = $request->post()->toArray();
+            try {
+                $service->register($data);
                 if (ZfcUser::getOption('login_after_registration')) {
                     $post = $request->post();
                     $post['identity']   = $post['email'];
@@ -152,6 +142,8 @@ class UserController extends ActionController
                     return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
                 }
                 return $this->redirect()->toRoute('zfcuser/login');
+            } catch (\InvalidArgumentException $e) {
+                // ignore exception, error messages are displayed in view
             }
         }
         return array(
@@ -174,21 +166,6 @@ class UserController extends ActionController
         return $this;
     }
 
-    public function getRegisterForm()
-    {
-        return $this->registerForm;
-    }
-
-    public function setRegisterForm(Form $registerForm)
-    {
-        $this->registerForm = $registerForm;
-        $fm = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
-        if (isset($fm[0])) {
-            $this->registerForm->setData($fm[0]);
-        }
-        return $this;
-    }
-
     public function getLoginForm()
     {
         return $this->loginForm;
@@ -203,17 +180,6 @@ class UserController extends ActionController
                 array('identity' => array($fm[0]))
             );
         }
-        return $this;
-    }
- 
-    public function getRegisterFilter()
-    {
-        return $this->registerFilter;
-    }
- 
-    public function setRegisterFilter($registerFilter)
-    {
-        $this->registerFilter = $registerFilter;
         return $this;
     }
 }
