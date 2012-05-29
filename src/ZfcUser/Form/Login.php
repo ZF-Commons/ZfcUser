@@ -22,8 +22,8 @@ class Login extends ProvidesEventsForm
         ));
 
         if (ZfcUser::getOption('enable_username')) {
-            $emailElement = $this->getElement('identity');
-            $emailElement->setLabel('Email or Username'); // @TODO: make translation-friendly
+            $emailElement = $this->get('identity');
+            $emailElement->setAttribute('label', 'Email or Username'); // @TODO: make translation-friendly
         }
         
         $this->add(array(
