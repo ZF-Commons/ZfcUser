@@ -56,7 +56,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
-                'label' => 'Submit',
+                'value' => 'Submit',
                 'type' => 'submit'
             ),
         ));
