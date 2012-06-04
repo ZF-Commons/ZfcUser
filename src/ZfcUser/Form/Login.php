@@ -16,15 +16,18 @@ class Login extends ProvidesEventsForm
         $this->add(array(
             'name' => 'identity',
             'attributes' => array(
-                'label' => 'Email',
+                'label' => '',
                 'type' => 'text'
             ),
         ));
 
-        if (ZfcUser::getOption('enable_username')) {
-            $emailElement = $this->get('identity');
-            $emailElement->setAttribute('label', 'Email or Username'); // @TODO: make translation-friendly
+        $emailElement = $this->get('identity');
+        $label = $emailElement->getAttribute('label');
+        // @TODO: make translation-friendly
+        foreach (ZfcUser::getOption('auth_identity_fields') as $mode) {
+            $label = (!empty($label) ? $label . ' or ' : '') . ucfirst($mode);
         }
+        $emailElement->setAttribute('label', $label);
         
         $this->add(array(
             'name' => 'credential',

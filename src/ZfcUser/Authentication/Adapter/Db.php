@@ -34,14 +34,21 @@ class Db extends AbstractAdapter
         $identity   = $e->getRequest()->post()->get('identity');
         $credential = $e->getRequest()->post()->get('credential');
         $credential = $this->preProcessCredential($credential);
-        
-        $userObject = $this->getMapper()->findByEmail($identity);
 
-        if (!$userObject && ZfcUser::getOption('enable_username')) {
-            // Auth by username
-            $userObject = $this->getMapper()->findByUsername($identity);
+        // Cycle through the configured identity sources and test each
+        foreach (ZfcUser::getOption('auth_identity_fields') as $mode) {
+            if (isset($userObject) && is_object($userObject)) break;
+            switch ($mode) {
+                case 'username':
+                    $userObject = $this->getMapper()->findByUsername($identity);
+                    break;
+                case 'email':
+                    $userObject = $this->getMapper()->findByEmail($identity);
+                    break;
+            }
         }
-        if (!$userObject) {
+
+        if (!isset($userObject) || !$userObject) {
             $e->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND)
               ->setMessages(array('A record with the supplied identity could not be found.'));
             $this->setSatisfied(false);
