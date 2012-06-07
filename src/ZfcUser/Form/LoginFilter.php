@@ -16,7 +16,7 @@ class LoginFilter extends InputFilter
         );
 
         $identityFields = ZfcUser::getOption('auth_identity_fields')->toArray();
-        if (count($identityFields) == 1 && array_pop($identityFields) == 'email') {
+        if ($identityFields == array('email')) {
             $validators = array('name' => 'EmailAddress');
             array_push($validators, $identityParams['validators']); 
         }
