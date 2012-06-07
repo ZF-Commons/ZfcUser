@@ -11,6 +11,8 @@ modules are available (see below). ZfcUser provides the foundations for adding
 user authentication and registration to your ZF2 site. It is designed to be very
 simple and easily to extend.
 
+More information and examples are available on the [ZfcUser Wiki](https://github.com/ZF-Commons/ZfcUser/wiki)
+
 Storage Adapter Modules
 -----------------------
 
