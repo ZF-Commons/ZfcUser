@@ -137,8 +137,9 @@ The following options are available:
   entity class instead of the default one provided. Default is
   `ZfcUser\Model\User`.
 - **enable_username** - Boolean value, enables username field on the
-  registration form, and allows users to log in using their username _OR_ email
-  address.  Default is `false`.
+  registration form. Default is `false`.
+- **auth_identity_fields** - Array value, specifies which fields a user can
+  use as the 'identity' field when logging in.  Acceptable values: username, email. 
 - **enable_display_name** - Boolean value, enables a display name field on the
   registration form. Default value is `false`.
 - **enable_registration** - Boolean value, Determines if a user should be

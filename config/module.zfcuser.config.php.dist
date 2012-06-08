@@ -49,6 +49,17 @@ $settings = array(
      */
     //'enable_username' => false,
 
+    /** 
+     * Modes for authentication identity match
+     * 
+     * Specify the allowable identity modes, in the order they should be
+     * checked by the Authentication plugin.  
+     *
+     * Default value: array containing 'email'
+     * Accepted values: array containing one or more of: email, username
+     */
+    'auth_identity_fields' => array( 'email' ),
+
     /**
      * Enable Display Name
      *

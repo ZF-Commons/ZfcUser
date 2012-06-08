@@ -9,20 +9,19 @@ class LoginFilter extends InputFilter
 {
     public function __construct()
     {
-        if (ZfcUser::getOption('enable_username')) {
-            $this->add(array(
-                'name'          => 'identity',
-                'required'      => true,
-            ));
-        } else {
-            $this->add(array(
-                'name'          => 'identity',
-                'required'      => true,
-                'validators'    => array(
-                    array('name' => 'EmailAddress'),
-                ),
-            ));
+        $identityParams = array(
+            'name'          => 'identity',
+            'required'      => true,
+            'validators'    => array()
+        );
+
+        $identityFields = ZfcUser::getOption('auth_identity_fields')->toArray();
+        if ($identityFields == array('email')) {
+            $validators = array('name' => 'EmailAddress');
+            array_push($validators, $identityParams['validators']); 
         }
+
+        $this->add($identityParams);
 
         $this->add(array(
             'name'          => 'credential',
