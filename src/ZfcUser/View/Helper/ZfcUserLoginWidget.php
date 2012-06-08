@@ -20,14 +20,17 @@ class ZfcUserLoginWidget extends AbstractHelper
      * @access public
      * @return string
      */
-    public function __invoke()
+    public function __invoke($render = true)
     {
         $vm = new ViewModel(array(
             'loginForm' => $this->getLoginForm()
         ));
         $vm->setTemplate('zfc-user/user/login');
-        //@TODO Return ViewModel instead, and let consumer do render?
-        return $this->getView()->render($vm);
+        if ($render) {
+            return $this->getView()->render($vm);
+        } else {
+            return $vm;
+        }
     }
     
     /**

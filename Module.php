@@ -55,6 +55,11 @@ class Module implements
                     $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
                     return $viewHelper;
                 },
+                'ZfcUser\View\Helper\ZfcUserLoginWidget' => function ($sm) {
+                    $viewHelper = new View\Helper\ZfcUserLoginWidget;
+                    $viewHelper->setLoginForm($sm->get('zfcuser_login_form'));
+                    return $viewHelper;
+                },
 
                 'zfcuser_auth_service' => function ($sm) {
                     return new \Zend\Authentication\AuthenticationService(
@@ -69,6 +74,12 @@ class Module implements
                     $adapter = $sm->get('ZfcUser\Authentication\Adapter\Db');
                     $chain->events()->attach('authenticate', array($adapter, 'authenticate'));
                     return $chain;
+                },
+
+                'zfcuser_login_form' => function($sm) {
+                    $form = new \ZfcUser\Form\Login();
+                    // TODO set hydrator and input filter?
+                    return $form;
                 },
 
                 'zfcuser_register_form' => function ($sm) {
