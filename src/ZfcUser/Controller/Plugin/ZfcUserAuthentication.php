@@ -14,7 +14,7 @@ class ZfcUserAuthentication extends AbstractPlugin
     protected $authAdapter;
 
     /**
-     * @var AuthenticationSerivce
+     * @var AuthenticationService
      */
     protected $authService;
     

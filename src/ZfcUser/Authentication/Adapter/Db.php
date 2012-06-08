@@ -2,19 +2,25 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent,
-    Zend\Authentication\Result as AuthenticationResult,
-    ZfcUser\Module as ZfcUser,
-    ZfcUser\Model\UserMapperInterface,
-    ZfcUser\Util\Password,
-    DateTime;
+use DateTime;
+use Zend\Authentication\Result as AuthenticationResult;
+use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
+use ZfcBase\Mapper\DataMapperInterface as UserMapper;
+use ZfcUser\Module as ZfcUser;
+use ZfcUser\Repository\UserInterface as UserRepositoryInterface;
+use ZfcUser\Util\Password;
 
 class Db extends AbstractAdapter
 {
     /**
-     * @var UserMapperInterface
+     * @var UserMapper
      */
     protected $mapper;
+
+    /**
+     * @var UserRepositoryInterface
+     */
+    protected $repository;
 
     /**
      * @var closure / invokable object
@@ -35,11 +41,11 @@ class Db extends AbstractAdapter
         $credential = $e->getRequest()->post()->get('credential');
         $credential = $this->preProcessCredential($credential);
         
-        $userObject = $this->getMapper()->findByEmail($identity);
+        $userObject = $this->getRepository()->findByEmail($identity);
 
         if (!$userObject && ZfcUser::getOption('enable_username')) {
             // Auth by username
-            $userObject = $this->getMapper()->findByUsername($identity);
+            $userObject = $this->getRepository()->findByUsername($identity);
         }
         if (!$userObject) {
             $e->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND)
@@ -73,7 +79,7 @@ class Db extends AbstractAdapter
     /**
      * getMapper 
      * 
-     * @return UserMapperInterface
+     * @return UserMapper
      */
     public function getMapper()
     {
@@ -83,13 +89,33 @@ class Db extends AbstractAdapter
     /**
      * setMapper 
      * 
-     * @param UserMapperInterface $mapper 
+     * @param UserMapper $mapper
      * @return Db
      */
-    public function setMapper(UserMapperInterface $mapper)
+    public function setMapper(UserMapper$mapper)
     {
         $this->mapper = $mapper;
         return $this;
+    }
+
+    /**
+     * Set repository
+     *
+     * @param UserRepositoryInterface $repository
+     * @return Db
+     */
+    public function setRepository(UserRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+        return $this;
+    }
+
+    /**
+     * @return UserRepositoryInterface
+     */
+    public function getRepository()
+    {
+        return $this->repository;
     }
 
     protected function updateUserPasswordHash($userObject, $password)
@@ -124,7 +150,7 @@ class Db extends AbstractAdapter
     /**
      * Get credentialPreprocessor.
      *
-     * @return credentialPreprocessor
+     * @return \callable
      */
     public function getCredentialPreprocessor()
     {

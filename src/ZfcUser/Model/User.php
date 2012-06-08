@@ -3,9 +3,9 @@
 namespace ZfcUser\Model;
 
 use DateTime,
-    ZfcBase\Model\ModelAbstract;
+    ZfcBase\Model\AbstractModel;
 
-class User extends ModelAbstract implements UserInterface
+class User extends AbstractModel implements UserInterface
 {
     protected $user_id;
 

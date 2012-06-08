@@ -77,41 +77,68 @@ class Module implements
                 'ZfcUser\Authentication\Adapter\Db' => function ($sm) {
                     $adapter = new Authentication\Adapter\Db;
                     $adapter->setMapper($sm->get('zfcuser_user_mapper'));
+                    $adapter->setRepository($sm->get('zfcuser_user_repository'));
                     return $adapter;
                 },
 
                 'zfcuser_user_service' => function ($sm) {
                     $service = new Service\User;
-                    $service->setUserMapper($sm->get('zfcuser_user_mapper'));
                     $service->setUserMetaMapper($sm->get('zfcuser_usermeta_mapper'));
+                    $service->setUserRepository($sm->get('zfcuser_user_repository'));
+                    $service->setUserMapper($sm->get('zfcuser_user_mapper'));
+                    //$service->setUserHydrator($sm->get('zfcuser_user_hydrator'));
+                    $service->setRegisterForm($sm->get('zfcuser_register_form'));
+                    //$service->setLoginForm($sm->get('zfcuser_login_form'));
                     return $service;
+                },
+
+                'zfcuser_register_form' => function ($sm) {
+                    $form = new \ZfcUser\Form\Register();
+                    $form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
+                    $form->setInputFilter($sm->get('ZfcUser\Form\RegisterFilter'));
+                    $form->setHydrator($sm->get('zfcuser_user_hydrator'));
+                    return $form;
+                },
+
+                'zfcuser_user_hydrator' => function ($sm) {
+                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
+                    return $hydrator;
                 },
 
                 'zfcuser_user_mapper' => function ($sm) {
                     $adapter = $sm->get('zfcuser_zend_db_adapter');
                     $tg = new \Zend\Db\TableGateway\TableGateway('user', $adapter);
-                    return new Model\UserMapper($tg);
+                    $mapper = new Mapper\User();
+                    $mapper->setTableGateway($tg);
+                    return $mapper;
+                },
+
+                'zfcuser_user_repository' => function ($sm) {
+                    $mapper = $sm->get('zfcuser_user_mapper');
+                    return new Repository\User($mapper);
                 },
 
                 'zfcuser_usermeta_mapper' => function ($sm) {
                     $adapter = $sm->get('zfcuser_zend_db_adapter');
                     $tg = new \Zend\Db\TableGateway\TableGateway('user_meta', $adapter);
-                    return new Model\UserMetaMapper($tg);
+                    $mapper = new Mapper\UserMeta($tg);
+                    $mapper->setTableGateway($tg);
+                    return $mapper;
                 },
 
                 'zfcuser_uemail_validator' => function($sm) {
-                    $mapper = $sm->get('zfcuser_user_mapper');
+                    $repository = $sm->get('zfcuser_user_repository');
                     return new \ZfcUser\Validator\NoRecordExists(array(
-                        'mapper'    => $mapper,
-                        'key'       => 'email'
+                        'repository' => $repository,
+                        'key'        => 'email'
                     ));
                 },
 
                 'zfcuser_uusername_validator' => function($sm) {
-                    $mapper = $sm->get('zfcuser_user_mapper');
+                    $repository = $sm->get('zfcuser_user_repository');
                     return new \ZfcUser\Validator\NoRecordExists(array(
-                        'mapper'    => $mapper,
-                        'key'       => 'username'
+                        'repository' => $repository,
+                        'key'        => 'username'
                     ));
                 },
 

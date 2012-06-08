@@ -2,10 +2,9 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Form,
-    Zend\Form\Element\Csrf,
-    ZfcUser\Mapper\UserInterface as UserMapper,
-    ZfcBase\Form\ProvidesEventsForm;
+use Zend\Form\Form;
+use Zend\Form\Element\Csrf;
+use ZfcBase\Form\ProvidesEventsForm;
 
 class Base extends ProvidesEventsForm
 {
