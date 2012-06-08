@@ -18,9 +18,9 @@ $settings = array(
      * User Model Entity Class
      *
      * Name of Entity class to use. Useful for using your own entity class 
-     * instead of the default one provided. Default is ZfcUser\Model\UserBase. 
+     * instead of the default one provided. Default is ZfcUser\Model\User. 
      */
-    //'user_model_class' => 'ZfcUser\Model\UserBase',
+    //'user_model_class' => 'ZfcUser\Model\User',
 
     /**
      * Enable registration 
@@ -35,9 +35,9 @@ $settings = array(
      * UserMeta Model Entity Class
      *
      * Name of Entity class to use. Useful for using your own entity class 
-     * instead of the default one provided. Default is ZfcUser\Model\UserMetaBase.
+     * instead of the default one provided. Default is ZfcUser\Model\UserMeta.
      */
-    //'usermeta_model_class' => 'ZfcUser\Model\UserMetaBase',
+    //'usermeta_model_class' => 'ZfcUser\Model\UserMeta',
 
     /**
      * Enable Username 
@@ -58,7 +58,7 @@ $settings = array(
      * Default value: array containing 'email'
      * Accepted values: array containing one or more of: email, username
      */
-    'auth_identity_fields' => array( 'email' ),
+    //'auth_identity_fields' => array( 'email' ),
 
     /**
      * Enable Display Name
@@ -174,11 +174,9 @@ $settings = array(
  */
 return array(
     'zfcuser' => $settings,
-    'di' => array(
-        'instance' => array(
-            'alias' => array(
-                'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: '',
-            ),
+    'service_manager' => array(
+        'aliases' => array(
+            'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: 'Zend\Db\Adapter\Adapter',
         ),
     ),
 );

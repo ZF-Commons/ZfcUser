@@ -128,8 +128,8 @@ Options
 
 The ZfcUser module has some options to allow you to quickly customize the basic
 functionality. After installing ZfcUser, copy
-`./vendor/ZfcUser/config/module.zfcuser.config.php` to
-`./config/autoload/module.config.php` and change the values as desired.
+`./vendor/ZfcUser/config/zfcuser.global.php.dist` to
+`./config/autoload/zfcuser.global.php` and change the values as desired.
 
 The following options are available:
 
@@ -170,6 +170,8 @@ The following options are available:
 
 Changing Registration Captcha Element
 -------------------------------------
+
+**NOTICE** These instrutions are currently out of date.
 
 By default, the user registration uses the Figlet captcha engine.  This is
 because it's the only one that doesn't require API keys.  It's possible to change
