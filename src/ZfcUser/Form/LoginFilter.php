@@ -2,20 +2,20 @@
 
 namespace ZfcUser\Form;
 
-use Zend\InputFilter\InputFilter,
-    ZfcUser\Module as ZfcUser;
+use Zend\InputFilter\InputFilter;
+use ZfcUser\Module as ZfcUser;
 
 class LoginFilter extends InputFilter
 {
     public function __construct()
     {
         $identityParams = array(
-            'name'          => 'identity',
-            'required'      => true,
-            'validators'    => array()
+            'name'       => 'identity',
+            'required'   => true,
+            'validators' => array()
         );
 
-        $identityFields = ZfcUser::getOption('auth_identity_fields')->toArray();
+        $identityFields = ZfcUser::getOption('auth_identity_fields');
         if ($identityFields == array('email')) {
             $validators = array('name' => 'EmailAddress');
             array_push($validators, $identityParams['validators']); 
@@ -24,14 +24,14 @@ class LoginFilter extends InputFilter
         $this->add($identityParams);
 
         $this->add(array(
-            'name'          => 'credential',
-            'required'      => true,
-            'validators'    => array(
+            'name'       => 'credential',
+            'required'   => true,
+            'validators' => array(
                 array(
-                    'name'      => 'StringLength',
-                    'options'   => array(
-                        'min'   => 6,
-                        'max'   => 999
+                    'name'    => 'StringLength',
+                    'options' => array(
+                        'min' => 6,
+                        'max' => 999
                     ),
                 ),
             ),

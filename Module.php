@@ -42,14 +42,14 @@ class Module implements
     public function getServiceConfiguration()
     {
         return array(
+            'invokables' => array(
+                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
+                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
+                'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
+                'zfcuser_user_service'              => 'ZfcUser\Service\User',
+                'zfcUserAuthentication'             => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
+            ),
             'factories' => array(
-                'zfcUserAuthentication' => function ($sm) {
-                    $plugin = new Controller\Plugin\ZfcUserAuthentication;
-                    $plugin->setAuthAdapter($sm->get('ZfcUser\Authentication\Adapter\AdapterChain'));
-                    $plugin->setAuthService($sm->get('zfcuser_auth_service'));
-                    return $plugin;
-                },
-
                 'ZfcUser\View\Helper\ZfcUserIdentity' => function ($sm) {
                     $viewHelper = new View\Helper\ZfcUserIdentity;
                     $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
@@ -57,44 +57,23 @@ class Module implements
                 },
 
                 'zfcuser_auth_service' => function ($sm) {
-                    $authService = new \Zend\Authentication\AuthenticationService;
-                    $authService->setStorage($sm->get('ZfcUser\Authentication\Storage\Db'));
+                    return new \Zend\Authentication\AuthenticationService(
+                        $sm->get('ZfcUser\Authentication\Storage\Db'),
+                        $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
+                    );
                     return $authService;
-                },
-
-                'ZfcUser\Authentication\Storage\Db' => function ($sm) {
-                    $storage = new Authentication\Storage\Db;
-                    $storage->setMapper($sm->get('zfcuser_user_mapper'));
-                    return $storage;
                 },
 
                 'ZfcUser\Authentication\Adapter\AdapterChain' => function ($sm) {
                     $chain = new Authentication\Adapter\AdapterChain;
-                    $chain->setDefaultAdapter($sm->get('ZfcUser\Authentication\Adapter\Db'));
+                    $adapter = $sm->get('ZfcUser\Authentication\Adapter\Db');
+                    $chain->events()->attach('authenticate', array($adapter, 'authenticate'));
                     return $chain;
-                },
-
-                'ZfcUser\Authentication\Adapter\Db' => function ($sm) {
-                    $adapter = new Authentication\Adapter\Db;
-                    $adapter->setMapper($sm->get('zfcuser_user_mapper'));
-                    $adapter->setRepository($sm->get('zfcuser_user_repository'));
-                    return $adapter;
-                },
-
-                'zfcuser_user_service' => function ($sm) {
-                    $service = new Service\User;
-                    $service->setUserMetaMapper($sm->get('zfcuser_usermeta_mapper'));
-                    $service->setUserRepository($sm->get('zfcuser_user_repository'));
-                    $service->setUserMapper($sm->get('zfcuser_user_mapper'));
-                    //$service->setUserHydrator($sm->get('zfcuser_user_hydrator'));
-                    $service->setRegisterForm($sm->get('zfcuser_register_form'));
-                    //$service->setLoginForm($sm->get('zfcuser_login_form'));
-                    return $service;
                 },
 
                 'zfcuser_register_form' => function ($sm) {
                     $form = new \ZfcUser\Form\Register();
-                    $form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
+                    //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
                     $form->setInputFilter($sm->get('ZfcUser\Form\RegisterFilter'));
                     $form->setHydrator($sm->get('zfcuser_user_hydrator'));
                     return $form;
@@ -154,7 +133,7 @@ class Module implements
 
     public function modulesLoaded($e)
     {
-        $config = $e->getConfigListener()->getMergedConfig();
+        $config = $e->getConfigListener()->getMergedConfig(false);
         static::$options = $config['zfcuser'];
     }
 
