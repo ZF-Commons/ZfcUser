@@ -2,25 +2,31 @@
 
 namespace ZfcUser\Service;
 
-use Zend\Authentication\AuthenticationService,
-    Zend\Form\Form,
-    Zend\EventManager\ListenerAggregate,
-    DateTime,
-    ZfcUser\Util\Password,
-    ZfcUser\Model\UserMapperInterface,
-    ZfcUser\Model\UserMetaMapperInterface,
-    ZfcUser\Module as ZfcUser,
-    ZfcBase\EventManager\EventProvider;
+use DateTime;
+use Zend\Authentication\AuthenticationService;
+use Zend\Form\Form;
+use ZfcBase\EventManager\EventProvider;
+use ZfcBase\Mapper\DataMapperInterface as UserMapper;
+use ZfcUser\Mapper\UserMetaInterface as UserMetaMapper;
+use ZfcUser\Module as ZfcUser;
+use ZfcUser\Repository\UserInterface as UserRepositoryInterface;
+use ZfcUser\Util\Password;
 
 class User extends EventProvider
 {
+
     /**
-     * @var UserMapperInterface
+     * @var UserMapper
      */
     protected $userMapper;
 
     /**
-     * @var UserMetaMapperInterface
+     * @var UserRepositoryInterface
+     */
+    protected $userRepository;
+
+    /**
+     * @var UserMetaMapper
      */
     protected $userMetaMapper;
 
@@ -30,46 +36,66 @@ class User extends EventProvider
     protected $resolvedIdentity;
 
     /**
-     * @var authService
+     * @var AuthenticationService
      */
     protected $authService;
+
+    /**
+     * @var Form
+     */
+    protected $loginForm;
+
+    /**
+     * @var Form
+     */
+    protected $registerForm;
+
 
     public function updateMeta($key, $value)
     {
         $user = $this->getAuthService()->getIdentity();
         if (!$userMeta = $this->userMetaMapper->get($user->getUserId(), $key)) {
-            $class = ZfcUser::getOption('usermeta_model_class');
+            $class = $this->userRepository->getClassName();
             $userMeta = new $class;
             $userMeta->setUser($user);
             $userMeta->setMetaKey($key);
             $userMeta->setMeta($value);
-            $this->userMetaMapper->add($userMeta);
+            $this->userMetaMapper->persist($userMeta);
         }
         if (!$userMeta->getUser()) {
             $userMeta->setUser($user);
         }
         $userMeta->setMeta($value);
-        $this->userMetaMapper->update($userMeta);
+        $this->userMetaMapper->persist($userMeta);
     }
 
     /**
      * createFromForm
      *
-     * @param Form $form
-     * @return ZfcUser\Model\User
+     * @param array $data
+     * @return \ZfcUser\Model\UserInterface
+     * @throws Exception\InvalidArgumentException
      */
-    public function createFromForm(Form $form)
+    public function register(array $data)
     {
-        $class = ZfcUser::getOption('user_model_class');
+        $class = $this->userRepository->getClassName();
         $user = new $class;
 
-        $data = $form->getData();
+        $form = $this->getRegisterForm();
+        $form->bind($user);
+        $form->setData($data);
+        if (!$form->isValid()) {
+            throw new Exception\InvalidArgumentException('invalid data');
+        }
 
-        $user->setEmail($data['email'])
-             ->setPassword(Password::hash($data['password']))
-             ->setRegisterIp($_SERVER['REMOTE_ADDR'])
-             ->setRegisterTime(new DateTime('now'))
-             ->setEnabled(true);
+        $user = $form->getData();
+        /* @var $user \ZfcUser\Model\UserInterface */
+
+        $user->setPassword(Password::hash($user->getPassword()));
+        $user->setRegisterTime(new DateTime('now'));
+        $user->setRegisterIp($_SERVER['REMOTE_ADDR']);
+        $user->setEnabled(true);
+
         if (ZfcUser::getOption('require_activation')) {
             $user->setActive(false);
         } else {
@@ -90,34 +116,46 @@ class User extends EventProvider
      * Get a user entity by their username
      *
      * @param string $username
-     * @return ZfcUser\Model\User
+     * @return \ZfcUser\Model\UserInterface
      */
     public function getByUsername($username)
     {
-        return $this->userMapper->findByUsername($username);
+        return $this->userRepository->findByUsername($username);
     }
 
     /**
      * setUserMapper
      *
-     * @param UserMapperInterface $userMapper
+     * @param UserRepositoryInterface $userMapper
      * @return User
      */
-    public function setUserMapper(UserMapperInterface $userMapper)
+    public function setUserRepository(UserRepositoryInterface $userMapper)
     {
-        $this->userMapper = $userMapper;
+        $this->userRepository = $userMapper;
         return $this;
     }
 
     /**
      * setUserMetaMapper
      *
-     * @param UserMetaMapperInterface $userMetaMapper
+     * @param UserMetaMapper $userMetaMapper
      * @return User
      */
-    public function setUserMetaMapper(UserMetaMapperInterface $userMetaMapper)
+    public function setUserMetaMapper(UserMetaMapper $userMetaMapper)
     {
         $this->userMetaMapper = $userMetaMapper;
+        return $this;
+    }
+
+    /**
+     * setUserMapper
+     *
+     * @param UserMapper $userMapper
+     * @return User
+     */
+    public function setUserMapper(UserMapper $userMapper)
+    {
+        $this->userMapper = $userMapper;
         return $this;
     }
 
@@ -145,4 +183,24 @@ class User extends EventProvider
         $this->authService = $authService;
         return $this;
     }
+
+    /**
+     * @param Form $registerForm
+     * @return User
+     */
+    public function setRegisterForm(Form $registerForm)
+    {
+        $this->registerForm = $registerForm;
+        return $this;
+    }
+
+    /**
+     * @return Form
+     */
+    public function getRegisterForm()
+    {
+        return $this->registerForm;
+    }
+
+
 }

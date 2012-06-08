@@ -3,7 +3,7 @@
 namespace ZfcUser\Validator;
 
 use Zend\Validator\AbstractValidator,
-    ZfcUser\Model\UserMapperInterface;
+    ZfcUser\Repository\UserInterface;
 
 abstract class AbstractRecord extends AbstractValidator
 {
@@ -22,9 +22,9 @@ abstract class AbstractRecord extends AbstractValidator
     );
 
     /**
-     * @var UserMapperInterface
+     * @var UserInterface
      */
-    protected $mapper;
+    protected $repository;
 
     /**
      * @var string
@@ -49,22 +49,22 @@ abstract class AbstractRecord extends AbstractValidator
     /**
      * getMapper 
      * 
-     * @return UserMapperInterface
+     * @return UserInterface
      */
-    public function getMapper()
+    public function getRepository()
     {
-        return $this->mapper;
+        return $this->repository;
     }
 
     /**
      * setMapper 
      * 
-     * @param UserMapperInterface $mapper 
-     * @return Db
+     * @param UserInterface $repository
+     * @return AbstractRecord
      */
-    public function setMapper(UserMapperInterface $mapper)
+    public function setRepository(UserInterface $repository)
     {
-        $this->mapper = $mapper;
+        $this->repository = $repository;
         return $this;
     }
 
@@ -101,11 +101,11 @@ abstract class AbstractRecord extends AbstractValidator
 
         switch ($this->getKey()) {
             case 'email':
-                $result = $this->getMapper()->findByEmail($value);
+                $result = $this->getRepository()->findByEmail($value);
                 break; 
 
             case 'username':
-                $result = $this->getMapper()->findByUsername($value);
+                $result = $this->getRepository()->findByUsername($value);
                 break;
 
             default:

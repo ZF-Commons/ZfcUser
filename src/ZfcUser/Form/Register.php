@@ -2,9 +2,9 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Form,
-    ZfcUser\Module,
-    Zend\Form\Element\Captcha as Captcha;
+use Zend\Form\Element\Captcha as Captcha;
+use Zend\Form\Form;
+use ZfcUser\Module;
 
 class Register extends Base
 {
