@@ -4,9 +4,11 @@ namespace ZfcUser\Authentication\Storage;
 
 use Zend\Authentication\Storage;
 use Zend\Authentication\Storage\StorageInterface;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceManager;
 use ZfcBase\Mapper\DataMapperInterface as UserMapper;
 
-class Db implements Storage\StorageInterface
+class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
 {
     /**
      * @var StorageInterface
@@ -22,6 +24,11 @@ class Db implements Storage\StorageInterface
      * @var mixed
      */
     protected $resolvedIdentity;
+
+    /**
+     * @var ServiceManager
+     */
+    protected $serviceManager;
 
     /**
      * Returns true if and only if storage is empty
@@ -121,6 +128,9 @@ class Db implements Storage\StorageInterface
      */
     public function getMapper()
     {
+        if (null === $this->mapper) {
+            $this->mapper = $this->getServiceManager()->get('zfcuser_user_mapper');
+        }
         return $this->mapper;
     }
 
@@ -134,5 +144,26 @@ class Db implements Storage\StorageInterface
     {
         $this->mapper = $mapper;
         return $this;
+    }
+
+    /**
+     * Retrieve service manager instance
+     *
+     * @return ServiceManager
+     */
+    public function getServiceManager()
+    {
+        return $this->serviceManager;
+    }
+
+    /**
+     * Set service manager instance
+     *
+     * @param ServiceManager $locator
+     * @return void
+     */
+    public function setServiceManager(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
     }
 }

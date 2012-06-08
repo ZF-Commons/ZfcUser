@@ -2,8 +2,8 @@
 
 namespace ZfcUser\Model;
 
-use DateTime,
-    ZfcBase\Model\AbstractModel;
+use DateTime;
+use ZfcBase\Model\AbstractModel;
 
 class User extends AbstractModel implements UserInterface
 {

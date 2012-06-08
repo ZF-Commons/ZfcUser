@@ -5,6 +5,8 @@ namespace ZfcUser\Service;
 use DateTime;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceManager;
 use ZfcBase\EventManager\EventProvider;
 use ZfcBase\Mapper\DataMapperInterface as UserMapper;
 use ZfcUser\Mapper\UserMetaInterface as UserMetaMapper;
@@ -12,7 +14,7 @@ use ZfcUser\Module as ZfcUser;
 use ZfcUser\Repository\UserInterface as UserRepositoryInterface;
 use ZfcUser\Util\Password;
 
-class User extends EventProvider
+class User extends EventProvider implements ServiceManagerAwareInterface
 {
 
     /**
@@ -50,23 +52,27 @@ class User extends EventProvider
      */
     protected $registerForm;
 
+    /**
+     * @var ServiceManager
+     */
+    protected $serviceManager;
 
     public function updateMeta($key, $value)
     {
         $user = $this->getAuthService()->getIdentity();
-        if (!$userMeta = $this->userMetaMapper->get($user->getUserId(), $key)) {
-            $class = $this->userRepository->getClassName();
+        if (!$userMeta = $this->getUserMetaMapper()->get($user->getUserId(), $key)) {
+            $class = $this->getUserRepository()->getClassName();
             $userMeta = new $class;
             $userMeta->setUser($user);
             $userMeta->setMetaKey($key);
             $userMeta->setMeta($value);
-            $this->userMetaMapper->persist($userMeta);
+            $this->getUserMetaMapper()->persist($userMeta);
         }
         if (!$userMeta->getUser()) {
             $userMeta->setUser($user);
         }
         $userMeta->setMeta($value);
-        $this->userMetaMapper->persist($userMeta);
+        $this->getUserMetaMapper()->persist($userMeta);
     }
 
     /**
@@ -78,7 +84,7 @@ class User extends EventProvider
      */
     public function register(array $data)
     {
-        $class = $this->userRepository->getClassName();
+        $class = $this->getUserRepository()->getClassName();
         $user = new $class;
 
         $form = $this->getRegisterForm();
@@ -108,7 +114,7 @@ class User extends EventProvider
             $user->setDisplayName($data['display_name']);
         }
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
-        $this->userMapper->persist($user);
+        $this->getUserMapper()->persist($user);
         return $user;
     }
 
@@ -124,7 +130,20 @@ class User extends EventProvider
     }
 
     /**
-     * setUserMapper
+     * getUserRepository
+     * 
+     * @return UserRepositoryInterface
+     */
+    public function getUserRepository()
+    {
+        if (null === $this->userRepository) {
+            $this->userRepository = $this->getServiceManager()->get('zfcuser_user_repository');
+        }
+        return $this->userRepository;
+    }
+
+    /**
+     * setUserRepository
      *
      * @param UserRepositoryInterface $userMapper
      * @return User
@@ -133,6 +152,19 @@ class User extends EventProvider
     {
         $this->userRepository = $userMapper;
         return $this;
+    }
+
+    /**
+     * getUserMetaMapper 
+     * 
+     * @return UserMetaMapper
+     */
+    public function getUserMetaMapper()
+    {
+        if (null === $this->userMetaMapper) {
+            $this->userMetaMapper = $this->getServiceManager()->get('zfcuser_usermeta_mapper');
+        }
+        return $this->userMetaMapper;
     }
 
     /**
@@ -145,6 +177,19 @@ class User extends EventProvider
     {
         $this->userMetaMapper = $userMetaMapper;
         return $this;
+    }
+    
+    /**
+     * getUserMapper 
+     * 
+     * @return UserMapper
+     */
+    public function getUserMapper()
+    {
+        if (null === $this->userMapper) {
+            $this->userMapper = $this->getServiceManager()->get('zfcuser_user_mapper');
+        }
+        return $this->userMapper;
     }
 
     /**
@@ -167,7 +212,7 @@ class User extends EventProvider
     public function getAuthService()
     {
         if (null === $this->authService) {
-            $this->authService = new AuthenticationService;
+            $this->authService = $this->getServiceManager()->get('zfcuser_auth_service');
         }
         return $this->authService;
     }
@@ -185,6 +230,17 @@ class User extends EventProvider
     }
 
     /**
+     * @return Form
+     */
+    public function getRegisterForm()
+    {
+        if (null === $this->registerForm) {
+            $this->registerForm = $this->getServiceManager()->get('zfcuser_register_form');
+        }
+        return $this->registerForm;
+    }
+
+    /**
      * @param Form $registerForm
      * @return User
      */
@@ -195,12 +251,23 @@ class User extends EventProvider
     }
 
     /**
-     * @return Form
+     * Retrieve service manager instance
+     *
+     * @return ServiceManager
      */
-    public function getRegisterForm()
+    public function getServiceManager()
     {
-        return $this->registerForm;
+        return $this->serviceManager;
     }
 
-
+    /**
+     * Set service manager instance
+     *
+     * @param ServiceManager $locator
+     * @return void
+     */
+    public function setServiceManager(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
+    }
 }

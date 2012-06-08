@@ -4,13 +4,15 @@ namespace ZfcUser\Authentication\Adapter;
 
 use DateTime;
 use Zend\Authentication\Result as AuthenticationResult;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
 use ZfcBase\Mapper\DataMapperInterface as UserMapper;
 use ZfcUser\Module as ZfcUser;
 use ZfcUser\Repository\UserInterface as UserRepositoryInterface;
 use ZfcUser\Util\Password;
 
-class Db extends AbstractAdapter
+class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 {
     /**
      * @var UserMapper
@@ -26,6 +28,11 @@ class Db extends AbstractAdapter
      * @var closure / invokable object
      */
     protected $credentialPreprocessor;
+
+    /**
+     * @var ServiceManager
+     */
+    protected $serviceManager;
 
     public function authenticate(AuthEvent $e)
     {
@@ -85,48 +92,6 @@ class Db extends AbstractAdapter
           ->setMessages(array('Authentication successful.'));
     }
 
-    /**
-     * getMapper 
-     * 
-     * @return UserMapper
-     */
-    public function getMapper()
-    {
-        return $this->mapper;
-    }
-
-    /**
-     * setMapper 
-     * 
-     * @param UserMapper $mapper
-     * @return Db
-     */
-    public function setMapper(UserMapper$mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
-    }
-
-    /**
-     * Set repository
-     *
-     * @param UserRepositoryInterface $repository
-     * @return Db
-     */
-    public function setRepository(UserRepositoryInterface $repository)
-    {
-        $this->repository = $repository;
-        return $this;
-    }
-
-    /**
-     * @return UserRepositoryInterface
-     */
-    public function getRepository()
-    {
-        return $this->repository;
-    }
-
     protected function updateUserPasswordHash($userObject, $password)
     {
         $newHash = Password::hash($password);
@@ -155,7 +120,57 @@ class Db extends AbstractAdapter
         }
         return $credential;
     }
- 
+
+    /**
+     * getMapper
+     * 
+     * @return UserMapper
+     */
+    public function getMapper()
+    {
+        if (null === $this->mapper) {
+            $this->mapper = $this->getServiceManager()->get('zfcuser_user_mapper');
+        }
+        return $this->mapper;
+    }
+
+    /**
+     * setMapper
+     * 
+     * @param UserMapper $mapper
+     * @return Db
+     */
+    public function setMapper(UserMapper$mapper)
+    {
+        $this->mapper = $mapper;
+        return $this;
+    }
+
+    /**
+     * getUserRepository
+     * 
+     * @return UserRepositoryInterface
+     */
+    public function getRepository()
+    {
+        if (null === $this->repository) {
+            $this->repository = $this->getServiceManager()->get('zfcuser_user_repository');
+        }
+        return $this->repository;
+    }
+
+    /**
+     * Set repository
+     *
+     * @param UserRepositoryInterface $repository
+     * @return Db
+     */
+    public function setRepository(UserRepositoryInterface $repository)
+    {
+        $this->repository = $repository;
+        return $this;
+    }
+
     /**
      * Get credentialPreprocessor.
      *
@@ -175,5 +190,26 @@ class Db extends AbstractAdapter
     {
         $this->credentialPreprocessor = $credentialPreprocessor;
         return $this;
+    }
+
+    /**
+     * Retrieve service manager instance
+     *
+     * @return ServiceManager
+     */
+    public function getServiceManager()
+    {
+        return $this->serviceManager;
+    }
+
+    /**
+     * Set service manager instance
+     *
+     * @param ServiceManager $locator
+     * @return void
+     */
+    public function setServiceManager(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
     }
 }

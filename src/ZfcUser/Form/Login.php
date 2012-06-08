@@ -2,10 +2,10 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Form,
-    Zend\Form\Element\Csrf,
-    ZfcBase\Form\ProvidesEventsForm,
-    ZfcUser\Module as ZfcUser;
+use Zend\Form\Form;
+use Zend\Form\Element\Csrf;
+use ZfcBase\Form\ProvidesEventsForm;
+use ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm
 {

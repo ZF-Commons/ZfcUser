@@ -134,10 +134,10 @@ class UserController extends ActionController
         if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
             $data = $request->post()->toArray();
             try {
-                $service->register($data);
+                $user = $service->register($data);
                 if (ZfcUser::getOption('login_after_registration')) {
                     $post = $request->post();
-                    $identityFields = ZfcUser::getOption('auth_identity_fields')->toArray();
+                    $identityFields = ZfcUser::getOption('auth_identity_fields');
                     if (in_array('email', $identityFields)) {
                         $post['identity']   = $user->getEmail();
                     } elseif(in_array('username', $identityFields)) { 
@@ -162,6 +162,9 @@ class UserController extends ActionController
 
     public function getUserService()
     {
+        if (null === $this->userService) {
+            $this->userService = $this->getServiceLocator()->get('zfcuser_user_service');
+        }
         return $this->userService;
     }
 
@@ -173,6 +176,9 @@ class UserController extends ActionController
 
     public function getLoginForm()
     {
+        if (null === $this->loginForm) {
+            $this->loginForm = $this->getServiceLocator()->get('ZfcUser\Form\Login');
+        }
         return $this->loginForm;
     }
 

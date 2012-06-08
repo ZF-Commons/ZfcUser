@@ -4,6 +4,7 @@ return array(
         'user_model_class'          => 'ZfcUser\Model\User',
         'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
         'enable_registration'       => true,
+        'auth_identity_fields'      => array( 'email' ),
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
@@ -27,11 +28,9 @@ return array(
     ),
 
     'controller' => array(
-        // We _could_ use a factory to create the controller
-        'factories' => array(
-            'zfcuser' => 'ZfcUser\Service\ControllerFactory',
+        'classes' => array(
+            'zfcuser' => 'ZfcUser\Controller\UserController',
         ),
-        // Below is a plugin map for the controller plugin broker
         'map' => array(
             'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
         ),
@@ -97,65 +96,6 @@ return array(
                             ),
                         ),
                     ),
-                ),
-            ),
-        ),
-    ),
-
-    'di' => array(
-        'instance' => array(
-            'alias' => array(
-                'zfcuser_uemail_validator'         => 'ZfcUser\Validator\NoRecordExists',
-                'zfcuser_uusername_validator'      => 'ZfcUser\Validator\NoRecordExists',
-                'zfcuser_captcha_element'          => 'Zend\Form\Element\Captcha',
-            ),
-            'zfcuser_captcha_element' => array(
-                'parameters' => array(
-                    'spec' => 'captcha',
-                    'options'=>array(
-                        'label'      => 'Please enter the 5 letters displayed below:',
-                        'required'   => true,
-                        'captcha'    => array(
-                            'captcha' => 'Figlet',
-                            'wordlen' => 5,
-                            'timeout '=> 300,
-                        ),
-                        'order'      => 500,
-                    ),
-                ),
-            ),
-
-            'ZfcUser\Form\Register' => array(
-                'parameters' => array(
-                    'captcha_element'   => 'zfcuser_captcha_element',
-                    'input_filter' => 'ZfcUser\Form\RegisterFilter'
-                ),
-            ),
-            'zfcuser_uemail_validator' => array(
-                'parameters' => array(
-                    'mapper'  => 'zfcuser_user_mapper',
-                    'options' => array(
-                        'key' => 'email',
-                    ),
-                ),
-            ),
-            'zfcuser_uusername_validator' => array(
-                'parameters' => array(
-                    'mapper'  => 'zfcuser_user_mapper',
-                    'options' => array(
-                        'key' => 'username',
-                    ),
-                ),
-            ),
-            'ZfcUser\View\Helper\ZfcUserLoginWidget' => array(
-                'parameters' => array(
-                    'loginForm'      => 'ZfcUser\Form\Login',
-                ),
-            ),
-            'ZfcUser\Form\RegisterFilter' => array(
-                'parameters' => array(
-                    'emailValidator'    => 'zfcuser_uemail_validator',
-                    'usernameValidator' => 'zfcuser_uusername_validator',
                 ),
             ),
         ),
