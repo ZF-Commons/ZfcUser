@@ -4,7 +4,6 @@ return array(
         'user_model_class'          => 'ZfcUser\Model\User',
         'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
         'enable_registration'       => true,
-        'auth_identity_fields'      => array( 'email' ),
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
