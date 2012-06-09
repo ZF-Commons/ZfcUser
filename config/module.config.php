@@ -10,6 +10,9 @@ return array(
         'require_activation'        => false,
         'login_after_registration'  => true,
         'registration_form_captcha' => true,
+        'login_form_uses_layout'    => true,
+        'login_success_route'       => 'zfcuser',
+        'login_failure_route'       => 'zfcuser/login',
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
         'blowfish_cost'             => 10,         // integer between 4 and 31
         'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999

@@ -39,28 +39,36 @@ class UserController extends ActionController
     protected $failedLoginMessage = 'Authentication failed. Please try again.';
 
     /**
-     * User page 
+     * User page
      */
     public function indexAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser/login'); 
+            return $this->redirect()->toRoute('zfcuser/login');
         }
         return new ViewModel();
     }
 
     /**
-     * Login form 
+     * Login form
      */
     public function loginAction()
     {
         $request = $this->getRequest();
-        $form    = $this->getLoginForm();
+        $form = $this->getLoginForm();
 
         if (!$request->isPost()) {
-            return array(
-                'loginForm' => $form,
+            $viewModel = new ViewModel(
+                array(
+                    'loginForm' => $form,
+                )
             );
+
+            if (!ZfcUser::getOption('login_form_uses_layout')) {
+                $viewModel->setTerminal(true);
+            }
+
+            return $viewModel;
         }
 
         $form->setInputFilter(new LoginFilter());
@@ -68,7 +76,7 @@ class UserController extends ActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toRoute('zfcuser/login'); 
+            return $this->redirect()->toRoute(ZfcUser::getOption('login_failure_route'));
         }
         // clear adapters
 
@@ -76,7 +84,7 @@ class UserController extends ActionController
     }
 
     /**
-     * Logout and clear the identity 
+     * Logout and clear the identity
      */
     public function logoutAction()
     {
@@ -86,7 +94,7 @@ class UserController extends ActionController
     }
 
     /**
-     * General-purpose authentication action 
+     * General-purpose authentication action
      */
     public function authenticateAction()
     {
@@ -115,11 +123,11 @@ class UserController extends ActionController
             return $this->redirect()->toUrl($request->post()->get('redirect'));
         }
 
-        return $this->redirect()->toRoute('zfcuser');
+        return $this->redirect()->toRoute(ZfcUser::getOption('login_success_route'));
     }
 
     /**
-     * Register new user 
+     * Register new user
      */
     public function registerAction()
     {
@@ -139,9 +147,9 @@ class UserController extends ActionController
                     $post = $request->post();
                     $identityFields = ZfcUser::getOption('auth_identity_fields');
                     if (in_array('email', $identityFields)) {
-                        $post['identity']   = $user->getEmail();
-                    } elseif(in_array('username', $identityFields)) { 
-                        $post['identity']   = $user->getUsername();
+                        $post['identity'] = $user->getEmail();
+                    } elseif (in_array('username', $identityFields)) {
+                        $post['identity'] = $user->getUsername();
                     }
                     $post['credential'] = $post['password'];
                     return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
@@ -159,7 +167,6 @@ class UserController extends ActionController
     /**
      * Getters/setters for DI stuff
      */
-
     public function getUserService()
     {
         if (null === $this->userService) {
@@ -193,4 +200,5 @@ class UserController extends ActionController
         }
         return $this;
     }
+
 }
