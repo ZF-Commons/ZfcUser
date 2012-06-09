@@ -3,14 +3,14 @@ return array(
     'zfcuser' => array(
         'user_model_class'          => 'ZfcUser\Model\User',
         'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
-        'enable_registration'       => false,
+        'enable_registration'       => true,
         'auth_identity_fields'      => array( 'email' ),
         'enable_username'           => false,
         'enable_display_name'       => false,
         'require_activation'        => false,
         'login_after_registration'  => true,
         'registration_form_captcha' => true,
-        'login_form_uses_layout'    => false,
+        'login_form_uses_layout'    => true,
         'login_success_route'       => 'zfcuser',
         'login_failure_route'       => 'zfcuser/login',
         'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
