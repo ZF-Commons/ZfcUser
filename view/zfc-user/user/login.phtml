@@ -20,6 +20,10 @@ echo $this->form()->openTag($form);
 echo $this->formInput($form->get('credential'));
 ?></dd>
 
+<?php if ($this->redirect): ?>
+<input type="hidden" name="redirect" value="<?php echo $this->redirect; ?>" />
+<?php endif; ?>
+
 <dd><?php
 echo $this->formInput($form->get('csrf'));
 echo $this->formInput($form->get('submit'));

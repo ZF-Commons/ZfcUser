@@ -57,9 +57,16 @@ class UserController extends ActionController
         $request = $this->getRequest();
         $form    = $this->getLoginForm();
 
+        if (ZfcUser::getOption('use_redirect_parameter_if_present') && $request->query()->get('redirect')) {
+            $redirect = $request->query()->get('redirect');
+        } else {
+            $redirect = false;
+        }
+
         if (!$request->isPost()) {
             return array(
                 'loginForm' => $form,
+                'redirect'  => $redirect,
             );
         }
 
