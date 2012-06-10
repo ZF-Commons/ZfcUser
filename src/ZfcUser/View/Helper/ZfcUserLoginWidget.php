@@ -18,12 +18,25 @@ class ZfcUserLoginWidget extends AbstractHelper
      * __invoke 
      * 
      * @access public
+     * @param array $options array of options
      * @return string
      */
-    public function __invoke($render = true)
+    public function __invoke($options = array())
     {
+        if (array_key_exists('render', $options)) {
+            $render = $options['render'];
+        } else {
+            $render = true;
+        }
+        if (array_key_exists('redirect', $options)) {
+            $redirect = $options['redirect'];
+        } else {
+            $redirect = false;
+        }
+
         $vm = new ViewModel(array(
-            'loginForm' => $this->getLoginForm()
+            'loginForm' => $this->getLoginForm(),
+            'redirect'  => $redirect,
         ));
         $vm->setTemplate('zfc-user/user/login');
         if ($render) {
