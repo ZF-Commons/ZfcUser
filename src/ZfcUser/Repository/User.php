@@ -41,7 +41,7 @@ class User extends AbstractDbRepository implements UserInterface
     {
         $rowset = $this->getMapper()->getTableGateway()->select(array($this->userEmailField => $email));
         $row = $rowset->current();
-        $user = $this->fromRow($row);
+        $user = $this->getMapper()->fromRow($row);
         $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user));
         return $user;
     }
@@ -50,7 +50,7 @@ class User extends AbstractDbRepository implements UserInterface
     {
         $rowset = $this->getMapper()->getTableGateway()->select(array($this->userUsernameField => $username));
         $row = $rowset->current();
-        $user = $this->fromRow($row);
+        $user = $this->getMapper()->fromRow($row);
         $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user));
         return $user;
     }
@@ -59,16 +59,6 @@ class User extends AbstractDbRepository implements UserInterface
     {
         $user = $this->getMapper()->find($id);
         $this->events()->trigger(__FUNCTION__ . '.post', $this, array('user' => $user));
-        return $user;
-    }
-
-    protected function fromRow($row)
-    {
-        if (!$row) return false;
-        $userModelClass = $this->getClassName();
-        $user = $userModelClass::fromArray($row->getArrayCopy());
-        $user->setLastLogin(DateTime::createFromFormat('Y-m-d H:i:s', $row['last_login']));
-        $user->setRegisterTime(DateTime::createFromFormat('Y-m-d H:i:s', $row['register_time']));
         return $user;
     }
 
