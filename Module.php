@@ -143,6 +143,8 @@ class Module implements
         if (!isset(static::$options['auth_identity_fields'])) {
             static::$options['auth_identity_fields'] = array( 'email' );
         }
+
+        static::$options['auth_identity_fields'] = array_unique(static::$options['auth_identity_fields']);
     }
 
     /**
