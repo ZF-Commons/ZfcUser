@@ -146,6 +146,16 @@ class Module implements
     {
         $config = $e->getConfigListener()->getMergedConfig(false);
         static::$options = $config['zfcuser'];
+
+        // Set default if not overridden previously.  This is necessary
+        // due to the way config merging is implemented, as specifying
+        // this default in module.config.php would mean it could never
+        // be overridden (ie: array('username') would not be possible
+        if (!isset(static::$options['auth_identity_fields'])) {
+            static::$options['auth_identity_fields'] = array( 'email' );
+        }
+
+        static::$options['auth_identity_fields'] = array_unique(static::$options['auth_identity_fields']);
     }
 
     /**
