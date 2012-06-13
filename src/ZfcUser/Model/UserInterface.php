@@ -173,19 +173,4 @@ interface UserInterface
      */
     public function setEnabled($enabled);
 
-    /**
-     * Convert the model to an array 
-     * 
-     * @return array
-     */
-    public function toArray();
-
-    /**
-     * Convert an array into a model instance 
-     * 
-     * @param array $array 
-     * @static
-     * @return User
-     */
-    public static function fromArray($array);
 }

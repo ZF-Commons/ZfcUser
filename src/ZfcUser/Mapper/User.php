@@ -4,14 +4,27 @@ namespace ZfcUser\Mapper;
 
 use ArrayObject;
 use DateTime;
+use Zend\Stdlib\Hydrator\ClassMethods as ClassMethodsHydrator;
+use Zend\Stdlib\Hydrator\HydratorInterface;
 use ZfcBase\Mapper\AbstractDbMapper;
-use ZfcBase\Model\AbstractModel;
 use ZfcUser\Module as ZfcUser;
 
 class User extends AbstractDbMapper
 {
+    /**
+     * @var string
+     */
     protected $tableName         = 'user';
+
+    /**
+     * @var string
+     */
     protected $primaryKey        = 'user_id';
+
+    /**
+     * @var HydratorInterface
+     */
+    protected $hydrator;
 
     /**
      * Returns the class name of the object mapped by the data mapper
@@ -23,23 +36,48 @@ class User extends AbstractDbMapper
         return ZfcUser::getOption('user_model_class');
     }
 
+    /**
+     * get table name
+     *
+     * @return string
+     */
     public function getTableName()
     {
         return $this->tableName;
     }
 
+    /**
+     * get primary key
+     *
+     * @return string
+     */
     public function getPrimaryKey()
     {
         return $this->primaryKey;
     }
 
-    protected function fromRow($row)
+    /**
+     * create model from row
+     *
+     * @param \Zend\Db\ResultSet\Row|bool $row
+     * @return object|false
+     */
+    public function fromRow($row)
     {
         if (!$row) return false;
+        $data = $row->getArrayCopy();
+        $className = $this->getClassName();
+        if (isset($data[$this->getPrimaryKey()])) {
+            $id = serialize($data[$this->getPrimaryKey()]);
+            $user = $this->lookupIdentityMap($className,$id);
+            if ($user) {
+                return $user;
+            }
+        }
         $userModelClass = $this->getClassName();
-        $user = $userModelClass::fromArray($row->getArrayCopy());
-        $user->setLastLogin(DateTime::createFromFormat('Y-m-d H:i:s', $row['last_login']));
-        $user->setRegisterTime(DateTime::createFromFormat('Y-m-d H:i:s', $row['register_time']));
+        $user = new $userModelClass;
+        $hydrator = $this->getHydrator();
+        $user = $hydrator->hydrate($row->getArrayCopy(), $user);
         return $user;
     }
 
@@ -51,6 +89,17 @@ class User extends AbstractDbMapper
     public function getPaginatorAdapter(array $params)
     {
         // TODO: Implement getPaginatorAdapter() method.
+    }
+
+    /**
+     * @return HydratorInterface
+     */
+    public function getHydrator()
+    {
+        if ($this->hydrator === NULL) {
+            $this->hydrator = new ClassMethodsHydrator(false);
+        }
+        return $this->hydrator;
     }
 
 }

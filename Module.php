@@ -46,10 +46,15 @@ class Module implements
                 'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
-                'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcUserAuthentication'             => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
             ),
             'factories' => array(
+                'zfcuser_user_service' => function($sm) {
+                    $service = new \ZfcUser\Service\User();
+                    $service->setServiceLocator($sm);
+                    return $service;
+                },
+
                 'ZfcUser\View\Helper\ZfcUserIdentity' => function ($sm) {
                     $viewHelper = new View\Helper\ZfcUserIdentity;
                     $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
@@ -100,6 +105,8 @@ class Module implements
                     $tg = new \Zend\Db\TableGateway\TableGateway('user', $adapter);
                     $mapper = new Mapper\User();
                     $mapper->setTableGateway($tg);
+                    $listener = new \ZfcUser\Mapper\DefaultUserListener();
+                    $mapper->events()->attachAggregate($listener);
                     return $mapper;
                 },
 

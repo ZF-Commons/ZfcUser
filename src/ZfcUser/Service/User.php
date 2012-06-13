@@ -5,16 +5,16 @@ namespace ZfcUser\Service;
 use DateTime;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcBase\EventManager\EventProvider;
 use ZfcBase\Mapper\DataMapperInterface as UserMapper;
+use ZfcBase\Service\AbstractService;
 use ZfcUser\Mapper\UserMetaInterface as UserMetaMapper;
 use ZfcUser\Module as ZfcUser;
 use ZfcUser\Repository\UserInterface as UserRepositoryInterface;
 use ZfcUser\Util\Password;
 
-class User extends EventProvider implements ServiceManagerAwareInterface
+class User extends AbstractService
 {
 
     /**
@@ -53,7 +53,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     protected $registerForm;
 
     /**
-     * @var ServiceManager
+     * @var ServiceLocatorInterface
      */
     protected $serviceManager;
 
@@ -126,7 +126,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      */
     public function getByUsername($username)
     {
-        return $this->userRepository->findByUsername($username);
+        return $this->getUserRepository()->findByUsername($username);
     }
 
     /**
@@ -137,7 +137,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getUserRepository()
     {
         if (null === $this->userRepository) {
-            $this->userRepository = $this->getServiceManager()->get('zfcuser_user_repository');
+            $this->userRepository = $this->getServiceLocator()->get('zfcuser_user_repository');
         }
         return $this->userRepository;
     }
@@ -162,7 +162,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getUserMetaMapper()
     {
         if (null === $this->userMetaMapper) {
-            $this->userMetaMapper = $this->getServiceManager()->get('zfcuser_usermeta_mapper');
+            $this->userMetaMapper = $this->getServiceLocator()->get('zfcuser_usermeta_mapper');
         }
         return $this->userMetaMapper;
     }
@@ -187,7 +187,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getUserMapper()
     {
         if (null === $this->userMapper) {
-            $this->userMapper = $this->getServiceManager()->get('zfcuser_user_mapper');
+            $this->userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
         }
         return $this->userMapper;
     }
@@ -212,7 +212,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getAuthService()
     {
         if (null === $this->authService) {
-            $this->authService = $this->getServiceManager()->get('zfcuser_auth_service');
+            $this->authService = $this->getServiceLocator()->get('zfcuser_auth_service');
         }
         return $this->authService;
     }
@@ -235,7 +235,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getRegisterForm()
     {
         if (null === $this->registerForm) {
-            $this->registerForm = $this->getServiceManager()->get('zfcuser_register_form');
+            $this->registerForm = $this->getServiceLocator()->get('zfcuser_register_form');
         }
         return $this->registerForm;
     }
@@ -250,24 +250,4 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         return $this;
     }
 
-    /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-    }
 }
