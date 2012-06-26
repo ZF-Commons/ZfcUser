@@ -2,29 +2,36 @@
 
 namespace ZfcUser\Form;
 
-use Zend\InputFilter\InputFilter,
-    ZfcUser\Module as ZfcUser;
+use Zend\InputFilter\InputFilter;
+use ZfcUser\Module as ZfcUser;
+use ZfcUser\Options\RegistrationOptionsInterface;
 
 class RegisterFilter extends InputFilter
 {
     protected $emailValidator;
     protected $usernameValidator;
 
-    public function __construct($emailValidator, $usernameValidator)
+    /**
+     * @var RegistrationOptionsInterface
+     */
+    protected $options;
+
+    public function __construct($emailValidator, $usernameValidator, RegistrationOptionsInterface $options)
     {
+        $this->setOptions($options);
         $this->emailValidator = $emailValidator;
         $this->usernameValidator = $usernameValidator;
 
-        if (ZfcUser::getOption('enable_username')) {
+        if ($this->getOptions()->getEnableUsername()) {
             $this->add(array(
-                'name'          => 'username',
-                'required'      => true,
-                'validators'    => array(
+                'name'       => 'username',
+                'required'   => true,
+                'validators' => array(
                     array(
-                        'name'      => 'StringLength',
-                        'options'   => array(
-                            'min'   => 3,
-                            'max'   => 255,
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'min' => 3,
+                            'max' => 255,
                         ),
                     ),
                     $this->usernameValidator,
@@ -33,27 +40,27 @@ class RegisterFilter extends InputFilter
         }
 
         $this->add(array(
-            'name'          => 'email',
-            'required'      => true,
-            'validators'    => array(
+            'name'       => 'email',
+            'required'   => true,
+            'validators' => array(
                 array(
-                    'name'      => 'EmailAddress'
+                    'name' => 'EmailAddress'
                 ),
                 $this->emailValidator
             ),
         ));
 
-        if (ZfcUser::getOption('enable_display_name')) {
+        if ($this->getOptions()->getEnableDisplayName()) {
             $this->add(array(
-                'name'          => 'display_name',
-                'required'      => true,
-                'filters'       => array(array('name' => 'StringTrim')),
-                'validators'    => array(
+                'name'       => 'displayName',
+                'required'   => true,
+                'filters'    => array(array('name' => 'StringTrim')),
+                'validators' => array(
                     array(
-                        'name'      => 'StringLength',
-                        'options'   => array(
-                            'min'   => 3,
-                            'max'   => 128,
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'min' => 3,
+                            'max' => 128,
                         ),
                     ),
                 ),
@@ -61,61 +68,83 @@ class RegisterFilter extends InputFilter
         }
 
         $this->add(array(
-            'name'          => 'password',
-            'required'      => true,
-            'filters'       => array(array('name' => 'StringTrim')),
-            'validators'    => array(
+            'name'       => 'password',
+            'required'   => true,
+            'filters'    => array(array('name' => 'StringTrim')),
+            'validators' => array(
                 array(
-                    'name'      => 'StringLength',
-                    'options'   => array(
-                        'min'   => 6,
-                        'max'   => 128,
+                    'name'    => 'StringLength',
+                    'options' => array(
+                        'min' => 6,
+                        'max' => 128,
                     ),
                 ),
             ),
         ));
 
         $this->add(array(
-            'name'          => 'passwordVerify',
-            'required'      => true,
-            'filters'       => array(array('name' => 'StringTrim')),
-            'validators'    => array(
+            'name'       => 'passwordVerify',
+            'required'   => true,
+            'filters'    => array(array('name' => 'StringTrim')),
+            'validators' => array(
                 array(
-                    'name'      => 'StringLength',
-                    'options'   => array(
-                        'min'   => 6,
-                        'max'   => 128,
+                    'name'    => 'StringLength',
+                    'options' => array(
+                        'min' => 6,
+                        'max' => 128,
                     ),
                 ),
                 array(
-                    'name'      => 'Identical',
-                    'options'   => array(
+                    'name'    => 'Identical',
+                    'options' => array(
                         'token' => 'password',
                     ),
                 ),
             ),
         ));
     }
- 
+
     public function getEmailValidator()
     {
         return $this->emailValidator;
     }
- 
+
     public function setEmailValidator($emailValidator)
     {
         $this->emailValidator = $emailValidator;
         return $this;
     }
- 
+
     public function getUsernameValidator()
     {
         return $this->usernameValidator;
     }
- 
+
     public function setUsernameValidator($usernameValidator)
     {
         $this->usernameValidator = $usernameValidator;
         return $this;
     }
+
+    /**
+     * set options
+     *
+     * @param RegistrationOptionsInterface $options
+     */
+    public function setOptions(RegistrationOptionsInterface $options)
+    {
+        $this->options = $options;
+    }
+
+    /**
+     * get options
+     *
+     * @return RegistrationOptionsInterface
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+
 }

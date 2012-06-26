@@ -2,40 +2,23 @@
 
 namespace ZfcUser\Service;
 
-use DateTime;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Crypt\Password\Bcrypt;
 use ZfcBase\EventManager\EventProvider;
-use ZfcBase\Mapper\DataMapperInterface as UserMapper;
-use ZfcUser\Mapper\UserMetaInterface as UserMetaMapper;
-use ZfcUser\Module as ZfcUser;
-use ZfcUser\Repository\UserInterface as UserRepositoryInterface;
-use ZfcUser\Util\Password;
+use ZfcUser\Mapper\UserInterface as UserMapperInterface;
+use ZfcUser\Options\UserServiceOptionsInterface;
 
 class User extends EventProvider implements ServiceManagerAwareInterface
 {
 
     /**
-     * @var UserMapper
+     * @var UserMapperInterface
      */
     protected $userMapper;
-
-    /**
-     * @var UserRepositoryInterface
-     */
-    protected $userRepository;
-
-    /**
-     * @var UserMetaMapper
-     */
-    protected $userMetaMapper;
-
-    /**
-     * @var mixed
-     */
-    protected $resolvedIdentity;
 
     /**
      * @var AuthenticationService
@@ -57,23 +40,10 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      */
     protected $serviceManager;
 
-    public function updateMeta($key, $value)
-    {
-        $user = $this->getAuthService()->getIdentity();
-        if (!$userMeta = $this->getUserMetaMapper()->get($user->getUserId(), $key)) {
-            $class = $this->getUserRepository()->getClassName();
-            $userMeta = new $class;
-            $userMeta->setUser($user);
-            $userMeta->setMetaKey($key);
-            $userMeta->setMeta($value);
-            $this->getUserMetaMapper()->persist($userMeta);
-        }
-        if (!$userMeta->getUser()) {
-            $userMeta->setUser($user);
-        }
-        $userMeta->setMeta($value);
-        $this->getUserMetaMapper()->persist($userMeta);
-    }
+    /**
+     * @var UserServiceOptionsInterface
+     */
+    protected $options;
 
     /**
      * createFromForm
@@ -84,37 +54,31 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      */
     public function register(array $data)
     {
-        $class = $this->getUserRepository()->getClassName();
-        $user = new $class;
-
-        $form = $this->getRegisterForm();
+        $class = $this->getOptions()->getUserEntityClass();
+        $user  = new $class;
+        $form  = $this->getRegisterForm();
+        $form->setHydrator(new ClassMethods(false));
         $form->bind($user);
         $form->setData($data);
         if (!$form->isValid()) {
-            throw new Exception\InvalidArgumentException('invalid data');
+            return false;
         }
 
         $user = $form->getData();
-        /* @var $user \ZfcUser\Model\UserInterface */
+        /* @var $user \ZfcUser\Entity\UserInterface */
 
-        $user->setPassword(Password::hash($user->getPassword()));
-        $user->setRegisterTime(new DateTime('now'));
-        $user->setRegisterIp($_SERVER['REMOTE_ADDR']);
-        $user->setEnabled(true);
+        $bcrypt = new Bcrypt;
 
-        if (ZfcUser::getOption('require_activation')) {
-            $user->setActive(false);
-        } else {
-            $user->setActive(true);
-        }
-        if (ZfcUser::getOption('enable_username')) {
+        $user->setPassword($bcrypt->create($user->getPassword()));
+
+        if ($this->getOptions()->getEnableUsername()) {
             $user->setUsername($data['username']);
         }
-        if (ZfcUser::getOption('enable_display_name')) {
+        if ($this->getOptions()->getEnableDisplayName()) {
             $user->setDisplayName($data['display_name']);
         }
         $this->events()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
-        $this->getUserMapper()->persist($user);
+        $this->getUserMapper()->insert($user);
         return $user;
     }
 
@@ -130,58 +94,8 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * getUserRepository
-     * 
-     * @return UserRepositoryInterface
-     */
-    public function getUserRepository()
-    {
-        if (null === $this->userRepository) {
-            $this->userRepository = $this->getServiceManager()->get('zfcuser_user_repository');
-        }
-        return $this->userRepository;
-    }
-
-    /**
-     * setUserRepository
+     * getUserMapper
      *
-     * @param UserRepositoryInterface $userMapper
-     * @return User
-     */
-    public function setUserRepository(UserRepositoryInterface $userMapper)
-    {
-        $this->userRepository = $userMapper;
-        return $this;
-    }
-
-    /**
-     * getUserMetaMapper 
-     * 
-     * @return UserMetaMapper
-     */
-    public function getUserMetaMapper()
-    {
-        if (null === $this->userMetaMapper) {
-            $this->userMetaMapper = $this->getServiceManager()->get('zfcuser_usermeta_mapper');
-        }
-        return $this->userMetaMapper;
-    }
-
-    /**
-     * setUserMetaMapper
-     *
-     * @param UserMetaMapper $userMetaMapper
-     * @return User
-     */
-    public function setUserMetaMapper(UserMetaMapper $userMetaMapper)
-    {
-        $this->userMetaMapper = $userMetaMapper;
-        return $this;
-    }
-    
-    /**
-     * getUserMapper 
-     * 
      * @return UserMapper
      */
     public function getUserMapper()
@@ -251,6 +165,29 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
+     * get service options
+     *
+     * @return UserServiceOptionsInterface
+     */
+    public function getOptions()
+    {
+        if (!$this->options instanceof UserServiceOptionsInterface) {
+            $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
+        }
+        return $this->options;
+    }
+
+    /**
+     * set service options
+     *
+     * @param UserServiceOptionsInterface $options
+     */
+    public function setOptions(UserServiceOptionsInterface $options)
+    {
+        $this->options = $options;
+    }
+
+    /**
      * Retrieve service manager instance
      *
      * @return ServiceManager
@@ -264,10 +201,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * Set service manager instance
      *
      * @param ServiceManager $locator
-     * @return void
+     * @return User
      */
     public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
+        $this;
     }
 }

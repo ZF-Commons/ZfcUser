@@ -2,55 +2,33 @@
 
 namespace ZfcUser\Mapper;
 
-use ArrayObject;
-use DateTime;
 use ZfcBase\Mapper\AbstractDbMapper;
-use ZfcBase\Model\AbstractModel;
-use ZfcUser\Module as ZfcUser;
 
-class User extends AbstractDbMapper
+class User extends AbstractDbMapper implements UserInterface
 {
-    protected $tableName         = 'user';
-    protected $primaryKey        = 'user_id';
+    protected $tableName  = 'user';
 
-    /**
-     * Returns the class name of the object mapped by the data mapper
-     *
-     * @return string
-     */
-    public function getClassName()
+    public function findByEmail($email)
     {
-        return ZfcUser::getOption('user_model_class');
+        $select = $this->select()
+                       ->from($this->tableName)
+                       ->where(array('email' => $email));
+        return $this->selectWith($select)->current();
     }
 
-    public function getTableName()
+    public function findByUsername($username)
     {
-        return $this->tableName;
+        $select = $this->select()
+                       ->from($this->tableName)
+                       ->where(array('username' => $username));
+        return $this->selectWith($select)->current();
     }
 
-    public function getPrimaryKey()
+    public function findById($id)
     {
-        return $this->primaryKey;
+        $select = $this->select()
+                       ->from($this->tableName)
+                       ->where(array('user_id' => $id));
+        return $this->selectWith($select)->current();
     }
-
-    protected function fromRow($row)
-    {
-        if (!$row) return false;
-        $userModelClass = $this->getClassName();
-        $user = $userModelClass::fromArray($row->getArrayCopy());
-        $user->setLastLogin(DateTime::createFromFormat('Y-m-d H:i:s', $row['last_login']));
-        $user->setRegisterTime(DateTime::createFromFormat('Y-m-d H:i:s', $row['register_time']));
-        return $user;
-    }
-
-    public function remove($model)
-    {
-        // TODO: Implement remove() method.
-    }
-
-    public function getPaginatorAdapter(array $params)
-    {
-        // TODO: Implement getPaginatorAdapter() method.
-    }
-
 }

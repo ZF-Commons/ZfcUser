@@ -21,7 +21,7 @@
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "dev-master",
-	"zf-commons/zfc-base": "dev-master"
+        "zf-commons/zfc-base": "dev-master"
     },
     "autoload": {
         "psr-0": {
