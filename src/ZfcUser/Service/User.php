@@ -112,7 +112,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * @param UserMapper $userMapper
      * @return User
      */
-    public function setUserMapper(UserMapper $userMapper)
+    public function setUserMapper(UserMapperInterface $userMapper)
     {
         $this->userMapper = $userMapper;
         return $this;

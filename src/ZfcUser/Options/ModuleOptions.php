@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Options;
 
-use Zend\Stdlib\Options;
+use Zend\Stdlib\AbstractOptions;
 
 class ModuleOptions extends Options implements
     AuthenticationOptionsInterface,

@@ -6,7 +6,7 @@ use Zend\Authentication\Storage;
 use Zend\Authentication\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
-use ZfcBase\Mapper\DataMapperInterface as UserMapper;
+use ZfcUser\Mapper\UserInterface as UserMapper;
 
 class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
 {
