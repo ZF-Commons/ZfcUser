@@ -1,10 +1,10 @@
 <h1>Register</h1>
 
-<?php 
-if(!\ZfcUser\Module::getOption('enable_registration'))
+<?php
+if(!$this->enableRegistration)
 {
     print "Registration is disabled";
-    return;       
+    return;
 }
 ?>
 
@@ -28,5 +28,9 @@ echo $this->form()->openTag($form);
     <?php } ?>
     <dd><?php echo $this->formInput($element) . $this->formElementErrors($element); ?></dd>
 <?php } ?>
+
+</dl>
+
+</form>
 
 <?php //echo $registerForm->setAction($this->url('zfcuser/register'))->setView($this); ?>
