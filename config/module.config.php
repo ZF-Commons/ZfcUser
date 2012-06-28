@@ -10,6 +10,8 @@ return array(
         //'enable_username'           => false,
         //'enable_display_name'       => false,
         //'require_activation'        => false,
+        //'login_form_timeout'        => 300,
+        //'user_form_timeout'         => 300,
         //'login_after_registration'  => true,
         //'registration_form_captcha' => true,
         //'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
@@ -25,6 +27,9 @@ return array(
         //'helper_map' => array(
         //    'zfcUserIdentity'    => 'ZfcUser\View\Helper\ZfcUserIdentity',
         //    'zfcUserLoginWidget' => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
+        //),
+        //'strategies' => array(
+        //    'ViewJsonStrategy',
         //),
     ),
 
@@ -94,6 +99,16 @@ return array(
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'register',
+                            ),
+                        ),
+                    ),
+                    'keep-alive' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/keep-alive',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'keep-alive',
                             ),
                         ),
                     ),
