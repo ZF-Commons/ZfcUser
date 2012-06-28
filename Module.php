@@ -13,8 +13,6 @@ class Module implements
     ConfigProviderInterface,
     ServiceProviderInterface
 {
-    protected static $options;
-
     public function getAutoloaderConfig()
     {
         return array(
@@ -45,7 +43,7 @@ class Module implements
                 'zfcUserAuthentication'             => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
             ),
             'aliases' => array(
-                'zfcUserIdentity'                   => 'ZfcUser\View\Helper\ZfcUserIdentity',
+                'zfcUserIdentity' => 'ZfcUser\View\Helper\ZfcUserIdentity',
             ),
             'factories' => array(
 
@@ -95,8 +93,14 @@ class Module implements
                     $form = new Form\Register(null, $options);
                     //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
                     $form->setInputFilter(new Form\RegisterFilter(
-                        $sm->get('zfcuser_uemail_validator'),
-                        $sm->get('zfcuser_uusername_validator'),
+                        new Validator\NoRecordExists(array(
+                            'mapper' => $sm->get('zfcuser_user_mapper'),
+                            'key'    => 'email'
+                        )),
+                        new Validator\NoRecordExists(array(
+                            'mapper' => $sm->get('zfcuser_user_mapper'),
+                            'key'    => 'username'
+                        )),
                         $options
                     ));
                     return $form;
@@ -114,37 +118,7 @@ class Module implements
                     $mapper->setHydrator(new Mapper\UserHydrator(false));
                     return $mapper;
                 },
-
-                'zfcuser_uemail_validator' => function($sm) {
-                    return new Validator\NoRecordExists(array(
-                        'mapper' => $sm->get('zfcuser_user_mapper'),
-                        'key'    => 'email'
-                    ));
-                },
-
-                'zfcuser_uusername_validator' => function($sm) {
-                    return new Validator\NoRecordExists(array(
-                        'mapper' => $sm->get('zfcuser_user_mapper'),
-                        'key'    => 'username'
-                    ));
-                },
             ),
         );
-    }
-
-    public function modulesLoaded($e)
-    {
-        $config = $e->getConfigListener()->getMergedConfig(false);
-        static::$options = $config['zfcuser'];
-
-        // Set default if not overridden previously.  This is necessary
-        // due to the way config merging is implemented, as specifying
-        // this default in module.config.php would mean it could never
-        // be overridden (ie: array('username') would not be possible
-        if (!isset(static::$options['auth_identity_fields'])) {
-            static::$options['auth_identity_fields'] = array( 'email' );
-        }
-
-        static::$options['auth_identity_fields'] = array_unique(static::$options['auth_identity_fields']);
     }
 }

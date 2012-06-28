@@ -26,8 +26,6 @@ class ModuleOptions extends Options implements
 
     protected $useRegistrationFormCaptcha;
 
-    protected $passwordSalt;
-
     protected $passwordCost;
 
     public function setUseRedirectParameterIfPresent($useRedirectParameterIfPresent)
@@ -163,15 +161,5 @@ class ModuleOptions extends Options implements
     public function getPasswordCost()
     {
         return $this->passwordCost;
-    }
-
-    public function setPasswordSalt($passwordSalt)
-    {
-        $this->passwordSalt = $passwordSalt;
-    }
-
-    public function getPasswordSalt()
-    {
-        return $this->passwordSalt;
     }
 }
