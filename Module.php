@@ -45,7 +45,9 @@ class Module implements
                 'zfcUserAuthentication'             => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
             ),
             'aliases' => array(
+                'zfcUserDisplayName'                   => 'ZfcUser\View\Helper\ZfcUserDisplayName',
                 'zfcUserIdentity'                   => 'ZfcUser\View\Helper\ZfcUserIdentity',
+                'zfcUserLoginWidget'                => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
             ),
             'factories' => array(
 
@@ -54,6 +56,11 @@ class Module implements
                     return new Options\ModuleOptions($config['zfcuser']);
                 },
 
+                'ZfcUser\View\Helper\ZfcUserDisplayName' => function ($sm) {
+                    $viewHelper = new View\Helper\ZfcUserDisplayName;
+                    $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
+                    return $viewHelper;
+                },
                 'ZfcUser\View\Helper\ZfcUserIdentity' => function ($sm) {
                     $viewHelper = new View\Helper\ZfcUserIdentity;
                     $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));

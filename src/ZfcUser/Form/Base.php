@@ -67,7 +67,9 @@ class Base extends ProvidesEventsForm
             ),
         ));
 
-        $this->add(new Csrf('csrf'));
+        $csrf = new Csrf('csrf');
+        $csrf->getValidator()->setTimeout($this->getOptions()->getUserFormTimeout());
+        $this->add($csrf);
 
         $this->events()->trigger('init', $this);
     }

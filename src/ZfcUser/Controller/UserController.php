@@ -6,6 +6,7 @@ use Zend\Form\Form;
 use Zend\Mvc\Controller\ActionController;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
 
@@ -169,6 +170,18 @@ class UserController extends ActionController
             'registerForm' => $form,
             'enableRegistration' => $this->getOptions()->getEnableRegistration(),
         );
+    }
+
+    public function keepAliveAction()
+    {
+        $loginForm = $this->getLoginForm();
+
+        return new JsonModel(array(
+            'timestamp' => strtotime('now'),
+            'hash' => array(
+                $loginForm->get('csrf')->getValidator()->getHash(true),
+            )
+        ));
     }
 
     /**

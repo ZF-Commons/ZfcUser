@@ -1,2 +1,2 @@
 <?php echo $this->gravatar($this->zfcUserIdentity()->getEmail()) ?>
-Hello, <?php echo $this->zfcUserIdentity()->getDisplayName() ?>! <a href="<?php echo $this->url('zfcuser/logout') ?>">[Sign Out]</a>
+Hello, <?php echo $this->zfcUserDisplayName() ?>! <a href="<?php echo $this->url('zfcuser/logout') ?>">[Sign Out]</a>

@@ -44,7 +44,9 @@ class Login extends ProvidesEventsForm
             ),
         ));
 
-        $this->add(new Csrf('csrf'));
+        $csrf = new Csrf('csrf');
+        $csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
+        $this->add($csrf);
 
         $this->add(array(
             'name' => 'submit',

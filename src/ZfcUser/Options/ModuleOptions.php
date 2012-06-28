@@ -12,6 +12,10 @@ class ModuleOptions extends Options implements
 {
     protected $useRedirectParameterIfPresent = false;
 
+    protected $loginFormTimeout = 300;
+
+    protected $userFormTimeout = 300;
+
     protected $loginAfterRegistration = true;
 
     protected $authIdentityFields = array( 'email' );
@@ -48,6 +52,26 @@ class ModuleOptions extends Options implements
     public function getEnableRegistration()
     {
         return $this->enableRegistration;
+    }
+
+    public function setLoginFormTimeout($loginFormTimeout)
+    {
+        $this->loginFormTimeout = $loginFormTimeout;
+    }
+
+    public function getLoginFormTimeout()
+    {
+        return $this->loginFormTimeout;
+    }
+
+    public function setUserFormTimeout($userFormTimeout)
+    {
+        $this->userFormTimeout = $userFormTimeout;
+    }
+
+    public function getUserFormTimeout()
+    {
+        return $this->userFormTimeout;
     }
 
     public function setLoginAfterRegistration($loginAfterRegistration)
