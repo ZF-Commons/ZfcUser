@@ -45,7 +45,7 @@ class Module implements
                 'zfcUserAuthentication'             => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
             ),
             'aliases' => array(
-                'zfcUserDisplayName'                   => 'ZfcUser\View\Helper\ZfcUserDisplayName',
+                'zfcUserDisplayName'                => 'ZfcUser\View\Helper\ZfcUserDisplayName',
                 'zfcUserIdentity'                   => 'ZfcUser\View\Helper\ZfcUserIdentity',
                 'zfcUserLoginWidget'                => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
             ),

@@ -28,9 +28,9 @@ return array(
         //    'zfcUserIdentity'    => 'ZfcUser\View\Helper\ZfcUserIdentity',
         //    'zfcUserLoginWidget' => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
         //),
-        'strategies' => array(
-            'ViewJsonStrategy',
-        ),
+        //'strategies' => array(
+        //    'ViewJsonStrategy',
+        //),
     ),
 
     'controller' => array(

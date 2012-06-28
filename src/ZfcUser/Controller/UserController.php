@@ -172,18 +172,6 @@ class UserController extends ActionController
         );
     }
 
-    public function keepAliveAction()
-    {
-        $loginForm = $this->getLoginForm();
-
-        return new JsonModel(array(
-            'timestamp' => strtotime('now'),
-            'hash' => array(
-                $loginForm->get('csrf')->getValidator()->getHash(true),
-            )
-        ));
-    }
-
     /**
      * Getters/setters for DI stuff
      */
