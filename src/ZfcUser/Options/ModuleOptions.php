@@ -56,12 +56,12 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var bool
      */
-    protected $useRegistrationFormCaptcha;
+    protected $useRegistrationFormCaptcha = false;
 
     /**
      * @var int
      */
-    protected $passwordCost;
+    protected $passwordCost = 14;
 
     /**
      * set use redirect param if present

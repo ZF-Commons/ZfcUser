@@ -70,7 +70,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         }
 
         $bcrypt = new Bcrypt();
-
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());
         if (!$bcrypt->verify($credential,$userObject->getPassword())) {
             // Password does not match
             $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
