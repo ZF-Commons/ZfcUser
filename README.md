@@ -112,9 +112,9 @@ the following:
 - [PHP Manual: crypt() function](http://php.net/manual/en/function.crypt.php)
 - [Securely Storing Passwords in PHP by Adrian Schneider](http://www.syndicatetheory.com/labs/securely-storing-passwords-in-php)
 
-The password hash settings may be changed at any time without invalidating
-existing user accounts. Existing user passwords will be re-hashed automatically
-on their next successful login.
+The password hash settings may be changed at any time without invalidating existing
+user accounts. Existing user passwords will be re-hashed automatically on their next
+successful login.
 
 **WARNING:** Changing the default password hash settings can cause serious
 problems such as making your hashed passwords more vulnerable to brute force
@@ -133,40 +133,33 @@ functionality. After installing ZfcUser, copy
 
 The following options are available:
 
-- **user_model_class** - Name of Entity class to use. Useful for using your own
+- **user_entity_class** - Name of Entity class to use. Useful for using your own
   entity class instead of the default one provided. Default is
-  `ZfcUser\Model\User`.
+  `ZfcUser\Entity\User`.
 - **enable_username** - Boolean value, enables username field on the
   registration form. Default is `false`.
 - **auth_identity_fields** - Array value, specifies which fields a user can
-  use as the 'identity' field when logging in.  Acceptable values: username, email. 
+  use as the 'identity' field when logging in.  Acceptable values: username, email.
 - **enable_display_name** - Boolean value, enables a display name field on the
   registration form. Default value is `false`.
 - **enable_registration** - Boolean value, Determines if a user should be
   allowed to register. Default value is `true`.
-- **require_activation** - Boolean value, require that the user verify their
-  email address to 'activate' their account. Default value is `false`. (Note,
-  this doesn't actually work yet, but defaults an 'active' field in the DB to
-  0.)
 - **login_after_registration** - Boolean value, automatically logs the user in
   after they successfully register. Default value is `false`.
-- **registration_form_captcha** - Boolean value, determines if a captcha should
+- **use_registration_form_captcha** - Boolean value, determines if a captcha should
   be utilized on the user registration form. Default value is `true`. (Note,
   right now this only utilizes a weak Zend\Text\Figlet CAPTCHA, but I have plans
   to make all Zend\Captcha adapters work.)
-- **password_hash_algorithm** - Name of the hashing algorithm to use for
-  hashing.  Supported algorithms are `blowfish`, `sha512`, and `sha256`. Default
-  is `blowfish`.
-- **blowfish_cost** - Only used if `password_hash_algorithm` is set to
-  `blowfish`. This should be an integer between 4 and 31. The number represents
-  the base-2 logarithm of the iteration count used for hashing.  Default is `10`
-  (about 10 hashes per second on an i5).
-- **sha256_rounds** - Only used if `password_hash_algorithm` is set to `sha256`.
-  This should be an integer between 1000 and 999,999,999. The number represents
-  the iteration count used for hashing. Default is `5000`.
-- **sha512_rounds** - Only used if `password_hash_algorithm` is set to `sha512`.
-  This should be an integer between 1000 and 999,999,999. The number represents
-  the iteration count used for hashing. Default is `5000`.
+- **login_form_timeout** - Integer value, specify the timeout for the CSRF security
+  field of the login form in seconds. Default value is 300 seconds.
+- **user_form_timeout** - Integer value, specify the timeout for the CSRF security
+  field of the registration form in seconds. Default value is 300 seconds.
+- **use_redirect_parameter_if_present** - Boolean value, if a redirect GET
+  parameter is specified, the user will be redirected to the specified URL if
+  authentication is successful.
+- **password_cost** - This should be an integer between 4 and 31. The number
+  represents the base-2 logarithm of the iteration count used for hashing.
+  Default is `10` (about 10 hashes per second on an i5).
 
 Changing Registration Captcha Element
 -------------------------------------

@@ -2,8 +2,8 @@
 
 namespace ZfcUser\Validator;
 
-use Zend\Validator\AbstractValidator,
-    ZfcUser\Repository\UserInterface;
+use Zend\Validator\AbstractValidator;
+use ZfcUser\Mapper\UserInterface;
 
 abstract class AbstractRecord extends AbstractValidator
 {
@@ -24,7 +24,7 @@ abstract class AbstractRecord extends AbstractValidator
     /**
      * @var UserInterface
      */
-    protected $repository;
+    protected $mapper;
 
     /**
      * @var string
@@ -40,31 +40,31 @@ abstract class AbstractRecord extends AbstractValidator
         if (!array_key_exists('key', $options)) {
             throw new Exception\InvalidArgumentException('No key provided');
         }
-        
+
         $this->setKey($options['key']);
-        
+
         parent::__construct($options);
     }
 
     /**
-     * getMapper 
-     * 
+     * getMapper
+     *
      * @return UserInterface
      */
-    public function getRepository()
+    public function getMapper()
     {
-        return $this->repository;
+        return $this->mapper;
     }
 
     /**
-     * setMapper 
-     * 
-     * @param UserInterface $repository
+     * setMapper
+     *
+     * @param UserInterface $mapper
      * @return AbstractRecord
      */
-    public function setRepository(UserInterface $repository)
+    public function setMapper(UserInterface $mapper)
     {
-        $this->repository = $repository;
+        $this->mapper = $mapper;
         return $this;
     }
 
@@ -77,7 +77,7 @@ abstract class AbstractRecord extends AbstractValidator
     {
         return $this->key;
     }
- 
+
     /**
      * Set key.
      *
@@ -91,7 +91,7 @@ abstract class AbstractRecord extends AbstractValidator
 
     /**
      * Grab the user from the mapper
-     * 
+     *
      * @param string $value
      * @return mixed
      */
@@ -101,11 +101,11 @@ abstract class AbstractRecord extends AbstractValidator
 
         switch ($this->getKey()) {
             case 'email':
-                $result = $this->getRepository()->findByEmail($value);
-                break; 
+                $result = $this->getMapper()->findByEmail($value);
+                break;
 
             case 'username':
-                $result = $this->getRepository()->findByUsername($value);
+                $result = $this->getMapper()->findByUsername($value);
                 break;
 
             default:

@@ -29,7 +29,7 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'name' => 'display_name',
+            'name' => 'displayName',
             'attributes' => array(
                 'label' => 'Display Name',
                 'type' => 'text'
@@ -52,6 +52,17 @@ class Base extends ProvidesEventsForm
             ),
         ));
 
+        if ($this->getOptions()->getUseRegistrationFormCaptcha()) {
+            $this->add(array(
+                'name' => 'captcha',
+                'type' => 'Zend\Form\Element\Captcha',
+                'attributes' => array(
+                    'label' => 'Please type the following text',
+                    'captcha' => $this->getOptions()->getFormCaptchaOptions(),
+                ),
+            ));
+        }
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
@@ -67,7 +78,9 @@ class Base extends ProvidesEventsForm
             ),
         ));
 
-        $this->add(new Csrf('csrf'));
+        $csrf = new Csrf('csrf');
+        $csrf->getValidator()->setTimeout($this->getOptions()->getUserFormTimeout());
+        $this->add($csrf);
 
         $this->events()->trigger('init', $this);
     }

@@ -13,8 +13,8 @@ class ZfcUserIdentity extends AbstractHelper
     protected $authService;
 
     /**
-     * __invoke 
-     * 
+     * __invoke
+     *
      * @access public
      * @return ZfcUser\Model\UserInterface
      */
@@ -36,7 +36,7 @@ class ZfcUserIdentity extends AbstractHelper
     {
         return $this->authService;
     }
- 
+
     /**
      * Set authService.
      *

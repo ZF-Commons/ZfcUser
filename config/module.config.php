@@ -1,33 +1,16 @@
 <?php
 return array(
-    'zfcuser' => array(
-        'user_model_class'          => 'ZfcUser\Model\User',
-        'usermeta_model_class'      => 'ZfcUser\Model\UserMeta',
-        'enable_registration'       => true,
-        //NOTE: Please override the setting below via your zfcuser.global.php file
-        //      Uncommenting the line below will break any overrides in later config files
-        //      due to the way config file merging works with array values
-        //'auth_identity_fields'      => array( 'email' ),
-        'enable_username'           => false,
-        'enable_display_name'       => false,
-        'require_activation'        => false,
-        'login_after_registration'  => true,
-        'registration_form_captcha' => true,
-        'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
-        'blowfish_cost'             => 10,         // integer between 4 and 31
-        'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
-    ),
-
     'view_manager' => array(
         'template_path_stack' => array(
             'zfcuser' => __DIR__ . '/../view',
         ),
-        'helper_map' => array(
-            'Zend\Form\View\HelperLoader',
-            'zfcUserIdentity'        => 'ZfcUser\View\Helper\ZfcUserIdentity',
-            'zfcUserLoginWidget'     => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
-        ),
+        //'helper_map' => array(
+        //    'zfcUserIdentity'    => 'ZfcUser\View\Helper\ZfcUserIdentity',
+        //    'zfcUserLoginWidget' => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
+        //),
+        //'strategies' => array(
+        //    'ViewJsonStrategy',
+        //),
     ),
 
     'controller' => array(
