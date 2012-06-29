@@ -4,7 +4,9 @@ namespace ZfcUser\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
+use Zend\Form\Element\Captcha;
 use ZfcBase\Form\ProvidesEventsForm;
+use Zend\Captcha\Factory as CaptchaFactory;
 
 class Base extends ProvidesEventsForm
 {
@@ -51,6 +53,17 @@ class Base extends ProvidesEventsForm
                 'type' => 'password'
             ),
         ));
+
+        if ($this->getOptions()->getUseRegistrationFormCaptcha()) {
+            $this->add(array(
+                'name' => 'captcha',
+                'type' => 'Zend\Form\Element\Captcha',
+                'attributes' => array(
+                    'label' => 'Please type the following text',
+                    'captcha' => $this->getOptions()->getFormCaptchaOptions(),
+                ),
+            ));
+        }
 
         $this->add(array(
             'name' => 'submit',

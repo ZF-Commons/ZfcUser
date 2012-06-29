@@ -318,7 +318,7 @@ class ModuleOptions extends AbstractOptions implements
      */
     public function setFormCaptchaOptions($formCaptchaOptions)
     {
-        $thsi->formCaptchaOptions = $formCaptchaOptions;
+        $this->formCaptchaOptions = $formCaptchaOptions;
         return $this;
     }
 
