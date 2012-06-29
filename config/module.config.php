@@ -14,6 +14,7 @@ return array(
         //'user_form_timeout'                 => 300,
         //'login_after_registration'          => true,
         //'use_registration_form_captcha'     => true,
+        //'form_captcha_options'              => array( ... )
         //'password_cost'                     => 10,         // integer between 4 and 31
     ),
 

@@ -112,9 +112,9 @@ the following:
 - [PHP Manual: crypt() function](http://php.net/manual/en/function.crypt.php)
 - [Securely Storing Passwords in PHP by Adrian Schneider](http://www.syndicatetheory.com/labs/securely-storing-passwords-in-php)
 
-The password hash settings may be changed at any time without invalidating
-existing user accounts. Existing user passwords will be re-hashed automatically
-on their next successful login.
+The password hash settings may be changed at any time without invalidating existing
+user accounts. Existing user passwords will be re-hashed automatically on their next
+successful login.
 
 **WARNING:** Changing the default password hash settings can cause serious
 problems such as making your hashed passwords more vulnerable to brute force

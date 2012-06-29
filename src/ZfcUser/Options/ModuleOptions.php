@@ -136,12 +136,7 @@ class ModuleOptions extends AbstractOptions implements
      * @return ModuleOptions
      */
     public function setUserFormTimeout($userFormTimeout)
-    {    /**
-     * get enable username
-     *
-     * @return bool
-     */
-
+    {
         $this->userFormTimeout = $userFormTimeout;
         return $this;
     }
