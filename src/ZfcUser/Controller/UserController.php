@@ -5,10 +5,11 @@ namespace ZfcUser\Controller;
 use Zend\Form\Form;
 use Zend\Mvc\Controller\ActionController;
 use Zend\Stdlib\ResponseInterface as Response;
+use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 use ZfcUser\Service\User as UserService;
-use ZfcUser\Form\LoginFilter;
-use ZfcUser\Module as ZfcUser;
+use ZfcUser\Options\UserControllerOptionsInterface;
 
 class UserController extends ActionController
 {
@@ -28,36 +29,37 @@ class UserController extends ActionController
     protected $registerForm;
 
     /**
-     * @var \ZfcUser\Form\RegisterFilter
-     */
-    protected $registerFilter;
-
-    /**
      * @todo Make this dynamic / translation-friendly
      * @var string
      */
     protected $failedLoginMessage = 'Authentication failed. Please try again.';
 
     /**
-     * User page 
+     * @var UserControllerOptionsInterface
+     */
+    protected $options;
+
+    /**
+     * User page
      */
     public function indexAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser/login'); 
+            return $this->redirect()->toRoute('zfcuser/login');
         }
         return new ViewModel();
     }
 
     /**
-     * Login form 
+     * Login form
      */
     public function loginAction()
     {
+        $this->getServiceLocator()->get('zfcuser_user_mapper');
         $request = $this->getRequest();
         $form    = $this->getLoginForm();
 
-        if (ZfcUser::getOption('use_redirect_parameter_if_present') && $request->query()->get('redirect')) {
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->query()->get('redirect')) {
             $redirect = $request->query()->get('redirect');
         } else {
             $redirect = false;
@@ -70,12 +72,11 @@ class UserController extends ActionController
             );
         }
 
-        $form->setInputFilter(new LoginFilter());
         $form->setData($request->post());
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toRoute('zfcuser/login'); 
+            return $this->redirect()->toRoute('zfcuser/login');
         }
         // clear adapters
 
@@ -83,7 +84,7 @@ class UserController extends ActionController
     }
 
     /**
-     * Logout and clear the identity 
+     * Logout and clear the identity
      */
     public function logoutAction()
     {
@@ -93,7 +94,7 @@ class UserController extends ActionController
     }
 
     /**
-     * General-purpose authentication action 
+     * General-purpose authentication action
      */
     public function authenticateAction()
     {
@@ -118,7 +119,7 @@ class UserController extends ActionController
             return $this->redirect()->toRoute('zfcuser/login');
         }
 
-        if (ZfcUser::getOption('use_redirect_parameter_if_present') && $request->post()->get('redirect')) {
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->post()->get('redirect')) {
             return $this->redirect()->toUrl($request->post()->get('redirect'));
         }
 
@@ -126,7 +127,7 @@ class UserController extends ActionController
     }
 
     /**
-     * Register new user 
+     * Register new user
      */
     public function registerAction()
     {
@@ -136,31 +137,45 @@ class UserController extends ActionController
 
         $request = $this->getRequest();
         $service = $this->getUserService();
-        $form = $service->getRegisterForm();
+        $form = $this->getRegisterForm();
 
-        if ($request->isPost() && ZfcUser::getOption('enable_registration')) {
-            $data = $request->post()->toArray();
-            try {
-                $user = $service->register($data);
-                if (ZfcUser::getOption('login_after_registration')) {
-                    $post = $request->post();
-                    $identityFields = ZfcUser::getOption('auth_identity_fields');
-                    if (in_array('email', $identityFields)) {
-                        $post['identity']   = $user->getEmail();
-                    } elseif(in_array('username', $identityFields)) { 
-                        $post['identity']   = $user->getUsername();
-                    }
-                    $post['credential'] = $post['password'];
-                    return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
-                }
-                return $this->redirect()->toRoute('zfcuser/login');
-            } catch (\InvalidArgumentException $e) {
-                // ignore exception, error messages are displayed in view
-            }
+        if ($request->isPost()) {
+            $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
+            // See http://en.wikipedia.org/wiki/Post/Redirect/Get
+            return $this->redirect()->toRoute('zfcuser/register');
         }
-        return array(
-            'registerForm' => $form,
-        );
+
+        $post = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
+
+        if (!isset($post[0]) || !$service->getOptions()->getEnableRegistration()) {
+            return array(
+                'registerForm' => $form,
+                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+            );
+        }
+
+        $post = $post[0];
+        $user = $service->register($post);
+
+        if (!$user) {
+            return array(
+                'registerForm' => $form,
+                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+            );
+        }
+
+        if ($service->getOptions()->getLoginAfterRegistration()) {
+            $identityFields = $service->getOptions()->getAuthIdentityFields();
+            if (in_array('email', $identityFields)) {
+                $post['identity'] = $user->getEmail();
+            } elseif(in_array('username', $identityFields)) {
+                $post['identity'] = $user->getUsername();
+            }
+            $post['credential'] = $post['password'];
+            $request->setPost(new Parameters($post));
+            return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
+        }
+        return $this->redirect()->toRoute('zfcuser/login');
     }
 
     /**
@@ -169,7 +184,7 @@ class UserController extends ActionController
 
     public function getUserService()
     {
-        if (null === $this->userService) {
+        if (!$this->userService) {
             $this->userService = $this->getServiceLocator()->get('zfcuser_user_service');
         }
         return $this->userService;
@@ -181,10 +196,23 @@ class UserController extends ActionController
         return $this;
     }
 
+    public function getRegisterForm()
+    {
+        if (!$this->registerForm) {
+            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
+        }
+        return $this->registerForm;
+    }
+
+    public function setRegisterForm(Form $registerForm)
+    {
+        $this->registerForm = $registerForm;
+    }
+
     public function getLoginForm()
     {
-        if (null === $this->loginForm) {
-            $this->loginForm = $this->getServiceLocator()->get('ZfcUser\Form\Login');
+        if (!$this->loginForm) {
+            $this->setLoginForm($this->getServiceLocator()->get('zfcuser_login_form'));
         }
         return $this->loginForm;
     }
@@ -199,5 +227,30 @@ class UserController extends ActionController
             );
         }
         return $this;
+    }
+
+    /**
+     * set options
+     *
+     * @param UserControllerOptionsInterface $options
+     * @return UserController
+     */
+    public function setOptions(UserControllerOptionsInterface $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    /**
+     * get options
+     *
+     * @return UserControllerOptionsInterface
+     */
+    public function getOptions()
+    {
+        if (!$this->options instanceof UserControllerOptionsInterface) {
+            $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
+        }
+        return $this->options;
     }
 }

@@ -3,37 +3,65 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Element\Captcha as Captcha;
-use Zend\Form\Form;
-use ZfcUser\Module;
+use ZfcUser\Options\RegistrationOptionsInterface;
 
 class Register extends Base
 {
-    protected $captcha_element= null;
+    protected $captchaElement= null;
 
-    public function __construct()
+    /**
+     * @var RegistrationOptionsInterface
+     */
+    protected $options;
+
+    /**
+     * @param string|null $name
+     * @param RegistrationOptionsInterface $options
+     */
+    public function __construct($name = null, RegistrationOptionsInterface $options)
     {
-        parent::__construct();
-        
-        $this->remove('userId');
-        if (!Module::getOption('enable_username')) {
+        $this->setOptions($options);
+        parent::__construct($name);
+
+        $this->remove('id');
+        if (!$this->getOptions()->getEnableUsername()) {
             $this->remove('username');
         }
-        if (!Module::getOption('enable_display_name')) {
-            $this->remove('display_name');
+        if (!$this->getOptions()->getEnableDisplayName()) {
+            $this->remove('displayName');
         }
-        if (Module::getOption('registration_form_captcha') && $this->captcha_element) {
-            $this->add($this->captcha_element, array('name'=>'captcha'));
+        if ($this->getOptions()->getUseRegistrationFormCaptcha() && $this->captchaElement) {
+            $this->add($this->captchaElement, array('name'=>'captcha'));
         }
         $this->get('submit')->setAttribute('Label', 'Register');
     }
 
-    public function setCaptchaElement(Captcha $captcha_element)
+    public function setCaptchaElement(Captcha $captchaElement)
     {
-        $this->captcha_element= $captcha_element;
+        $this->captchaElement= $captchaElement;
     }
-    
-    public function initLate()
+
+    /**
+     * set options
+     *
+     * @param RegistrationOptionsInterface $options
+     * @return Register
+     */
+    public function setOptions(RegistrationOptionsInterface $options)
     {
-        parent::initLate();
+        $this->options = $options;
+        return $this;
     }
+
+    /**
+     * get options
+     *
+     * @return RegistrationOptionsInterface
+     */
+    public function getOptions()
+    {
+        return $this->options;
+    }
+
+
 }

@@ -3,11 +3,11 @@
 namespace ZfcUser\Form;
 
 use Zend\InputFilter\InputFilter;
-use ZfcUser\Module as ZfcUser;
+use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class LoginFilter extends InputFilter
 {
-    public function __construct()
+    public function __construct(AuthenticationOptionsInterface $options)
     {
         $identityParams = array(
             'name'       => 'identity',
@@ -15,10 +15,10 @@ class LoginFilter extends InputFilter
             'validators' => array()
         );
 
-        $identityFields = ZfcUser::getOption('auth_identity_fields');
+        $identityFields = $options->getAuthIdentityFields();
         if ($identityFields == array('email')) {
             $validators = array('name' => 'EmailAddress');
-            array_push($validators, $identityParams['validators']); 
+            array_push($validators, $identityParams['validators']);
         }
 
         $this->add($identityParams);

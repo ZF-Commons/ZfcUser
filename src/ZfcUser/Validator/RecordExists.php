@@ -17,4 +17,4 @@ class RecordExists extends AbstractRecord
 
         return $valid;
     }
-} 
+}
