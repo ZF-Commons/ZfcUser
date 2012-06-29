@@ -4,9 +4,7 @@ namespace ZfcUser\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
-use Zend\Form\Element\Captcha;
 use ZfcBase\Form\ProvidesEventsForm;
-use Zend\Captcha\Factory as CaptchaFactory;
 
 class Base extends ProvidesEventsForm
 {
