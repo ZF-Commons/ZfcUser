@@ -119,9 +119,11 @@ class Module implements
                 },
 
                 'zfcuser_user_mapper' => function ($sm) {
+                    $options = $sm->get('zfcuser_module_options');
                     $mapper = new Mapper\User();
                     $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
-                    $mapper->setEntityPrototype(new Entity\User);
+                    $entityClass = $options->getUserEntityClass();
+                    $mapper->setEntityPrototype(new $entityClass);
                     $mapper->setHydrator(new Mapper\UserHydrator(false));
                     return $mapper;
                 },
