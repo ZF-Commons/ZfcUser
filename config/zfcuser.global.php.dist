@@ -96,11 +96,25 @@ $settings = array(
      * Registration Form Captcha
      *
      * Determines if a captcha should be utilized on the user registration form.
-     * Default value is true. (Note, right now this only utilizes a weak
-     * Zend\Text\Figlet CAPTCHA, but I have plans to make all Zend\Captcha
-     * adapters work.)
+     * Default value is false.
      */
-    //'use_registration_form_captcha' => true,
+    //'use_registration_form_captcha' => false,
+
+    /**
+     * Form Captcha Options
+     *
+     * Currently used for the registration form, but re-usable anywhere. Use
+     * this to configure which Zend\Captcha adapter to use, and the options to
+     * pass to it. The default uses the Figlet captcha.
+     */
+    /*'form_captcha_options' => array(
+        'class'   => 'figlet',
+        'options' => array(
+            'wordLen'    => 5,
+            'expiration' => 300,
+            'timeout'    => 300,
+        ),
+    ),*/
 
     /**
      * Use Redirect Parameter If Present
@@ -128,11 +142,11 @@ $settings = array(
      * Password Cost
      *
      * The number represents the base-2 logarithm of the iteration count used for
-     * hashing. Default is 10 (about 10 hashes per second on an i5).
+     * hashing. Default is 14 (about 10 hashes per second on an i5).
      *
      * Accepted values: integer between 4 and 31
      */
-    //'password_cost' => 10,
+    //'password_cost' => 14,
 
     /**
      * End of ZfcUser configuration

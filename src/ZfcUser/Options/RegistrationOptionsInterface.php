@@ -91,4 +91,19 @@ interface RegistrationOptionsInterface
      * @return bool
      */
     public function getLoginAfterRegistration();
+
+    /**
+     * set form CAPTCHA options
+     *
+     * @param array $formCaptchaOptions
+     * @return ModuleOptions
+     */
+    public function setFormCaptchaOptions($formCaptchaOptions);
+
+    /**
+     * get form CAPTCHA options
+     *
+     * @return array
+     */
+    public function getFormCaptchaOptions();
 }

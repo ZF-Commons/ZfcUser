@@ -66,7 +66,14 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var array
      */
-    protected $formCaptchaOptions;
+    protected $formCaptchaOptions = array(
+        'class'   => 'figlet',
+        'options' => array(
+            'wordLen'    => 5,
+            'expiration' => 300,
+            'timeout'    => 300,
+        ),
+    );
 
     /**
      * set use redirect param if present
