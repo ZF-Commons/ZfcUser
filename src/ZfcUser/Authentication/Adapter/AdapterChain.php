@@ -17,8 +17,8 @@ class AdapterChain extends EventProvider implements AdapterInterface
     protected $event;
 
     /**
-     * Returns the authentication result 
-     * 
+     * Returns the authentication result
+     *
      * @return AuthenticationResult
      */
     public function authenticate()
@@ -41,9 +41,9 @@ class AdapterChain extends EventProvider implements AdapterInterface
         $e = $this->getEvent()
                   ->setRequest($request);
 
-        $this->events()->trigger('authenticate.pre', $e);
+        $this->getEventManager()->trigger('authenticate.pre', $e);
 
-        $result = $this->events()->trigger('authenticate', $e, function($test) {
+        $result = $this->getEventManager()->trigger('authenticate', $e, function($test) {
             return ($test instanceof Response);
         });
 
@@ -63,13 +63,13 @@ class AdapterChain extends EventProvider implements AdapterInterface
     }
 
     /**
-     * resetAdapters 
-     * 
+     * resetAdapters
+     *
      * @return AdapterChain
      */
     public function resetAdapters()
     {
-        $listeners = $this->events()->getListeners('authenticate');
+        $listeners = $this->getEventManager()->getListeners('authenticate');
         foreach ($listeners as $listener) {
             $listener = $listener->getCallback();
             if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
@@ -80,8 +80,8 @@ class AdapterChain extends EventProvider implements AdapterInterface
     }
 
     /**
-     * Get the auth event 
-     * 
+     * Get the auth event
+     *
      * @return AdapterChainEvent
      */
     public function getEvent()
@@ -97,8 +97,8 @@ class AdapterChain extends EventProvider implements AdapterInterface
      * Set an event to use during dispatch
      *
      * By default, will re-cast to AdapterChainEvent if another event type is provided.
-     * 
-     * @param  Event $e 
+     *
+     * @param  Event $e
      * @return AdapterChain
      */
     public function setEvent(Event $e)
@@ -112,4 +112,4 @@ class AdapterChain extends EventProvider implements AdapterInterface
         $this->event = $e;
         return $this;
     }
-} 
+}

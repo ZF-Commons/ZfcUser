@@ -8,8 +8,8 @@ use Zend\EventManager\Event,
 class AdapterChainEvent extends Event
 {
     /**
-     * getIdentity 
-     * 
+     * getIdentity
+     *
      * @return mixed
      */
     public function getIdentity()
@@ -18,9 +18,9 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * setIdentity 
-     * 
-     * @param mixed $identity 
+     * setIdentity
+     *
+     * @param mixed $identity
      * @return AuthEvent
      */
     public function setIdentity($identity = null)
@@ -35,8 +35,8 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * getCode 
-     * 
+     * getCode
+     *
      * @return int
      */
     public function getCode()
@@ -45,9 +45,9 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * setCode 
-     * 
-     * @param int $code 
+     * setCode
+     *
+     * @param int $code
      * @return AdapterChainEvent
      */
     public function setCode($code = null)
@@ -57,8 +57,8 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * getMessages 
-     * 
+     * getMessages
+     *
      * @return array
      */
     public function getMessages()
@@ -67,9 +67,9 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * setMessages 
-     * 
-     * @param array $messages 
+     * setMessages
+     *
+     * @param array $messages
      * @return AdapterChainEvent
      */
     public function setMessages($messages = array())
@@ -79,8 +79,8 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * getRequest 
-     * 
+     * getRequest
+     *
      * @return Request
      */
     public function getRequest()
@@ -89,9 +89,9 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * setRequest 
-     * 
-     * @param Request $request 
+     * setRequest
+     *
+     * @param Request $request
      * @return AuthEvent
      */
     public function setRequest(Request $request)

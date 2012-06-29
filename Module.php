@@ -84,7 +84,7 @@ class Module implements
                 'ZfcUser\Authentication\Adapter\AdapterChain' => function ($sm) {
                     $chain = new Authentication\Adapter\AdapterChain;
                     $adapter = $sm->get('ZfcUser\Authentication\Adapter\Db');
-                    $chain->events()->attach('authenticate', array($adapter, 'authenticate'));
+                    $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'));
                     return $chain;
                 },
 
