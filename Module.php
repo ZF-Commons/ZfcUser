@@ -51,7 +51,7 @@ class Module implements
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Configuration');
-                    return new Options\ModuleOptions($config['zfcuser']);
+                    return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
                 },
 
                 'ZfcUser\View\Helper\ZfcUserDisplayName' => function ($sm) {
