@@ -81,10 +81,9 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 
         // Success!
         $e->setIdentity($userObject->getId());
+        // Update user's password hash if the cost parameter has changed
+        $this->updateUserPasswordHash($userObject, $credential, $bcrypt);
         $this->setSatisfied(true);
-        //$this->updateUserLastLogin($userObject)
-        //     ->updateUserPasswordHash($userObject, $credential, $bcrypt)
-        //     ->setSatisfied(true);
         $storage = $this->getStorage()->read();
         $storage['identity'] = $e->getIdentity();
         $this->getStorage()->write($storage);
@@ -94,22 +93,10 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 
     protected function updateUserPasswordHash($userObject, $password, $bcrypt)
     {
-        return;
-        //$newHash = $Password::hash($password);
-        //if ($newHash === $userObject->getPassword()) return $this;
-
-        //$userObject->setPassword($newHash);
-
-        //$this->getMapper()->update($userObject);
-        //return $this;
-    }
-
-    protected function updateUserLastLogin($userObject)
-    {
-        $userObject->setLastLogin(new DateTime('now'))
-                   ->setLastIp($_SERVER['REMOTE_ADDR']);
-
-        $this->getMapper()->persist($userObject);
+        $hash = explode('$', $userObject->getPassword());
+        if ($hash[2] === $bcrypt->getCost()) return;
+        $userObject->setPassword($bcrypt->create($password));
+        $this->getMapper()->update($userObject);
         return $this;
     }
 
