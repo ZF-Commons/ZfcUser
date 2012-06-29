@@ -1,23 +1,20 @@
 <?php
 return array(
     'zfcuser' => array(
-        //'user_entity_class'         => 'ZfcUser\Entity\User',
-        //'enable_registration'       => true,
+        //'user_entity_class'                 => 'ZfcUser\Entity\User',
+        //'enable_registration'               => true,
         //NOTE: Please override the setting below via your zfcuser.global.php file
         //      Uncommenting the line below will break any overrides in later config files
         //      due to the way config file merging works with array values
-        //'auth_identity_fields'      => array( 'email' ),
-        //'enable_username'           => false,
-        //'enable_display_name'       => false,
-        //'require_activation'        => false,
-        //'login_form_timeout'        => 300,
-        //'user_form_timeout'         => 300,
-        //'login_after_registration'  => true,
-        //'registration_form_captcha' => true,
-        //'password_hash_algorithm'   => 'blowfish', // blowfish, sha512, sha256
-        //'blowfish_cost'             => 10,         // integer between 4 and 31
-        //'sha256_rounds'             => 5000,       // integer between 1000 and 999,999,999
-        //'sha512_rounds'             => 5000,       // integer between 1000 and 999,999,999
+        //'use_redirect_parameter_if_present' => false,
+        //'auth_identity_fields'              => array( 'email' ),
+        //'enable_username'                   => false,
+        //'enable_display_name'               => false,
+        //'login_form_timeout'                => 300,
+        //'user_form_timeout'                 => 300,
+        //'login_after_registration'          => true,
+        //'use_registration_form_captcha'     => true,
+        //'password_cost'                     => 10,         // integer between 4 and 31
     ),
 
     'view_manager' => array(
@@ -99,16 +96,6 @@ return array(
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'register',
-                            ),
-                        ),
-                    ),
-                    'keep-alive' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/keep-alive',
-                            'defaults' => array(
-                                'controller' => 'zfcuser',
-                                'action'     => 'keep-alive',
                             ),
                         ),
                     ),
