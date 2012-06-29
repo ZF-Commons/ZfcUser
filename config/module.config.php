@@ -7,14 +7,21 @@ return array(
         //      Uncommenting the line below will break any overrides in later config files
         //      due to the way config file merging works with array values
         //'use_redirect_parameter_if_present' => false,
-        //'auth_identity_fields'              => array( 'email' ),
+        'auth_identity_fields'              => array( 'email' ),
         //'enable_username'                   => false,
         //'enable_display_name'               => false,
         //'login_form_timeout'                => 300,
         //'user_form_timeout'                 => 300,
         //'login_after_registration'          => true,
-        //'use_registration_form_captcha'     => true,
-        //'form_captcha_options'              => array( ... )
+        'use_registration_form_captcha'     => true,
+        'form_captcha_options'              => array(
+            'class'    => 'figlet',
+            'options'  => array(
+                'wordLen'         => 5,
+                'expiration'      => 300,
+                'timeout'         => 300,  // sec
+            ),
+        ),
         //'password_cost'                     => 10,         // integer between 4 and 31
     ),
 

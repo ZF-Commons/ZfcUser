@@ -64,6 +64,11 @@ class ModuleOptions extends AbstractOptions implements
     protected $passwordCost = 14;
 
     /**
+     * @var array
+     */
+    protected $formCaptchaOptions;
+
+    /**
      * set use redirect param if present
      *
      * @param bool $useRedirectParameterIfPresent
@@ -303,5 +308,27 @@ class ModuleOptions extends AbstractOptions implements
     public function getPasswordCost()
     {
         return $this->passwordCost;
+    }
+
+    /**
+     * set form CAPTCHA options
+     *
+     * @param array $formCaptchaOptions
+     * @return ModuleOptions
+     */
+    public function setFormCaptchaOptions($formCaptchaOptions)
+    {
+        $thsi->formCaptchaOptions = $formCaptchaOptions;
+        return $this;
+    }
+
+    /**
+     * get form CAPTCHA options
+     *
+     * @return array
+     */
+    public function getFormCaptchaOptions()
+    {
+        return $this->formCaptchaOptions;
     }
 }
