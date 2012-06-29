@@ -5,6 +5,7 @@ namespace ZfcUser\Controller;
 use Zend\Form\Form;
 use Zend\Mvc\Controller\ActionController;
 use Zend\Stdlib\ResponseInterface as Response;
+use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 use Zend\View\Model\JsonModel;
 use ZfcUser\Service\User as UserService;
@@ -26,11 +27,6 @@ class UserController extends ActionController
      * @var Form
      */
     protected $registerForm;
-
-    /**
-     * @var \ZfcUser\Form\RegisterFilter
-     */
-    protected $registerFilter;
 
     /**
      * @todo Make this dynamic / translation-friendly
@@ -141,35 +137,45 @@ class UserController extends ActionController
 
         $request = $this->getRequest();
         $service = $this->getUserService();
-        $form = $service->getRegisterForm();
+        $form = $this->getRegisterForm();
 
-        if ($request->isPost() && $service->getOptions()->getEnableRegistration()) {
-            $data = $request->post()->toArray();
-            $user = $service->register($data);
-            if (!$user) {
-                // todo: PRG
-                return array(
-                    'registerForm' => $form,
-                    'enableRegistration' => $this->getOptions()->getEnableRegistration(),
-                );
-            }
-            if ($service->getOptions()->getLoginAfterRegistration()) {
-                $post = $request->post();
-                $identityFields = $service->getOptions()->getAuthIdentityFields();
-                if (in_array('email', $identityFields)) {
-                    $post['identity'] = $user->getEmail();
-                } elseif(in_array('username', $identityFields)) {
-                    $post['identity'] = $user->getUsername();
-                }
-                $post['credential'] = $post['password'];
-                return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
-            }
-            return $this->redirect()->toRoute('zfcuser/login');
+        if ($request->isPost()) {
+            $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
+            // See http://en.wikipedia.org/wiki/Post/Redirect/Get
+            return $this->redirect()->toRoute('zfcuser/register');
         }
-        return array(
-            'registerForm' => $form,
-            'enableRegistration' => $this->getOptions()->getEnableRegistration(),
-        );
+
+        $post = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
+
+        if (!isset($post[0]) || !$service->getOptions()->getEnableRegistration()) {
+            return array(
+                'registerForm' => $form,
+                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+            );
+        }
+
+        $post = $post[0];
+        $user = $service->register($post);
+
+        if (!$user) {
+            return array(
+                'registerForm' => $form,
+                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+            );
+        }
+
+        if ($service->getOptions()->getLoginAfterRegistration()) {
+            $identityFields = $service->getOptions()->getAuthIdentityFields();
+            if (in_array('email', $identityFields)) {
+                $post['identity'] = $user->getEmail();
+            } elseif(in_array('username', $identityFields)) {
+                $post['identity'] = $user->getUsername();
+            }
+            $post['credential'] = $post['password'];
+            $request->setPost(new Parameters($post));
+            return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
+        }
+        return $this->redirect()->toRoute('zfcuser/login');
     }
 
     /**
@@ -190,10 +196,23 @@ class UserController extends ActionController
         return $this;
     }
 
+    public function getRegisterForm()
+    {
+        if (!$this->registerForm) {
+            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
+        }
+        return $this->registerForm;
+    }
+
+    public function setRegisterForm(Form $registerForm)
+    {
+        $this->registerForm = $registerForm;
+    }
+
     public function getLoginForm()
     {
         if (!$this->loginForm) {
-            $this->loginForm = $this->getServiceLocator()->get('zfcuser_login_form');
+            $this->setLoginForm($this->getServiceLocator()->get('zfcuser_login_form'));
         }
         return $this->loginForm;
     }
