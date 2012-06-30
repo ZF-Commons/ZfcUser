@@ -43,8 +43,8 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             return;
         }
 
-        $identity   = $e->getRequest()->post()->get('identity');
-        $credential = $e->getRequest()->post()->get('credential');
+        $identity   = $e->getRequest()->getPost()->get('identity');
+        $credential = $e->getRequest()->getPost()->get('credential');
         $credential = $this->preProcessCredential($credential);
         $userObject = NULL;
 

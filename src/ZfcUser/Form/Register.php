@@ -23,7 +23,7 @@ class Register extends Base
         $this->setOptions($options);
         parent::__construct($name);
 
-        $this->remove('id');
+        $this->remove('userId');
         if (!$this->getOptions()->getEnableUsername()) {
             $this->remove('username');
         }

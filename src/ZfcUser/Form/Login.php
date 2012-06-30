@@ -44,9 +44,14 @@ class Login extends ProvidesEventsForm
             ),
         ));
 
-        $csrf = new Csrf('csrf');
-        $csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
-        $this->add($csrf);
+        // @todo: Fix this
+        // 1) getValidator() is a protected method
+        // 2) i don't believe the login form is actually being validated by the login action
+        // (but keep in mind we don't want to show invalid username vs invalid password or
+        // anything like that, it should just say "login failed" without any additional info)
+        //$csrf = new Csrf('csrf');
+        //$csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
+        //$this->add($csrf);
 
         $this->add(array(
             'name' => 'submit',

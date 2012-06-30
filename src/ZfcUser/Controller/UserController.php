@@ -3,14 +3,14 @@
 namespace ZfcUser\Controller;
 
 use Zend\Form\Form;
-use Zend\Mvc\Controller\ActionController;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
 
-class UserController extends ActionController
+class UserController extends AbstractActionController
 {
     /**
      * @var UserService
@@ -71,7 +71,7 @@ class UserController extends ActionController
             );
         }
 
-        $form->setData($request->post());
+        $form->setData($request->getPost());
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
@@ -118,8 +118,8 @@ class UserController extends ActionController
             return $this->redirect()->toRoute('zfcuser/login');
         }
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->post()->get('redirect')) {
-            return $this->redirect()->toUrl($request->post()->get('redirect'));
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getPost()->get('redirect')) {
+            return $this->redirect()->toUrl($request->getPost()->get('redirect'));
         }
 
         return $this->redirect()->toRoute('zfcuser');
@@ -139,7 +139,7 @@ class UserController extends ActionController
         $form = $this->getRegisterForm();
 
         if ($request->isPost()) {
-            $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->post()->toArray());
+            $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->getPost()->toArray());
             // See http://en.wikipedia.org/wiki/Post/Redirect/Get
             return $this->redirect()->toRoute('zfcuser/register');
         }
