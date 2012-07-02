@@ -32,6 +32,30 @@ class Module implements
         return include __DIR__ . '/config/module.config.php';
     }
 
+    public function getViewHelperConfiguration()
+    {
+        return array(
+            'factories' => array(
+                'zfcUserDisplayName' => function ($sm) {
+                    $viewHelper = new View\Helper\ZfcUserDisplayName;
+                    $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
+                    return $viewHelper;
+                },
+                'zfcUserIdentity' => function ($sm) {
+                    $viewHelper = new View\Helper\ZfcUserIdentity;
+                    $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
+                    return $viewHelper;
+                },
+                'zfcUserLoginWidget' => function ($sm) {
+                    $viewHelper = new View\Helper\ZfcUserLoginWidget;
+                    $viewHelper->setLoginForm($sm->get('zfcuser_login_form'));
+                    return $viewHelper;
+                },
+            ),
+        );
+
+    }
+
     public function getServiceConfiguration()
     {
         return array(
@@ -40,12 +64,6 @@ class Module implements
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
-                'zfcUserAuthentication'             => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
-            ),
-            'aliases' => array(
-                'zfcUserDisplayName'                => 'ZfcUser\View\Helper\ZfcUserDisplayName',
-                'zfcUserIdentity'                   => 'ZfcUser\View\Helper\ZfcUserIdentity',
-                'zfcUserLoginWidget'                => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
             ),
             'factories' => array(
 
@@ -53,23 +71,6 @@ class Module implements
                     $config = $sm->get('Configuration');
                     return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
                 },
-
-                'ZfcUser\View\Helper\ZfcUserDisplayName' => function ($sm) {
-                    $viewHelper = new View\Helper\ZfcUserDisplayName;
-                    $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
-                    return $viewHelper;
-                },
-                'ZfcUser\View\Helper\ZfcUserIdentity' => function ($sm) {
-                    $viewHelper = new View\Helper\ZfcUserIdentity;
-                    $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
-                    return $viewHelper;
-                },
-                'ZfcUser\View\Helper\ZfcUserLoginWidget' => function ($sm) {
-                    $viewHelper = new View\Helper\ZfcUserLoginWidget;
-                    $viewHelper->setLoginForm($sm->get('zfcuser_login_form'));
-                    return $viewHelper;
-                },
-
                 // We alias this one because it's ZfcUser's instance of
                 // Zend\Authentication\AuthenticationService. We don't want to
                 // hog the FQCN service alias for a Zend\* class.
