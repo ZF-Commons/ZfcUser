@@ -4,19 +4,6 @@ namespace ZfcUser\Options;
 
 interface AuthenticationOptionsInterface extends PasswordOptionsInterface
 {
-    /**
-     * set login after registration
-     *
-     * @param bool $loginAfterRegistration
-     */
-    public function setLoginAfterRegistration($loginAfterRegistration);
-
-    /**
-     * get login after registration
-     *
-     * @return bool
-     */
-    public function getLoginAfterRegistration();
 
     /**
      * set login form timeout in seconds
