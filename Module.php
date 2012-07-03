@@ -37,18 +37,21 @@ class Module implements
         return array(
             'factories' => array(
                 'zfcUserDisplayName' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserDisplayName;
-                    $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
+                    $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
                     return $viewHelper;
                 },
                 'zfcUserIdentity' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserIdentity;
-                    $viewHelper->setAuthService($sm->get('zfcuser_auth_service'));
+                    $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
                     return $viewHelper;
                 },
                 'zfcUserLoginWidget' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserLoginWidget;
-                    $viewHelper->setLoginForm($sm->get('zfcuser_login_form'));
+                    $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
                     return $viewHelper;
                 },
             ),
