@@ -62,7 +62,7 @@ class Base extends ProvidesEventsForm
             ),
         ));
 
-        if ($this->getOptions()->getUseRegistrationFormCaptcha()) {
+        if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {
             $this->add(array(
                 'name' => 'captcha',
                 'type' => 'Zend\Form\Element\Captcha',
@@ -92,7 +92,7 @@ class Base extends ProvidesEventsForm
 
         // @TODO: Fix this... getValidator() is a protected method.
         //$csrf = new Csrf('csrf');
-        //$csrf->getValidator()->setTimeout($this->getOptions()->getUserFormTimeout());
+        //$csrf->getValidator()->setTimeout($this->getRegistrationOptions()->getUserFormTimeout());
         //$this->add($csrf);
 
         $this->events()->trigger('init', $this);
