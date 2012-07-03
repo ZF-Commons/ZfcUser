@@ -95,6 +95,6 @@ class Base extends ProvidesEventsForm
         //$csrf->getValidator()->setTimeout($this->getRegistrationOptions()->getUserFormTimeout());
         //$this->add($csrf);
 
-        $this->events()->trigger('init', $this);
+        $this->getEventManager()->trigger('init', $this);
     }
 }
