@@ -14,40 +14,50 @@ class Base extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'username',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Username',
+            ),
+            'attributes' => array(
                 'type' => 'text'
             ),
         ));
 
         $this->add(array(
             'name' => 'email',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Email',
+            ),
+            'attributes' => array(
                 'type' => 'text'
             ),
         ));
 
         $this->add(array(
             'name' => 'displayName',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Display Name',
+            ),
+            'attributes' => array(
                 'type' => 'text'
             ),
         ));
 
         $this->add(array(
             'name' => 'password',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Password',
+            ),
+            'attributes' => array(
                 'type' => 'password'
             ),
         ));
 
         $this->add(array(
             'name' => 'passwordVerify',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Password Verify',
+            ),
+            'attributes' => array(
                 'type' => 'password'
             ),
         ));
@@ -56,8 +66,10 @@ class Base extends ProvidesEventsForm
             $this->add(array(
                 'name' => 'captcha',
                 'type' => 'Zend\Form\Element\Captcha',
-                'attributes' => array(
+                'options' => array(
                     'label' => 'Please type the following text',
+                ),
+                'attributes' => array(
                     'captcha' => $this->getOptions()->getFormCaptchaOptions(),
                 ),
             ));

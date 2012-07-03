@@ -33,7 +33,7 @@ class Register extends Base
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha() && $this->captchaElement) {
             $this->add($this->captchaElement, array('name'=>'captcha'));
         }
-        $this->get('submit')->setAttribute('Label', 'Register');
+        $this->get('submit')->setAttribute('value', 'Register');
     }
 
     public function setCaptchaElement(Captcha $captchaElement)

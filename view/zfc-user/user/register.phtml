@@ -23,7 +23,7 @@ echo $this->form()->openTag($form);
 <dl class="zend_form">
 
 <?php foreach ($form->getElements() as $element) { ?>
-    <?php if ($element->getAttribute('label') != null) { ?>
+    <?php if ($element->getLabel() != null) { ?>
     <dt><?php echo $this->formLabel($element); ?></dt>
     <?php } ?>
     <?php if ($element instanceof Zend\Form\Element\Captcha) { ?>
