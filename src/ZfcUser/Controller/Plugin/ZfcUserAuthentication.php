@@ -24,20 +24,20 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
      * @var ServiceManager
      */
     protected $serviceManager;
-    
+
     /**
-     * Proxy convenience method 
-     * 
+     * Proxy convenience method
+     *
      * @return bool
      */
     public function hasIdentity()
     {
         return $this->getAuthService()->hasIdentity();
     }
-    
+
     /**
-     * Proxy convenience method 
-     * 
+     * Proxy convenience method
+     *
      * @return mixed
      */
     public function getIdentity()
@@ -57,7 +57,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
         }
         return $this->authAdapter;
     }
- 
+
     /**
      * Set authAdapter.
      *
@@ -68,7 +68,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
         $this->authAdapter = $authAdapter;
         return $this;
     }
- 
+
     /**
      * Get authService.
      *
@@ -81,7 +81,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
         }
         return $this->authService;
     }
- 
+
     /**
      * Set authService.
      *
@@ -100,7 +100,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
      */
     public function getServiceManager()
     {
-        return $this->serviceManager;
+        return $this->serviceManager->getServiceLocator();
     }
 
     /**
