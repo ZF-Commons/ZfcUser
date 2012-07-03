@@ -67,7 +67,7 @@ class Login extends ProvidesEventsForm
             ),
         ));
 
-        $this->events()->trigger('init', $this);
+        $this->getEventManager()->trigger('init', $this);
     }
 
     /**
