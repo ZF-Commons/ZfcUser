@@ -12,7 +12,7 @@ class Register extends Base
     /**
      * @var RegistrationOptionsInterface
      */
-    protected $options;
+    protected $registrationOptions;
 
     /**
      * @param string|null $name
@@ -20,17 +20,17 @@ class Register extends Base
      */
     public function __construct($name = null, RegistrationOptionsInterface $options)
     {
-        $this->setOptions($options);
+        $this->setRegistrationOptions($options);
         parent::__construct($name);
 
         $this->remove('userId');
-        if (!$this->getOptions()->getEnableUsername()) {
+        if (!$this->getRegistrationOptions()->getEnableUsername()) {
             $this->remove('username');
         }
-        if (!$this->getOptions()->getEnableDisplayName()) {
+        if (!$this->getRegistrationOptions()->getEnableDisplayName()) {
             $this->remove('displayName');
         }
-        if ($this->getOptions()->getUseRegistrationFormCaptcha() && $this->captchaElement) {
+        if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha() && $this->captchaElement) {
             $this->add($this->captchaElement, array('name'=>'captcha'));
         }
         $this->get('submit')->setAttribute('Label', 'Register');
@@ -42,25 +42,25 @@ class Register extends Base
     }
 
     /**
-     * set options
+     * Set Regsitration Options
      *
-     * @param RegistrationOptionsInterface $options
+     * @param RegistrationOptionsInterface $registrationOptions
      * @return Register
      */
-    public function setOptions(RegistrationOptionsInterface $options)
+    public function setRegistrationOptions(RegistrationOptionsInterface $registrationOptions)
     {
-        $this->options = $options;
+        $this->registrationOptions = $registrationOptions;
         return $this;
     }
 
     /**
-     * get options
+     * Get Regsitration Options
      *
      * @return RegistrationOptionsInterface
      */
-    public function getOptions()
+    public function getRegistrationOptions()
     {
-        return $this->options;
+        return $this->registrationOptions;
     }
 
 
