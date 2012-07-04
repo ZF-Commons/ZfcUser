@@ -4,15 +4,7 @@ return array(
         'template_path_stack' => array(
             'zfcuser' => __DIR__ . '/../view',
         ),
-        //'helper_map' => array(
-        //    'zfcUserIdentity'    => 'ZfcUser\View\Helper\ZfcUserIdentity',
-        //    'zfcUserLoginWidget' => 'ZfcUser\View\Helper\ZfcUserLoginWidget',
-        //),
-        //'strategies' => array(
-        //    'ViewJsonStrategy',
-        //),
     ),
-
     'controllers' => array(
         'invokables' => array(
             'zfcuser' => 'ZfcUser\Controller\UserController',
@@ -31,7 +23,6 @@ return array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
         ),
     ),
-
     'router' => array(
         'routes' => array(
             'zfcuser' => array(
