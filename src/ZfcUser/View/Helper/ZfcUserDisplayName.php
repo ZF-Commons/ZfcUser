@@ -8,7 +8,11 @@ use Zend\View\Helper\AbstractHelper,
 
 class ZfcUserDisplayName extends AbstractHelper
 {
-
+    /**
+     * @var AuthenticationService
+     */
+    protected $authService;
+    
     /**
      * __invoke
      *
