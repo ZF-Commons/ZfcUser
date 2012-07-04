@@ -13,33 +13,37 @@ class Login extends ProvidesEventsForm
     /**
      * @var AuthenticationOptionsInterface
      */
-    protected $options;
+    protected $authOptions;
 
     public function __construct($name = null, AuthenticationOptionsInterface $options)
     {
-        $this->setOptions($options);
+        $this->setAuthenticationOptions($options);
         parent::__construct($name);
 
         $this->add(array(
             'name' => 'identity',
-            'attributes' => array(
+            'options' => array(
                 'label' => '',
+            ),
+            'attributes' => array(
                 'type' => 'text'
             ),
         ));
 
         $emailElement = $this->get('identity');
-        $label = $emailElement->getAttribute('label');
+        $label = $emailElement->getLabel('label');
         // @TODO: make translation-friendly
-        foreach ($this->getOptions()->getAuthIdentityFields() as $mode) {
+        foreach ($this->getAuthenticationOptions()->getAuthIdentityFields() as $mode) {
             $label = (!empty($label) ? $label . ' or ' : '') . ucfirst($mode);
         }
-        $emailElement->setAttribute('label', $label);
-
+        $emailElement->setLabel($label);
+        //
         $this->add(array(
             'name' => 'credential',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Password',
+            ),
+            'attributes' => array(
                 'type' => 'password',
             ),
         ));
@@ -55,8 +59,10 @@ class Login extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'submit',
-            'attributes' => array(
+            'options' => array(
                 'label' => 'Submit',
+            ),
+            'attributes' => array(
                 'type' => 'submit'
             ),
         ));
@@ -65,24 +71,24 @@ class Login extends ProvidesEventsForm
     }
 
     /**
-     * set options
+     * Set Authentication-related Options 
      *
-     * @param AuthenticationOptionsInterface $options
+     * @param AuthenticationOptionsInterface $authOptions
      * @return Login
      */
-    public function setOptions(AuthenticationOptionsInterface $options)
+    public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
     {
-        $this->options = $options;
+        $this->authOptions = $authOptions;
         return $this;
     }
 
     /**
-     * get options
+     * Get Authentication-related Options 
      *
      * @return AuthenticationOptionsInterface
      */
-    public function getOptions()
+    public function getAuthenticationOptions()
     {
-        return $this->options;
+        return $this->authOptions;
     }
 }

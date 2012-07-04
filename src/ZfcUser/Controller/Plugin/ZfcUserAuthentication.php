@@ -53,7 +53,8 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     public function getAuthAdapter()
     {
         if (null === $this->authAdapter) {
-            $this->authAdapter = $this->getServiceManager()->get('ZfcUser\Authentication\Adapter\AdapterChain');
+            $locator = $this->getServiceManager()->getServiceLocator();
+            $this->authAdapter = $locator->get('ZfcUser\Authentication\Adapter\AdapterChain');
         }
         return $this->authAdapter;
     }
@@ -77,7 +78,8 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     public function getAuthService()
     {
         if (null === $this->authService) {
-            $this->authService = $this->getServiceManager()->get('zfcuser_auth_service');
+            $locator = $this->getServiceManager()->getServiceLocator();
+            $this->authService = $locator->get('zfcuser_auth_service');
         }
         return $this->authService;
     }
