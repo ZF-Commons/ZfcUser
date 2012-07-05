@@ -16,7 +16,9 @@ class User extends AbstractDbMapper implements UserInterface
                        ->from($this->tableName)
                        ->where(array('email' => $email));
 
-        return $this->selectWith($select)->current();
+        $entity = $this->selectWith($select)->current();
+        $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
+        return $entity;
     }
 
     public function findByUsername($username)
@@ -25,7 +27,9 @@ class User extends AbstractDbMapper implements UserInterface
                        ->from($this->tableName)
                        ->where(array('username' => $username));
 
-        return $this->selectWith($select)->current();
+        $entity = $this->selectWith($select)->current();
+        $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
+        return $entity;
     }
 
     public function findById($id)
@@ -34,7 +38,9 @@ class User extends AbstractDbMapper implements UserInterface
                        ->from($this->tableName)
                        ->where(array('user_id' => $id));
 
-        return $this->selectWith($select)->current();
+        $entity = $this->selectWith($select)->current();
+        $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
+        return $entity;
     }
 
     public function update($entity, $where = null, $tableName = null, HydratorInterface $hydrator = null)
