@@ -3,7 +3,6 @@
 namespace ZfcUser;
 
 use Zend\ModuleManager\ModuleManager,
-    Zend\EventManager\StaticEventManager,
     Zend\ModuleManager\Feature\AutoloaderProviderInterface,
     Zend\ModuleManager\Feature\ConfigProviderInterface,
     Zend\ModuleManager\Feature\ServiceProviderInterface;
