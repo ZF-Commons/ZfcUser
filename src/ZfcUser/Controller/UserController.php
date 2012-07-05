@@ -58,8 +58,8 @@ class UserController extends AbstractActionController
         $request = $this->getRequest();
         $form    = $this->getLoginForm();
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->query()->get('redirect')) {
-            $redirect = $request->query()->get('redirect');
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
+            $redirect = $request->getQuery()->get('redirect');
         } else {
             $redirect = false;
         }
