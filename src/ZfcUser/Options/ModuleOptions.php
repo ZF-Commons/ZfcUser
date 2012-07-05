@@ -11,7 +11,7 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var bool
      */
-    protected $useRedirectParameterIfPresent = false;
+    protected $useRedirectParameterIfPresent = true;
 
     /**
      * @var int
