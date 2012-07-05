@@ -83,17 +83,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * Get a user entity by their username
-     *
-     * @param string $username
-     * @return \ZfcUser\Model\UserInterface
-     */
-    public function getByUsername($username)
-    {
-        return $this->userRepository->findByUsername($username);
-    }
-
-    /**
      * getUserMapper
      *
      * @return UserMapper
