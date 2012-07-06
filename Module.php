@@ -127,7 +127,7 @@ class Module implements
                     $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
                     $entityClass = $options->getUserEntityClass();
                     $mapper->setEntityPrototype(new $entityClass);
-                    $mapper->setHydrator(new Mapper\UserHydrator(false));
+                    $mapper->setHydrator(new Mapper\UserHydrator());
                     return $mapper;
                 },
             ),
