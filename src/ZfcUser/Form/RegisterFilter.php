@@ -76,7 +76,6 @@ class RegisterFilter extends InputFilter
                     'name'    => 'StringLength',
                     'options' => array(
                         'min' => 6,
-                        'max' => 128,
                     ),
                 ),
             ),
@@ -91,7 +90,6 @@ class RegisterFilter extends InputFilter
                     'name'    => 'StringLength',
                     'options' => array(
                         'min' => 6,
-                        'max' => 128,
                     ),
                 ),
                 array(
