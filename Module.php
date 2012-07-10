@@ -81,7 +81,6 @@ class Module implements
                         $sm->get('ZfcUser\Authentication\Storage\Db'),
                         $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
                     );
-                    return $authService;
                 },
 
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
