@@ -31,7 +31,6 @@ class LoginFilter extends InputFilter
                     'name'    => 'StringLength',
                     'options' => array(
                         'min' => 6,
-                        'max' => 999
                     ),
                 ),
             ),
