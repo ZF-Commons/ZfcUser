@@ -49,7 +49,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * createFromForm
      *
      * @param array $data
-     * @return \ZfcUser\Model\UserInterface
+     * @return \ZfcUser\Entity\UserInterface
      * @throws Exception\InvalidArgumentException
      */
     public function register(array $data)
@@ -85,7 +85,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * getUserMapper
      *
-     * @return UserMapper
+     * @return UserMapperInterface
      */
     public function getUserMapper()
     {
@@ -98,7 +98,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * setUserMapper
      *
-     * @param UserMapper $userMapper
+     * @param UserMapperInterface $userMapper
      * @return User
      */
     public function setUserMapper(UserMapperInterface $userMapper)
@@ -195,6 +195,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        $this;
+        return $this;
     }
 }
