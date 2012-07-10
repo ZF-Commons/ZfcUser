@@ -84,12 +84,7 @@ class Module implements
                     return $authService;
                 },
 
-                'ZfcUser\Authentication\Adapter\AdapterChain' => function ($sm) {
-                    $chain = new Authentication\Adapter\AdapterChain;
-                    $adapter = $sm->get('ZfcUser\Authentication\Adapter\Db');
-                    $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'));
-                    return $chain;
-                },
+                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
 
                 'zfcuser_login_form' => function($sm) {
                     $options = $sm->get('zfcuser_module_options');
