@@ -9,6 +9,11 @@ class ModuleOptions extends AbstractOptions implements
     UserServiceOptionsInterface
 {
     /**
+     * Turn off strict options mode
+     */
+    protected $__strictMode__ = false;
+
+    /**
      * @var bool
      */
     protected $useRedirectParameterIfPresent = true;
