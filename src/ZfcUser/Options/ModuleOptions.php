@@ -19,6 +19,15 @@ class ModuleOptions extends AbstractOptions implements
     protected $useRedirectParameterIfPresent = true;
 
     /**
+     * @var string
+     */    
+    protected $loginRedirectRoute = 'zfcuser';
+    
+    /**
+     * @var string
+     */
+    protected $logoutRedirectRoute = 'zfcuser/login';
+    /**
      * @var int
      */
     protected $loginFormTimeout = 300;
@@ -79,6 +88,50 @@ class ModuleOptions extends AbstractOptions implements
             'timeout'    => 300,
         ),
     );
+
+    /**
+     * set login redirect route
+     *
+     * @param string $loginRedirectRoute
+     * @return ModuleOptions
+     */
+    public function setLoginRedirectRoute($loginRedirectRoute)
+    {
+    	$this->loginRedirectRoute = $loginRedirectRoute;
+    	return $this;
+    }
+    
+    /**
+     * get login redirect route
+     *
+     * @return string
+     */
+    public function getLoginRedirectRoute()
+    {
+    	return $this->loginRedirectRoute;
+    }
+    
+    /**
+     * set logout redirect route
+     *
+     * @param string $logoutRedirectRoute
+     * @return ModuleOptions
+     */    
+    public function setLogoutRedirectRoute($logoutRedirectRoute)
+    {
+    	$this->logoutRedirectRoute = $logoutRedirectRoute;
+    	return $this;
+    }
+
+    /**
+     * get logout redirect route
+     *
+     * @return string
+     */    
+    public function getLogoutRedirectRoute()
+    {
+    	return $this->logoutRedirectRoute;
+    }
 
     /**
      * set use redirect param if present
