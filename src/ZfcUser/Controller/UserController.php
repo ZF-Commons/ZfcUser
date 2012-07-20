@@ -75,7 +75,7 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toRoute('zfcuser/login');
+            return $this->redirect()->toUrl($this->url('zfcuser')->fromRoute('zfcuser').($request ? '?redirect='.$request : ''));
         }
         // clear adapters
 
@@ -89,7 +89,12 @@ class UserController extends AbstractActionController
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-        return $this->redirect()->toRoute('zfcuser/login');
+        
+        if($this->getOptions()->getUseRedirectParameterIfPresent() && $this->getRequest()->getPost()->get('redirect')) {
+            return $this->redirect()->toUrl($request->getPost()->get('redirect'));
+        }
+
+        return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
     }
 
     /**
@@ -98,10 +103,11 @@ class UserController extends AbstractActionController
     public function authenticateAction()
     {
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser');
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
         $request = $this->getRequest();
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+        $redirect = $request->getPost()->get('redirect') ? $request->getPost()->get('redirect') : false;
 
         $result = $adapter->prepareForAuthentication($request);
 
@@ -115,14 +121,14 @@ class UserController extends AbstractActionController
         if (!$auth->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
-            return $this->redirect()->toRoute('zfcuser/login');
+            return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login').($redirect ? '?redirect='.$redirect : ''));
         }
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getPost()->get('redirect')) {
             return $this->redirect()->toUrl($request->getPost()->get('redirect'));
         }
 
-        return $this->redirect()->toRoute('zfcuser');
+        return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
     }
 
     /**
@@ -131,17 +137,23 @@ class UserController extends AbstractActionController
     public function registerAction()
     {
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute('zfcuser');
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
         $request = $this->getRequest();
         $service = $this->getUserService();
         $form = $this->getRegisterForm();
 
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
+            $redirect = $request->getQuery()->get('redirect');
+        } else {
+            $redirect = false;
+        }
+
         if ($request->isPost()) {
             $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->getPost()->toArray());
             // See http://en.wikipedia.org/wiki/Post/Redirect/Get
-            return $this->redirect()->toRoute('zfcuser/register');
+            return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/register') . ($redirect ? '?redirect='.$redirect : ''));
         }
 
         $post = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
@@ -150,6 +162,7 @@ class UserController extends AbstractActionController
             return array(
                 'registerForm' => $form,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+                'redirect' => $redirect,
             );
         }
 
@@ -160,6 +173,7 @@ class UserController extends AbstractActionController
             return array(
                 'registerForm' => $form,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+                'redirect' => $redirect,
             );
         }
 
@@ -174,7 +188,9 @@ class UserController extends AbstractActionController
             $request->setPost(new Parameters($post));
             return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
         }
-        return $this->redirect()->toRoute('zfcuser/login');
+        
+        // TODO: Add the redirect parameter here...
+        return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login') . ($request ? '?redirect='.$request : ''));
     }
 
     /**
