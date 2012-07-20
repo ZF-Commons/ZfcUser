@@ -52,7 +52,7 @@ class RegisterFilter extends InputFilter
 
         if ($this->getOptions()->getEnableDisplayName()) {
             $this->add(array(
-                'name'       => 'displayName',
+                'name'       => 'display_name',
                 'required'   => true,
                 'filters'    => array(array('name' => 'StringTrim')),
                 'validators' => array(
