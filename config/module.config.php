@@ -15,9 +15,6 @@ return array(
             'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
         ),
     ),
-    'view_helpers' => array(
-
-    ),
     'service_manager' => array(
         'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
