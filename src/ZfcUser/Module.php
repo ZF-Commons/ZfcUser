@@ -31,7 +31,7 @@ class Module implements
         return include __DIR__ . '/../../config/module.config.php';
     }
 
-    public function getViewHelperConfiguration()
+    public function getViewHelperConfig()
     {
         return array(
             'factories' => array(
@@ -58,7 +58,7 @@ class Module implements
 
     }
 
-    public function getServiceConfiguration()
+    public function getServiceConfig()
     {
         return array(
             'invokables' => array(
@@ -70,7 +70,7 @@ class Module implements
             'factories' => array(
 
                 'zfcuser_module_options' => function ($sm) {
-                    $config = $sm->get('Configuration');
+                    $config = $sm->get('Config');
                     return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
                 },
                 // We alias this one because it's ZfcUser's instance of
