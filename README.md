@@ -156,7 +156,12 @@ The following options are available:
   field of the registration form in seconds. Default value is 300 seconds.
 - **use_redirect_parameter_if_present** - Boolean value, if a redirect GET
   parameter is specified, the user will be redirected to the specified URL if
-  authentication is successful.
+  authentication is successful (if present, a GET parameter will override the
+  login_redirect_route specified below).
+- **login_redirect_route** String value, name of a route in the application
+  which the user will be redirected to after a successful login.
+- **logout_redirect_route** String value, name of a route in the application which
+  the user will be redirected to after logging out.
 - **password_cost** - This should be an integer between 4 and 31. The number
   represents the base-2 logarithm of the iteration count used for hashing.
   Default is `10` (about 10 hashes per second on an i5).
