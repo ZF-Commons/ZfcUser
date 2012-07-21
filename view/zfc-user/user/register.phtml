@@ -35,6 +35,10 @@ echo $this->form()->openTag($form);
 
 </dl>
 
+<?php if ($this->redirect): ?>
+<input type="hidden" name="redirect" value="<?php echo $this->redirect; ?>" />
+<?php endif; ?>
+
 </form>
 
 <?php //echo $registerForm->setAction($this->url('zfcuser/register'))->setView($this); ?>

@@ -33,7 +33,7 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'name' => 'displayName',
+            'name' => 'display_name',
             'options' => array(
                 'label' => 'Display Name',
             ),
