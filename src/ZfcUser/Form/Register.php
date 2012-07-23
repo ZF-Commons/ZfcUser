@@ -28,7 +28,7 @@ class Register extends Base
             $this->remove('username');
         }
         if (!$this->getRegistrationOptions()->getEnableDisplayName()) {
-            $this->remove('displayName');
+            $this->remove('display_name');
         }
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha() && $this->captchaElement) {
             $this->add($this->captchaElement, array('name'=>'captcha'));

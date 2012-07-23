@@ -33,4 +33,4 @@ echo $this->formInput($form->get('submit'));
 
 <?php echo $this->form()->closeTag(); ?>
 
-Not registered? <a href="<?php echo $this->url('zfcuser/register') ?>">Sign up!</a>
+Not registered? <a href="<?php echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Sign up!</a>

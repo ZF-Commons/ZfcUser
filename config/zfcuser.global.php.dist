@@ -126,6 +126,27 @@ $settings = array(
     //'use_redirect_parameter_if_present' => true,
 
     /**
+     * Login Redirect Route
+     * 
+     * Upon successful login the user will be redirected to the entered route
+     * 
+     * Default value: 'zfcuser'
+     * Accepted values: A valid route name within your application
+     * 
+     */
+    //'login_redirect_route' => 'zfcuser',
+    
+    /**
+     * Logout Redirect Route
+     *
+     * Upon logging out the user will be redirected to the enterd route
+     *
+     * Default value: 'zfcuser/login'
+     * Accepted values: A valid route name within your application
+     */
+    //'logout_redirect_route' => 'zfcuser/login',
+
+    /**
      * Password Security
      *
      * DO NOT CHANGE THE PASSWORD HASH SETTINGS FROM THEIR DEFAULTS
