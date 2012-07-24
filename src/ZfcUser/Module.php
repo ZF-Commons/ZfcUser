@@ -31,7 +31,7 @@ class Module implements
         return include __DIR__ . '/../../config/module.config.php';
     }
 
-    public function getViewHelperConfig()
+    public function getViewHelperConfiguration()
     {
         return array(
             'factories' => array(
@@ -58,7 +58,7 @@ class Module implements
 
     }
 
-    public function getServiceConfig()
+    public function getServiceConfiguration()
     {
         return array(
             'invokables' => array(
