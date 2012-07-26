@@ -59,11 +59,9 @@ class Login extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'submit',
-            'options' => array(
-                'label' => 'Submit',
-            ),
             'attributes' => array(
-                'type' => 'submit'
+                'value' => 'Sign In',
+                'type'  => 'submit'
             ),
         ));
 
@@ -71,7 +69,7 @@ class Login extends ProvidesEventsForm
     }
 
     /**
-     * Set Authentication-related Options 
+     * Set Authentication-related Options
      *
      * @param AuthenticationOptionsInterface $authOptions
      * @return Login
@@ -83,7 +81,7 @@ class Login extends ProvidesEventsForm
     }
 
     /**
-     * Get Authentication-related Options 
+     * Get Authentication-related Options
      *
      * @return AuthenticationOptionsInterface
      */
