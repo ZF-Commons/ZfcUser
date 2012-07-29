@@ -75,7 +75,7 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toUrl($this->url('zfcuser')->fromRoute('zfcuser').($request ? '?redirect='.$request : ''));
+            return $this->redirect()->toUrl($this->url('zfcuser')->fromRoute('zfcuser/login').($redirect ? '?redirect='.$redirect : ''));
         }
         // clear adapters
 
@@ -89,9 +89,11 @@ class UserController extends AbstractActionController
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
-        
-        if($this->getOptions()->getUseRedirectParameterIfPresent() && $this->getRequest()->getPost()->get('redirect')) {
-            return $this->redirect()->toUrl($request->getPost()->get('redirect'));
+
+        $redirect = ($this->getRequest()->getPost()->get('redirect')) ? $this->getRequest()->getPost()->get('redirect') : false;
+
+        if($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+            return $this->redirect()->toUrl($redirect);
         }
 
         return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
@@ -124,8 +126,8 @@ class UserController extends AbstractActionController
             return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login').($redirect ? '?redirect='.$redirect : ''));
         }
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getPost()->get('redirect')) {
-            return $this->redirect()->toUrl($request->getPost()->get('redirect'));
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+            return $this->redirect()->toUrl($redirect);
         }
 
         return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
@@ -190,7 +192,7 @@ class UserController extends AbstractActionController
         }
         
         // TODO: Add the redirect parameter here...
-        return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login') . ($request ? '?redirect='.$request : ''));
+        return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login') . ($redirect ? '?redirect='.$redirect : ''));
     }
 
     /**
