@@ -22,14 +22,14 @@ echo $this->form()->openTag($form);
 
 <dl class="zend_form">
 
-<?php foreach ($form->getElements() as $element) { ?>
+<?php foreach ($form as $element) { ?>
     <?php if ($element->getLabel() != null) { ?>
     <dt><?php echo $this->formLabel($element); ?></dt>
     <?php } ?>
     <?php if ($element instanceof Zend\Form\Element\Button) { ?>
-    <dd><?php echo $this->formButton($element) ?></dd>    
+    <dd><?php echo $this->formButton($element) ?></dd>
     <?php } elseif ($element instanceof Zend\Form\Element\Captcha) { ?>
-    <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element); ?></dd>    
+    <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element); ?></dd>
     <?php } else { ?>
     <dd><?php echo $this->formInput($element) . $this->formElementErrors($element); ?></dd>
     <?php } ?>
