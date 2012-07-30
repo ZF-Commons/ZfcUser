@@ -3,7 +3,7 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Form;
-use Zend\Form\Element\Csrf;
+use Zend\Form\Element;
 use ZfcBase\Form\ProvidesEventsForm;
 
 class Base extends ProvidesEventsForm
@@ -75,12 +75,15 @@ class Base extends ProvidesEventsForm
             ));
         }
 
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'value' => 'Submit',
-                'type' => 'submit'
-            ),
+        $submitElement = new Element\Button('submit');
+
+        $submitElement->setAttributes(array(
+            'label' => 'Submit',
+            'type'  => 'submit',
+        ));
+
+        $this->add($submitElement, array(
+            'priority' => -100,
         ));
 
         $this->add(array(
@@ -91,7 +94,7 @@ class Base extends ProvidesEventsForm
         ));
 
         // @TODO: Fix this... getValidator() is a protected method.
-        //$csrf = new Csrf('csrf');
+        //$csrf = new Element\Csrf('csrf');
         //$csrf->getValidator()->setTimeout($this->getRegistrationOptions()->getUserFormTimeout());
         //$this->add($csrf);
 
