@@ -3,7 +3,7 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Form;
-use Zend\Form\Element\Csrf;
+use Zend\Form\Element;
 use ZfcBase\Form\ProvidesEventsForm;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 use ZfcUser\Module as ZfcUser;
@@ -53,16 +53,19 @@ class Login extends ProvidesEventsForm
         // 2) i don't believe the login form is actually being validated by the login action
         // (but keep in mind we don't want to show invalid username vs invalid password or
         // anything like that, it should just say "login failed" without any additional info)
-        //$csrf = new Csrf('csrf');
+        //$csrf = new Element\Csrf('csrf');
         //$csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
         //$this->add($csrf);
 
-        $this->add(array(
-            'name' => 'submit',
-            'attributes' => array(
-                'value' => 'Sign In',
-                'type'  => 'submit'
-            ),
+        $submitElement = new Element\Button('submit');
+
+        $submitElement->setAttributes(array(
+            'label' => 'Sign In',
+            'type'  => 'submit',
+        ));
+
+        $this->add($submitElement, array(
+            'priority' => -100,
         ));
 
         $this->getEventManager()->trigger('init', $this);
