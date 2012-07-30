@@ -28,7 +28,7 @@
             "ZfcUser": "src/"
         },
         "classmap": [
-            "./"
+            "./Module.php"
         ]
     }
 }
