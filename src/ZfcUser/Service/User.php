@@ -57,7 +57,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $class = $this->getOptions()->getUserEntityClass();
         $user  = new $class;
         $form  = $this->getRegisterForm();
-        $form->setHydrator(new ClassMethods(false));
+        $form->setHydrator(new ClassMethods());
         $form->bind($user);
         $form->setData($data);
         if (!$form->isValid()) {
