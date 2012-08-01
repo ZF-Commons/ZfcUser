@@ -190,7 +190,7 @@ class UserController extends AbstractActionController
             $request->setPost(new Parameters($post));
             return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
         }
-        
+
         // TODO: Add the redirect parameter here...
         return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login') . ($redirect ? '?redirect='.$redirect : ''));
     }

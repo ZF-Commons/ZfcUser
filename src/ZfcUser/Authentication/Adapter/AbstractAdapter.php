@@ -40,8 +40,8 @@ abstract class AbstractAdapter implements ChainableAdapter
     }
 
     /**
-     * Check if this adapter is satsified or not 
-     * 
+     * Check if this adapter is satsified or not
+     *
      * @return bool
      */
     public function isSatisfied()
@@ -51,9 +51,9 @@ abstract class AbstractAdapter implements ChainableAdapter
     }
 
     /**
-     * Set if this adapter is satisfied or not 
-     * 
-     * @param bool $bool 
+     * Set if this adapter is satisfied or not
+     *
+     * @param bool $bool
      * @return AbstractAdapter
      */
     public function setSatisfied($bool = true)

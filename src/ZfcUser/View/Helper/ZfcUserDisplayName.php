@@ -2,9 +2,9 @@
 
 namespace ZfcUser\View\Helper;
 
-use Zend\View\Helper\AbstractHelper,
-    Zend\Authentication\AuthenticationService,
-    ZfcUser\Entity\UserInterface as User;
+use Zend\View\Helper\AbstractHelper;
+use Zend\Authentication\AuthenticationService;
+use ZfcUser\Entity\UserInterface as User;
 
 class ZfcUserDisplayName extends AbstractHelper
 {
@@ -12,7 +12,7 @@ class ZfcUserDisplayName extends AbstractHelper
      * @var AuthenticationService
      */
     protected $authService;
-    
+
     /**
      * __invoke
      *
