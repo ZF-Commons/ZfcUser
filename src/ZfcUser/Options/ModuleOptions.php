@@ -20,9 +20,9 @@ class ModuleOptions extends AbstractOptions implements
 
     /**
      * @var string
-     */    
+     */
     protected $loginRedirectRoute = 'zfcuser';
-    
+
     /**
      * @var string
      */
@@ -101,7 +101,7 @@ class ModuleOptions extends AbstractOptions implements
         $this->loginRedirectRoute = $loginRedirectRoute;
         return $this;
     }
-    
+
     /**
      * get login redirect route
      *
@@ -111,13 +111,13 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->loginRedirectRoute;
     }
-    
+
     /**
      * set logout redirect route
      *
      * @param string $logoutRedirectRoute
      * @return ModuleOptions
-     */    
+     */
     public function setLogoutRedirectRoute($logoutRedirectRoute)
     {
         $this->logoutRedirectRoute = $logoutRedirectRoute;
@@ -128,7 +128,7 @@ class ModuleOptions extends AbstractOptions implements
      * get logout redirect route
      *
      * @return string
-     */    
+     */
     public function getLogoutRedirectRoute()
     {
         return $this->logoutRedirectRoute;

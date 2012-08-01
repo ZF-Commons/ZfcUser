@@ -13,10 +13,10 @@ class ZfcUserLoginWidget extends AbstractHelper
      * @var LoginForm
      */
     protected $loginForm;
-    
+
     /**
-     * __invoke 
-     * 
+     * __invoke
+     *
      * @access public
      * @param array $options array of options
      * @return string
@@ -45,7 +45,7 @@ class ZfcUserLoginWidget extends AbstractHelper
             return $vm;
         }
     }
-    
+
     /**
      * Retrieve Login Form Object
      * @return LoginForm
@@ -58,7 +58,7 @@ class ZfcUserLoginWidget extends AbstractHelper
     /**
      * Inject Login Form Object
      * @param LoginForm $loginForm
-     * @return ZfcUserLoginWidget 
+     * @return ZfcUserLoginWidget
      */
     public function setLoginForm(LoginForm $loginForm)
     {
