@@ -17,4 +17,4 @@ class NoRecordExists extends AbstractRecord
 
         return $valid;
     }
-} 
+}

@@ -145,6 +145,4 @@ class RegisterFilter extends ProvidesEventsInputFilter
     {
         return $this->options;
     }
-
-
 }

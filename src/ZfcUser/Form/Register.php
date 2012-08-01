@@ -63,6 +63,4 @@ class Register extends Base
     {
         return $this->registrationOptions;
     }
-
-
 }
