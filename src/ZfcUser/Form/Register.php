@@ -34,6 +34,7 @@ class Register extends Base
             $this->add($this->captchaElement, array('name'=>'captcha'));
         }
         $this->get('submit')->setAttribute('label', 'Register');
+        $this->getEventManager()->trigger('init', $this);
     }
 
     public function setCaptchaElement(Captcha $captchaElement)

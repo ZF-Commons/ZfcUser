@@ -2,10 +2,10 @@
 
 namespace ZfcUser\Form;
 
-use Zend\InputFilter\InputFilter;
+use ZfcBase\InputFilter\ProvidesEventsInputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class LoginFilter extends InputFilter
+class LoginFilter extends ProvidesEventsInputFilter
 {
     public function __construct(AuthenticationOptionsInterface $options)
     {
@@ -38,5 +38,7 @@ class LoginFilter extends InputFilter
                 array('name' => 'StringTrim'),
             ),
         ));
+
+        $this->getEventManager()->trigger('init', $this);
     }
 }
