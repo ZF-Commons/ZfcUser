@@ -74,6 +74,16 @@ return array(
                             ),
                         ),
                     ),
+		    'changepassword' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/changepassword',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'changepassword',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
