@@ -24,6 +24,11 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     protected $credentialPreprocessor;
 
     /**
+     * @var closure / invokable object
+     */
+    protected $credentialPostprocessor;
+
+    /**
      * @var ServiceManager
      */
     protected $serviceManager;
@@ -69,8 +74,12 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             return false;
         }
 
+        //Allow for User specific Salt Hashing
+        $credential = $this->postProcessCredential($credential, $userObject);
+        
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        
         if (!$bcrypt->verify($credential,$userObject->getPassword())) {
             // Password does not match
             $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
@@ -105,6 +114,15 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         $processor = $this->getCredentialPreprocessor();
         if (is_callable($processor)) {
             return $processor($credential);
+        }
+        return $credential;
+    }
+
+    public function postprocessCredential($credential, $userObject)
+    {
+        $processor = $this->getCredentialPostprocessor();
+        if (is_callable($processor)) {
+            return $processor($credential, $userObject);
         }
         return $credential;
     }
@@ -152,6 +170,27 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     public function setCredentialPreprocessor($credentialPreprocessor)
     {
         $this->credentialPreprocessor = $credentialPreprocessor;
+        return $this;
+    }
+
+    /**
+     * Get credentialPostprocessor.
+     *
+     * @return \callable
+     */
+    public function getCredentialPostprocessor()
+    {
+        return $this->credentialPostprocessor;
+    }
+
+    /**
+     * Set credentialPreprocessor.
+     *
+     * @param $credentialPreprocessor the value to be set
+     */
+    public function setCredentialPostprocessor($credentialPostprocessor)
+    {
+        $this->credentialPostprocessor = $credentialPostprocessor;
         return $this;
     }
 

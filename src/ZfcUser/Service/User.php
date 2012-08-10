@@ -21,6 +21,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     protected $userMapper;
 
     /**
+     * @var closure / invokable object
+     */
+    protected $credentialPostprocessor;
+
+    /**
      * @var AuthenticationService
      */
     protected $authService;
@@ -68,8 +73,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         /* @var $user \ZfcUser\Entity\UserInterface */
 
         $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        $user->setPassword($bcrypt->create($user->getPassword()));
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());     
+
+        $credential = $this->postprocessCredential($user->getPassword(), $user);
+        
+        $user->setPassword($bcrypt->create($credential));
 
         if ($this->getOptions()->getEnableUsername()) {
             $user->setUsername($data['username']);
@@ -81,6 +89,15 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $this->getUserMapper()->insert($user);
         $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
         return $user;
+    }
+
+    public function postprocessCredential($credential, $userObject)
+    {
+        $processor = $this->getCredentialPostprocessor();
+        if (is_callable($processor)) {
+            return $processor($credential, $userObject);
+        }
+        return $credential;
     }
 
     /**
@@ -105,6 +122,27 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function setUserMapper(UserMapperInterface $userMapper)
     {
         $this->userMapper = $userMapper;
+        return $this;
+    }
+
+    /**
+     * Get credentialPostprocessor.
+     *
+     * @return \callable
+     */
+    public function getCredentialPostprocessor()
+    {
+        return $this->credentialPostprocessor;
+    }
+
+    /**
+     * Set credentialPreprocessor.
+     *
+     * @param $credentialPreprocessor the value to be set
+     */
+    public function setCredentialPostprocessor($credentialPostprocessor)
+    {
+        $this->credentialPostprocessor = $credentialPostprocessor;
         return $this;
     }
 
