@@ -68,9 +68,10 @@ class Base extends ProvidesEventsForm
                 'type' => 'Zend\Form\Element\Captcha',
                 'options' => array(
                     'label' => 'Please type the following text',
+                    'captcha' => $this->getRegistrationOptions()->getFormCaptchaOptions(),
                 ),
                 'attributes' => array(
-                    'captcha' => $this->getOptions()->getFormCaptchaOptions(),
+                    //'captcha' => $this->getRegistrationOptions()->getFormCaptchaOptions(),
                 ),
             ));
         }
