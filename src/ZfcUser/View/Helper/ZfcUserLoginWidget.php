@@ -2,9 +2,9 @@
 
 namespace ZfcUser\View\Helper;
 
-use Zend\View\Helper\AbstractHelper,
-    ZfcUser\Form\Login as LoginForm,
-    Zend\View\Model\ViewModel;
+use Zend\View\Helper\AbstractHelper;
+use ZfcUser\Form\Login as LoginForm;
+use Zend\View\Model\ViewModel;
 
 class ZfcUserLoginWidget extends AbstractHelper
 {

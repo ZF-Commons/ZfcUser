@@ -2,10 +2,10 @@
 
 namespace ZfcUser;
 
-use Zend\ModuleManager\ModuleManager,
-    Zend\ModuleManager\Feature\AutoloaderProviderInterface,
-    Zend\ModuleManager\Feature\ConfigProviderInterface,
-    Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\ModuleManager;
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
+use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements
     AutoloaderProviderInterface,
