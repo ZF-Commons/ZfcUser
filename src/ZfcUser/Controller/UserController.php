@@ -90,9 +90,17 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
-        $redirect = ($this->getRequest()->getPost()->get('redirect')) ? $this->getRequest()->getPost()->get('redirect') : false;
-
+        $request = $this->getRequest();
+        
+        $redirect = false;
+        if ($request->getQuery()->get('redirect')) {
+            $redirect = $request->getQuery()->get('redirect');
+        } else {
+            $redirect = ($this->getRequest()->getPost()->get('redirect')) ? $this->getRequest()->getPost()->get('redirect') : false;
+        }
+        
         if($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+            $redirect = rawurldecode($redirect);
             return $this->redirect()->toUrl($redirect);
         }
 
@@ -127,6 +135,7 @@ class UserController extends AbstractActionController
         }
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+            $redirect = rawurldecode($redirect);
             return $this->redirect()->toUrl($redirect);
         }
 
