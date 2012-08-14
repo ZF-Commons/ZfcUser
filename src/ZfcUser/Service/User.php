@@ -87,7 +87,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
         return $user;
     }
-  
+
     /**
      * change the current users password
      *
@@ -98,23 +98,22 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     {
         $currentUser = $this->getAuthService()->getIdentity();
         $form  = $this->getChangePasswordForm();
-        $form->setHydrator(new ClassMethods(false));
-        $form->bind($currentUser);
         $form->setData($data);
         if (!$form->isValid()) {
             return false;
         }
-        
-        $user = $form->getData();
-        
+
+        $formData = $form->getData();
+        $newPass = $formData['newCredential'];
+
         $bcrypt = new Bcrypt;
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        $pass = $bcrypt->create($user->getPassword());
+        $pass = $bcrypt->create($newPass);
         $currentUser->setPassword($pass);
-        
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
+
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser, 'form' => $form));
         $this->getUserMapper()->update($currentUser);
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser, 'form' => $form));
     }
 
     /**

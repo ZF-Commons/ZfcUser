@@ -29,7 +29,7 @@ class ChangePassword extends ProvidesEventsForm
                 'type' => 'hidden'
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'credential',
             'options' => array(
@@ -49,7 +49,7 @@ class ChangePassword extends ProvidesEventsForm
                 'type' => 'password',
             ),
         ));
-        
+
         $this->add(array(
             'name' => 'newCredentialVerify',
             'options' => array(
@@ -74,7 +74,7 @@ class ChangePassword extends ProvidesEventsForm
     }
 
     /**
-     * Set Authentication-related Options 
+     * Set Authentication-related Options
      *
      * @param AuthenticationOptionsInterface $authOptions
      * @return Login
@@ -86,7 +86,7 @@ class ChangePassword extends ProvidesEventsForm
     }
 
     /**
-     * Get Authentication-related Options 
+     * Get Authentication-related Options
      *
      * @return AuthenticationOptionsInterface
      */

@@ -74,7 +74,7 @@ return array(
                             ),
                         ),
                     ),
-		    'changepassword' => array(
+                    'changepassword' => array(
                         'type' => 'Literal',
                         'options' => array(
                             'route' => '/changepassword',

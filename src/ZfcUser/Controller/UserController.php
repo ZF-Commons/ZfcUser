@@ -228,12 +228,12 @@ class UserController extends AbstractActionController
             $this->flashMessenger()->setNamespace('zfcuser-change-password-form')->addMessage("ERROR");
             return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/changepassword'));
         }
-        
+
         //check current user against supplied credential
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
         $redirect = $request->getPost()->get('redirect') ? $request->getPost()->get('redirect') : false;
         $result = $adapter->prepareForAuthentication($request);
-        
+
         // Return early if an adapter returned a response
         if ($result instanceof Response) {
             return $result;
@@ -246,9 +246,9 @@ class UserController extends AbstractActionController
             $adapter->resetAdapters();
             return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/changepassword'));
         }
-        
+
         $this->getUserService()->changePassword($form->getData());
-        
+
         // clear adapters
         return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
     }

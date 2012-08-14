@@ -38,7 +38,7 @@ class ChangePasswordFilter extends InputFilter
                 array('name' => 'StringTrim'),
             ),
         ));
-        
+
         $this->add(array(
             'name'       => 'newCredential',
             'required'   => true,
@@ -54,7 +54,7 @@ class ChangePasswordFilter extends InputFilter
                 array('name' => 'StringTrim'),
             ),
         ));
-        
+
         $this->add(array(
             'name'       => 'newCredentialVerify',
             'required'   => true,
@@ -66,7 +66,7 @@ class ChangePasswordFilter extends InputFilter
                     ),
                 ),
                 array(
-                    'name' => 'identical', 
+                    'name' => 'identical',
                     'options' => array(
                         'token' => 'newCredential'
                     )
