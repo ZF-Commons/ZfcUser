@@ -110,6 +110,13 @@ class Module implements
                     return $form;
                 },
 
+		'zfcuser_change_password_form' => function($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
+                    $form->setInputFilter(new Form\ChangePasswordFilter($options));
+                    return $form;
+                },
+
                 'zfcuser_user_hydrator' => function ($sm) {
                     $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
                     return $hydrator;
