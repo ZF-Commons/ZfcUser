@@ -213,16 +213,9 @@ class UserController extends AbstractActionController
         $request = $this->getRequest();
         $form = $this->getChangePasswordForm();
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
-            $redirect = $request->getQuery()->get('redirect');
-        } else {
-            $redirect = false;
-        }
-
         if (!$request->isPost()) {
             return array(
                 'changePasswordForm' => $form,
-                'redirect' => $redirect,
             );
         }
 
@@ -231,12 +224,11 @@ class UserController extends AbstractActionController
         if (!$form->isValid()) {
             //TODO implement real error messages
             $this->flashMessenger()->setNamespace('zfcuser-change-password-form')->addMessage("ERROR");
-            return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/changepassword'));
+            return $this->redirect()->toRoute('zfcuser/changepassword');
         }
 
         //check current user against supplied credential
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
-        $redirect = $request->getPost()->get('redirect') ? $request->getPost()->get('redirect') : false;
         $result = $adapter->prepareForAuthentication($request);
 
         // Return early if an adapter returned a response
@@ -264,19 +256,12 @@ class UserController extends AbstractActionController
         $request = $this->getRequest();
         $request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
-            $redirect = $request->getQuery()->get('redirect');
-        } else {
-            $redirect = false;
-        }
-
-        $prg = $this->prg($redirect ?: 'zfcuser/changeemail', ($redirect !== false));
+        $prg = $this->prg('zfcuser/changeemail');
         if ($prg instanceof Response) {
             return $prg;
         } else if ($prg === false) {
             return array(
                 'changeEmailForm' => $form,
-                'redirect' => $redirect
             );
         }
 
@@ -285,7 +270,6 @@ class UserController extends AbstractActionController
         if (!$form->isValid()) {
             return array(
                 'changeEmailForm' => $form,
-                'redirect' => $redirect
             );
         }
 
@@ -295,12 +279,10 @@ class UserController extends AbstractActionController
             $form->setMessages(array('identity' => array('Invalid password')));
             return array(
                 'changeEmailForm' => $form,
-                'redirect' => $redirect
             );
         }
 
-        // clear adapters
-        return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
+        return $this->redirect()->toRoute('zfcuser/changeemail');
     }
 
     /**
