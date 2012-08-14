@@ -84,6 +84,16 @@ return array(
                             ),
                         ),
                     ),
+                    'changeemail' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/change-email',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action' => 'changeemail',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
