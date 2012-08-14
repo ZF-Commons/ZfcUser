@@ -36,6 +36,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     protected $registerForm;
 
     /**
+     * @var Form
+     */
+    protected $changePasswordForm;
+
+    /**
      * @var ServiceManager
      */
     protected $serviceManager;
@@ -81,6 +86,34 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $this->getUserMapper()->insert($user);
         $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
         return $user;
+    }
+
+    /**
+     * change the current users password
+     *
+     * @param array $data
+     * @return boolean
+     */
+    public function changePassword(array $data)
+    {
+        $currentUser = $this->getAuthService()->getIdentity();
+        $form  = $this->getChangePasswordForm();
+        $form->setData($data);
+        if (!$form->isValid()) {
+            return false;
+        }
+
+        $formData = $form->getData();
+        $newPass = $formData['newCredential'];
+
+        $bcrypt = new Bcrypt;
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        $pass = $bcrypt->create($newPass);
+        $currentUser->setPassword($pass);
+
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser, 'form' => $form));
+        $this->getUserMapper()->update($currentUser);
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser, 'form' => $form));
     }
 
     /**
@@ -151,6 +184,27 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function setRegisterForm(Form $registerForm)
     {
         $this->registerForm = $registerForm;
+        return $this;
+    }
+
+    /**
+     * @return Form
+     */
+    public function getChangePasswordForm()
+    {
+        if (null === $this->changePasswordForm) {
+            $this->changePasswordForm = $this->getServiceManager()->get('zfcuser_change_password_form');
+        }
+        return $this->changePasswordForm;
+    }
+
+    /**
+     * @param Form $changePasswordForm
+     * @return User
+     */
+    public function setChangePasswordForm(Form $changePasswordForm)
+    {
+        $this->changePasswordForm = $changePasswordForm;
         return $this;
     }
 
