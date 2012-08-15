@@ -37,6 +37,19 @@ class ChangeEmailFilter extends InputFilter
                 $this->emailValidator
             ),
         ));
+
+        $this->add(array(
+            'name'       => 'newIdentityVerify',
+            'required'   => true,
+            'validators' => array(
+                array(
+                    'name' => 'identical',
+                    'options' => array(
+                        'token' => 'newIdentity'
+                    )
+                ),
+            ),
+        ));
     }
 
     public function getEmailValidator()
