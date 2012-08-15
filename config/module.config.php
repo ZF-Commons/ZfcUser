@@ -77,10 +77,32 @@ return array(
                     'changepassword' => array(
                         'type' => 'Literal',
                         'options' => array(
-                            'route' => '/changepassword',
+                            'route' => '/change-password',
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'changepassword',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'query' => array(
+                                'type' => 'Query',
+                            ),
+                        ),
+                    ),
+                    'changeemail' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/change-email',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action' => 'changeemail',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'query' => array(
+                                'type' => 'Query',
                             ),
                         ),
                     ),
