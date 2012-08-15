@@ -148,7 +148,9 @@ class UserController extends AbstractActionController
      */
     public function registerAction()
     {
+        // if the user is logged in, we don't need to register
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+            // redirect to the login redirect route
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
@@ -162,15 +164,12 @@ class UserController extends AbstractActionController
             $redirect = false;
         }
 
-        if ($request->isPost()) {
-            $this->flashMessenger()->setNamespace('zfcuser-register-form')->addMessage($request->getPost()->toArray());
-            // See http://en.wikipedia.org/wiki/Post/Redirect/Get
-            return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/register') . ($redirect ? '?redirect='.$redirect : ''));
-        }
+        $redirectUrl = $this->url()->fromRoute('zfcuser/register') . ($redirect ? '?redirect=' . $redirect : '');
+        $prg = $this->prg($redirectUrl, true);
 
-        $post = $this->flashMessenger()->setNamespace('zfcuser-register-form')->getMessages();
-
-        if (!isset($post[0]) || !$service->getOptions()->getEnableRegistration()) {
+        if ($prg instanceof Response) {
+            return $prg;
+        } else if ($prg === false) {
             return array(
                 'registerForm' => $form,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
@@ -178,7 +177,7 @@ class UserController extends AbstractActionController
             );
         }
 
-        $post = $post[0];
+        $post = $prg;
         $user = $service->register($post);
 
         if (!$user) {
