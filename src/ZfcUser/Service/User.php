@@ -97,23 +97,25 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function changePassword(array $data)
     {
         $currentUser = $this->getAuthService()->getIdentity();
-        $form  = $this->getChangePasswordForm();
-        $form->setData($data);
-        if (!$form->isValid()) {
-            return false;
-        }
 
-        $formData = $form->getData();
-        $newPass = $formData['newCredential'];
+        $oldPass = $data['credential'];
+        $newPass = $data['newCredential'];
 
         $bcrypt = new Bcrypt;
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
+
+        if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
+            return false;
+        }
+
         $pass = $bcrypt->create($newPass);
         $currentUser->setPassword($pass);
 
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
         $this->getUserMapper()->update($currentUser);
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser));
+
+        return true;
     }
 
     public function changeEmail(array $data)

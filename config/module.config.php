@@ -83,6 +83,12 @@ return array(
                                 'action'     => 'changepassword',
                             ),
                         ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'query' => array(
+                                'type' => 'Query',
+                            ),
+                        ),
                     ),
                     'changeemail' => array(
                         'type' => 'Literal',

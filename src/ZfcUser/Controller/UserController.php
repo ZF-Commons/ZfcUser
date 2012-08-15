@@ -209,45 +209,33 @@ class UserController extends AbstractActionController
      * Change the users password
      */
     public function changepasswordAction() {
-        $this->getServiceLocator()->get('zfcuser_user_mapper');
-        $request = $this->getRequest();
         $form = $this->getChangePasswordForm();
 
-        if (!$request->isPost()) {
+        $prg = $this->prg('zfcuser/changepassword');
+        if ($prg instanceof Response) {
+            return $prg;
+        } else if ($prg === false) {
             return array(
                 'changePasswordForm' => $form,
             );
         }
 
-        $form->setData($request->getPost());
+        $form->setData($prg);
 
         if (!$form->isValid()) {
-            //TODO implement real error messages
-            $this->flashMessenger()->setNamespace('zfcuser-change-password-form')->addMessage("ERROR");
-            return $this->redirect()->toRoute('zfcuser/changepassword');
+            return array(
+                'changePasswordForm' => $form,
+            );
         }
 
-        //check current user against supplied credential
-        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
-        $result = $adapter->prepareForAuthentication($request);
-
-        // Return early if an adapter returned a response
-        if ($result instanceof Response) {
-            return $result;
+        if (!$this->getUserService()->changePassword($form->getData())) {
+            $form->setMessages(array('credential' => array('Invalid password')));
+            return array(
+                'changePasswordForm' => $form,
+            );
         }
 
-        $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
-
-        if (!$auth->isValid()) {
-            $this->flashMessenger()->setNamespace('zfcuser-change-password-form')->addMessage("Wrong Credentials");
-            $adapter->resetAdapters();
-            return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/changepassword'));
-        }
-
-        $this->getUserService()->changePassword($form->getData());
-
-        // clear adapters
-        return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
+        return $this->redirect()->toRoute('zfcuser/changepassword/query', array('success' => 1));
     }
 
     public function changeEmailAction()
@@ -345,12 +333,6 @@ class UserController extends AbstractActionController
 
     public function setChangePasswordForm(Form $changePasswordForm) {
         $this->changePasswordForm = $changePasswordForm;
-        $fm = $this->flashMessenger()->setNamespace('zfcuser-change-password-form')->getMessages();
-        if (isset($fm[0])) {
-            $this->changePasswordForm->setMessages(
-                array('identity' => array($fm[0]))
-            );
-        }
         return $this;
     }
 
