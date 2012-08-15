@@ -77,7 +77,7 @@ return array(
                     'changepassword' => array(
                         'type' => 'Literal',
                         'options' => array(
-                            'route' => '/changepassword',
+                            'route' => '/change-password',
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'changepassword',
@@ -97,6 +97,12 @@ return array(
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action' => 'changeemail',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'query' => array(
+                                'type' => 'Query',
                             ),
                         ),
                     ),

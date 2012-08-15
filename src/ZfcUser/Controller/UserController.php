@@ -264,13 +264,13 @@ class UserController extends AbstractActionController
         $change = $this->getUserService()->changeEmail($prg);
 
         if (!$change) {
-            $form->setMessages(array('identity' => array('Invalid password')));
+            $form->setMessages(array('credential' => array('Invalid password')));
             return array(
                 'changeEmailForm' => $form,
             );
         }
 
-        return $this->redirect()->toRoute('zfcuser/changeemail');
+        return $this->redirect()->toRoute('zfcuser/changeemail/query', array('success' => 1));
     }
 
     /**
