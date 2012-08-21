@@ -1,4 +1,9 @@
 <h3>Change Email for <?php echo $this->zfcUserDisplayName() ?></h3>
+<?php if ($status === true) : ?>
+<div class="alert alert-success">Email address changed successfully.</div>
+<?php elseif ($status === false) : ?>
+<div class="alert alert-error">Unable to update your email address. Please try again.</div>
+<?php endif; ?>
 <?php
 
 $form = $this->changeEmailForm;
