@@ -209,12 +209,20 @@ class UserController extends AbstractActionController
      */
     public function changepasswordAction() {
         $form = $this->getChangePasswordForm();
-
         $prg = $this->prg('zfcuser/changepassword');
+
+        $fm = $this->flashMessenger()->setNamespace('change-password')->getMessages();
+        if (isset($fm[0])) {
+            $status = $fm[0];
+        } else {
+            $status = null;
+        }
+
         if ($prg instanceof Response) {
             return $prg;
         } else if ($prg === false) {
             return array(
+                'status' => $status,
                 'changePasswordForm' => $form,
             );
         }
@@ -223,18 +231,20 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             return array(
+                'status' => false,
                 'changePasswordForm' => $form,
             );
         }
 
         if (!$this->getUserService()->changePassword($form->getData())) {
-            $form->setMessages(array('credential' => array('Invalid password')));
             return array(
+                'status' => false,
                 'changePasswordForm' => $form,
             );
         }
 
-        return $this->redirect()->toRoute('zfcuser/changepassword/query', array('success' => 1));
+        $this->flashMessenger()->setNamespace('change-password')->addMessage(true);
+        return $this->redirect()->toRoute('zfcuser/changepassword');
     }
 
     public function changeEmailAction()
@@ -243,11 +253,19 @@ class UserController extends AbstractActionController
         $request = $this->getRequest();
         $request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
 
+        $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
+        if (isset($fm[0])) {
+            $status = $fm[0];
+        } else {
+            $status = null;
+        }
+
         $prg = $this->prg('zfcuser/changeemail');
         if ($prg instanceof Response) {
             return $prg;
         } else if ($prg === false) {
             return array(
+                'status' => $status,
                 'changeEmailForm' => $form,
             );
         }
@@ -256,6 +274,7 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             return array(
+                'status' => false,
                 'changeEmailForm' => $form,
             );
         }
@@ -263,13 +282,15 @@ class UserController extends AbstractActionController
         $change = $this->getUserService()->changeEmail($prg);
 
         if (!$change) {
-            $form->setMessages(array('credential' => array('Invalid password')));
+            $this->flashMessenger()->setNamespace('change-email')->addMessage(false);
             return array(
+                'status' => false,
                 'changeEmailForm' => $form,
             );
         }
 
-        return $this->redirect()->toRoute('zfcuser/changeemail/query', array('success' => 1));
+        $this->flashMessenger()->setNamespace('change-email')->addMessage(true);
+        return $this->redirect()->toRoute('zfcuser/changeemail');
     }
 
     /**
