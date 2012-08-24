@@ -58,11 +58,11 @@ class Login extends ProvidesEventsForm
         //$this->add($csrf);
 
         $submitElement = new Element\Button('submit');
-
-        $submitElement->setAttributes(array(
-            'label' => 'Sign In',
-            'type'  => 'submit',
-        ));
+        $submitElement
+            ->setLabel('Sign In')
+            ->setAttributes(array(
+                'type'  => 'submit',
+            ));
 
         $this->add($submitElement, array(
             'priority' => -100,
