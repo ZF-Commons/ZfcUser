@@ -76,11 +76,11 @@ class Base extends ProvidesEventsForm
         }
 
         $submitElement = new Element\Button('submit');
-
-        $submitElement->setAttributes(array(
-            'label' => 'Submit',
-            'type'  => 'submit',
-        ));
+        $submitElement
+            ->setLabel('Submit')
+            ->setAttributes(array(
+                'type'  => 'submit',
+            ));
 
         $this->add($submitElement, array(
             'priority' => -100,
