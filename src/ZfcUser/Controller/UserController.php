@@ -96,12 +96,15 @@ class UserController extends AbstractActionController
      */
     public function logoutAction()
     {
-        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+        if ($this->getRequest()->isPost()) {
+            // Only logout on POST so that someone cannot make your users sign out
+            // by just including an <img> tag in their forum signature.
+            $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+            $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+        }
 
-        $redirect = ($this->getRequest()->getPost()->get('redirect')) ? $this->getRequest()->getPost()->get('redirect') : false;
-
-        if($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+        $redirect = $this->getRequest()->getPost()->get('redirect');
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
             return $this->redirect()->toUrl($redirect);
         }
 
