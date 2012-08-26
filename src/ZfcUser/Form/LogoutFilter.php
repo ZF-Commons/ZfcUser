@@ -9,7 +9,9 @@ class LogoutFilter extends ProvidesEventsInputFilter
 {
     public function __construct()
     {
-        $csrfValidator = new CsrfValidator(array('name' => 'csrf', 'timeout' => session_cache_expire()));
+        // Allow CSRF to timeout with session. Csrf element/validator uses 300 by default.
+        $sessionLifetime = ini_get("session.gc_maxlifetime");
+        $csrfValidator = new CsrfValidator(array('name' => 'csrf', 'timeout' => $sessionLifetime));
 
         $this->add(array(
             'name' => 'csrf',
