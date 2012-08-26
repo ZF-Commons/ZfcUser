@@ -25,6 +25,11 @@ class UserController extends AbstractActionController
     /**
      * @var Form
      */
+    protected $logoutForm;
+
+    /**
+     * @var Form
+     */
     protected $registerForm;
 
     /**
@@ -96,14 +101,24 @@ class UserController extends AbstractActionController
      */
     public function logoutAction()
     {
-        if ($this->getRequest()->isPost()) {
-            // Only logout on POST so that someone cannot make your users sign out
-            // by just including an <img> tag in their forum signature.
-            $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-            $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+        $request = $this->getRequest();
+        $form    = $this->getLogoutForm();
+
+        if (!$request->isPost()) {
+            return array('logoutForm' => $form);
         }
 
-        $redirect = $this->getRequest()->getPost()->get('redirect');
+        $form->setData($request->getPost());
+        if (!$form->isValid()) {
+            return array('logoutForm' => $form);
+        }
+
+        // Only logout on valid POST so that someone cannot make your users sign out
+        // by just including an <img> tag in their forum signature.
+        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+
+        $redirect = $request->getPost()->get('redirect');
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
             return $this->redirect()->toUrl($redirect);
         }
@@ -343,6 +358,20 @@ class UserController extends AbstractActionController
                 array('identity' => array($fm[0]))
             );
         }
+        return $this;
+    }
+
+    public function getLogoutForm()
+    {
+        if (!$this->logoutForm) {
+            $this->setLogoutForm($this->getServiceLocator()->get('zfcuser_logout_form'));
+        }
+        return $this->logoutForm;
+    }
+
+    public function setLogoutForm(Form $logoutForm)
+    {
+        $this->logoutForm = $logoutForm;
         return $this;
     }
 
