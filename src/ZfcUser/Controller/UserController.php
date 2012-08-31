@@ -64,7 +64,6 @@ class UserController extends AbstractActionController
      */
     public function loginAction()
     {
-        $this->getServiceLocator()->get('zfcuser_user_mapper');
         $request = $this->getRequest();
         $form    = $this->getLoginForm();
 
