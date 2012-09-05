@@ -102,13 +102,13 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $newPass = $data['newCredential'];
 
         if (array_key_exists('credential', $data)) {
-          $oldPass = $data['credential'];
+            $oldPass = $data['credential'];
 
-          $bcrypt->setCost($this->getOptions()->getPasswordCost());
+            $bcrypt->setCost($this->getOptions()->getPasswordCost());
 
-          if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
-              return false;
-          }
+            if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
+                return false;
+            }
         }
 
         $pass = $bcrypt->create($newPass);
