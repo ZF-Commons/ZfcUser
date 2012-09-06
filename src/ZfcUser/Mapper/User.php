@@ -12,33 +12,33 @@ class User extends AbstractDbMapper implements UserInterface
 
     public function findByEmail($email)
     {
-        $select = $this->select()
+        $select = $this->getSelect()
                        ->from($this->tableName)
                        ->where(array('email' => $email));
 
-        $entity = $this->selectWith($select)->current();
+        $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         return $entity;
     }
 
     public function findByUsername($username)
     {
-        $select = $this->select()
+        $select = $this->getSelect()
                        ->from($this->tableName)
                        ->where(array('username' => $username));
 
-        $entity = $this->selectWith($select)->current();
+        $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         return $entity;
     }
 
     public function findById($id)
     {
-        $select = $this->select()
+        $select = $this->getSelect()
                        ->from($this->tableName)
                        ->where(array('user_id' => $id));
 
-        $entity = $this->selectWith($select)->current();
+        $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         return $entity;
     }
