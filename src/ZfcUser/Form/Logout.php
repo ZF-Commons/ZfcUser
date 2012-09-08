@@ -22,6 +22,7 @@ class Logout extends ProvidesEventsForm
         $this->add($logoutButton);
 
         $csrf = new Element\Csrf('csrf');
+        $csrf->setCsrfValidatorOptions(array('timeout' => null));
         $this->add($csrf);
 
         $this->getEventManager()->trigger('init', $this);

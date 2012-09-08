@@ -99,9 +99,7 @@ class Module implements
                 },
 
                 'zfcuser_logout_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
                     $form = new Form\Logout(null);
-                    $form->setInputFilter(new Form\LogoutFilter());
                     return $form;
                 },
 
