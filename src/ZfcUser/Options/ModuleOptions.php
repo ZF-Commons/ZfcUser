@@ -44,6 +44,21 @@ class ModuleOptions extends AbstractOptions implements
     protected $loginAfterRegistration = true;
 
     /**
+     * @var int
+     */
+    protected $enableUserState = false;
+            
+    /**
+     * @var int
+     */
+    protected $defaultUserState = 1;
+
+    /**
+     * @var Array
+     */
+    protected $allowedLoginStates = array( null, 1 );
+    
+    /**
      * @var array
      */
     protected $authIdentityFields = array( 'email' );
@@ -244,6 +259,72 @@ class ModuleOptions extends AbstractOptions implements
         return $this->loginAfterRegistration;
     }
 
+    /**
+     * get user state usage for registration/login process
+     *
+     * @return int
+     */
+    public function getEnableUserState()
+    {
+        return $this->enableUserState;
+    }
+    
+    /**
+     * set user state usage for registration/login process
+     *
+     * @param boolean $flag
+     * @return ModuleOptions
+     */
+    public function setEnableUserState($flag)
+    {
+        $this->enableUserState = $flag;
+        return $this;
+    }
+    
+    /**
+     * get default user state on registration
+     *
+     * @return int
+     */
+    public function getDefaultUserState()
+    {
+        return $this->defaultUserState;
+    }
+    
+    /**
+     * set default user state on registration
+     *
+     * @param int $state
+     * @return ModuleOptions
+     */
+    public function setDefaultUserState($state)
+    {
+        $this->defaultUserState = $state;
+        return $this;
+    }
+
+    /**
+     * get list of states to allow user login
+     *
+     * @return int
+     */
+    public function getAllowedLoginStates()
+    {
+        return $this->allowedLoginStates;
+    }
+    
+    /**
+     * set list of states to allow user login
+     *
+     * @param Array $states
+     * @return ModuleOptions
+     */
+    public function setAllowedLoginStates(Array $states)
+    {
+        $this->allowedLoginStates = $states;
+        return $this;
+    }
+    
     /**
      * set auth identity fields
      *
