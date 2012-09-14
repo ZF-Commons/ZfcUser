@@ -37,7 +37,7 @@ class Login extends ProvidesEventsForm
             $label = (!empty($label) ? $label . ' or ' : '') . ucfirst($mode);
         }
         $emailElement->setLabel($label);
-        //
+
         $this->add(array(
             'name' => 'credential',
             'options' => array(
@@ -46,6 +46,14 @@ class Login extends ProvidesEventsForm
             'attributes' => array(
                 'type' => 'password',
             ),
+        ));
+
+        $this->add(array(
+            'type' => 'Zend\Form\Element\Checkbox',
+            'name' => 'remember_me',
+            'options' => array(
+                'label' => 'Remember me',
+            )
         ));
 
         // @todo: Fix this

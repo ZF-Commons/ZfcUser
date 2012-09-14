@@ -6,7 +6,8 @@ use Zend\Stdlib\AbstractOptions;
 
 class ModuleOptions extends AbstractOptions implements
     UserControllerOptionsInterface,
-    UserServiceOptionsInterface
+    UserServiceOptionsInterface,
+    RememberMeOptionsInterface
 {
     /**
      * Turn off strict options mode
@@ -77,6 +78,12 @@ class ModuleOptions extends AbstractOptions implements
      * @var int
      */
     protected $passwordCost = 14;
+
+    /**
+     * 30 days default
+     * @var int
+     */
+    protected $cookieExpire = 2592000;
 
     /**
      * @var array
@@ -396,5 +403,16 @@ class ModuleOptions extends AbstractOptions implements
     public function getFormCaptchaOptions()
     {
         return $this->formCaptchaOptions;
+    }
+
+    public function setCookieExpire($seconds)
+    {
+        $this->cookieExpire = $seconds;
+        return $this;
+    }
+
+    public function getCookieExpire()
+    {
+        return $this->cookieExpire;
     }
 }

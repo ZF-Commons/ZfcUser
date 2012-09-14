@@ -89,6 +89,14 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         $this->getStorage()->write($storage);
         $e->setCode(AuthenticationResult::SUCCESS)
           ->setMessages(array('Authentication successful.'));
+
+        /**
+        *  If the user has first logged in with a cookie,
+        *  but afterwords login with identity/credential
+        *  we remove the "cookieLogin" session.
+        */
+        $session = new \Zend\Session\Container('zfcuser');
+        $session->offsetSet("cookieLogin", false);
     }
 
     protected function updateUserPasswordHash($userObject, $password, $bcrypt)

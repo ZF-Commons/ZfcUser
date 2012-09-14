@@ -18,6 +18,11 @@ $form->setAttribute('method', 'post');
         <dt><?php echo $this->formLabel($form->get('credential')) ?></dt>
         <dd><?php echo $this->formInput($form->get('credential')) ?></dd>
 
+        <?php if(!$this->forceRelogin): // If we force a relogin, it means that the user is allready being remembered ?>
+        <dt><?php echo $this->formLabel($form->get('remember_me')) ?></dt>
+        <dd><?php echo $this->formCheckbox($form->get('remember_me')) ?></dd>
+        <?php endif; ?>
+
         <?php if ($this->redirect): ?>
             <input type="hidden" name="redirect" value="<?php echo $this->redirect ?>" />
         <?php endif ?>
