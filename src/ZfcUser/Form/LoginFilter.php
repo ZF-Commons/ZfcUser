@@ -39,6 +39,11 @@ class LoginFilter extends ProvidesEventsInputFilter
             ),
         ));
 
+        $this->add(array(
+            'name'      => 'remember_me',
+            'required'  => false,
+        ));
+
         $this->getEventManager()->trigger('init', $this);
     }
 }

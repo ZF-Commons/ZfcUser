@@ -3,6 +3,10 @@
 namespace ZfcUser\Authentication\Adapter;
 
 use Zend\Authentication\Result as AuthenticationResult;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceManager;
+use Zend\Stdlib\RequestInterface as Request;
+use Zend\Stdlib\ResponseInterface as Response;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
 
 class Cookie extends AbstractAdapter implements ServiceManagerAwareInterface
@@ -12,6 +16,8 @@ class Cookie extends AbstractAdapter implements ServiceManagerAwareInterface
     protected $rememberMeMapper;
 
     protected $serviceManager;
+
+    protected $rememberMeService;
 
     public function authenticate(AuthEvent $e)
     {
@@ -25,7 +31,7 @@ class Cookie extends AbstractAdapter implements ServiceManagerAwareInterface
 
         $cookie = explode("\n", $_COOKIE['remember_me']);
 
-        $rememberMe = $this->getRememberMeMapper()->findByEmailSerie($cookie[0], $cookie[1]);
+        $rememberMe = $this->getRememberMeMapper()->findByIdSerie($cookie[0], $cookie[1]);
 
         if(!$rememberMe)
             return false;
@@ -39,7 +45,7 @@ class Cookie extends AbstractAdapter implements ServiceManagerAwareInterface
             return false;
         }
 
-        $userObject = $this->getUserMapper()->findByEmail($cookie[0]);
+        $userObject = $this->getUserMapper()->findById($cookie[0]);
 
         $this->getRememberMeService()->updateSerie($rememberMe);
 
@@ -51,6 +57,9 @@ class Cookie extends AbstractAdapter implements ServiceManagerAwareInterface
         $this->getStorage()->write($storage);
         $e->setCode(AuthenticationResult::SUCCESS)
           ->setMessages(array('Authentication successful.'));
+
+        $session = new \Zend\Session\Container('zfcuser');
+        $session->offsetSet("cookieLogin", true);
     }
 
     /**
@@ -98,5 +107,18 @@ class Cookie extends AbstractAdapter implements ServiceManagerAwareInterface
             $this->userMapper = $this->getServiceManager()->get('zfcuser_user_mapper');
         }
         return $this->userMapper;
+    }
+
+    public function setRememberMeService($rememberMeService)
+    {
+        $this->rememberMeService = $rememberMeService;
+    }
+
+    public function getRememberMeService()
+    {
+        if (null === $this->rememberMeService) {
+            $this->rememberMeService = $this->getServiceManager()->get('zfcuser_rememberme_service');
+        }
+        return $this->rememberMeService;
     }
 }

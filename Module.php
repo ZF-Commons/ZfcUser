@@ -62,10 +62,12 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
-                'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
-                'zfcuser_user_service'              => 'ZfcUser\Service\User',
+                'ZfcUser\Authentication\Adapter\Db'     => 'ZfcUser\Authentication\Adapter\Db',
+                'ZfcUser\Authentication\Adapter\Cookie' => 'ZfcUser\Authentication\Adapter\Cookie',
+                'ZfcUser\Authentication\Storage\Db'     => 'ZfcUser\Authentication\Storage\Db',
+                'ZfcUser\Form\Login'                    => 'ZfcUser\Form\Login',
+                'zfcuser_user_service'                  => 'ZfcUser\Service\User',
+                'zfcuser_rememberme_service'            => 'ZfcUser\Service\RememberMe',
             ),
             'factories' => array(
 
@@ -142,6 +144,16 @@ class Module implements
                     $entityClass = $options->getUserEntityClass();
                     $mapper->setEntityPrototype(new $entityClass);
                     $mapper->setHydrator(new Mapper\UserHydrator());
+                    return $mapper;
+                },
+
+                'zfcuser_rememberme_mapper' => function ($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $mapper = new Mapper\RememberMe;
+                    $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
+                    $entityClass = new Entity\RememberMe;
+                    $mapper->setEntityPrototype(new $entityClass);
+                    $mapper->setHydrator(new Mapper\RememberMeHydrator());
                     return $mapper;
                 },
             ),

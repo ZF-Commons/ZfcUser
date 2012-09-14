@@ -147,6 +147,16 @@ $settings = array(
     //'logout_redirect_route' => 'zfcuser/login',
 
     /**
+     * Remember me cookie expire time
+     *
+     * How long will the user be remembered for, in seconds?
+     *
+     * Default value: 2592000 seconds = 30 days
+     * Accepted values: the number of seconds the user should be remembered
+     */
+    //'cookie_expire' => 2592000,
+
+    /**
      * Password Security
      *
      * DO NOT CHANGE THE PASSWORD HASH SETTINGS FROM THEIR DEFAULTS

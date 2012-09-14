@@ -10,7 +10,9 @@ class AdapterChainServiceFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $chain = new AdapterChain;
-        $adapter = $serviceLocator->get('ZfcUser\Authentication\Adapter\Db');
+        $session = new \Zend\Session\Container('zfcuser');
+        $adapter = (\ZfcUser\Service\RememberMe::getCookie() && !$session->offsetGet('forceRelogin')) ? 'ZfcUser\Authentication\Adapter\Cookie' : 'ZfcUser\Authentication\Adapter\Db';
+        $adapter = $serviceLocator->get($adapter);
         $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'));
         return $chain;
     }

@@ -12,6 +12,8 @@ use ZfcUser\Options\UserControllerOptionsInterface;
 
 class UserController extends AbstractActionController
 {
+    protected $rememberMeService;
+
     /**
      * @var UserService
      */
@@ -56,8 +58,7 @@ class UserController extends AbstractActionController
     public function indexAction()
     {
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
-            $session = new \Zend\Session\Container('zfcuser');
-            $session->offsetSet("redirect", $this->url()->fromRoute("zfcuser"));
+            $this->getSessionHandler()->offsetSet("redirect", $this->url()->fromRoute("zfcuser"));
             return $this->redirect()->toRoute('zfcuser/login');
         }
         return new ViewModel();
@@ -68,19 +69,23 @@ class UserController extends AbstractActionController
      */
     public function loginAction()
     {
+        if($this->getRememberMeService()->getCookie() && !$this->getSessionHandler()->offsetGet('forceRelogin'))
+            return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
 
         $request = $this->getRequest();
         $form    = $this->getLoginForm();
 
         if (!$request->isPost()) {
             return array(
-                'loginForm' => $form
+                'loginForm' => $form,
+                'forceRelogin' => $this->getSessionHandler()->offsetGet('forceRelogin')
             );
         }
 
         $form->setData($request->getPost());
 
         if (!$form->isValid()) {
+            die(var_dump($form->getMessages()));
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             return $this->redirect()->toUrl($this->url('zfcuser')->fromRoute('zfcuser/login'));
         }
@@ -95,6 +100,13 @@ class UserController extends AbstractActionController
     public function logoutAction()
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+
+        $user = $this->zfcUserAuthentication()->getAuthService()->getIdentity();
+        $cookie = explode("\n", $this->getRememberMeService()->getCookie());
+        $this->getRememberMeService()->removeSerie($user->getId(), $cookie[1]);
+        $this->getRememberMeService()->removeCookie();
+        $this->getSessionHandler()->offsetUnset('cookieLogin');
+
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
         $redirect = ($this->getRequest()->getPost()->get('redirect')) ? $this->getRequest()->getPost()->get('redirect') : false;
@@ -111,11 +123,12 @@ class UserController extends AbstractActionController
      */
     public function authenticateAction()
     {
-        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity() && !$this->getSessionHandler()->offsetGet('forceRelogin')) {
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
         $request = $this->getRequest();
-        $adapter = (isset($_COOKIE['remember_me'])) ? new ZfcUser\Authentication\Adapter\Cookie : $this->zfcUserAuthentication()->getAuthAdapter();
+        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+
 
         $result = $adapter->prepareForAuthentication($request);
 
@@ -132,10 +145,9 @@ class UserController extends AbstractActionController
             return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login'));
         }
 
-        if(isset($_POST['remember_me']) && $_POST['remember_me'] == 'remember')
-        {
-            $cookie = explode("\n", $_COOKIE['remember_me']);
-            $this->getRememberMeService()->createSerie($cookie[0]);
+        if (isset($_POST['remember_me']) && $_POST['remember_me'] == 1) {
+            $user = $this->zfcUserAuthentication()->getIdentity();
+            $this->getRememberMeService()->createSerie($user->getId());
         }
 
         $redirect = false;
@@ -209,7 +221,15 @@ class UserController extends AbstractActionController
     /**
      * Change the users password
      */
-    public function changepasswordAction() {
+    public function changepasswordAction()
+    {
+        if(!$this->zfcUserAuthentication()->hasIdentity() OR $this->getSessionHandler()->offsetGet('cookieLogin'))
+        {
+            $this->getSessionHandler()->offsetSet('redirect', $this->url()->fromRoute('zfcuser/changeemail'));
+            $this->getSessionHandler()->offsetSet('forceRelogin', true);
+            return $this->redirect()->toRoute("zfcuser/login");
+        }
+
         $form = $this->getChangePasswordForm();
         $prg = $this->prg('zfcuser/changepassword');
 
@@ -251,6 +271,13 @@ class UserController extends AbstractActionController
 
     public function changeEmailAction()
     {
+        if(!$this->zfcUserAuthentication()->hasIdentity() OR $this->getSessionHandler()->offsetGet('cookieLogin'))
+        {
+            $this->getSessionHandler()->offsetSet('redirect', $this->url()->fromRoute('zfcuser/changeemail'));
+            $this->getSessionHandler()->offsetSet('forceRelogin', true);
+            return $this->redirect()->toRoute("zfcuser/login");
+        }
+
         $form = $this->getChangeEmailForm();
         $request = $this->getRequest();
         $request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
@@ -419,5 +446,18 @@ class UserController extends AbstractActionController
     public function setSessionHandler($sessionHandler)
     {
         $this->sessionHandler = $sessionHandler;
+    }
+
+    public function setRememberMeService($rememberMeService)
+    {
+        $this->rememberMeService = $rememberMeService;
+    }
+
+    public function getRememberMeService()
+    {
+        if (!$this->rememberMeService) {
+            $this->rememberMeService = $this->getServiceLocator()->get('zfcuser_rememberme_service');
+        }
+        return $this->rememberMeService;
     }
 }

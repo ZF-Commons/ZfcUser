@@ -8,12 +8,7 @@ class RememberMe
 
     protected $token;
 
-    protected $email;
-
-    public function getEmail()
-    {
-        return $this->email;
-    }
+    protected $user_id;
 
     public function getSid()
     {
@@ -25,11 +20,6 @@ class RememberMe
         return $this->token;
     }
 
-    public function setEmail($email)
-    {
-        $this->email = $email;
-    }
-
     public function setSid($sid)
     {
         $this->sid = $sid;
@@ -38,5 +28,15 @@ class RememberMe
     public function setToken($token)
     {
         $this->token = $token;
+    }
+
+    public function setUserId($user_id)
+    {
+        $this->user_id = $user_id;
+    }
+
+    public function getUserId()
+    {
+        return $this->user_id;
     }
 }

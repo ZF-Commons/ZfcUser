@@ -5,35 +5,32 @@ namespace ZfcUser\Service;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcBase\EventManager\EventProvider;
-use ZfcUser\Options\RememberMeServiceOptionsInterface;
+use ZfcUser\Options\RememberMeOptionsInterface;
 use Zend\Math\Rand;
 
 class RememberMe extends EventProvider implements ServiceManagerAwareInterface
 {
-    protected $mapper;
+    protected $mapper, $options;
 
     protected $serviceManager;
 
     public function createToken($length = 16)
     {
-        $rand = new Rand;
-        return $rand->getBytes($length, true);
+        $rand = Rand::getBytes($length, true);
+        return $rand;
     }
 
     public function createSerieId($length = 16)
     {
-        $rand = new Rand;
-        return $rand->getBytes($length, true);
+        $rand = Rand::getBytes($length, true);
+        return $rand;
     }
 
-    public function updateSerie($email, $sid)
+    public function updateSerie($entity)
     {
-        $rememberMe = $this->getMapper()->findByEmailSerie($email, $sid);
+        $rememberMe = $this->getMapper()->findByIdSerie($entity->getUserId(), $entity->getSid());
         if($rememberMe){
-            // Remove old token
-            $this->getMapper()->remove($rememberMe);
-
-            // Create new token with same serie id
+            // Update serie with new token
             $token = $this->createToken();
             $rememberMe->setToken($token);
             $this->setCookie($rememberMe);
@@ -43,13 +40,13 @@ class RememberMe extends EventProvider implements ServiceManagerAwareInterface
         return false;
     }
 
-    public function createSerie($email)
+    public function createSerie($userId)
     {
         $token = $this->createToken();
         $serieId = $this->createSerieId();
 
-        $rememberMe = new ZfcUser\Entity\RememberMe;
-        $rememberMe->setEmail($email);
+        $rememberMe = new \ZfcUser\Entity\RememberMe;
+        $rememberMe->setUserId($userId);
         $rememberMe->setSid($serieId);
         $rememberMe->setToken($token);
 
@@ -62,15 +59,26 @@ class RememberMe extends EventProvider implements ServiceManagerAwareInterface
         return false;
     }
 
-    /**
-     * @TODO: Set expire
-     * @param $entity
-     * @return bool
-     */
+    public function removeSerie($userId, $serieId)
+    {
+        $this->getMapper()->removeSerie($userId, $serieId);
+    }
+
+    public function removeCookie()
+    {
+        setcookie("remember_me", "", time() - 3600);
+    }
+
+    public static function getCookie()
+    {
+        return isset($_COOKIE['remember_me']) ? $_COOKIE['remember_me'] : false;
+    }
+
     public function setCookie($entity)
     {
-        $cookieValue = $entity->getEmail() . "\n" . $entity->getSid() . "\n" . $entity->getToken();
-        return setcookie("remember_me", $cookieValue);
+        $cookieLength = $this->getOptions()->getCookieExpire();
+        $cookieValue = $entity->getUserId() . "\n" . $entity->getSid() . "\n" . $entity->getToken();
+        return setcookie("remember_me", $cookieValue, time() + $cookieLength);
     }
 
     public function setMapper($mapper)
@@ -106,5 +114,20 @@ class RememberMe extends EventProvider implements ServiceManagerAwareInterface
     {
         $this->serviceManager = $serviceManager;
         return $this;
+    }
+
+
+    public function setOptions(RememberMeOptionsInterface $options)
+    {
+        $this->options = $options;
+        return $this;
+    }
+
+    public function getOptions()
+    {
+        if (!$this->options instanceof RememberMeOptionsInterface) {
+            $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
+        }
+        return $this->options;
     }
 }

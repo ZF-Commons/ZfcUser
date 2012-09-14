@@ -8,22 +8,22 @@ class RememberMe extends AbstractDbMapper
 {
     protected $tableName  = 'remember_me';
 
-    public function findByEmail($email)
+    public function findById($userId)
     {
         $select = $this->getSelect()
             ->from($this->tableName)
-            ->where(array('email' => $email));
+            ->where(array('user_id' => $userId));
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         return $entity;
     }
 
-    public function findByEmailSerie($email, $serieId)
+    public function findByIdSerie($userId, $serieId)
     {
         $select = $this->getSelect()
             ->from($this->tableName)
-            ->where(array('email' => $email, 'sid' => $serieId));
+            ->where(array('user_id' => $userId, 'sid' => $serieId));
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
@@ -32,7 +32,7 @@ class RememberMe extends AbstractDbMapper
 
     public function updateSerie($entity)
     {
-        $where = 'email = ' . $entity->getEmail() . ' && sid = ' . $entity->getSid();
+        $where = 'user_id = ' . $entity->getUserId() . ' && sid = "' . $entity->getSid() . '"';
         $hydrator = new RememberMeHydrator;
         return parent::update($entity, $where, $this->tableName, $hydrator);
     }
@@ -43,15 +43,21 @@ class RememberMe extends AbstractDbMapper
         return parent::insert($entity, $this->tableName, $hydrator);
     }
 
-    public function removeAll($email)
+    public function removeAll($userId)
     {
-        $where = 'email = ' . $email;
+        $where = 'user_id = ' . $userId;
         return parent::delete($where, $this->tableName);
     }
 
     public function remove($entity)
     {
-        $where = 'email = ' . $entity->getEmail() . ' && sid = ' . $entity->getSid() . ' && token = ' . $entity->getToken();
+        $where = 'user_id = ' . $entity->getUserId() . ' && sid = "' . $entity->getSid() . '" && token = "' . $entity->getToken() . '"';
+        return parent::delete($where, $this->tableName);
+    }
+
+    public function removeSerie($userId, $serieId)
+    {
+        $where = 'user_id = ' . $userId . ' && sid = "' . $serieId . '"';
         return parent::delete($where, $this->tableName);
     }
 }

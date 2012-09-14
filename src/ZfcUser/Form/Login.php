@@ -53,9 +53,6 @@ class Login extends ProvidesEventsForm
             'name' => 'remember_me',
             'options' => array(
                 'label' => 'Remember me',
-            ),
-            'attributes' => array(
-                'value' => 'remember'
             )
         ));
 
