@@ -54,6 +54,11 @@ class ModuleOptions extends AbstractOptions implements
     protected $userEntityClass = 'ZfcUser\Entity\User';
 
     /**
+     * @var string
+     */
+    protected $userLoginWidgetViewTemplate = 'zfc-user/user/login.phtml';
+
+    /**
      * @var bool
      */
     protected $enableRegistration = true;
@@ -156,6 +161,28 @@ class ModuleOptions extends AbstractOptions implements
         return $this->useRedirectParameterIfPresent;
     }
 
+    /**
+     * set the view template for the user login widget
+     *
+     * @param string $userLoginWidgetViewTemplate
+     * @return ModuleOptions
+     */
+    public function setUserLoginWidgetViewTemplate($userLoginWidgetViewTemplate)
+    {
+        $this->userLoginWidgetViewTemplate = $userLoginWidgetViewTemplate;
+        return $this;
+    }
+
+    /**
+     * get the view template for the user login widget
+     *
+     * @return string
+     */
+    public function getUserLoginWidgetViewTemplate()
+    {
+        return $this->userLoginWidgetViewTemplate;
+    }
+    
     /**
      * set enable user registration
      *

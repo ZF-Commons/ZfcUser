@@ -49,11 +49,8 @@ class Module implements
                 },
                 'zfcUserLoginWidget' => function ($sm) {
                     $locator = $sm->getServiceLocator();
-                    $config = $locator->get('config');
                     $viewHelper = new View\Helper\ZfcUserLoginWidget;
-                    if (isset($config['zfcuser']) && isset($config['zfcuser']['user_login_widget_view_template'])) {
-                        $viewHelper->setViewTemplate($config['zfcuser']['user_login_widget_view_template']);
-                    }
+                    $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
                     $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
                     return $viewHelper;
                 },
