@@ -126,6 +126,14 @@ $settings = array(
     //'use_redirect_parameter_if_present' => true,
 
     /**
+	 * Sets the view template for the user login widget
+	 *
+	 * Default value: 'zfc-user/user/login.phtml'
+     * Accepted values: string path to a view script
+	 */
+    //'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
+
+    /**
      * Login Redirect Route
      * 
      * Upon successful login the user will be redirected to the entered route
