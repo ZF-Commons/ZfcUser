@@ -17,7 +17,7 @@ class ZfcUserLoginWidget extends AbstractHelper
     /**
      * $var string template used for view
      */
-    protected $viewTemplate = 'zfc-user/user/login';
+    protected $viewTemplate;
     /**
      * __invoke
      *
