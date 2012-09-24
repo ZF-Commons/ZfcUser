@@ -77,6 +77,7 @@ class UserController extends AbstractActionController
             return array(
                 'loginForm' => $form,
                 'redirect'  => $redirect,
+                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
             );
         }
 
