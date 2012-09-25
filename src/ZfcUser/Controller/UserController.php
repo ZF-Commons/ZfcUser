@@ -25,6 +25,11 @@ class UserController extends AbstractActionController
     /**
      * @var Form
      */
+    protected $logoutForm;
+
+    /**
+     * @var Form
+     */
     protected $registerForm;
 
     /**
@@ -97,12 +102,25 @@ class UserController extends AbstractActionController
      */
     public function logoutAction()
     {
+        $request = $this->getRequest();
+        $form    = $this->getLogoutForm();
+
+        if (!$request->isPost()) {
+            return array('logoutForm' => $form);
+        }
+
+        $form->setData($request->getPost());
+        if (!$form->isValid()) {
+            return array('logoutForm' => $form);
+        }
+
+        // Only logout on valid POST so that someone cannot make your users sign out
+        // by just including an <img> tag in their forum signature.
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
-        $redirect = ($this->getRequest()->getPost()->get('redirect')) ? $this->getRequest()->getPost()->get('redirect') : false;
-
-        if($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+        $redirect = $request->getPost()->get('redirect');
+        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
             return $this->redirect()->toUrl($redirect);
         }
 
@@ -169,7 +187,7 @@ class UserController extends AbstractActionController
 
         if ($prg instanceof Response) {
             return $prg;
-        } else if ($prg === false) {
+        } elseif ($prg === false) {
             return array(
                 'registerForm' => $form,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
@@ -207,7 +225,8 @@ class UserController extends AbstractActionController
     /**
      * Change the users password
      */
-    public function changepasswordAction() {
+    public function changepasswordAction()
+    {
         $form = $this->getChangePasswordForm();
         $prg = $this->prg('zfcuser/changepassword');
 
@@ -220,7 +239,7 @@ class UserController extends AbstractActionController
 
         if ($prg instanceof Response) {
             return $prg;
-        } else if ($prg === false) {
+        } elseif ($prg === false) {
             return array(
                 'status' => $status,
                 'changePasswordForm' => $form,
@@ -263,7 +282,7 @@ class UserController extends AbstractActionController
         $prg = $this->prg('zfcuser/changeemail');
         if ($prg instanceof Response) {
             return $prg;
-        } else if ($prg === false) {
+        } elseif ($prg === false) {
             return array(
                 'status' => $status,
                 'changeEmailForm' => $form,
@@ -344,14 +363,30 @@ class UserController extends AbstractActionController
         return $this;
     }
 
-    public function getChangePasswordForm() {
+    public function getLogoutForm()
+    {
+        if (!$this->logoutForm) {
+            $this->setLogoutForm($this->getServiceLocator()->get('zfcuser_logout_form'));
+        }
+        return $this->logoutForm;
+    }
+
+    public function setLogoutForm(Form $logoutForm)
+    {
+        $this->logoutForm = $logoutForm;
+        return $this;
+    }
+
+    public function getChangePasswordForm()
+    {
         if (!$this->changePasswordForm) {
             $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
         }
         return $this->changePasswordForm;
     }
 
-    public function setChangePasswordForm(Form $changePasswordForm) {
+    public function setChangePasswordForm(Form $changePasswordForm)
+    {
         $this->changePasswordForm = $changePasswordForm;
         return $this;
     }

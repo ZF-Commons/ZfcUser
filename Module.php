@@ -53,6 +53,12 @@ class Module implements
                     $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
                     return $viewHelper;
                 },
+                'zfcUserLogoutWidget' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\ZfcUserLogoutWidget;
+                    $viewHelper->setLogoutForm($locator->get('zfcuser_logout_form'));
+                    return $viewHelper;
+                },
             ),
         );
 
@@ -89,6 +95,11 @@ class Module implements
                     $options = $sm->get('zfcuser_module_options');
                     $form = new Form\Login(null, $sm->get('zfcuser_module_options'));
                     $form->setInputFilter(new Form\LoginFilter($options));
+                    return $form;
+                },
+
+                'zfcuser_logout_form' => function($sm) {
+                    $form = new Form\Logout(null);
                     return $form;
                 },
 
