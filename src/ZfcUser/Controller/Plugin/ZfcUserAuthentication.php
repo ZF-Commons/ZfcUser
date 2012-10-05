@@ -4,11 +4,12 @@ namespace ZfcUser\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain as AuthAdapter;
 
-class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwareInterface
+class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwareInterface
 {
     /**
      * @var AuthAdapter
@@ -25,6 +26,11 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
      */
     protected $serviceManager;
 
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
+    
     /**
      * Proxy convenience method
      *
@@ -93,6 +99,24 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
         return $this;
     }
 
+   /**
+     * Set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
+        $this->setServiceManager($serviceLocator->getServiceLocator());
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator() {
+        return $this->serviceLocator;
+    }
+
     /**
      * Retrieve service manager instance
      *
@@ -100,7 +124,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
      */
     public function getServiceManager()
     {
-        return $this->serviceManager->getServiceLocator();
+        return $this->serviceManager;
     }
 
     /**
@@ -113,4 +137,23 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     {
         $this->serviceManager = $serviceManager;
     }
+    
+   /**
+     * Set service locator
+     *
+     * @param ServiceLocatorInterface $serviceLocator
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
+        $this->setServiceManager($serviceLocator->getServiceLocator());
+    }
+
+    /**
+     * Get service locator
+     *
+     * @return ServiceLocatorInterface
+     */
+    public function getServiceLocator() {
+        return $this->serviceLocator;
+    }
+    
 }
