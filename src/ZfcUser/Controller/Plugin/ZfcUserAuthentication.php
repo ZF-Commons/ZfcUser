@@ -51,9 +51,6 @@ class ZfcUserAuthentication extends AbstractPlugin
      */
     public function getAuthAdapter()
     {
-        if (null === $this->authAdapter) {
-            $this->authAdapter = $this->getServiceLocator()->get('ZfcUser\Authentication\Adapter\AdapterChain');
-        }
         return $this->authAdapter;
     }
 
@@ -75,9 +72,6 @@ class ZfcUserAuthentication extends AbstractPlugin
      */
     public function getAuthService()
     {
-        if (null === $this->authService) {
-            $this->authService = $this->getServiceLocator()->get('zfcuser_auth_service');
-        }
         return $this->authService;
     }
 
@@ -90,24 +84,6 @@ class ZfcUserAuthentication extends AbstractPlugin
     {
         $this->authService = $authService;
         return $this;
-    }
-
-   /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
-        $this->serviceLocator = $serviceLocator;
-    }
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator() {
-        return $this->serviceLocator;
     }
 
 }

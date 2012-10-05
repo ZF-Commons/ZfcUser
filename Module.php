@@ -36,9 +36,12 @@ class Module implements
         return array(
             'factories' => array(
                 'zfcUserAuthentication' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
+                    $serviceLocator = $sm->getServiceLocator();
+                    $authService = $serviceLocator->get('zfcuser_auth_service');
+                    $authAdapter = $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain');
                     $controllerPlugin = new Controller\Plugin\zfcUserAuthentication;
-                    $controllerPlugin->setServiceLocator($locator);
+                    $controllerPlugin->setAuthService($authService);
+                    $controllerPlugin->setAuthAdapter($authAdapter);
                     return $controllerPlugin;
                 },
             ),
