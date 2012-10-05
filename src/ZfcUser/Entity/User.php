@@ -30,6 +30,11 @@ class User implements UserInterface
     protected $password;
 
     /**
+     * @var string
+     */
+    protected $hash;
+
+    /**
      * Get id.
      *
      * @return int
@@ -136,6 +141,28 @@ class User implements UserInterface
     public function setPassword($password)
     {
         $this->password = $password;
+        return $this;
+    }
+
+    /**
+     * Get hash.
+     *
+     * @return string
+     */
+    public function getHash()
+    {
+        return $this->hash;
+    }
+
+    /**
+     * Set hash.
+     *
+     * @param string $hash
+     * @return UserInterface
+     */
+    public function setHash($hash)
+    {
+        $this->hash = $hash;
         return $this;
     }
 }

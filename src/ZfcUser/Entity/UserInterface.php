@@ -78,4 +78,19 @@ interface UserInterface
      * @return UserInterface
      */
     public function setPassword($password);
+
+    /**
+     * Get hash.
+     *
+     * @return string hash
+     */
+    public function getHash();
+
+    /**
+     * Set hash.
+     *
+     * @param string $hash
+     * @return UserInterface
+     */
+    public function setHash($hash);
 }
