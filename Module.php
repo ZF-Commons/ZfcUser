@@ -30,6 +30,20 @@ class Module implements
     {
         return include __DIR__ . '/config/module.config.php';
     }
+    
+    public function getControllerPluginConfig() 
+    {
+        return array(
+            'factories' => array(
+                'zfcUserAuthentication' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $controllerPlugin = new Controller\Plugin\zfcUserAuthentication;
+                    $controllerPlugin->setServiceLocator($locator);
+                    return $controllerPlugin;
+                },
+            ),
+        );
+    }
 
     public function getViewHelperConfig()
     {

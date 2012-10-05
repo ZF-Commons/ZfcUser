@@ -4,12 +4,10 @@ namespace ZfcUser\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\ServiceLocatorAwareInterface;
-use Zend\ServiceManager\ServiceManager;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain as AuthAdapter;
 
-class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwareInterface
+class ZfcUserAuthentication extends AbstractPlugin
 {
     /**
      * @var AuthAdapter
@@ -20,11 +18,6 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwar
      * @var AuthenticationService
      */
     protected $authService;
-
-    /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
 
     /**
      * @var ServiceLocatorInterface
@@ -59,7 +52,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwar
     public function getAuthAdapter()
     {
         if (null === $this->authAdapter) {
-            $this->authAdapter = $this->getServiceManager()->get('ZfcUser\Authentication\Adapter\AdapterChain');
+            $this->authAdapter = $this->getServiceLocator()->get('ZfcUser\Authentication\Adapter\AdapterChain');
         }
         return $this->authAdapter;
     }
@@ -83,7 +76,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwar
     public function getAuthService()
     {
         if (null === $this->authService) {
-            $this->authService = $this->getServiceManager()->get('zfcuser_auth_service');
+            $this->authService = $this->getServiceLocator()->get('zfcuser_auth_service');
         }
         return $this->authService;
     }
@@ -105,7 +98,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwar
      * @param ServiceLocatorInterface $serviceLocator
      */
     public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
-        $this->setServiceManager($serviceLocator->getServiceLocator());
+        $this->serviceLocator = $serviceLocator;
     }
 
     /**
@@ -117,43 +110,4 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwar
         return $this->serviceLocator;
     }
 
-    /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-    }
-    
-   /**
-     * Set service locator
-     *
-     * @param ServiceLocatorInterface $serviceLocator
-     */
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator) {
-        $this->setServiceManager($serviceLocator->getServiceLocator());
-    }
-
-    /**
-     * Get service locator
-     *
-     * @return ServiceLocatorInterface
-     */
-    public function getServiceLocator() {
-        return $this->serviceLocator;
-    }
-    
 }
