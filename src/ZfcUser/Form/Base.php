@@ -62,15 +62,13 @@ class Base extends ProvidesEventsForm
             ),
         ));
 
-        if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {
+        if ($this->getFormOptions()->getUseFormCaptcha()) {
             $this->add(array(
                 'name' => 'captcha',
                 'type' => 'Zend\Form\Element\Captcha',
                 'options' => array(
                     'label' => 'Please type the following text',
-                ),
-                'attributes' => array(
-                    'captcha' => $this->getOptions()->getFormCaptchaOptions(),
+                    'captcha' => $this->getFormOptions()->getFormCaptchaOptions(),
                 ),
             ));
         }

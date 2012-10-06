@@ -98,7 +98,7 @@ $settings = array(
      * Determines if a captcha should be utilized on the user registration form.
      * Default value is false.
      */
-    //'use_registration_form_captcha' => false,
+    //'use_form_captcha' => false,
 
     /**
      * Form Captcha Options
@@ -108,7 +108,7 @@ $settings = array(
      * pass to it. The default uses the Figlet captcha.
      */
     /*'form_captcha_options' => array(
-        'class'   => 'figlet',
+        'class'   => 'Zend\Captcha\Figlet',
         'options' => array(
             'wordLen'    => 5,
             'expiration' => 300,

@@ -343,7 +343,7 @@ class ModuleOptions extends AbstractOptions implements
      * @param bool $useRegistrationFormCaptcha
      * @return ModuleOptions
      */
-    public function setUseRegistrationFormCaptcha($useRegistrationFormCaptcha)
+    public function setUseFormCaptcha($useRegistrationFormCaptcha)
     {
         $this->useRegistrationFormCaptcha = $useRegistrationFormCaptcha;
         return $this;
@@ -354,7 +354,7 @@ class ModuleOptions extends AbstractOptions implements
      *
      * @return bool
      */
-    public function getUseRegistrationFormCaptcha()
+    public function getUseFormCaptcha()
     {
         return $this->useRegistrationFormCaptcha;
     }
