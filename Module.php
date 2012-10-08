@@ -88,7 +88,7 @@ class Module implements
 
                 'zfcuser_login_form' => function($sm) {
                     $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Login(null, $sm->get('zfcuser_module_options'));
+                    $form = new Form\Login(null, $options);
                     $form->setInputFilter(new Form\LoginFilter($options));
                     return $form;
                 },
