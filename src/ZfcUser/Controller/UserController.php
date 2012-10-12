@@ -85,7 +85,6 @@ class UserController extends AbstractActionController
         $form->setData($request->getPost());
 
         if (!$form->isValid()) {
-            die(var_dump($form->getMessages()));
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             return $this->redirect()->toUrl($this->url('zfcuser')->fromRoute('zfcuser/login'));
         }
