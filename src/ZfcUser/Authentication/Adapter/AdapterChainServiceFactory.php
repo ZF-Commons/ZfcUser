@@ -10,8 +10,15 @@ class AdapterChainServiceFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $chain = new AdapterChain;
-        $adapter = $serviceLocator->get('ZfcUser\Authentication\Adapter\Db');
-        $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'));
+
+        $options = $serviceLocator->get('zfcuser_module_options');
+
+        //iterate and attach multiple adapters
+        foreach($options->getAuthAdapters() as $priority => $adapterName) {
+            $adapter = $serviceLocator->get($adapterName);
+            $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'), $priority);
+        }
+
         return $chain;
     }
 }
