@@ -98,6 +98,7 @@ class UserController extends AbstractActionController
     public function logoutAction()
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+        $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
         $redirect = ($this->getRequest()->getPost()->get('redirect')) ? $this->getRequest()->getPost()->get('redirect') : false;
