@@ -3,12 +3,13 @@
 namespace ZfcUser\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
+use Zend\Mvc\Controller\PluginManager;
 use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceLocatorAwareInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain as AuthAdapter;
 
-class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwareInterface
+class ZfcUserAuthentication extends AbstractPlugin implements ServiceLocatorAwareInterface
 {
     /**
      * @var AuthAdapter
@@ -21,9 +22,9 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     protected $authService;
 
     /**
-     * @var ServiceManager
+     * @var PluginManager
      */
-    protected $serviceManager;
+    protected $pluginManager;
 
     /**
      * Proxy convenience method
@@ -53,7 +54,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     public function getAuthAdapter()
     {
         if (null === $this->authAdapter) {
-            $this->authAdapter = $this->getServiceManager()->get('ZfcUser\Authentication\Adapter\AdapterChain');
+            $this->authAdapter = $this->getServiceLocator()->get('ZfcUser\Authentication\Adapter\AdapterChain');
         }
         return $this->authAdapter;
     }
@@ -77,7 +78,7 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     public function getAuthService()
     {
         if (null === $this->authService) {
-            $this->authService = $this->getServiceManager()->get('zfcuser_auth_service');
+            $this->authService = $this->getServiceLocator()->get('zfcuser_auth_service');
         }
         return $this->authService;
     }
@@ -96,21 +97,22 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     /**
      * Retrieve service manager instance
      *
-     * @return ServiceManager
+     * @return ServiceLocatorInterface
      */
-    public function getServiceManager()
+    public function getServiceLocator()
     {
-        return $this->serviceManager->getServiceLocator();
+        return $this->pluginManager->getServiceLocator();
     }
 
     /**
      * Set service manager instance
      *
-     * @param ServiceManager $locator
+     * @param ServiceLocatorInterface $serviceLocator
      * @return void
      */
-    public function setServiceManager(ServiceManager $serviceManager)
+    public function setServiceLocator(ServiceLocatorInterface $pluginManager)
     {
-        $this->serviceManager = $serviceManager;
+        $this->pluginManager = $pluginManager;
+        return $this;
     }
 }
