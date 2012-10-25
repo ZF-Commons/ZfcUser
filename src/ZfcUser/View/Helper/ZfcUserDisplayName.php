@@ -24,6 +24,11 @@ class ZfcUserDisplayName extends AbstractHelper
         if (null === $user) {
             if ($this->getAuthService()->hasIdentity()) {
                 $user = $this->getAuthService()->getIdentity();
+                if (!$user instanceof User) {
+                    throw new \ZfcUser\Exception\DomainException(
+                        '$user is not an instance of User', 500
+                    );
+                }
             } else {
                 return false;
             }
