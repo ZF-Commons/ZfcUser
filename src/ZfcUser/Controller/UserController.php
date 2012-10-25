@@ -114,12 +114,17 @@ class UserController extends AbstractActionController
      */
     public function authenticateAction()
     {
-        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
-            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
-        }
         $request = $this->getRequest();
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
         $redirect = $request->getPost()->get('redirect') ? $request->getPost()->get('redirect') : false;
+
+        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+            if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
+                return $this->redirect()->toUrl($redirect);
+            }
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+
 
         $result = $adapter->prepareForAuthentication($request);
 
