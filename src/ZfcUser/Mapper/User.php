@@ -13,7 +13,6 @@ class User extends AbstractDbMapper implements UserInterface
     public function findByEmail($email)
     {
         $select = $this->getSelect()
-                       ->from($this->tableName)
                        ->where(array('email' => $email));
 
         $entity = $this->select($select)->current();
@@ -24,7 +23,6 @@ class User extends AbstractDbMapper implements UserInterface
     public function findByUsername($username)
     {
         $select = $this->getSelect()
-                       ->from($this->tableName)
                        ->where(array('username' => $username));
 
         $entity = $this->select($select)->current();
@@ -35,7 +33,6 @@ class User extends AbstractDbMapper implements UserInterface
     public function findById($id)
     {
         $select = $this->getSelect()
-                       ->from($this->tableName)
                        ->where(array('user_id' => $id));
 
         $entity = $this->select($select)->current();
