@@ -6,7 +6,9 @@ use ZfcBase\Mapper\AbstractDbMapper;
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
-class User extends AbstractDbMapper implements UserInterface
+class User
+    extends AbstractDbMapper
+    implements UserInterface
 {
     protected $tableName  = 'user';
     protected $fieldNames = array(
