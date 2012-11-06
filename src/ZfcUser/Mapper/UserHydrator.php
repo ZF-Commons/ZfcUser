@@ -21,7 +21,7 @@ class UserHydrator extends ClassMethods
         }
         /* @var $object UserInterface*/
         $data = parent::extract($object);
-//         $data = $this->mapField('id', 'user_id', $data);
+        $this->mapFieldForExtract($data);
         return $data;
     }
 
@@ -38,17 +38,26 @@ class UserHydrator extends ClassMethods
         if (!$object instanceof UserEntityInterface) {
             throw new Exception\InvalidArgumentException('$object must be an instance of ZfcUser\Entity\UserInterface');
         }
-//         $data = $this->mapField('user_id', 'id', $data);
+        $this->mapFieldForHydrate($data);
         return parent::hydrate($data, $object);
     }
 
-    protected function mapField($keyFrom, $keyTo, array $array)
+    protected function mapField($keyFrom, $keyTo, array &$array)
     {
         if ( !isset($array[$keyFrom]) && isset($array[$keyTo]) ) {
             return $array;
         }
         $array[$keyTo] = $array[$keyFrom];
         unset($array[$keyFrom]);
-        return $array;
+    }
+
+    protected function mapFieldForExtract( array &$array )
+    {
+        $this->mapField('id', 'user_id', $array);
+    }
+
+    protected function mapFieldForHydrate( array &$array )
+    {
+        $this->mapField('user_id','id', $array);
     }
 }
