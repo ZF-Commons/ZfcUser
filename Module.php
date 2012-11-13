@@ -148,4 +148,23 @@ class Module implements
             ),
         );
     }
+    /**
+     * New Controller Plugin integration.
+     * No more Dependency with the service manager
+     * @return array
+     */
+    public function getControllerPluginConfig() {
+        return array(
+            'factories' => array(
+                'zfcuserauthentication' => function($sm) {
+                    $instance = new Controller\Plugin\ZfcUserAuthentication();
+                    $adapterChain = $sm->getServiceLocator()->get('ZfcUser\Authentication\Adapter\AdapterChain');
+                    $zfcuser_auth_service = $sm->getServiceLocator()->get('zfcuser_auth_service');
+                    $instance->setAuthAdapter($adapterChain);
+                    $instance->setAuthService($zfcuser_auth_service);
+                    return $instance;
+                },
+            ),
+        );
+    }
 }
