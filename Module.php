@@ -30,8 +30,8 @@ class Module implements
     {
         return include __DIR__ . '/config/module.config.php';
     }
-    
-    public function getControllerPluginConfig() 
+
+    public function getControllerPluginConfig()
     {
         return array(
             'factories' => array(
@@ -39,7 +39,7 @@ class Module implements
                     $serviceLocator = $sm->getServiceLocator();
                     $authService = $serviceLocator->get('zfcuser_auth_service');
                     $authAdapter = $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain');
-                    $controllerPlugin = new Controller\Plugin\zfcUserAuthentication;
+                    $controllerPlugin = new Controller\Plugin\ZfcUserAuthentication;
                     $controllerPlugin->setAuthService($authService);
                     $controllerPlugin->setAuthAdapter($authAdapter);
                     return $controllerPlugin;
