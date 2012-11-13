@@ -10,11 +10,6 @@ return array(
             'zfcuser' => 'ZfcUser\Controller\UserController',
         ),
     ),
-    'controller_plugins' => array(
-        'invokables' => array(
-            'zfcuserauthentication' => 'ZfcUser\Controller\Plugin\ZfcUserAuthentication',
-        ),
-    ),
     'service_manager' => array(
         'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
