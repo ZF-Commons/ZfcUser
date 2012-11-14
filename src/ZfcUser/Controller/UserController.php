@@ -119,7 +119,7 @@ class UserController extends AbstractActionController
         }
         $request = $this->getRequest();
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
-        $redirect = $request->getPost()->get('redirect') ? $request->getPost()->get('redirect') : false;
+        $redirect = $request->getQuery()->get('redirect') ? $request->getQuery()->get('redirect') : false;
 
         $result = $adapter->prepareForAuthentication($request);
 
