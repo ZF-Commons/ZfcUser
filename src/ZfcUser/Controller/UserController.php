@@ -117,11 +117,10 @@ class UserController extends AbstractActionController
         if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
-        $request = $this->getRequest();
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
-        $redirect = $request->getQuery()->get('redirect') ? $request->getQuery()->get('redirect') : false;
+        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
 
-        $result = $adapter->prepareForAuthentication($request);
+        $result = $adapter->prepareForAuthentication($this->getRequest());
 
         // Return early if an adapter returned a response
         if ($result instanceof Response) {
