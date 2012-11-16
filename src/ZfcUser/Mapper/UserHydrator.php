@@ -22,6 +22,9 @@ class UserHydrator extends ClassMethods
         /* @var $object UserInterface*/
         $data = parent::extract($object);
         $data = $this->mapField('id', 'user_id', $data);
+//        unset($data['id']);
+        
+        
         return $data;
     }
 
