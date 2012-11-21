@@ -20,17 +20,17 @@ class Register extends Base
      */
     public function __construct($name = null, RegistrationOptionsInterface $options)
     {
-        $this->setRegistrationOptions($options);
+        $this->setFormOptions($options);
         parent::__construct($name);
 
         $this->remove('userId');
-        if (!$this->getRegistrationOptions()->getEnableUsername()) {
+        if (!$this->getFormOptions()->getEnableUsername()) {
             $this->remove('username');
         }
-        if (!$this->getRegistrationOptions()->getEnableDisplayName()) {
+        if (!$this->getFormOptions()->getEnableDisplayName()) {
             $this->remove('display_name');
         }
-        if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha() && $this->captchaElement) {
+        if ($this->getFormOptions()->getUseFormCaptcha() && $this->captchaElement) {
             $this->add($this->captchaElement, array('name'=>'captcha'));
         }
         $this->get('submit')->setLabel('Register');
@@ -43,23 +43,23 @@ class Register extends Base
     }
 
     /**
-     * Set Regsitration Options
+     * Set Registration Options
      *
      * @param RegistrationOptionsInterface $registrationOptions
      * @return Register
      */
-    public function setRegistrationOptions(RegistrationOptionsInterface $registrationOptions)
+    public function setFormOptions(RegistrationOptionsInterface $registrationOptions)
     {
         $this->registrationOptions = $registrationOptions;
         return $this;
     }
 
     /**
-     * Get Regsitration Options
+     * Get Registration Options
      *
      * @return RegistrationOptionsInterface
      */
-    public function getRegistrationOptions()
+    public function getFormOptions()
     {
         return $this->registrationOptions;
     }

@@ -68,14 +68,14 @@ interface RegistrationOptionsInterface
      * @param bool $useRegistrationFormCaptcha
      * @return ModuleOptions
      */
-    public function setUseRegistrationFormCaptcha($useRegistrationFormCaptcha);
+    public function setUseFormCaptcha($useRegistrationFormCaptcha);
 
     /**
      * get use a captcha in registration form
      *
      * @return bool
      */
-    public function getUseRegistrationFormCaptcha();
+    public function getUseFormCaptcha();
 
     /**
      * set login after registration
