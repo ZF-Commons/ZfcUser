@@ -266,7 +266,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * Set service manager instance
      *
-     * @param ServiceManager $locator
+     * @param ServiceManager $serviceManager
      * @return User
      */
     public function setServiceManager(ServiceManager $serviceManager)
