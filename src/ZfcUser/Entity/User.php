@@ -28,6 +28,11 @@ class User implements UserInterface
      * @var string
      */
     protected $password;
+    
+    /**
+     * @var int
+     */
+    protected $state;
 
     /**
      * Get id.
@@ -136,6 +141,28 @@ class User implements UserInterface
     public function setPassword($password)
     {
         $this->password = $password;
+        return $this;
+    }
+    
+    /**
+     * Get state.
+     *
+     * @return int
+     */
+    public function getState()
+    {
+        return $this->state;
+    }
+
+    /**
+     * Set state.
+     *
+     * @param int $state
+     * @return UserInterface
+     */
+    public function setState($state)
+    {
+        $this->state = $state;
         return $this;
     }
 }
