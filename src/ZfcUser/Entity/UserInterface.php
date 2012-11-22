@@ -78,4 +78,20 @@ interface UserInterface
      * @return UserInterface
      */
     public function setPassword($password);
+    
+    /**
+     * Get state.
+     *
+     * @return int
+     */
+    public function getState();
+
+    /**
+     * Set state.
+     *
+     * @param int $state
+     * @return UserInterface
+     */
+    public function setState($state);
+
 }
