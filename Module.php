@@ -132,7 +132,8 @@ class Module implements
                 },
 
                 'zfcuser_user_hydrator' => function ($sm) {
-                    return new Mapper\UserHydrator();
+                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
+                    return $hydrator;
                 },
 
                 'zfcuser_user_mapper' => function ($sm) {
@@ -141,7 +142,7 @@ class Module implements
                     $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
                     $entityClass = $options->getUserEntityClass();
                     $mapper->setEntityPrototype(new $entityClass);
-                    $mapper->setHydrator( $sm->get('zfcuser_user_hydrator') );
+                    $mapper->setHydrator(new Mapper\UserHydrator());
                     return $mapper;
                 },
             ),
