@@ -6,7 +6,6 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Crypt\Password\Bcrypt;
 use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
@@ -62,7 +61,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $class = $this->getOptions()->getUserEntityClass();
         $user  = new $class;
         $form  = $this->getRegisterForm();
-        $form->setHydrator(new ClassMethods());
+        $form->setHydrator($this->getServiceManager()->get('zfcuser_register_form_hydrator'));
         $form->bind($user);
         $form->setData($data);
         if (!$form->isValid()) {
@@ -82,7 +81,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         if ($this->getOptions()->getEnableDisplayName()) {
             $user->setDisplayName($data['display_name']);
         }
-        
+
         // If user state is enabled, set the default state value
         if ($this->getOptions()->getEnableUserState()) {
             if ($this->getOptions()->getDefaultUserState()) {

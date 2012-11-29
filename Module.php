@@ -6,6 +6,7 @@ use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\Stdlib\Hydrator\ClassMethods;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -116,6 +117,10 @@ class Module implements
                     $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
                     $form->setInputFilter(new Form\ChangePasswordFilter($options));
                     return $form;
+                },
+
+                'zfcuser_register_form_hydrator' => function ($sm) {
+                    return new ClassMethods();
                 },
 
                 'zfcuser_change_email_form' => function($sm) {
