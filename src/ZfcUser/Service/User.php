@@ -3,11 +3,13 @@
 namespace ZfcUser\Service;
 
 use Zend\Authentication\AuthenticationService;
+use Zend\Authentication\Storage;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Stdlib\Hydrator;
+use ZfcUser\Entity\UserInterface;
 use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
@@ -40,6 +42,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * @var Form
      */
     protected $changePasswordForm;
+
+    /**
+     * @var Storage\StorageInterface
+     */
+    protected $storageForImpersonator;
 
     /**
      * @var ServiceManager
@@ -150,6 +157,97 @@ class User extends EventProvider implements ServiceManagerAwareInterface
 
         return true;
     }
+
+    /**
+     * impersonate
+     *
+     * @param string $userId
+     * @return boolean
+     */
+    public function impersonate($userId)
+    {
+        // Retrieve the user to impersonate.
+        $userToImpersonate = $this->getUserMapper()->findById($userId);
+
+        // Ensure that the user to impersonate is valid.
+        if(!$userToImpersonate instanceof UserInterface) {
+            // User not found or not the correct type.
+            return false;
+        }
+
+        // Store the impersonator (real user) in storage to allow later unimpersonation.
+        $this->getStorageForImpersonator()->write($this->getAuthService()->getIdentity());
+
+        // Start impersonation by overwriting the identity stored in auth storage.
+        $this->getAuthService()->getStorage()->write($userToImpersonate);
+
+         return true;
+    }
+
+    /**
+     * unimpersonate
+     *
+     * @return boolean
+     */
+    public function unimpersonate()
+    {
+        // Retrieve the impersonator (real user) from storage.
+        $impersonator = $this->getStorageForImpersonator()->read();
+
+        // Ensure that the impersonator (real user) from storage is valid.
+        if(!$impersonator instanceof UserInterface) {
+            // No user is currently being impersonated or the impersonator
+            // (real user) in storage is not the correct type.
+            return false;
+        }
+
+        // Stop impersonation by restoring the original identity to auth storage.
+        $this->getAuthService()->getStorage()->write($impersonator);
+
+        // Clear the impersonator (real user) from storage.
+        $this->getStorageForImpersonator()->clear();
+
+        return true;
+    }
+
+    /**
+     * isImpersonated
+     *
+     * @return boolean
+     */
+    public function isImpersonated()
+    {
+        // If the impersonator storage is empty, the current user is not being impersonated.
+        return !$this->getStorageForImpersonator()->isEmpty();
+    }
+
+    /**
+     * Returns the persistent storage handler for the impersonator
+     *
+     * Session storage is used by default unless a different storage adapter has been set.
+     *
+     * @return Storage\StorageInterface
+     */
+     public function getStorageForImpersonator()
+     {
+         if (null === $this->storageForImpersonator) {
+             $this->setStorageForImpersonator(new Storage\Session(get_called_class(), 'impersonator'));
+         }
+
+         return $this->storageForImpersonator;
+     }
+
+     /**
+     * Sets the persistent storage handler for the impersonator
+     *
+     * @param  Storage\StorageInterface $storage
+     * @return ZfcUser\Service\User Provides a fluent interface
+     */
+     public function setStorageForImpersonator(Storage\StorageInterface $storageForImpersonator)
+     {
+         $this->storageForImpersonator = $storageForImpersonator;
+         return $this;
+     }
 
     /**
      * getUserMapper
