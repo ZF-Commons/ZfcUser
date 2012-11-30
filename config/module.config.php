@@ -34,6 +34,16 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    'index' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'index',
+                            ),
+                        ),
+                    ),
                     'login' => array(
                         'type' => 'Literal',
                         'options' => array(
