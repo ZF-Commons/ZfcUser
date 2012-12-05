@@ -120,7 +120,7 @@ $settings = array(
     /**
      * Use Redirect Parameter If Present
      *
-     * Upon successful authentication, check for a 'redirect' POST parameter
+     * Upon successful authentication, check for a 'redirect' POST or GET parameter
      *
      * Accepted values: boolean true or false
      */
@@ -136,15 +136,15 @@ $settings = array(
 
     /**
      * Login Redirect Route
-     * 
+     *
      * Upon successful login the user will be redirected to the entered route
-     * 
+     *
      * Default value: 'zfcuser'
      * Accepted values: A valid route name within your application
-     * 
+     *
      */
     //'login_redirect_route' => 'zfcuser',
-    
+
     /**
      * Logout Redirect Route
      *
