@@ -40,7 +40,7 @@ abstract class AbstractAdapter implements ChainableAdapter
     }
 
     /**
-     * Check if this adapter is satsified or not
+     * Check if this adapter is satisfied or not
      *
      * @return bool
      */
