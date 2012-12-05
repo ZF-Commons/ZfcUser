@@ -149,7 +149,7 @@ class UserController extends AbstractActionController
     public function registerAction()
     {
         // if the user is logged in, we don't need to register
-        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
             // redirect to the login redirect route
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
@@ -210,7 +210,7 @@ class UserController extends AbstractActionController
     public function changepasswordAction()
     {
         // if the user isn't logged in, we can't change password
-        if (!$this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+        if (!$this->zfcUserAuthentication()->hasIdentity()) {
             // redirect to the login redirect route
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
@@ -257,7 +257,7 @@ class UserController extends AbstractActionController
     public function changeEmailAction()
     {
         // if the user isn't logged in, we can't change email
-        if (!$this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+        if (!$this->zfcUserAuthentication()->hasIdentity()) {
             // redirect to the login redirect route
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
