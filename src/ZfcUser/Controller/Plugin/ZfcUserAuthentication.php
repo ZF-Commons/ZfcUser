@@ -4,11 +4,10 @@ namespace ZfcUser\Controller\Plugin;
 
 use Zend\Mvc\Controller\Plugin\AbstractPlugin;
 use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain as AuthAdapter;
 
-class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwareInterface
+class ZfcUserAuthentication extends AbstractPlugin
 {
     /**
      * @var AuthAdapter
@@ -21,10 +20,10 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
     protected $authService;
 
     /**
-     * @var ServiceManager
+     * @var ServiceLocatorInterface
      */
-    protected $serviceManager;
-
+    protected $serviceLocator;
+    
     /**
      * Proxy convenience method
      *
@@ -52,9 +51,6 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
      */
     public function getAuthAdapter()
     {
-        if (null === $this->authAdapter) {
-            $this->authAdapter = $this->getServiceManager()->get('ZfcUser\Authentication\Adapter\AdapterChain');
-        }
         return $this->authAdapter;
     }
 
@@ -76,9 +72,6 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
      */
     public function getAuthService()
     {
-        if (null === $this->authService) {
-            $this->authService = $this->getServiceManager()->get('zfcuser_auth_service');
-        }
         return $this->authService;
     }
 
@@ -93,24 +86,4 @@ class ZfcUserAuthentication extends AbstractPlugin implements ServiceManagerAwar
         return $this;
     }
 
-    /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager->getServiceLocator();
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-    }
 }
