@@ -78,7 +78,7 @@ interface UserInterface
      * @return UserInterface
      */
     public function setPassword($password);
-    
+
     /**
      * Get state.
      *
