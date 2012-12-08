@@ -68,7 +68,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             $this->setSatisfied(false);
             return false;
         }
-        
+
         if ($this->getOptions()->getEnableUserState()) {
             // Don't allow user to login if state is not in allowed list
             if (!in_array($userObject->getState(), $this->getOptions()->getAllowedLoginStates())) {
@@ -78,7 +78,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
                 return false;
             }
         }
-        
+
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
         if (!$bcrypt->verify($credential,$userObject->getPassword())) {

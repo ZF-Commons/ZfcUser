@@ -47,7 +47,7 @@ class ModuleOptions extends AbstractOptions implements
      * @var int
      */
     protected $enableUserState = false;
-            
+
     /**
      * @var int
      */
@@ -57,7 +57,7 @@ class ModuleOptions extends AbstractOptions implements
      * @var Array
      */
     protected $allowedLoginStates = array( null, 1 );
-    
+
     /**
      * @var array
      */
@@ -197,7 +197,7 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->userLoginWidgetViewTemplate;
     }
-    
+
     /**
      * set enable user registration
      *
@@ -295,7 +295,7 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->enableUserState;
     }
-    
+
     /**
      * set user state usage for registration/login process
      *
@@ -307,7 +307,7 @@ class ModuleOptions extends AbstractOptions implements
         $this->enableUserState = $flag;
         return $this;
     }
-    
+
     /**
      * get default user state on registration
      *
@@ -317,7 +317,7 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->defaultUserState;
     }
-    
+
     /**
      * set default user state on registration
      *
@@ -339,7 +339,7 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->allowedLoginStates;
     }
-    
+
     /**
      * set list of states to allow user login
      *
@@ -351,7 +351,7 @@ class ModuleOptions extends AbstractOptions implements
         $this->allowedLoginStates = $states;
         return $this;
     }
-    
+
     /**
      * set auth identity fields
      *

@@ -69,7 +69,7 @@ class ZfcUserLoginWidget extends AbstractHelper
         $this->loginForm = $loginForm;
         return $this;
     }
-    
+
     /**
      * @param string $viewTemplate
      * @return ZfcUserLoginWidget
@@ -79,5 +79,5 @@ class ZfcUserLoginWidget extends AbstractHelper
         $this->viewTemplate = $viewTemplate;
         return $this;
     }
-    
+
 }

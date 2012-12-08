@@ -82,7 +82,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         if ($this->getOptions()->getEnableDisplayName()) {
             $user->setDisplayName($data['display_name']);
         }
-        
+
         // If user state is enabled, set the default state value
         if ($this->getOptions()->getEnableUserState()) {
             if ($this->getOptions()->getDefaultUserState()) {

@@ -28,7 +28,7 @@ class User implements UserInterface
      * @var string
      */
     protected $password;
-    
+
     /**
      * @var int
      */
@@ -143,7 +143,7 @@ class User implements UserInterface
         $this->password = $password;
         return $this;
     }
-    
+
     /**
      * Get state.
      *
