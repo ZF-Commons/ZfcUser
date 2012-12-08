@@ -23,7 +23,7 @@ class ZfcUserAuthentication extends AbstractPlugin
      * @var ServiceLocatorInterface
      */
     protected $serviceLocator;
-    
+
     /**
      * Proxy convenience method
      *
