@@ -19,10 +19,14 @@ class UserHydrator extends ClassMethods
         if (!$object instanceof UserEntityInterface) {
             throw new Exception\InvalidArgumentException('$object must be an instance of ZfcUser\Entity\UserInterface');
         }
-        /* @var $object UserInterface*/
-        $data = parent::extract($object);
-        $data = $this->mapField('id', 'user_id', $data);
-        return $data;
+        if (method_exists($object, 'toArray')){
+            return  $object->toArray();
+        }else{
+            /* @var $object UserInterface*/
+            $data = parent::extract($object);
+            $data = $this->mapField('id', 'user_id', $data);
+            return $data;
+        }
     }
 
     /**
