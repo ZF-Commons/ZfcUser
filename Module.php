@@ -160,6 +160,7 @@ class Module implements
                     $entityClass = $options->getUserEntityClass();
                     $mapper->setEntityPrototype(new $entityClass);
                     $mapper->setHydrator(new Mapper\UserHydrator());
+                    $mapper->setTableName($options->getTableName());
                     return $mapper;
                 },
             ),
