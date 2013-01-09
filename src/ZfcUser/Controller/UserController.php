@@ -74,11 +74,13 @@ class UserController extends AbstractActionController
         }
 
         if (!$request->isPost()) {
-            return array(
+            $model = new ViewModel();
+            $model->setTemplate($this->getOptions()->getUserLoginWidgetViewTemplate());
+            return $model->setVariables(array(
                 'loginForm' => $form,
                 'redirect'  => $redirect,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
-            );
+            ), true);
         }
 
         $form->setData($request->getPost());
