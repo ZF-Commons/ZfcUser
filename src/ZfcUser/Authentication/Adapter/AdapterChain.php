@@ -76,7 +76,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
                 $listener[0]->getStorage()->clear();
             }
         }
-        $this;
+        return $this;
     }
 
     /**
