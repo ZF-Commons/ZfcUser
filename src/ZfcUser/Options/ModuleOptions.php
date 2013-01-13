@@ -496,7 +496,7 @@ class ModuleOptions extends AbstractOptions implements
      * @param string $tableName
      */
     public function setTableName($tableName){
-    	$this->tableName=$tableName;
+        $this->tableName=$tableName;
     }
     
     /**
@@ -505,7 +505,7 @@ class ModuleOptions extends AbstractOptions implements
      * @return string
      */
     public function getTableName(){
-    	return $this->tableName;
+        return $this->tableName;
     }
 
     /**
