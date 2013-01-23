@@ -62,6 +62,11 @@ $settings = array(
      * Accepted values: array containing one or more of: email, username
      */
     //'auth_identity_fields' => array( 'email' ),
+    
+    /**
+     * Cicle trough all this auth methods to check for username  
+     */
+    //'enabled_auth_methods' => array( 'db' ),
 
     /**
      * Login form timeout
