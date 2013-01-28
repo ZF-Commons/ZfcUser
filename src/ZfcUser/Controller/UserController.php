@@ -87,7 +87,10 @@ class UserController extends AbstractActionController
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             return $this->redirect()->toUrl($this->url()->fromRoute('zfcuser/login').($redirect ? '?redirect='.$redirect : ''));
         }
+
         // clear adapters
+        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
         return $this->forward()->dispatch('zfcuser', array('action' => 'authenticate'));
     }
