@@ -62,6 +62,19 @@ class ModuleOptions extends AbstractOptions implements
      * @var array
      */
     protected $authIdentityFields = array( 'email' );
+    
+    /**
+     * @var array
+     */
+    protected $availableAuthMethods = array(
+        'db' => 'ZfcUser\Authentication\Adapter\Db',
+        'ldap' => 'ZfcUser\Authentication\Adapter\Ldap'
+    );
+    
+    /**
+     * @var array
+     */
+    protected $enabledAuthMethods = array( 'db' );
 
     /**
      * @var string
@@ -207,6 +220,12 @@ class ModuleOptions extends AbstractOptions implements
     public function setEnableRegistration($enableRegistration)
     {
         $this->enableRegistration = $enableRegistration;
+        /**
+         * If the authentication is set to LDAP, disable registration
+         */
+        if(in_array('ldap', $this->getEnabledAuthMethods())) {
+            $this->enableRegistration = false;
+        }
         return $this;
     }
 
@@ -217,6 +236,12 @@ class ModuleOptions extends AbstractOptions implements
      */
     public function getEnableRegistration()
     {
+        /**
+         * If the authentication is set to LDAP, disable registration
+         */
+        if(in_array('ldap', $this->getEnabledAuthMethods())) {
+            $this->enableRegistration = false;
+        }
         return $this->enableRegistration;
     }
 
@@ -361,6 +386,12 @@ class ModuleOptions extends AbstractOptions implements
     public function setAuthIdentityFields($authIdentityFields)
     {
         $this->authIdentityFields = $authIdentityFields;
+        /**
+         * If the authentication is set to LDAP only allow username field
+         */
+        if(in_array('ldap', $this->getEnabledAuthMethods())) {
+            $this->authIdentityFields = array( 'username' );
+        }
         return $this;
     }
 
@@ -371,7 +402,49 @@ class ModuleOptions extends AbstractOptions implements
      */
     public function getAuthIdentityFields()
     {
+        /**
+         * If the authentication is set to LDAP, only allow username field
+         */
+        if(in_array('ldap', $this->getEnabledAuthMethods())) {
+            $this->authIdentityFields = array( 'username' );
+        }
         return $this->authIdentityFields;
+    }
+    
+    /**
+     *
+     * @param type $availableAuthMethods
+     * @return \ZfcUser\Options\ModuleOptions 
+     */
+    public function setAvailableAuthMethods($availableAuthMethods) {
+        $this->availableAuthMethods = $availableAuthMethods;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function getAvailableAuthMethods() {
+        return $this->availableAuthMethods;
+    }
+    
+    /**
+     *
+     * @param type $enabledAuthMethods
+     * @return \ZfcUser\Options\ModuleOptions 
+     */
+    public function setEnabledAuthMethods($enabledAuthMethods) {
+        $this->enabledAuthMethods = $enabledAuthMethods;
+        return $this;
+    }
+    
+    /**
+     *
+     * @return array
+     */
+    public function getEnabledAuthMethods() {
+        return $this->enabledAuthMethods;
     }
 
     /**

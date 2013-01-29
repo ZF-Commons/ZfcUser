@@ -1,0 +1,62 @@
+<?php
+/**
+ * ZfcUserLDAPAdapter Configuration
+ *
+ * If you have a ./config/autoload/ directory set up for your project, you can
+ * drop this config file in it and change the values as you wish.
+ */
+$settings = array(
+    //'servers' => array(
+        //You can add as many servers as you would like, take note that this 
+        //could be REALLY SLOW
+        //'server1' => array(
+            /**
+            * Required hostname or IP address of the LDAP server 
+            */
+            //'host' => 'ldap.example.tld',
+            /**
+            * Optional port number
+            **/
+            //'port' => 1234,
+            /**
+            * Optional username and password to connect to the server
+            */
+            //'username' => '',
+            //'password' => '',
+            /**
+            * Optional to use encription or not default value is false
+            */
+            //'useStartTls' => true,
+            /**
+            * Required The FQDN domain name for which the target LDAP server is an authority
+            */
+            //'accountDomainName' => 'example.tld',
+            /**
+            * Optional  The 'short' domain for which the target LDAP server is an authority 
+            */
+            //'accountDomainNameShort' => 'EXAMPLE',
+            /**
+            *  Optional Indicates the form to which account names should be canonicalized after successful authentication, the default value is 4
+            *  This could be: 
+            *      2 => username; 
+            *      3 => DOMAIN\username; 
+            *      4 => username@domain
+            */
+            //'accountCanonicalForm' => 3, 
+            /**
+            * Optional
+            */
+            //'accountFilterFormat' => The LDAP search filter used to search for accounts, default value is '(&(objectClass=user)(sAMAccountName=%s))'
+            /**
+            * Required The DN under which all accounts being authenticated are located. 
+            */
+            //'baseDn' => 'dc=example,dc=tld'
+        //)
+    //),
+);
+/**
+ * You do not need to edit below this line
+ */
+return array(
+    'zfcuser.ldap' => $settings
+);
