@@ -162,7 +162,7 @@ Options
 
 The ZfcUser module has some options to allow you to quickly customize the basic
 functionality. After installing ZfcUser, copy
-`./vendor/ZfcUser/config/zfcuser.global.php.dist` to
+`./vendor/zf-commons/zfc-user/config/zfcuser.global.php.dist` to
 `./config/autoload/zfcuser.global.php` and change the values as desired.
 
 The following options are available:
