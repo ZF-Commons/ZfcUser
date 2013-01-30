@@ -182,6 +182,8 @@ class UserController extends AbstractActionController
         $post = $prg;
         $user = $service->register($post);
 
+        $redirect = isset($prg['redirect']) ? $prg['redirect'] : null;
+
         if (!$user) {
             return array(
                 'registerForm' => $form,
