@@ -17,6 +17,8 @@ class ZfcUserDisplayName extends AbstractHelper
      * __invoke
      *
      * @access public
+     * @param \ZfcUser\Entity\UserInterface $user
+     * @throws \ZfcUser\Exception\DomainException
      * @return String
      */
     public function __invoke(User $user = null)
@@ -60,6 +62,7 @@ class ZfcUserDisplayName extends AbstractHelper
      * Set authService.
      *
      * @param AuthenticationService $authService
+     * @return \ZfcUser\View\Helper\ZfcUserDisplayName
      */
     public function setAuthService(AuthenticationService $authService)
     {
