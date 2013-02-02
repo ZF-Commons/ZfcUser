@@ -85,6 +85,7 @@ class Module implements
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
+                'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
 
@@ -134,10 +135,6 @@ class Module implements
                     $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
                     $form->setInputFilter(new Form\ChangePasswordFilter($options));
                     return $form;
-                },
-
-                'zfcuser_register_form_hydrator' => function ($sm) {
-                    return new ClassMethods();
                 },
 
                 'zfcuser_change_email_form' => function($sm) {
