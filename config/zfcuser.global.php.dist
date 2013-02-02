@@ -213,6 +213,11 @@ $settings = array(
     //'allowed_login_states' => array( null, 1 ),
     
     /**
+     * User table name
+     */
+    //'table_name' => 'user',
+    
+    /**
      * End of ZfcUser configuration
      */
 );
