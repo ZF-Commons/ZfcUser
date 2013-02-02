@@ -80,6 +80,17 @@ class AdapterChain extends EventProvider implements AdapterInterface
     }
 
     /**
+     * logoutAdapters
+     *
+     * @return AdapterChain
+     */
+    public function logoutAdapters()
+    {
+        //Adapters might need to perform additional cleanup after logout
+        $this->getEventManager()->trigger('logout', $this->getEvent());
+    }
+
+    /**
      * Get the auth event
      *
      * @return AdapterChainEvent

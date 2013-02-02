@@ -61,6 +61,11 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var array
      */
+    protected $authAdapters = array( 100 => 'ZfcUser\Authentication\Adapter\Db' );
+
+    /**
+     * @var array
+     */
     protected $authIdentityFields = array( 'email' );
 
     /**
@@ -350,6 +355,28 @@ class ModuleOptions extends AbstractOptions implements
     {
         $this->allowedLoginStates = $states;
         return $this;
+    }
+
+    /**
+     * set auth adapters
+     *
+     * @param array $authAdapterss
+     * @return ModuleOptions
+     */
+    public function setAuthAdapters($authAdapters)
+    {
+        $this->authAdapters = $authAdapters;
+        return $this;
+    }
+
+    /**
+     * get auth adapters
+     *
+     * @return array
+     */
+    public function getAuthAdapters()
+    {
+        return $this->authAdapters;
     }
 
     /**
