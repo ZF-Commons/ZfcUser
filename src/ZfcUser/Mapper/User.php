@@ -40,6 +40,14 @@ class User extends AbstractDbMapper implements UserInterface
         return $entity;
     }
 
+    public function getTableName(){
+        return $this->tableName;
+    }
+    
+    public function setTableName($tableName){
+        $this->tableName=$tableName;
+    }    
+    
     public function insert($entity, $tableName = null, HydratorInterface $hydrator = null)
     {
         $result = parent::insert($entity, $tableName, $hydrator);
