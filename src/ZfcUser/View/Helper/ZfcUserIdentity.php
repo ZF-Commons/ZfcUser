@@ -16,7 +16,7 @@ class ZfcUserIdentity extends AbstractHelper
      * __invoke
      *
      * @access public
-     * @return ZfcUser\Model\UserInterface
+     * @return \ZfcUser\Entity\UserInterface
      */
     public function __invoke()
     {
@@ -41,6 +41,7 @@ class ZfcUserIdentity extends AbstractHelper
      * Set authService.
      *
      * @param AuthenticationService $authService
+     * @return \ZfcUser\View\Helper\ZfcUserIdentity
      */
     public function setAuthService(AuthenticationService $authService)
     {
