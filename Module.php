@@ -150,6 +150,11 @@ class Module implements
                     return $form;
                 },
 
+                'zfcuser_user_entity' => function ($sm) {
+                    $entityClass = $sm->get('zfcuser_module_options')->getUserEntityClass();
+                    return new $entityClass;
+                },
+
                 'zfcuser_user_hydrator' => function ($sm) {
                     $hydratorClass = $sm->get('zfcuser_module_options')->getUserHydratorClass();
                     return new $hydratorClass;
@@ -160,8 +165,7 @@ class Module implements
                     $mapperClass = $options->getUserMapperClass();
                     $mapper = new $mapperClass;
                     $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
-                    $entityClass = $options->getUserEntityClass();
-                    $mapper->setEntityPrototype(new $entityClass);
+                    $mapper->setEntityPrototype($sm->get('zfcuser_user_entity'));
                     $mapper->setHydrator($sm->get('zfcuser_user_hydrator'));
                     $mapper->setTableName($options->getTableName());
                     return $mapper;
