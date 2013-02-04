@@ -169,6 +169,12 @@ The following options are available:
 - **user_entity_class** - Name of Entity class to use. Useful for using your own
   entity class instead of the default one provided. Default is
   `ZfcUser\Entity\User`.
+- **user_mapper_class** - Name of Mapper class to use. Useful for using your own
+  mapper class instead of the default one provided. Default is
+  `ZfcUser\Mapper\User`.
+- **user_hydrator_class** - Name of Hydrator class to use. Useful for using your
+  own hydrator class instead of the default one provided. Default is
+  `ZfcUser\Mapper\UserHydrator`.
 - **enable_username** - Boolean value, enables username field on the
   registration form. Default is `false`.
 - **auth_identity_fields** - Array value, specifies which fields a user can
