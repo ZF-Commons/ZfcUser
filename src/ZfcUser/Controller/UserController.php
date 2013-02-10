@@ -408,7 +408,7 @@ class UserController extends AbstractActionController
      */
     public function getChangeEmailForm()
     {
-        if (!$this->changePasswordForm) {
+        if (!$this->changeEmailForm) {
             $this->setChangeEmailForm($this->getServiceLocator()->get('zfcuser_change_email_form'));
         }
         return $this->changeEmailForm;
