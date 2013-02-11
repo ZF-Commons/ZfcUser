@@ -1,8 +1,8 @@
-<h3>Change Email for <?php echo $this->zfcUserDisplayName() ?></h3>
+<h3><?php echo sprintf($this->translate('Change Email for %s'), $this->zfcUserDisplayName()); ?></h3>
 <?php if ($status === true) : ?>
-<div class="alert alert-success">Email address changed successfully.</div>
+<div class="alert alert-success"><?php echo $this->translate('Email address changed successfully.'); ?></div>
 <?php elseif ($status === false) : ?>
-<div class="alert alert-error">Unable to update your email address. Please try again.</div>
+<div class="alert alert-error"><?php echo $this->translate('Unable to update your email address. Please try again.'); ?></div>
 <?php endif; ?>
 <?php
 
