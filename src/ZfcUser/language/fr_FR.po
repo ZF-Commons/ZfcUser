@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ZfcUser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-12 10:06+0100\n"
-"PO-Revision-Date: 2013-02-12 10:10+0100\n"
+"POT-Creation-Date: 2013-02-12 10:16+0100\n"
+"PO-Revision-Date: 2013-02-12 10:18+0100\n"
 "Last-Translator: Belair <contact@ebelair.fr>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: fr_FR\n"
@@ -15,61 +15,69 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: src/ZfcUser/language/msgIds.php:7
+#: src/ZfcUser/language/msgIds.php:6
 msgid "Username"
 msgstr "Nom d'utilisateur"
 
-#: src/ZfcUser/language/msgIds.php:8
+#: src/ZfcUser/language/msgIds.php:7
 msgid "Email"
 msgstr "Email"
 
-#: src/ZfcUser/language/msgIds.php:9
+#: src/ZfcUser/language/msgIds.php:8
 msgid "New Email"
 msgstr "Nouvel Email"
 
-#: src/ZfcUser/language/msgIds.php:10
+#: src/ZfcUser/language/msgIds.php:9
 msgid "Verify New Email"
 msgstr "Nouvel Émail (vérification)"
 
-#: src/ZfcUser/language/msgIds.php:11
+#: src/ZfcUser/language/msgIds.php:10
 msgid "Display Name"
 msgstr "Nom à afficher"
 
-#: src/ZfcUser/language/msgIds.php:12
+#: src/ZfcUser/language/msgIds.php:11
 msgid "Password"
 msgstr "Mot de passe"
 
-#: src/ZfcUser/language/msgIds.php:13
+#: src/ZfcUser/language/msgIds.php:12
 msgid "Password Verify"
 msgstr "Mot de passe (vérification)"
 
-#: src/ZfcUser/language/msgIds.php:14
+#: src/ZfcUser/language/msgIds.php:13
 msgid "Current Password"
 msgstr "Mot de passe actuel"
 
-#: src/ZfcUser/language/msgIds.php:15
+#: src/ZfcUser/language/msgIds.php:14
 msgid "Verify New Password"
 msgstr "Nouveau mot de passe (vérification)"
 
-#: src/ZfcUser/language/msgIds.php:16
+#: src/ZfcUser/language/msgIds.php:15
 msgid "New Password"
 msgstr "Nouveau mot de passe"
 
-#: src/ZfcUser/language/msgIds.php:17
+#: src/ZfcUser/language/msgIds.php:16
 msgid "Please type the following text"
 msgstr "Merci de saisir le texte suivant"
 
-#: src/ZfcUser/language/msgIds.php:18
+#: src/ZfcUser/language/msgIds.php:17
 msgid "Submit"
 msgstr "Valider"
 
-#: src/ZfcUser/language/msgIds.php:19 view/zfc-user/user/login.phtml:1
+#: src/ZfcUser/language/msgIds.php:18 view/zfc-user/user/login.phtml:1
 msgid "Sign In"
 msgstr "Se connecter"
 
-#: src/ZfcUser/language/msgIds.php:20 view/zfc-user/user/register.phtml:1
+#: src/ZfcUser/language/msgIds.php:19 view/zfc-user/user/register.phtml:1
 msgid "Register"
 msgstr "Créer un compte"
+
+#: src/ZfcUser/language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "Aucun enregistrement n'a été trouvé avec cette entrée"
+
+#: src/ZfcUser/language/msgIds.php:21 src/ZfcUser/language/msgIds.php:22
+msgid "A record matching the input was found"
+msgstr "Un enregistrement a été trouvé avec cette entrée"
 
 #: view/zfc-user/user/login.phtml:31
 msgid "Not registered?"

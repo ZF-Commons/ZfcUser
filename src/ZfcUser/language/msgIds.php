@@ -17,3 +17,6 @@ translate('Please type the following text');
 translate('Submit');
 translate('Sign In');
 translate('Register');
+translate("No record matching the input was found");
+translate("A record matching the input was found");
+translate("A record matching the input was found");
