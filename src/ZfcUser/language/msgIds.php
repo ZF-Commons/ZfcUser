@@ -19,4 +19,3 @@ translate('Sign In');
 translate('Register');
 translate("No record matching the input was found");
 translate("A record matching the input was found");
-translate("A record matching the input was found");
