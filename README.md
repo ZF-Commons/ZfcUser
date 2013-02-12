@@ -62,7 +62,6 @@ Installation
 
     ```json
     "require": {
-        "zf-commons/zfc-base": "dev-master",
         "zf-commons/zfc-user": "dev-master"
     }
     ```
