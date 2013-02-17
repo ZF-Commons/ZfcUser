@@ -156,7 +156,11 @@ class UserController extends AbstractActionController
             // redirect to the login redirect route
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
-
+        // if registration is disabled
+        if (!$this->getOptions()->getEnableRegistration()) {
+            return array('enableRegistration' => false);
+        }
+        
         $request = $this->getRequest();
         $service = $this->getUserService();
         $form = $this->getRegisterForm();
