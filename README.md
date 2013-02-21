@@ -151,7 +151,7 @@ successful login.
 
 **WARNING:** Changing the default password hash settings can cause serious
 problems such as making your hashed passwords more vulnerable to brute force
-attacks or making hashing so expesnive that login and registration is
+attacks or making hashing so expensive that login and registration is
 unacceptably slow for users and produces a large burden on your server(s). The
 default settings provided are a very reasonable balance between the two,
 suitable for computing power in 2011.
@@ -209,7 +209,7 @@ The following options are available:
 Changing Registration Captcha Element
 -------------------------------------
 
-**NOTICE** These instrutions are currently out of date.
+**NOTICE** These instructions are currently out of date.
 
 By default, the user registration uses the Figlet captcha engine.  This is
 because it's the only one that doesn't require API keys.  It's possible to change
