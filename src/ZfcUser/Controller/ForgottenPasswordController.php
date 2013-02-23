@@ -110,7 +110,10 @@ class ForgottenPasswordController extends AbstractActionController
      */
     public function resetAction()
     {
-        
+        // if password retrieval is disabled
+        if (!$this->getOptions()->getEnableForgottenPassword()) {
+            return array('enableForgottenPassword' => false);
+        }
     }
 
     /*

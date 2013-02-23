@@ -38,11 +38,6 @@ class UserController extends AbstractActionController
     protected $changeEmailForm;
 
     /**
-     * @var Form
-     */
-    protected $forgottenPasswordForm;
-
-    /**
      * @todo Make this dynamic / translation-friendly
      * @var string
      */
@@ -319,23 +314,6 @@ class UserController extends AbstractActionController
 
         $this->flashMessenger()->setNamespace('change-email')->addMessage(true);
         return $this->redirect()->toRoute('zfcuser/changeemail');
-    }
-
-    public function forgottenPasswordAction()
-    {
-
-    }
-
-    /**
-     * This is the target of the link in the forgotten password email.
-     */
-    public function passwordResetAction()
-    {
-        // if password retrieval is disabled
-        if (!$this->getOptions()->getEnableForgottenPassword()) {
-            return array('enableForgottenPassword' => false);
-        }
-
     }
 
     /**
