@@ -116,6 +116,20 @@ return array(
                             'query' => array(
                                 'type' => 'Query',
                             ),
+                            'reset' => array(
+                                'type' => 'Segment',
+                                'options' => array(
+                                    'route' => '/reset/:id/:hash',
+                                    'constraints' => array(
+                                        'id' => '[0-9]+',
+                                        'hash' => '[0-9A-Za-z]*',
+                                    ),
+                                    'defaults' => array(
+                                        'controller' => 'zfcuser_forgotten_password',
+                                        'action' => 'reset',
+                                    ),
+                                ),
+                            )
                         ),
                     ),
                 ),

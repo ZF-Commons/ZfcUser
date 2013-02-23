@@ -92,6 +92,14 @@ class Module implements
                 'zfcuser_mail_fetcher'   => 'ZfcUser\Service\MessageFetcherFactory',
                 'zfcuser_mail_transport' => 'ZfcUser\Service\MailTransportFactory',
 
+                'zfcuser_hash_handler'   => function ($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    return new Hash\UserHash(
+                        $options->getLinkHashType(),
+                        $options->getLinkHashSecret()
+                    );
+                },
+
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
                     return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());

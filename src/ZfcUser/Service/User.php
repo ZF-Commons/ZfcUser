@@ -144,11 +144,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         return true;
     }
 
-    public function findByEmail($email)
-    {
-        return $this->getUserMapper()->findByEmail($email);
-    }
-
     /**
      * getUserMapper
      *

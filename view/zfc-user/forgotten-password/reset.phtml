@@ -1,0 +1,16 @@
+<h1>Set your new password</h1>
+
+<?php
+if (!$this->enableForgottenPassword) {
+    print "Password retrieval is disabled";
+    return;
+}
+
+$form = $this->form;
+$form->prepare();
+$form->setAttribute(
+    'action',
+    $this->url('zfcuser/forgottenpassword/reset', array('id' => $this->userId, 'hash' => $this->hash))
+);
+$form->setAttribute('method', 'post');
+?>

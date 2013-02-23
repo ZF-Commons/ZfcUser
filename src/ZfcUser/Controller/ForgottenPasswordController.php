@@ -6,11 +6,12 @@ use Zend\Form\Form;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use ZfcUser\Entity\UserInterface;
+use ZfcUser\Hash\UserHashInterface;
 use ZfcUser\Mail\MailTransportInterface;
 use ZfcUser\Mail\MessageFetcherInterface;
+use ZfcUser\Mapper\UserInterface as UserMappper;
 use ZfcUser\Options\MailOptions;
 use ZfcUser\Options\ForgottenPasswordControllerOptionsInterface;
-use ZfcUser\Service\User as UserService;
 
 /**
  * Controller for handling password retrievals.
@@ -30,9 +31,9 @@ class ForgottenPasswordController extends AbstractActionController
     protected $mailOptions;
     
     /**
-     * @var UserService
+     * @var UserMapper
      */
-    protected $userService;
+    protected $userMapper;
 
     /**
      * @var Form
@@ -48,12 +49,15 @@ class ForgottenPasswordController extends AbstractActionController
      * @var MailTransportInterface
      */
     protected $mailTransport;
+    
+    /**
+     * @var UserHashInterface
+     */
+    protected $hashHandler;
 
     /*
      * Actions
      */
-
-
 
     /**
      * Displays a form where a user can enter their email address to reset their password.
@@ -69,7 +73,85 @@ class ForgottenPasswordController extends AbstractActionController
 
         $form = $this->getForgottenPasswordForm();
 
-        $prg = $this->prg('zfcuser/forgottenpassword');
+        $prg = $this->prgForm($form, $this->url()->fromRoute('zfcuser/forgottenpassword'));
+
+        if ($prg !== false) {
+            return $prg;
+        }
+
+        // Fetch the user and generate an email
+
+        $mapper = $this->getUserMapper();
+        $user = $mapper->findByEmail($form->getEmail());
+
+        $this->sendEmail($user);
+
+        $this->flashMessenger()->setNamespace('zfcuser-login-form')
+            ->addMessage('An email has been sent to your email address with further instructions.');
+
+        return $this->redirect()->toRoute('zfcuser/login');
+    }
+
+
+
+    /**
+     * This is the target of the link in the email.
+     * A form is diplayed so a new password can be entered.
+     *
+     * @return array
+     */
+    public function resetAction()
+    {
+        // if password retrieval is disabled
+        if (!$this->getOptions()->getEnableForgottenPassword()) {
+            return array('enableForgottenPassword' => false);
+        }
+
+        $id = (int) $this->params('id');
+        $hash = $this->params('hash');
+
+        // Verify the request
+        $user = $this->getUserMapper()->findById($id);
+
+        if (!$user || !$this->getHashHandler()->checkHash($user, $hash))
+        {
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')
+                ->addMessage('Invalid password reset link.');
+
+            return $this->redirect()->toRoute('zfcuser/login');
+        }
+
+        $form = $this->getPasswordResetForm();
+
+        $prg = $this->prgForm(
+            $form,
+            $this->url()->fromRoute('zfcuser/forgottenpassword/reset', array('id' => $id, 'hash' => $hash))
+        );
+
+        $user->setPassword($form->getNewPassword());
+
+        $this->getUserMapper()->update($user);
+
+        $this->flashMessenger()->setNamespace('zfcuser-login-form')
+            ->addMessage('You can now log in with your new password.');
+
+        return $this->redirect()->toRoute('zfcuser/login');
+    }
+
+    /*
+     * Internal Methods
+     */
+
+    /**
+     * User Post/Request/Get and validates the form.
+     *
+     * @param Form   $form
+     * @param string $prgUrl
+     * @return mixed If the value is not false it should be returned from the action
+     */
+    protected function prgForm(Form $form, $prgUrl)
+    {
+        $prg = $this->prg($prgUrl, true);
 
         if ($prg instanceof Response) {
             return $prg;
@@ -89,36 +171,8 @@ class ForgottenPasswordController extends AbstractActionController
             );
         }
 
-        // Fetch the user and generate an email
-
-        $service = $this->getUserService();
-        $user = $service->findByEmail($form->getEmail());
-
-        $this->sendEmail($user);
-
-        $this->flashMessenger()->setNamespace('zfcuser-login-form')
-            ->addMessage('An email has been sent to your email address with further instructions.');
-
-        return $this->redirect()->toRoute('zfcuser/login');
+        return false;
     }
-
-    /**
-     * This is the target of the link in the email.
-     * A form is diplayed so a new password can be entered.
-     *
-     * @return array
-     */
-    public function resetAction()
-    {
-        // if password retrieval is disabled
-        if (!$this->getOptions()->getEnableForgottenPassword()) {
-            return array('enableForgottenPassword' => false);
-        }
-    }
-
-    /*
-     * Internal Methods
-     */
 
     /**
      * Decides what to use to display as the users name.
@@ -150,9 +204,19 @@ class ForgottenPasswordController extends AbstractActionController
 
         $name = $this->usersName($user);
 
+        $url = $this->url()->fromRoute(
+            'zfcuser/forgottenpassword/reset',
+            array(
+                'id' => $user->getId(),
+                'hash' => $this->getHashHandler()->createHash($user)
+            )
+        );
+
+        // @todo Make url into FQDN!
+
         $params = array(
             'name' => $name,
-            'link' => $link,
+            'link' => $url,
         );
 
         $message = $this->getMessageFetcher()->getMessage('forgotten-password', $params);
@@ -209,7 +273,7 @@ class ForgottenPasswordController extends AbstractActionController
      */
     public function getMailOptions()
     {
-        if (!$this->mailOptions instanceof MailOptions) {
+        if (!$this->mailOptions) {
             $options = $this->getServiceLocator()->get('zfcuser_module_options');
             $this->setMailOptions($options->getMail());
         }
@@ -231,27 +295,28 @@ class ForgottenPasswordController extends AbstractActionController
     }
 
     /**
-     * Get the user service.
+     * Get the user mapper.
      *
-     * @return UserService
+     * @return UserMapper
      */
-    public function getUserService()
+    public function getUserMapper()
     {
-        if (!$this->userService) {
-            $this->userService = $this->getServiceLocator()->get('zfcuser_user_service');
+        if (!$this->userMapper) {
+            $this->userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
         }
-        return $this->userService;
+
+        return $this->userMapper;
     }
 
     /**
-     * Set the user service.
+     * Set the user mapper.
      *
-     * @param UserService $userService
+     * @param UserMapper $userMapper
      * @return self
      */
-    public function setUserService(UserService $userService)
+    public function setUserService(UserMapper $userMapper)
     {
-        $this->userService = $userService;
+        $this->userMapper = $userMapper;
 
         return $this;
     }
@@ -333,6 +398,33 @@ class ForgottenPasswordController extends AbstractActionController
     public function setMailTransport(MailTransportInterface $transport)
     {
         $this->mailTransport = $transport;
+
+        return $this;
+    }
+
+    /**
+     * Set the hasher
+     *
+     * @return UserHashInterface
+     */
+    public function getHashHandler()
+    {
+        if (!$this->hashHandler) {
+            $this->hashHandler = $this->getServiceLocator()->get('zfcuser_hash_handler');
+        }
+
+        return $this->hashHandler;
+    }
+
+    /**
+     * Get the hasher.
+     *
+     * @param UserHashInterface $hashHandler
+     * @return self
+     */
+    public function setHashHandler(UserHashInterface $hashHandler)
+    {
+        $this->hashHandler = $hashHandler;
 
         return $this;
     }
