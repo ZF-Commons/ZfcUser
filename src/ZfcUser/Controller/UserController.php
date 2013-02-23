@@ -38,6 +38,11 @@ class UserController extends AbstractActionController
     protected $changeEmailForm;
 
     /**
+     * @var Form
+     */
+    protected $forgottenPasswordForm;
+
+    /**
      * @todo Make this dynamic / translation-friendly
      * @var string
      */
@@ -78,6 +83,7 @@ class UserController extends AbstractActionController
                 'loginForm' => $form,
                 'redirect'  => $redirect,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+                'enableForgottenPassword' => $this->getOptions()->getEnableForgottenPassword(),
             );
         }
 
@@ -315,6 +321,26 @@ class UserController extends AbstractActionController
         return $this->redirect()->toRoute('zfcuser/changeemail');
     }
 
+    public function forgottenPasswordAction()
+    {
+        // if password retrieval is disabled
+        if (!$this->getOptions()->getEnableForgottenPassword()) {
+            return array('enableForgottenPassword' => false);
+        }
+    }
+
+    /**
+     * This is the target of the link in the forgotten password email.
+     */
+    public function passwordResetAction()
+    {
+        // if password retrieval is disabled
+        if (!$this->getOptions()->getEnableForgottenPassword()) {
+            return array('enableForgottenPassword' => false);
+        }
+
+    }
+
     /**
      * Getters/setters for DI stuff
      */
@@ -378,6 +404,20 @@ class UserController extends AbstractActionController
     {
         $this->changePasswordForm = $changePasswordForm;
         return $this;
+    }
+
+    public function getForgottenPasswordForm()
+    {
+        if (!$this->forgottenPasswordForm) {
+            $this->setForgottentPasswordForm($this->getServiceLocator()->get('zfcuser_forgotten_password_form'));
+        }
+
+        return $this->forgottenPasswordForm;
+    }
+
+    public function setForgottenPasswordForm(Form $forgottenPasswordForm)
+    {
+        return $this->forgottenPasswordForm = $forgottenPasswordForm;
     }
 
     /**

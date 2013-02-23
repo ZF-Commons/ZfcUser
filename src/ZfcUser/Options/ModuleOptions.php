@@ -86,6 +86,11 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var bool
      */
+    protected $enableForgottenPassword = true;
+
+    /**
+     * @var bool
+     */
     protected $enableUsername = false;
 
     /**
@@ -248,6 +253,27 @@ class ModuleOptions extends AbstractOptions implements
     public function getEnableRegistration()
     {
         return $this->enableRegistration;
+    }
+
+    /**
+     * Sets the value for enableForgottenPassword.
+     *
+     * @param bool $enableForgottenPassword
+     */
+    public function setEnableForgottenPassword($enableForgottenPassword)
+    {
+        $this->enableForgottenPassword = $enableForgottenPassword;
+        return $this;
+    }
+
+    /**
+     * Gets the value for enableForgottenPassword.
+     *
+     * @return bool
+     */
+    public function getEnableForgottenPassword()
+    {
+        return $this->enableForgottenPassword;
     }
 
     /**
