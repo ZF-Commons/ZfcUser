@@ -7,7 +7,7 @@ use Zend\Stdlib\AbstractOptions;
 /**
  * Options for class for the email system.
  *
- * @author Tom Oram <tom@scl.co.uk>
+ * @author Tom Oram <tom@x2k.co.uk>
  */
 class MailOptions extends AbstractOptions
 {
