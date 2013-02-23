@@ -194,7 +194,7 @@ $settings = array(
      * Should user's state be used in the registration/login process?
      */
     //'enable_user_state' => true,
-    
+
     /**
      * Default user state upon registration
      * 
@@ -202,7 +202,7 @@ $settings = array(
      * Allowed value type: integer
      */
     //'default_user_state' => 1,
-    
+
     /**
      * States which are allowing user to login
      * 
@@ -211,12 +211,96 @@ $settings = array(
      * Allowed value types: null and integer
      */
     //'allowed_login_states' => array( null, 1 ),
-    
+
     /**
      * User table name
      */
     //'table_name' => 'user',
     
+        /**
+     * Sets whether the forgotten password system is available.
+     *
+     * Available values: boolean true or false
+     */
+    'enable_forgotten_password' => true,
+
+    /**
+     * Algorithm for creating the link hash
+     *
+     * Accepted values: string
+     */
+    'link_hash_type' => 'md5',
+
+    /**
+     * Extra secret information for the link hash.
+     *
+     * Accepted values: string
+     */
+    'link_hash_secret' => 'ChangeMeToSomethingSecret',
+
+    /**
+     * Settings for the email system.
+     */
+    'mail' => array(
+        /**
+         * The name of the class or service which generates the email messages.
+         *
+         * Accepted values: string
+         */
+        'message_fetcher_class' => 'ZfcUser\Mail\ZendMail',
+
+        /**
+         * Any additional options for the fetcher class.
+         */
+        'message_fetcher_options' => array(
+            // Options here will vary depending on your message fetcher service
+
+            /**
+             * Used by the ZfcUser\Mail\ZendMail class to find the view scripts.
+             *
+             * Needs to be updated to your installation
+             */
+            'template_paths' => array(
+                __DIR__ . '/../../vendor/zf-commons/zfc-user/email/',
+            ),
+        ),
+
+        /**
+         * The name of the class or service which sends emails.
+         *
+         * Accepted values: string
+         */
+        'transport_class' => 'ZfcUser\Mail\ZendMail',
+
+        /**
+         * Any additional options for the transport class.
+         */
+        'transport_options' => array(
+            // Options here will vary depending on your mail transport service
+        ),
+
+        /**
+         * The email address which message are sent from.
+         *
+         * Accepted values: string
+         */
+        'from_address' => '"Our Great Website" <info@ourgreatwebsite.com>',
+
+        /**
+         * The subject of a forgotten password email.
+         *
+         * Accepted values: string
+         */
+        'forgotten_password_subject' => 'Forgotten password request',
+
+        /**
+         * The subject of a account validation emails.
+         *
+         * Accepted values: string
+         */
+        'account_validation_subject' => 'Validate your account',
+    ),
+
     /**
      * End of ZfcUser configuration
      */
