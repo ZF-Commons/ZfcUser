@@ -12,9 +12,9 @@ use ZfcBase\Form\ProvidesEventsForm;
  */
 class ForgottenPassword extends ProvidesEventsForm
 {
-    public function __construct()
+    public function __construct($name = null)
     {
-        parent::__construct();
+        parent::__construct($name);
 
         $this->add(array(
             'name' => 'email',
@@ -26,18 +26,17 @@ class ForgottenPassword extends ProvidesEventsForm
             ),
         ));
 
-        $submitElement = new Element\Button('submit');
-        $submitElement
-            ->setLabel('Submit')
-            ->setAttributes(array(
-                'type'  => 'submit',
-            ));
-
-        $this->add($submitElement, array(
-            'priority' => -100,
+        $this->add(array(
+            'name' => 'submit',
+            'type' => 'Zend\Form\Element\Button',
+            'attributes' => array(
+                'value' => 'Submit',
+            ),
         ));
 
         // @todo Add CRSF & Captcha
+
+        $this->getEventManager()->trigger('init', $this);
     }
 
     public function getEmail()

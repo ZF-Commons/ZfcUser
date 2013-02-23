@@ -6,12 +6,14 @@ use Zend\Form\Form;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 use ZfcUser\Entity\UserInterface;
+use ZfcUser\Form\ResetPassword;
 use ZfcUser\Hash\UserHashInterface;
 use ZfcUser\Mail\MailTransportInterface;
 use ZfcUser\Mail\MessageFetcherInterface;
-use ZfcUser\Mapper\UserInterface as UserMappper;
+use ZfcUser\Mapper\UserInterface as UserMapper;
 use ZfcUser\Options\MailOptions;
 use ZfcUser\Options\ForgottenPasswordControllerOptionsInterface;
+use ZfcUser\Service\User as UserService;
 
 /**
  * Controller for handling password retrievals.
@@ -34,11 +36,21 @@ class ForgottenPasswordController extends AbstractActionController
      * @var UserMapper
      */
     protected $userMapper;
+    
+    /**
+     * @var UserService
+     */
+    protected $userService;
 
     /**
      * @var Form
      */
     protected $forgottenPasswordForm;
+
+    /**
+     * @var ResetPassword
+     */
+    protected $resetPasswordForm;
 
     /**
      * @var MessageFetcherInterface
@@ -121,16 +133,21 @@ class ForgottenPasswordController extends AbstractActionController
             return $this->redirect()->toRoute('zfcuser/login');
         }
 
-        $form = $this->getPasswordResetForm();
+        $form = $this->getResetPasswordForm();
 
         $prg = $this->prgForm(
             $form,
-            $this->url()->fromRoute('zfcuser/forgottenpassword/reset', array('id' => $id, 'hash' => $hash))
+            $this->url()->fromRoute('zfcuser/forgottenpassword/reset', array('id' => $id, 'hash' => $hash)),
+            array('userId' => $id, 'userHash' => $hash)
         );
 
-        $user->setPassword($form->getNewPassword());
+        if ($prg !== false) {
+            return $prg;
+        }
 
-        $this->getUserMapper()->update($user);
+        $newPassword = $form->getNewPassword();
+
+        $this->getUserService()->resetPassword($user, $newPassword);
 
         $this->flashMessenger()->setNamespace('zfcuser-login-form')
             ->addMessage('You can now log in with your new password.');
@@ -149,26 +166,25 @@ class ForgottenPasswordController extends AbstractActionController
      * @param string $prgUrl
      * @return mixed If the value is not false it should be returned from the action
      */
-    protected function prgForm(Form $form, $prgUrl)
+    protected function prgForm(Form $form, $prgUrl, $params = array())
     {
+        $params['form'] = $form;
+        $params['enableForgottenPassword'] = true;
+
         $prg = $this->prg($prgUrl, true);
 
         if ($prg instanceof Response) {
             return $prg;
-        } elseif ($prg === false) {
-            return array(
-                'form' => $form,
-                'enableForgottenPassword' => true,
-            );
+        }
+
+        if ($prg === false) {
+            return $params;
         }
 
         $form->setData($prg);
 
         if (!$form->isValid()) {
-            return array(
-                'form' => $form,
-                'enableForgottenPassword' => true,
-            );
+            return $params;
         }
 
         return false;
@@ -204,23 +220,23 @@ class ForgottenPasswordController extends AbstractActionController
 
         $name = $this->usersName($user);
 
-        $url = $this->url()->fromRoute(
+        $link = $this->url()->fromRoute(
             'zfcuser/forgottenpassword/reset',
             array(
                 'id' => $user->getId(),
-                'hash' => $this->getHashHandler()->createHash($user)
+                'hash' => $this->getHashHandler()->createHash($user),
+                array('force_canonical' => true)
             )
         );
 
-        // @todo Make url into FQDN!
-
         $params = array(
             'name' => $name,
-            'link' => $url,
+            'link' => $link,
         );
 
         $message = $this->getMessageFetcher()->getMessage('forgotten-password', $params);
 
+        die($message);
         $from = $mailOptions->getFromAddress();
 
         $to = sprintf(
@@ -302,7 +318,7 @@ class ForgottenPasswordController extends AbstractActionController
     public function getUserMapper()
     {
         if (!$this->userMapper) {
-            $this->userMapper = $this->getServiceLocator()->get('zfcuser_user_mapper');
+            $this->setUserMapper($this->getServiceLocator()->get('zfcuser_user_mapper'));
         }
 
         return $this->userMapper;
@@ -314,9 +330,36 @@ class ForgottenPasswordController extends AbstractActionController
      * @param UserMapper $userMapper
      * @return self
      */
-    public function setUserService(UserMapper $userMapper)
+    public function setUserMapper(UserMapper $userMapper)
     {
         $this->userMapper = $userMapper;
+
+        return $this;
+    }
+
+    /**
+     * Get the user service.
+     *
+     * @return UserService
+     */
+    public function getUserService()
+    {
+        if (!$this->userService) {
+            $this->setUserService($this->getServiceLocator()->get('zfcuser_user_service'));
+        }
+
+        return $this->userService;
+    }
+
+    /**
+     * Set the user service.
+     *
+     * @param UserService $userService
+     * @return self
+     */
+    public function setUserService(UserService $userService)
+    {
+        $this->userService = $userService;
 
         return $this;
     }
@@ -344,6 +387,33 @@ class ForgottenPasswordController extends AbstractActionController
     public function setForgottenPasswordForm(Form $forgottenPasswordForm)
     {
         $this->forgottenPasswordForm = $forgottenPasswordForm;
+
+        return $this;
+    }
+
+    /**
+     * Return the reset password form.
+     *
+     * @return ResetPassword
+     */
+    public function getResetPasswordForm()
+    {
+        if (!$this->resetPasswordForm) {
+            $this->setResetPasswordForm($this->getServiceLocator()->get('zfcuser_reset_password_form'));
+        }
+
+        return $this->resetPasswordForm;
+    }
+
+    /**
+     * Sets the reset password form 
+     *
+     * @param ResetPassword $form
+     * @return self
+     */
+    public function setResetPasswordForm(ResetPassword $form)
+    {
+        $this->resetPasswordForm = $form;
 
         return $this;
     }

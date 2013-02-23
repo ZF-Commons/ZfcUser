@@ -10,7 +10,22 @@ $form = $this->form;
 $form->prepare();
 $form->setAttribute(
     'action',
-    $this->url('zfcuser/forgottenpassword/reset', array('id' => $this->userId, 'hash' => $this->hash))
+    $this->url('zfcuser/forgottenpassword/reset', array('id' => $this->userId, 'hash' => $this->userHash))
 );
 $form->setAttribute('method', 'post');
 ?>
+<?php echo $this->form()->openTag($form) ?>
+
+    <dl class="zend_form">
+        <?php echo $this->formElementErrors($form->get('newCredential')) ?>
+        <?php echo $this->formElementErrors($form->get('newCredentialVerify')) ?>
+
+        <dt><?php echo $this->formLabel($form->get('newCredential')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('newCredential')) ?></dd>
+        
+        <dt><?php echo $this->formLabel($form->get('newCredentialVerify')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('newCredentialVerify')) ?></dd>
+
+        <dd><?php echo $this->formSubmit($form->get('submit')) ?></dd>
+    </dl>
+<?php echo $this->form()->closeTag($form) ?>

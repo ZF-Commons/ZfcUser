@@ -173,6 +173,12 @@ class Module implements
                     return $form;
                 },
 
+                'zfcuser_reset_password_form' => function ($sm) {
+                    $form = new Form\ResetPassword();
+                    $form->setInputFilter(new Form\ResetPasswordFilter());
+                    return $form;
+                },
+
                 'zfcuser_user_hydrator' => function ($sm) {
                     $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
                     return $hydrator;
