@@ -88,10 +88,9 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
-                'ZfcUser\Mail\ZendMail' => 'ZfcUser\Service\ZendMailFactory',
-
-                'zfcuser_mail_fetcher'  => 'ZfcUser\Service\MessageFetcherFactory',
-                'zfcuser_mail_loader'   => 'ZfcUser\Service\MailTransportFactory',
+                'ZfcUser\Mail\ZendMail'  => 'ZfcUser\Service\ZendMailFactory',
+                'zfcuser_mail_fetcher'   => 'ZfcUser\Service\MessageFetcherFactory',
+                'zfcuser_mail_transport' => 'ZfcUser\Service\MailTransportFactory',
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
@@ -147,6 +146,18 @@ class Module implements
                     $form->setInputFilter(new Form\ChangeEmailFilter(
                         $options,
                         new Validator\NoRecordExists(array(
+                            'mapper' => $sm->get('zfcuser_user_mapper'),
+                            'key'    => 'email'
+                        ))
+                    ));
+                    return $form;
+                },
+
+                'zfcuser_forgotten_password_form' => function($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $form = new Form\ForgottenPassword();
+                    $form->setInputFilter(new Form\ForgottenPasswordFilter(
+                        new Validator\RecordExists(array(
                             'mapper' => $sm->get('zfcuser_user_mapper'),
                             'key'    => 'email'
                         ))

@@ -32,5 +32,5 @@ $form->setAttribute('method', 'post');
 <?php endif; ?>
 
 <?php if ($this->enableForgottenPassword) : ?>
-<div>Forgotten your password? <a href="#">Click here</a></div>
+<div>Forgotten your password? <a href="<?php echo $this->url('zfcuser/forgottenpassword'); ?>">Click here</a></div>
 <?php endif; ?>

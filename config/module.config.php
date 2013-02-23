@@ -8,6 +8,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'zfcuser' => 'ZfcUser\Controller\UserController',
+            'zfcuser_forgotten_password' => 'ZfcUser\Controller\ForgottenPasswordController',
         ),
     ),
     'service_manager' => array(
@@ -92,6 +93,22 @@ return array(
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action' => 'changeemail',
+                            ),
+                        ),
+                        'may_terminate' => true,
+                        'child_routes' => array(
+                            'query' => array(
+                                'type' => 'Query',
+                            ),
+                        ),
+                    ),
+                    'forgottenpassword' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/forgotten-password',
+                            'defaults' => array(
+                                'controller' => 'zfcuser_forgotten_password',
+                                'action' => 'index',
                             ),
                         ),
                         'may_terminate' => true,

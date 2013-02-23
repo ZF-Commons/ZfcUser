@@ -10,6 +10,8 @@ class ForgottenPasswordFilter extends InputFilter
 
     public function __construct($emailValidator)
     {
+        $this->emailValidator = $emailValidator;
+
         $this->add(array(
             'name'       => 'email',
             'required'   => true,

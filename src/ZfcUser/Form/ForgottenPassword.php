@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Form;
 
+use Zend\Form\Element;
 use ZfcBase\Form\ProvidesEventsForm;
 
 /**
@@ -37,5 +38,10 @@ class ForgottenPassword extends ProvidesEventsForm
         ));
 
         // @todo Add CRSF & Captcha
+    }
+
+    public function getEmail()
+    {
+        return $this->get('email')->getValue();
     }
 }

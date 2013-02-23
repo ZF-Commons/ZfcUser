@@ -323,10 +323,7 @@ class UserController extends AbstractActionController
 
     public function forgottenPasswordAction()
     {
-        // if password retrieval is disabled
-        if (!$this->getOptions()->getEnableForgottenPassword()) {
-            return array('enableForgottenPassword' => false);
-        }
+
     }
 
     /**
@@ -404,20 +401,6 @@ class UserController extends AbstractActionController
     {
         $this->changePasswordForm = $changePasswordForm;
         return $this;
-    }
-
-    public function getForgottenPasswordForm()
-    {
-        if (!$this->forgottenPasswordForm) {
-            $this->setForgottentPasswordForm($this->getServiceLocator()->get('zfcuser_forgotten_password_form'));
-        }
-
-        return $this->forgottenPasswordForm;
-    }
-
-    public function setForgottenPasswordForm(Form $forgottenPasswordForm)
-    {
-        return $this->forgottenPasswordForm = $forgottenPasswordForm;
     }
 
     /**
