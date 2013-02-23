@@ -10,7 +10,7 @@ use ZfcUser\Service\Exception\InvalidArgumentException;
 /**
  * Factory for creating an instance of the selected mail transport.
  *
- * @author Tom Oram <tom@scl.co.uk>
+ * @author Tom Oram <tom@x2k.co.uk>
  */
 class MailTransportFactory implements FactoryInterface
 {

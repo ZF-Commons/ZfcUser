@@ -40,13 +40,6 @@ class MailOptions extends AbstractOptions
     protected $transportOptions = array();
 
     /**
-     * Class used to verify an email link is valid.
-     *
-     * @param string
-     */
-    protected $linkVerificationClass = '';
-
-    /**
      * The email address which message are sent from.
      *
      * @param string
@@ -145,26 +138,6 @@ class MailOptions extends AbstractOptions
     public function setTransportOptions($transportOptions)
     {
         $this->transportOptions = $transportOptions;
-    }
-
-    /**
-     * Gets the value for linkVerificationClass.
-     *
-     * @return string
-     */
-    public function getLinkVerificationClass()
-    {
-        return $this->linkVerificationClass;
-    }
-
-    /**
-     * Sets the value for linkVerificationClass.
-     *
-     * @param string $linkVerificationClass
-     */
-    public function setLinkVerificationClass($linkVerificationClass)
-    {
-        $this->linkVerificationClass = $linkVerificationClass;
     }
 
     /**

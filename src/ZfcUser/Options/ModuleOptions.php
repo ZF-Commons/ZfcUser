@@ -110,6 +110,20 @@ class ModuleOptions extends AbstractOptions implements
     protected $tableName = 'user';
 
     /**
+     * Algorithm used to generate the link verification hash.
+     *
+     * @param string
+     */
+    protected $linkHashType = 'md5';
+
+    /**
+     * Extra secret information for the link hash.
+     *
+     * @var string
+     */
+    protected $linkHashSecret = '';
+
+    /**
      * @var array
      */
     protected $formCaptchaOptions = array(
@@ -588,5 +602,45 @@ class ModuleOptions extends AbstractOptions implements
         $this->mail = new MailOptions($mail);
 
         return $this;
+    }
+
+    /**
+     * Gets the value for linkHashType.
+     *
+     * @return string
+     */
+    public function getLinkHashType()
+    {
+        return $this->linkHashType;
+    }
+
+    /**
+     * Sets the value for linkHashType.
+     *
+     * @param string $linkHashType
+     */
+    public function setLinkHashType($linkHashType)
+    {
+        $this->linkHashType = $linkHashType;
+    }
+
+    /**
+     * Gets the value for linkHashSecret.
+     *
+     * @return string
+     */
+    public function getLinkHashSecret()
+    {
+        return $this->linkHashSecret;
+    }
+
+    /**
+     * Sets the value for linkHashSecret.
+     *
+     * @param string $linkHashSecret
+     */
+    public function setLinkHashSecret($linkHashSecret)
+    {
+        $this->linkHashSecret = $linkHashSecret;
     }
 }
