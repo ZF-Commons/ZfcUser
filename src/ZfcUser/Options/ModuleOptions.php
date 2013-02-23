@@ -122,6 +122,11 @@ class ModuleOptions extends AbstractOptions implements
     );
 
     /**
+     * @var MailOptions
+     */
+    protected $mail;
+
+    /**
      * set login redirect route
      *
      * @param string $loginRedirectRoute
@@ -555,5 +560,33 @@ class ModuleOptions extends AbstractOptions implements
     public function getFormCaptchaOptions()
     {
         return $this->formCaptchaOptions;
+    }
+
+    /**
+     * Gets the value for mail.
+     *
+     * @return MailOptions
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * Sets the value for mail.
+     *
+     * @param MailOptions|array $mail
+     */
+    public function setMail($mail)
+    {
+        if ($mail instanceof MailOptions) {
+            $this->mail = $mail;
+
+            return $this;
+        }
+
+        $this->mail = new MailOptions($mail);
+
+        return $this;
     }
 }
