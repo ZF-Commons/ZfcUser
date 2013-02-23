@@ -88,6 +88,10 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'ZfcUser\Mail\ZendMail' => 'ZfcUser\Service\ZendMailFactory',
+
+                'zfcuser_mail_fetcher'  => 'ZfcUser\Service\MessageFetcherFactory',
+                'zfcuser_mail_loader'   => 'ZfcUser\Service\MailTransportFactory',
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');

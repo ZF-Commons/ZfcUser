@@ -20,19 +20,11 @@ class ZendMail implements MessageFetcherInterface, MailTransportInterface
     protected $renderer;
 
     /**
-     * @var string
-     */
-    protected $templatePath;
-
-    /**
-     * 
      * @param PhpRenderer $renderer
-     * @param string      $templatePath
      */
-    public function __construct(PhpRenderer $renderer, $templatePath = '')
+    public function __construct(PhpRenderer $renderer)
     {
         $this->renderer = $renderer;
-        $this->templatePath = (string) $templatePath;
     }
 
     /**
@@ -44,13 +36,9 @@ class ZendMail implements MessageFetcherInterface, MailTransportInterface
      */
     public function getMessage($name, array $params = array())
     {
-        $model = new ViewModel();
+        $model = new ViewModel($params);
 
-        $templateName = strlen($this->templatePath)
-            ? $this->templatePath . '/' . $name
-            : $name;
-
-        $model->setTemplate($templateName);
+        $model->setTemplate($name);
 
         return $this->renderer->render($model);
     }

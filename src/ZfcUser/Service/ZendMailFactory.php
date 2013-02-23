@@ -8,6 +8,7 @@ use Zend\View\Renderer\PhpRenderer;
 use Zend\View\Resolver\AggregateResolver;
 use Zend\View\Resolver\TemplatePathStack;
 use ZfcUser\Mail\ZendMail;
+use ZfcUser\Options\MailOptions;
 
 /**
  * Factory for creating an instance of {@see ZendMail}
@@ -45,7 +46,7 @@ class ZendMailFactory implements FactoryInterface
 
         $renderer->setResolver($resolver);
 
-        $fetcher = $options->getMessageFetcherOptions();
+        $fetcherOptions = $options->getMessageFetcherOptions();
 
         $stack = $this->createTemplatePathStack($fetcherOptions['template_paths']);
 
@@ -64,11 +65,8 @@ class ZendMailFactory implements FactoryInterface
         $options = $serviceLocator->get('zfcuser_module_options');
         $mailOptions = $options->getMail();
 
-        $renderer = $this->createRenderer();
+        $renderer = $this->createRenderer($mailOptions);
 
-        // @todo Implement this option!
-        $templatePath = ''; //$mailOptions->getTemplatePath();
-
-        return new ZendMail($renderer, $templatePath);
+        return new ZendMail($renderer);
     }
 }
