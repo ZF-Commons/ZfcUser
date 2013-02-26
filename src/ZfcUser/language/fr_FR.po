@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZfcUser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-26 13:38+0100\n"
-"PO-Revision-Date: 2013-02-26 13:38+0100\n"
+"PO-Revision-Date: 2013-02-26 13:41+0100\n"
 "Last-Translator: Belair <contact@ebelair.fr>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: fr_FR\n"
@@ -81,7 +81,7 @@ msgstr "Un enregistrement a été trouvé avec cette entrée"
 
 #: src/ZfcUser/language/msgIds.php:22
 msgid "Authentication failed. Please try again."
-msgstr "Authentification échouée. Merci de réessayer ultérieurement."
+msgstr "Authentification échouée. Merci de réessayer."
 
 #: view/zfc-user/user/login.phtml:31
 msgid "Not registered?"
