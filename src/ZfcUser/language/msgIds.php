@@ -1,7 +1,7 @@
 <?php
 /**
  * Ids for poedit
- * @method Z
+ * @method translate()
  */
 translate('Username');
 translate('Email');
@@ -19,3 +19,4 @@ translate('Sign In');
 translate('Register');
 translate("No record matching the input was found");
 translate("A record matching the input was found");
+translate("Authentication failed. Please try again.");

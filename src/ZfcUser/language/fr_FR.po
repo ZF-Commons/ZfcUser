@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: ZfcUser\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-02-12 10:16+0100\n"
-"PO-Revision-Date: 2013-02-12 10:18+0100\n"
+"POT-Creation-Date: 2013-02-26 13:38+0100\n"
+"PO-Revision-Date: 2013-02-26 13:38+0100\n"
 "Last-Translator: Belair <contact@ebelair.fr>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: fr_FR\n"
@@ -75,9 +75,13 @@ msgstr "Créer un compte"
 msgid "No record matching the input was found"
 msgstr "Aucun enregistrement n'a été trouvé avec cette entrée"
 
-#: src/ZfcUser/language/msgIds.php:21 src/ZfcUser/language/msgIds.php:22
+#: src/ZfcUser/language/msgIds.php:21
 msgid "A record matching the input was found"
 msgstr "Un enregistrement a été trouvé avec cette entrée"
+
+#: src/ZfcUser/language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr "Authentification échouée. Merci de réessayer ultérieurement."
 
 #: view/zfc-user/user/login.phtml:31
 msgid "Not registered?"
