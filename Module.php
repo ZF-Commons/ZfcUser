@@ -88,6 +88,17 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'ZfcUser\Mail\ZendMail'  => 'ZfcUser\Service\ZendMailFactory',
+                'zfcuser_mail_fetcher'   => 'ZfcUser\Service\MessageFetcherFactory',
+                'zfcuser_mail_transport' => 'ZfcUser\Service\MailTransportFactory',
+
+                'zfcuser_hash_handler'   => function ($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    return new Hash\UserHash(
+                        $options->getLinkHashType(),
+                        $options->getLinkHashSecret()
+                    );
+                },
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
@@ -147,6 +158,24 @@ class Module implements
                             'key'    => 'email'
                         ))
                     ));
+                    return $form;
+                },
+
+                'zfcuser_forgotten_password_form' => function($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $form = new Form\ForgottenPassword();
+                    $form->setInputFilter(new Form\ForgottenPasswordFilter(
+                        new Validator\RecordExists(array(
+                            'mapper' => $sm->get('zfcuser_user_mapper'),
+                            'key'    => 'email'
+                        ))
+                    ));
+                    return $form;
+                },
+
+                'zfcuser_reset_password_form' => function ($sm) {
+                    $form = new Form\ResetPassword();
+                    $form->setInputFilter(new Form\ResetPasswordFilter());
                     return $form;
                 },
 

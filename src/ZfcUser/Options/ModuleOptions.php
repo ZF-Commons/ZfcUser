@@ -6,6 +6,7 @@ use Zend\Stdlib\AbstractOptions;
 
 class ModuleOptions extends AbstractOptions implements
     UserControllerOptionsInterface,
+    ForgottenPasswordControllerOptionsInterface,
     UserServiceOptionsInterface
 {
     /**
@@ -86,6 +87,11 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var bool
      */
+    protected $enableForgottenPassword = true;
+
+    /**
+     * @var bool
+     */
     protected $enableUsername = false;
 
     /**
@@ -110,6 +116,20 @@ class ModuleOptions extends AbstractOptions implements
     protected $tableName = 'user';
 
     /**
+     * Algorithm used to generate the link verification hash.
+     *
+     * @param string
+     */
+    protected $linkHashType = 'md5';
+
+    /**
+     * Extra secret information for the link hash.
+     *
+     * @var string
+     */
+    protected $linkHashSecret = '';
+
+    /**
      * @var array
      */
     protected $formCaptchaOptions = array(
@@ -120,6 +140,11 @@ class ModuleOptions extends AbstractOptions implements
             'timeout'    => 300,
         ),
     );
+
+    /**
+     * @var MailOptions
+     */
+    protected $mail;
 
     /**
      * set login redirect route
@@ -229,6 +254,27 @@ class ModuleOptions extends AbstractOptions implements
     public function getEnableRegistration()
     {
         return $this->enableRegistration;
+    }
+
+    /**
+     * Sets the value for enableForgottenPassword.
+     *
+     * @param bool $enableForgottenPassword
+     */
+    public function setEnableForgottenPassword($enableForgottenPassword)
+    {
+        $this->enableForgottenPassword = $enableForgottenPassword;
+        return $this;
+    }
+
+    /**
+     * Gets the value for enableForgottenPassword.
+     *
+     * @return bool
+     */
+    public function getEnableForgottenPassword()
+    {
+        return $this->enableForgottenPassword;
     }
 
     /**
@@ -555,5 +601,73 @@ class ModuleOptions extends AbstractOptions implements
     public function getFormCaptchaOptions()
     {
         return $this->formCaptchaOptions;
+    }
+
+    /**
+     * Gets the value for mail.
+     *
+     * @return MailOptions
+     */
+    public function getMail()
+    {
+        return $this->mail;
+    }
+
+    /**
+     * Sets the value for mail.
+     *
+     * @param MailOptions|array $mail
+     */
+    public function setMail($mail)
+    {
+        if ($mail instanceof MailOptions) {
+            $this->mail = $mail;
+
+            return $this;
+        }
+
+        $this->mail = new MailOptions($mail);
+
+        return $this;
+    }
+
+    /**
+     * Gets the value for linkHashType.
+     *
+     * @return string
+     */
+    public function getLinkHashType()
+    {
+        return $this->linkHashType;
+    }
+
+    /**
+     * Sets the value for linkHashType.
+     *
+     * @param string $linkHashType
+     */
+    public function setLinkHashType($linkHashType)
+    {
+        $this->linkHashType = $linkHashType;
+    }
+
+    /**
+     * Gets the value for linkHashSecret.
+     *
+     * @return string
+     */
+    public function getLinkHashSecret()
+    {
+        return $this->linkHashSecret;
+    }
+
+    /**
+     * Sets the value for linkHashSecret.
+     *
+     * @param string $linkHashSecret
+     */
+    public function setLinkHashSecret($linkHashSecret)
+    {
+        $this->linkHashSecret = $linkHashSecret;
     }
 }

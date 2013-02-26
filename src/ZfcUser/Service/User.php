@@ -7,6 +7,7 @@ use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
+use ZfcUser\Entity\UserInterface;
 use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
@@ -119,6 +120,28 @@ class User extends EventProvider implements ServiceManagerAwareInterface
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
         $this->getUserMapper()->update($currentUser);
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser));
+
+        return true;
+    }
+
+    /**
+     * Sets the given users password to the provided value
+     *
+     * @param UserInterface $user
+     * @param string        $password
+     * @return boolean
+     */
+    public function resetPassword(UserInterface $user, $password)
+    {
+        $bcrypt = new Bcrypt;
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+
+        $pass = $bcrypt->create($password);
+        $user->setPassword($pass);
+
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
+        $this->getUserMapper()->update($user);
         $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser));
 
         return true;

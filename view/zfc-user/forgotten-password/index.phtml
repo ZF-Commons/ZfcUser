@@ -1,0 +1,25 @@
+<h1>Forgotten Password</h1>
+
+<?php
+if (!$this->enableForgottenPassword) {
+    print "Password retrieval is disabled";
+    return;
+}
+
+$form = $this->form;
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/forgottenpassword'));
+$form->setAttribute('method', 'post');
+?>
+
+<?php echo $this->form()->openTag($form) ?>
+
+    <dl class="zend_form">
+        <?php echo $this->formElementErrors($form->get('email')) ?>
+
+        <dt><?php echo $this->formLabel($form->get('email')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('email')) ?></dd>
+
+        <dd><?php echo $this->formSubmit($form->get('submit')) ?></dd>
+    </dl>
+<?php echo $this->form()->closeTag($form) ?>

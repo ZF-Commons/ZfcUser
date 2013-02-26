@@ -78,6 +78,7 @@ class UserController extends AbstractActionController
                 'loginForm' => $form,
                 'redirect'  => $redirect,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+                'enableForgottenPassword' => $this->getOptions()->getEnableForgottenPassword(),
             );
         }
 
