@@ -277,6 +277,29 @@ $settings = array(
          */
         'transport_options' => array(
             // Options here will vary depending on your mail transport service
+
+            /**
+             * The type of transport for ZendMail to use.
+             *
+             * Accepted values: smtp or sendmail
+             */
+            'type' => 'sendmail',
+
+            /**
+             * Options for SMTP settings, see \Zend\Mail\Transport\SmtpOptions
+             * for details.
+             */
+             /*
+            'smtp_options' => array(
+                'name'              => 'localhost.localdomain',
+                'host'              => '127.0.0.1',
+                'connection_class'  => 'login',
+                'connection_config' => array(
+                    'username' => 'user',
+                    'password' => 'pass',
+                ),
+            ),
+            */
         ),
 
         /**

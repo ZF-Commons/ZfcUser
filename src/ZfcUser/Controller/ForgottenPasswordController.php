@@ -236,7 +236,6 @@ class ForgottenPasswordController extends AbstractActionController
 
         $message = $this->getMessageFetcher()->getMessage('forgotten-password', $params);
 
-        die($message);
         $from = $mailOptions->getFromAddress();
 
         $to = sprintf(

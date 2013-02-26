@@ -2,8 +2,10 @@
 
 namespace ZfcUser\Mail;
 
+
+
 use Zend\Mail\Message;
-use Zend\Mail\Transport\Sendmail;
+use Zend\Mail\Transport\TransportInterface;
 use Zend\View\Model\ViewModel;
 use Zend\View\Renderer\PhpRenderer;
 
@@ -18,13 +20,19 @@ class ZendMail implements MessageFetcherInterface, MailTransportInterface
      * @var PhpRenderer
      */
     protected $renderer;
+    
+    /**
+     * @var TransportInterface
+     */
+    protected $transport;
 
     /**
      * @param PhpRenderer $renderer
      */
-    public function __construct(PhpRenderer $renderer)
+    public function __construct(PhpRenderer $renderer, TransportInterface $transport)
     {
         $this->renderer = $renderer;
+        $this->transport = $transport;
     }
 
     /**
@@ -61,8 +69,6 @@ class ZendMail implements MessageFetcherInterface, MailTransportInterface
             ->setSubject($subject)
             ->setBody($body);
 
-        $transport = new Sendmail();
-
-        $transport->send($message);
+        $this->transport->send($message);
     }
 }

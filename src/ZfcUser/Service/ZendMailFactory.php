@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Service;
 
+use Zend\Mail\Transport;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\View\Renderer\PhpRenderer;
@@ -56,8 +57,39 @@ class ZendMailFactory implements FactoryInterface
     }
 
     /**
+     * Return the transport to use for sending mail.
+     *
+     * @param MailOptions $options
+     * @return Transport\TransportInterface
+     */
+    protected function createTransport(MailOptions $options)
+    {
+        $transportOptions = $options->getTransportOptions();
+
+        $type = $transportOptions['type'];
+
+        switch ($type) {
+            case 'sendmail':
+                $transport = new Transport\Sendmail();
+                break;
+            case 'smtp':
+                $transport = new Transport\Smtp();
+                $smtpOptions = new Transport\SmtpOptions($transportOptions['smtp_options']);
+                $transport->setOptions($smtpOptions);
+                break;
+            default:
+                throw new Exception\InvalidArgumentException(
+                    "Mail transport type can be 'sendmail' or 'smtp'; got '$type'"
+                );
+        }
+
+        return $transport;
+    }
+
+    /**
      * Create an instance of {@see ZendMail}
      *
+     * @param ServiceLocatorInterface $serviceLocator
      * @return ZendMail
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
@@ -65,8 +97,9 @@ class ZendMailFactory implements FactoryInterface
         $options = $serviceLocator->get('zfcuser_module_options');
         $mailOptions = $options->getMail();
 
-        $renderer = $this->createRenderer($mailOptions);
-
-        return new ZendMail($renderer);
+        return new ZendMail(
+            $this->createRenderer($mailOptions),
+            $this->createTransport($mailOptions)
+        );
     }
 }
