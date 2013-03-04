@@ -6,6 +6,7 @@ use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\Crypt\Password\Bcrypt;
 use Zend\Stdlib\Hydrator\ClassMethods;
 
 class Module implements
@@ -165,6 +166,13 @@ class Module implements
                     $mapper->setTableName($options->getTableName());
                     return $mapper;
                 },
+
+                'zfcuser_password_service' => function ($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $service = new Bcrypt();
+                    $service->setCost($options->getPasswordCost());
+                    return $service;
+                }
             ),
         );
     }
