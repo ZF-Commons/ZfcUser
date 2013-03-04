@@ -7,6 +7,7 @@ use Zend\Authentication\Result as AuthenticationResult;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Crypt\Password\PasswordInterface;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
 use ZfcUser\Mapper\User as UserMapperInterface;
 use ZfcUser\Options\AuthenticationOptionsInterface;
@@ -22,6 +23,11 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
      * @var closure / invokable object
      */
     protected $credentialPreprocessor;
+
+    /**
+     * @var PasswordInterface
+     */
+    protected $passwordService;
 
     /**
      * @var ServiceManager
@@ -79,9 +85,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             }
         }
 
-        $bcrypt = new Bcrypt();
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        if (!$bcrypt->verify($credential,$userObject->getPassword())) {
+        if (!$this->getPasswordService()->verify($credential, $userObject->getPassword())) {
             // Password does not match
             $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
               ->setMessages(array('Supplied credential is invalid.'));
@@ -92,7 +96,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         // Success!
         $e->setIdentity($userObject->getId());
         // Update user's password hash if the cost parameter has changed
-        $this->updateUserPasswordHash($userObject, $credential, $bcrypt);
+        $this->updateUserPasswordHash($userObject, $credential);
         $this->setSatisfied(true);
         $storage = $this->getStorage()->read();
         $storage['identity'] = $e->getIdentity();
@@ -101,11 +105,14 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
           ->setMessages(array('Authentication successful.'));
     }
 
-    protected function updateUserPasswordHash($userObject, $password, $bcrypt)
+    protected function updateUserPasswordHash($userObject, $password)
     {
+        if (!$this->getPasswordService() instanceof Bcrypt) {
+            return;
+        }
         $hash = explode('$', $userObject->getPassword());
-        if ($hash[2] === $bcrypt->getCost()) return;
-        $userObject->setPassword($bcrypt->create($password));
+        if ($hash[2] === $this->getPasswordService()->getCost()) return;
+        $userObject->setPassword($this->getPasswordService()->create($password));
         $this->getMapper()->update($userObject);
         return $this;
     }
@@ -163,6 +170,25 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     {
         $this->credentialPreprocessor = $credentialPreprocessor;
         return $this;
+    }
+
+    /**
+     * @return PasswordInterface
+     */
+    public function getPasswordService()
+    {
+        if (!$this->passwordService instanceof PasswordInterface) {
+            $this->setPasswordService($this->getServiceManager()->get('zfcuser_password_service'));
+        }
+    }
+
+    /**
+     *
+     * @param PasswordInterface $passwordService
+     */
+    public function setPasswordService(PasswordInterface $passwordService)
+    {
+        $this->passwordService = $passwordService;
     }
 
     /**

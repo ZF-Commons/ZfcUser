@@ -78,9 +78,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $user = $form->getData();
         /* @var $user \ZfcUser\Entity\UserInterface */
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        $user->setPassword($bcrypt->create($user->getPassword()));
+        $user->setPassword($this->getPasswordService()->create($user->getPassword()));
 
         if ($this->getOptions()->getEnableUsername()) {
             $user->setUsername($data['username']);
@@ -114,14 +112,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $oldPass = $data['credential'];
         $newPass = $data['newCredential'];
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-
-        if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
+        if (!$this->getPasswordService()->verify($oldPass, $currentUser->getPassword())) {
             return false;
         }
 
-        $pass = $bcrypt->create($newPass);
+        $pass = $this->getPasswordService()->create($newPass);
         $currentUser->setPassword($pass);
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
@@ -135,10 +130,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-
-        if (!$bcrypt->verify($data['credential'], $currentUser->getPassword())) {
+        if (!$this->getPasswordService()->verify($data['credential'], $currentUser->getPassword())) {
             return false;
         }
 
@@ -241,6 +233,25 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     {
         $this->changePasswordForm = $changePasswordForm;
         return $this;
+    }
+
+    /**
+     * @return PasswordInterface
+     */
+    public function getPasswordService()
+    {
+        if (!$this->passwordService instanceof PasswordInterface) {
+            $this->setPasswordService($this->getServiceManager()->get('zfcuser_password_service'));
+        }
+        return $this->passwordService;
+    }
+
+    /**
+     * @param PasswordInterface $passwordService
+     */
+    public function setPasswordService(PasswordInterface $passwordService)
+    {
+        $this->passwordService = $passwordService;
     }
 
     /**
