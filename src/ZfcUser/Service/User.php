@@ -7,9 +7,11 @@ use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\Stdlib\Hydrator;
 use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
+
 
 class User extends EventProvider implements ServiceManagerAwareInterface
 {
@@ -50,6 +52,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     protected $options;
 
     /**
+     * @var Hydrator\ClassMethods
+     */
+    protected $formHydrator;
+
+    /**
      * createFromForm
      *
      * @param array $data
@@ -61,7 +68,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $class = $this->getOptions()->getUserEntityClass();
         $user  = new $class;
         $form  = $this->getRegisterForm();
-        $form->setHydrator($this->getServiceManager()->get('zfcuser_register_form_hydrator'));
+        $form->setHydrator($this->getFormHydrator());
         $form->bind($user);
         $form->setData($data);
         if (!$form->isValid()) {
@@ -278,6 +285,32 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
+        return $this;
+    }
+
+    /**
+     * Return the Form Hydrator
+     *
+     * @return \Zend\Stdlib\Hydrator\ClassMethods
+     */
+    public function getFormHydrator()
+    {
+        if (!$this->formHydrator instanceof Hydrator\ClassMethods) {
+            $this->setFormHydrator($this->getServiceManager()->get('zfcuser_register_form_hydrator'));
+        }
+
+        return $this->formHydrator;
+    }
+
+    /**
+     * Set the Form Hydrator to use
+     *
+     * @param Hydrator\ClassMethods $formHydrator
+     * @return User
+     */
+    public function setFormHydrator(Hydrator\ClassMethods $formHydrator)
+    {
+        $this->formHydrator = $formHydrator;
         return $this;
     }
 }
