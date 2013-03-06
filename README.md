@@ -154,7 +154,7 @@ problems such as making your hashed passwords more vulnerable to brute force
 attacks or making hashing so expensive that login and registration is
 unacceptably slow for users and produces a large burden on your server(s). The
 default settings provided are a very reasonable balance between the two,
-suitable for computing power in 2011.
+suitable for computing power in 2013.
 
 Options
 -------
