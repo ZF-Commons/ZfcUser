@@ -1,4 +1,5 @@
-<h1>Sign In</h1>
+<?php $this->plugin('translate')->setTranslatorTextDomain('zfcuser'); ?>
+<h1><?php echo $this->translate('Sign In'); ?></h1>
 
 <?php
 $form = $this->loginForm;
@@ -28,5 +29,5 @@ $form->setAttribute('method', 'post');
 <?php echo $this->form()->closeTag() ?>
 
 <?php if ($this->enableRegistration) : ?>
-Not registered? <a href="<?php echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>">Sign up!</a>
+	<?php echo $this->translate('Not registered?'); ?> <a href="<?php echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->redirect : '') ?>"><?php echo $this->translate('Sign up!'); ?></a>
 <?php endif; ?>

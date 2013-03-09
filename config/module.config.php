@@ -2,7 +2,7 @@
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
-            'zfcuser' => __DIR__ . '/../view',
+            'zfcuser' => realpath(__DIR__ . '/../view'),
         ),
     ),
     'controllers' => array(
@@ -19,6 +19,7 @@ return array(
         'routes' => array(
             'zfcuser' => array(
                 'type' => 'Literal',
+                'locale_aware' => true,
                 'priority' => 1000,
                 'options' => array(
                     'route' => '/user',
@@ -105,4 +106,15 @@ return array(
             ),
         ),
     ),
+	'translator' => array(
+		'locale' => 'en_UK',
+		'translation_file_patterns' => array(
+			array(
+				'type' => 'gettext',
+				'base_dir' => realpath(__DIR__ . '/../data/language'),
+				'pattern' => '%s.mo',
+				'text_domain' => 'zfcuser',
+			)
+		),
+	),    
 );

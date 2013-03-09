@@ -15,7 +15,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'username',
             'options' => array(
-                'label' => 'Username',
+                'label' => _('Username'),
             ),
             'attributes' => array(
                 'type' => 'text'
@@ -25,7 +25,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'email',
             'options' => array(
-                'label' => 'Email',
+                'label' => _('Email'),
             ),
             'attributes' => array(
                 'type' => 'text'
@@ -35,7 +35,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'display_name',
             'options' => array(
-                'label' => 'Display Name',
+                'label' => _('Display Name'),
             ),
             'attributes' => array(
                 'type' => 'text'
@@ -45,7 +45,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'password',
             'options' => array(
-                'label' => 'Password',
+                'label' => _('Password'),
             ),
             'attributes' => array(
                 'type' => 'password'
@@ -55,7 +55,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'passwordVerify',
             'options' => array(
-                'label' => 'Password Verify',
+                'label' => _('Password Verify'),
             ),
             'attributes' => array(
                 'type' => 'password'
@@ -67,7 +67,7 @@ class Base extends ProvidesEventsForm
                 'name' => 'captcha',
                 'type' => 'Zend\Form\Element\Captcha',
                 'options' => array(
-                    'label' => 'Please type the following text',
+                    'label' => _('Please type the following text'),
                     'captcha' => $this->getRegistrationOptions()->getFormCaptchaOptions(),
                 ),
             ));

@@ -2,6 +2,7 @@
 
 namespace ZfcUser;
 
+use Zend\Mvc\MvcEvent;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
@@ -13,6 +14,13 @@ class Module implements
     ConfigProviderInterface,
     ServiceProviderInterface
 {
+	
+	public function init(\Zend\ModuleManager\ModuleManager $moduleManager){
+		$sharedEvents   = $moduleManager->getEventManager()->getSharedManager();
+		$sharedEvents->attach(__NAMESPACE__, 'dispatch', array($this, 'changeViewHelper'), 10);
+	}
+	
+	
     public function getAutoloaderConfig()
     {
         return array(
@@ -168,4 +176,14 @@ class Module implements
             ),
         );
     }
+
+	public function changeViewHelper(MvcEvent $e) {
+		$serviceManager = $e -> getApplication() -> getServiceManager();
+		$renderer = $serviceManager -> get('viewmanager') -> getRenderer();
+		//$renderer -> plugin('formText') -> setTranslator($serviceManager -> get('translator'), 'zfcuser');
+		$renderer -> plugin('formLabel') -> setTranslator($serviceManager -> get('translator'), 'zfcuser');
+		$renderer -> plugin('formButton') -> setTranslator($serviceManager -> get('translator'), 'zfcuser');
+		//$renderer -> plugin('formSelect') -> setTranslator($serviceManager -> get('translator'), 'zfcuser');
+		//$renderer -> plugin('formSubmit') -> setTranslator($serviceManager -> get('translator'), 'zfcuser');
+	}
 }
