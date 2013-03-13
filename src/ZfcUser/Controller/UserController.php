@@ -396,6 +396,19 @@ class UserController extends AbstractActionController
         return $this;
     }
 
+    public function getRegisterForm()
+    {
+        if (!$this->registerForm) {
+            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
+        }
+        return $this->registerForm;
+    }
+
+    public function setRegisterForm(Form $registerForm)
+    {
+        $this->registerForm = $registerForm;
+    }
+
     public function getLoginForm()
     {
         if (!$this->loginForm) {
@@ -416,17 +429,29 @@ class UserController extends AbstractActionController
         return $this;
     }
 
-    public function getRegisterForm()
+    /**
+     * set options
+     *
+     * @param UserControllerOptionsInterface $options
+     * @return UserController
+     */
+    public function setOptions(UserControllerOptionsInterface $options)
     {
-        if (!$this->registerForm) {
-            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
-        }
-        return $this->registerForm;
+        $this->options = $options;
+        return $this;
     }
 
-    public function setRegisterForm(Form $registerForm)
+    /**
+     * get options
+     *
+     * @return UserControllerOptionsInterface
+     */
+    public function getOptions()
     {
-        $this->registerForm = $registerForm;
+        if (!$this->options instanceof UserControllerOptionsInterface) {
+            $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
+        }
+        return $this->options;
     }
 
     public function getChangePasswordForm()
@@ -465,30 +490,5 @@ class UserController extends AbstractActionController
     {
         $this->changeEmailForm = $changeEmailForm;
         return $this;
-    }
-
-    /**
-     * set options
-     *
-     * @param UserControllerOptionsInterface $options
-     * @return UserController
-     */
-    public function setOptions(UserControllerOptionsInterface $options)
-    {
-        $this->options = $options;
-        return $this;
-    }
-
-    /**
-     * get options
-     *
-     * @return UserControllerOptionsInterface
-     */
-    public function getOptions()
-    {
-        if (!$this->options instanceof UserControllerOptionsInterface) {
-            $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
-        }
-        return $this->options;
     }
 }
