@@ -88,7 +88,7 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='.$redirect : ''));
+            return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
         }
 
         // clear adapters
@@ -141,8 +141,7 @@ class UserController extends AbstractActionController
 
             $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
 
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN)
-                . ($redirect ? '?redirect='.$redirect : ''));
+            return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
         }
 
         if ($redirect) {
@@ -171,24 +170,18 @@ class UserController extends AbstractActionController
         $service = $this->getUserService();
         $form = $this->getRegisterForm();
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
-            $redirect = $request->getQuery()->get('redirect');
-        } else {
-            $redirect = false;
-        }
+        $redirect = $this->redirectUrl();
 
-        $redirectUrl = $this->url()->fromRoute(static::ROUTE_REGISTER)
-            . ($redirect ? '?redirect=' . $redirect : '');
-        $prg = $this->prg($redirectUrl, true);
+        $viewParams = array(
+            'registerForm'       => $form,
+            'enableRegistration' => $this->getOptions()->getEnableRegistration(),
+            'redirect'           => $redirect,
+        );
+        $redirectUrl = $this->urlWithRedirect(static::ROUTE_REGISTER, $redirect);
 
-        if ($prg instanceof Response) {
+        $prg = $this->runPrg($redirectUrl, $viewParams);
+        if (!is_array($prg)) {
             return $prg;
-        } elseif ($prg === false) {
-            return array(
-                'registerForm' => $form,
-                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
-                'redirect' => $redirect,
-            );
         }
 
         $post = $prg;
@@ -197,27 +190,23 @@ class UserController extends AbstractActionController
         $redirect = isset($prg['redirect']) ? $prg['redirect'] : null;
 
         if (!$user) {
-            return array(
-                'registerForm' => $form,
-                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
-                'redirect' => $redirect,
-            );
+            return $viewParams;
         }
 
-        if ($service->getOptions()->getLoginAfterRegistration()) {
-            $identityFields = $service->getOptions()->getAuthIdentityFields();
-            if (in_array('email', $identityFields)) {
-                $post['identity'] = $user->getEmail();
-            } elseif (in_array('username', $identityFields)) {
-                $post['identity'] = $user->getUsername();
-            }
-            $post['credential'] = $post['password'];
-            $request->setPost(new Parameters($post));
-            return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
+        if (!$service->getOptions()->getLoginAfterRegistration()) {
+            return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
         }
 
-        // TODO: Add the redirect parameter here...
-        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect='.$redirect : ''));
+        $identityFields = $service->getOptions()->getAuthIdentityFields();
+        if (in_array('email', $identityFields)) {
+            $post['identity'] = $user->getEmail();
+        } elseif (in_array('username', $identityFields)) {
+            $post['identity'] = $user->getUsername();
+        }
+        $post['credential'] = $post['password'];
+        $request->setPost(new Parameters($post));
+
+        return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
     }
 
     /**
@@ -232,22 +221,19 @@ class UserController extends AbstractActionController
         }
 
         $form = $this->getChangePasswordForm();
-        $prg = $this->prg(static::ROUTE_CHANGEPASSWD);
 
         $fm = $this->flashMessenger()->setNamespace('change-password')->getMessages();
-        if (isset($fm[0])) {
-            $status = $fm[0];
-        } else {
-            $status = null;
-        }
+        $status = (isset($fm[0])) ? $fm[0] : null;
 
-        if ($prg instanceof Response) {
-            return $prg;
-        } elseif ($prg === false) {
-            return array(
+        $prg = $this->runPrg(
+            $this->url()->fromRoute(static::ROUTE_CHANGEPASSWD),
+            array(
                 'status' => $status,
                 'changePasswordForm' => $form,
-            );
+            )
+        );
+        if (!is_array($prg)) {
+            return $prg;
         }
 
         $form->setData($prg);
@@ -267,6 +253,7 @@ class UserController extends AbstractActionController
         }
 
         $this->flashMessenger()->setNamespace('change-password')->addMessage(true);
+
         return $this->redirect()->toRoute(static::ROUTE_CHANGEPASSWD);
     }
 
@@ -283,20 +270,17 @@ class UserController extends AbstractActionController
         $request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
 
         $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
-        if (isset($fm[0])) {
-            $status = $fm[0];
-        } else {
-            $status = null;
-        }
+        $status = (isset($fm[0])) ? $fm[0] : null;
 
-        $prg = $this->prg(static::ROUTE_CHANGEEMAIL);
-        if ($prg instanceof Response) {
-            return $prg;
-        } elseif ($prg === false) {
-            return array(
+        $prg = $this->runPrg(
+            $this->url()->fromRoute(static::ROUTE_CHANGEEMAIL),
+            array(
                 'status' => $status,
                 'changeEmailForm' => $form,
-            );
+            )
+        );
+        if (!is_array($prg)) {
+            return $prg;
         }
 
         $form->setData($prg);
@@ -319,6 +303,7 @@ class UserController extends AbstractActionController
         }
 
         $this->flashMessenger()->setNamespace('change-email')->addMessage(true);
+
         return $this->redirect()->toRoute(static::ROUTE_CHANGEEMAIL);
     }
 
@@ -326,6 +311,25 @@ class UserController extends AbstractActionController
      * Internal methods
      * @todo Refactor these out of the controller as appropriate.
      */
+
+    /**
+     * 
+     * @param  string $redirectUrl
+     * @param  array  $firstTimeParams
+     * @return Response|ViewModel|array
+     */
+    protected function runPrg($redirectUrl, array $firstTimeParams)
+    {
+        $prg = $this->prg($redirectUrl, true);
+
+        if ($prg === false) {
+            // By returning ViewModel instead on an array allow a simple
+            // single call to is_array() on the return value
+            return new ViewModel($firstTimeParams);
+        }
+
+        return $prg;
+    }
 
     /**
      * Returns the redirect url to be used.
@@ -341,6 +345,32 @@ class UserController extends AbstractActionController
         return $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
     }
 
+    /**
+     * Returns a response to redirect to the given route and and pass on the redirect GET var.
+     *
+     * @param  string $route
+     * @param  string $redirect
+     * @return Response
+     */
+    protected function toRouteWithRedirect($route, $redirect)
+    {
+        return $this->redirect()->toUrl(
+            $this->urlWithRedirect($route, $redirect)
+        );
+    }
+
+    /**
+     *  Returns the url to given route and and pass on the redirect GET var.
+     *
+     * @param  string $route
+     * @param  string $redirect
+     * @return Response
+     */
+    protected function urlWithRedirect($route, $redirect)
+    {
+        return $this->url()->fromRoute($route)
+            . ($redirect ? '?redirect='.$redirect : '');
+    }
     /**
      * Logs a user in
      *
@@ -375,7 +405,6 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
     }
-
 
 
     /**
