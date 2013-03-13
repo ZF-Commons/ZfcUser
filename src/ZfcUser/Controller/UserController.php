@@ -429,6 +429,20 @@ class UserController extends AbstractActionController
         return $this;
     }
 
+    public function getChangePasswordForm()
+    {
+        if (!$this->changePasswordForm) {
+            $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
+        }
+        return $this->changePasswordForm;
+    }
+
+    public function setChangePasswordForm(Form $changePasswordForm)
+    {
+        $this->changePasswordForm = $changePasswordForm;
+        return $this;
+    }
+
     /**
      * set options
      *
@@ -452,20 +466,6 @@ class UserController extends AbstractActionController
             $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
         }
         return $this->options;
-    }
-
-    public function getChangePasswordForm()
-    {
-        if (!$this->changePasswordForm) {
-            $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
-        }
-        return $this->changePasswordForm;
-    }
-
-    public function setChangePasswordForm(Form $changePasswordForm)
-    {
-        $this->changePasswordForm = $changePasswordForm;
-        return $this;
     }
 
     /**
