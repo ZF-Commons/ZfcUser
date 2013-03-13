@@ -7,7 +7,9 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'zfcuser' => 'ZfcUser\Controller\UserController',
+            'zfcuser_user_controller'           => 'ZfcUser\Controller\UserController',
+            'zfcuser_authentication_controller' => 'ZfcUser\Controller\AuthenticationController',
+            'zfcuser_registration_controller'   => 'ZfcUser\Controller\RegistrationController',
         ),
     ),
     'service_manager' => array(
@@ -23,7 +25,7 @@ return array(
                 'options' => array(
                     'route' => '/user',
                     'defaults' => array(
-                        'controller' => 'zfcuser',
+                        'controller' => 'zfcuser_user_controller',
                         'action'     => 'index',
                     ),
                 ),
@@ -34,7 +36,7 @@ return array(
                         'options' => array(
                             'route' => '/login',
                             'defaults' => array(
-                                'controller' => 'zfcuser',
+                                'controller' => 'zfcuser_authentication_controller',
                                 'action'     => 'login',
                             ),
                         ),
@@ -44,7 +46,7 @@ return array(
                         'options' => array(
                             'route' => '/authenticate',
                             'defaults' => array(
-                                'controller' => 'zfcuser',
+                                'controller' => 'zfcuser_authentication_controller',
                                 'action'     => 'authenticate',
                             ),
                         ),
@@ -54,7 +56,7 @@ return array(
                         'options' => array(
                             'route' => '/logout',
                             'defaults' => array(
-                                'controller' => 'zfcuser',
+                                'controller' => 'zfcuser_authentication_controller',
                                 'action'     => 'logout',
                             ),
                         ),
@@ -64,7 +66,7 @@ return array(
                         'options' => array(
                             'route' => '/register',
                             'defaults' => array(
-                                'controller' => 'zfcuser',
+                                'controller' => 'zfcuser_registration_controller',
                                 'action'     => 'register',
                             ),
                         ),
@@ -74,7 +76,7 @@ return array(
                         'options' => array(
                             'route' => '/change-password',
                             'defaults' => array(
-                                'controller' => 'zfcuser',
+                                'controller' => 'zfcuser_user_controller',
                                 'action'     => 'changepassword',
                             ),
                         ),
@@ -90,7 +92,7 @@ return array(
                         'options' => array(
                             'route' => '/change-email',
                             'defaults' => array(
-                                'controller' => 'zfcuser',
+                                'controller' => 'zfcuser_user_controller',
                                 'action' => 'changeemail',
                             ),
                         ),
