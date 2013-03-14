@@ -5,7 +5,6 @@ namespace ZfcUser\Authentication\Adapter;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\EventManager\Event;
-use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface as Response;
 use ZfcBase\EventManager\EventProvider;
 

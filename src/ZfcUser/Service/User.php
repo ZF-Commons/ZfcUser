@@ -3,11 +3,10 @@
 namespace ZfcUser\Service;
 
 use Zend\Authentication\AuthenticationService;
+use Zend\Crypt\Password\PasswordInterface;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Crypt\Password\Bcrypt;
-use Zend\Stdlib\Hydrator;
 use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
@@ -17,7 +16,6 @@ class User extends EventProvider implements
     ServiceManagerAwareInterface,
     UserInterface
 {
-
     /**
      * @var UserMapperInterface
      */
@@ -57,18 +55,18 @@ class User extends EventProvider implements
      * @var Hydrator\ClassMethods
      */
     protected $formHydrator;
-
+    
     /**
-     * Returns the crypt for hashing passwords.
-     *
-     * @todo Move this into the service manager and inject it into this class.
-     * @return Bcrypt
+     * @var PasswordInterface
      */
-    protected function getCrypt()
+    protected $crypt;
+    
+    /**
+     * @param PasswordInterface $crypt
+     */
+    public function __construct(PasswordInterface $crypt)
     {
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        return $bcrypt;
+    	$this->crypt = $crypt;
     }
 
     /**
@@ -76,12 +74,11 @@ class User extends EventProvider implements
      *
      * @param  UserEntityInterface $user
      * @return boolean
-     * @todo Check if the insert succeeds
+     * @todo   Check if the insert succeeds
      */
     public function register(UserEntityInterface $user)
     {
-        $bcrypt = $this->getCrypt();
-        $user->setPassword($bcrypt->create($user->getPassword()));
+        $user->setPassword($this->crypt->create($user->getPassword()));
 
         // If user state is enabled, set the default state value
         if ($this->getOptions()->getEnableUserState()) {
@@ -89,9 +86,9 @@ class User extends EventProvider implements
                 $user->setState($this->getOptions()->getDefaultUserState());
             }
         }
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user));
         $this->getUserMapper()->insert($user);
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user));
 
         return true;
     }
@@ -107,13 +104,11 @@ class User extends EventProvider implements
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
-        $bcrypt = $this->getCrypt();
-
-        if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
+        if (!$this->crypt->verify($oldPass, $currentUser->getPassword())) {
             return false;
         }
 
-        $pass = $bcrypt->create($newPass);
+        $pass = $this->crypt->create($newPass);
         $currentUser->setPassword($pass);
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
@@ -134,9 +129,7 @@ class User extends EventProvider implements
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
-        $bcrypt = $this->getCrypt();
-
-        if (!$bcrypt->verify($credential, $currentUser->getPassword())) {
+        if (!$this->crypt->verify($credential, $currentUser->getPassword())) {
             return false;
         }
 

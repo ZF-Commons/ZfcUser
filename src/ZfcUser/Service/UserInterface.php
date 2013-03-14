@@ -32,4 +32,11 @@ interface UserInterface
      * @return boolean
      */
     public function changeEmail($credential, $newEmail);
+    
+    /**
+     * get service options
+     *
+     * @return UserServiceOptionsInterface
+     */
+    public function getOptions();
 }

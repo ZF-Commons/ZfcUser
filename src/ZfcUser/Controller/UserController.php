@@ -5,8 +5,6 @@ namespace ZfcUser\Controller;
 use Zend\Form\Form;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
-use Zend\Stdlib\Hydrator\ClassMethods;
-use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
@@ -93,8 +91,7 @@ class UserController extends AbstractActionController
         }
 
         // clear adapters
-        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-        $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
+        $this->clearIdentity(false);
 
         return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
     }
@@ -104,7 +101,7 @@ class UserController extends AbstractActionController
      */
     public function logoutAction()
     {
-        $this->logout();
+        $this->clearIdentity();
 
         $redirect = $this->redirectUrl();
 
@@ -126,30 +123,10 @@ class UserController extends AbstractActionController
 
         $post = $this->getRequest()->getPost();
 
-        $result = $this->login(
+        return $this->authenticate(
             $post->get('identity'),
             $post->get('credential')
         );
-
-        if ($result instanceof Response) {
-            return $result;
-        }
-
-        $redirect = $this->redirectUrl();
-
-        if (!$result->isValid()) {
-            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-
-            $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-
-            return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
-        }
-
-        if ($redirect) {
-            return $this->redirect()->toUrl($redirect);
-        }
-
-        return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
     }
 
     /**
@@ -167,10 +144,8 @@ class UserController extends AbstractActionController
             return array('enableRegistration' => false);
         }
 
-        $request = $this->getRequest();
         $service = $this->getUserService();
         $form = $this->getRegisterForm();
-        $form->setHydrator($this->getFormHydrator());
 
         $redirect = $this->redirectUrl();
 
@@ -186,6 +161,7 @@ class UserController extends AbstractActionController
             return $prg;
         }
 
+        // @todo Create the user class via the service manager
         $class = $this->getOptions()->getUserEntityClass();
         $user  = new $class;
         $form->bind($user);
@@ -194,8 +170,6 @@ class UserController extends AbstractActionController
         if (!$form->isValid()) {
             return $viewParams;
         }
-
-        $redirect = isset($prg['redirect']) ? $prg['redirect'] : null;
 
         if (!$service->register($user)) {
             return $viewParams;
@@ -213,18 +187,8 @@ class UserController extends AbstractActionController
         } elseif (in_array('username', $identityFields)) {
             $identity = $user->getUsername();
         }
-
-        // @todo Add getIdentity() & getCredential() use Register form
-        $request->setPost(new Parameters(array(
-            'identity' => $identity,
-            'credential' => $form->get('password')->getValue(),
-            'redirect' => $redirect,
-        )));
-
-        // @todo Extract the authentication part out of authenticateAction and have it called
-        // by authenticateAction, loginAction and here to avoid the pointless rewriting of this
-        // post parameters.
-        return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
+        
+        return $this->authenticate($identity, $form->get('password')->getValue());
     }
 
     /**
@@ -243,25 +207,18 @@ class UserController extends AbstractActionController
         $fm = $this->flashMessenger()->setNamespace('change-password')->getMessages();
         $status = (isset($fm[0])) ? $fm[0] : null;
 
-        $prg = $this->runPrg(
-            $this->url()->fromRoute(static::ROUTE_CHANGEPASSWD),
-            array(
+        $this->prgForm(
+        	$form,
+        	static::ROUTE_CHANGEPASSWD,
+        	array(
                 'status' => $status,
+                'changePasswordForm' => $form,
+            ),
+        	array(
+                'status' => false,
                 'changePasswordForm' => $form,
             )
         );
-        if (!is_array($prg)) {
-            return $prg;
-        }
-
-        $form->setData($prg);
-
-        if (!$form->isValid()) {
-            return array(
-                'status' => false,
-                'changePasswordForm' => $form,
-            );
-        }
 
         if (!$this->getUserService()->changePassword(
             $form->get('credential')->getValue(),
@@ -278,6 +235,9 @@ class UserController extends AbstractActionController
         return $this->redirect()->toRoute(static::ROUTE_CHANGEPASSWD);
     }
 
+    /**
+     * Change the users email address
+     */
     public function changeEmailAction()
     {
         // if the user isn't logged in, we can't change email
@@ -288,32 +248,22 @@ class UserController extends AbstractActionController
 
         $form = $this->getChangeEmailForm();
         $request = $this->getRequest();
-        $request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
 
         $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
         $status = (isset($fm[0])) ? $fm[0] : null;
 
-        // @todo Extract to method
-        $prg = $this->runPrg(
-            $this->url()->fromRoute(static::ROUTE_CHANGEEMAIL),
-            array(
+        $result = $this->prgForm(
+        	$form,
+        	static::ROUTE_CHANGEEMAIL,
+        	array(
                 'status' => $status,
+                'changeEmailForm' => $form,
+            ),
+        	array(
+                'status' => false,
                 'changeEmailForm' => $form,
             )
         );
-        if (!is_array($prg)) {
-            return $prg;
-        }
-
-        $form->setData($prg);
-
-        if (!$form->isValid()) {
-            return array(
-                'status' => false,
-                'changeEmailForm' => $form,
-            );
-        }
-        // end todo
 
         $change = $this->getUserService()->changeEmail(
             $form->get('credential')->getValue(),
@@ -335,8 +285,35 @@ class UserController extends AbstractActionController
 
     /*
      * Internal methods
-     * @todo Refactor these out of the controller as appropriate.
      */
+    
+    /**
+     * Processes a form using the prg plugin.
+     *
+     * @param  Form   $form
+     * @param  string $route
+     * @param  array  $firstTimeParams
+     * @param  array  $formFailParams
+     * @return Response|array|false
+     */
+    protected function prgForm(Form $form, $route, array $firstTimeParams, array $formFailParams)
+    {
+    	$prg = $this->runPrg(
+    			$this->url()->fromRoute($route),
+    			$firstTimeParams
+    	);
+    	if (!is_array($prg)) {
+    		return $prg;
+    	}
+    	 
+    	$form->setData($prg);
+    	 
+    	if (!$form->isValid()) {
+    		return $formFailParams;
+    	}
+    
+    	return false;
+    }
 
     /**
      * 
@@ -397,18 +374,16 @@ class UserController extends AbstractActionController
         return $this->url()->fromRoute($route)
             . ($redirect ? '?redirect='.$redirect : '');
     }
+
     /**
-     * Logs a user in
-     *
-     * @todo Move this to a authentication service
+     * Authenticate a user.
      *
      * @param  string $identity
      * @param  string $credential
-     * @return \Zend\Authentication\Result|Response
      */
-    protected function login($identity, $credential)
-    {
-        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+	protected function authenticate($identity, $credential)
+	{
+		$adapter = $this->zfcUserAuthentication()->getAuthAdapter();
 
         $result = $adapter->prepareForAuthentication($identity, $credential);
 
@@ -417,18 +392,38 @@ class UserController extends AbstractActionController
             return $result;
         }
 
-        return $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
-    }
+        $result = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
+
+		$redirect = $this->redirectUrl();
+		
+		if (!$result->isValid()) {
+			$this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
+		
+			$this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+		
+			return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
+		}
+		
+		if ($redirect) {
+			return $this->redirect()->toUrl($redirect);
+		}
+		
+		return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+	}
 
     /**
      * Clears the current identity.
      *
-     * @todo Move this to a authentication service
+     * @param boolean $logoutAdapters
      */
-    protected function logout()
+    protected function clearIdentity($logoutAdapters = true)
     {
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-        $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
+
+        if ($logoutAdapters) {
+        	$this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
+        }
+
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
     }
 
@@ -544,32 +539,6 @@ class UserController extends AbstractActionController
     public function setChangeEmailForm($changeEmailForm)
     {
         $this->changeEmailForm = $changeEmailForm;
-        return $this;
-    }
-
-    /**
-     * Return the Form Hydrator
-     *
-     * @return \Zend\Stdlib\Hydrator\ClassMethods
-     */
-    public function getFormHydrator()
-    {
-        if (!$this->formHydrator) {
-            $this->setFormHydrator($this->getServiceLocator()->get('zfcuser_register_form_hydrator'));
-        }
-
-        return $this->formHydrator;
-    }
-
-    /**
-     * Set the Form Hydrator to use
-     *
-     * @param ClassMethods $formHydrator
-     * @return User
-     */
-    public function setFormHydrator(ClassMethods $formHydrator)
-    {
-        $this->formHydrator = $formHydrator;
         return $this;
     }
 }

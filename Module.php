@@ -2,11 +2,9 @@
 
 namespace ZfcUser;
 
-use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
-use Zend\Stdlib\Hydrator\ClassMethods;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -84,10 +82,15 @@ class Module implements
                 'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
-                'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+            		
+            	'zfcuser_user_service' => function ($sm) {
+            		return new \ZfcUser\Service\User(
+            			$sm->get('zfcuser_credential_crypt')
+					);
+            	},
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
@@ -115,6 +118,7 @@ class Module implements
                 'zfcuser_register_form' => function ($sm) {
                     $options = $sm->get('zfcuser_module_options');
                     $form = new Form\Register(null, $options);
+                    $form->setHydrator($sm->get('zfcuser_register_form_hydrator'));
                     //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
                     $form->setInputFilter(new Form\RegisterFilter(
                         new Validator\NoRecordExists(array(
@@ -128,6 +132,12 @@ class Module implements
                         $options
                     ));
                     return $form;
+                },
+                
+                'zfcuser_credential_crypt' => function ($sm) {
+                	$bcrypt = new \Zend\Crypt\Password\Bcrypt;
+                	$bcrypt->setCost($sm->get('zfcuser_module_options')->getPasswordCost());
+                	return $bcrypt;
                 },
 
                 'zfcuser_change_password_form' => function($sm) {
