@@ -5,6 +5,7 @@ namespace ZfcUser\Controller;
 use Zend\Form\Form;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
+use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
@@ -169,6 +170,7 @@ class UserController extends AbstractActionController
         $request = $this->getRequest();
         $service = $this->getUserService();
         $form = $this->getRegisterForm();
+        $form->setHydrator($this->getFormHydrator());
 
         $redirect = $this->redirectUrl();
 
@@ -184,12 +186,18 @@ class UserController extends AbstractActionController
             return $prg;
         }
 
-        $post = $prg;
-        $user = $service->register($post);
+        $class = $this->getOptions()->getUserEntityClass();
+        $user  = new $class;
+        $form->bind($user);
+
+        $form->setData($prg);
+        if (!$form->isValid()) {
+            return $viewParams;
+        }
 
         $redirect = isset($prg['redirect']) ? $prg['redirect'] : null;
 
-        if (!$user) {
+        if (!$service->register($user)) {
             return $viewParams;
         }
 
@@ -197,15 +205,25 @@ class UserController extends AbstractActionController
             return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
         }
 
+        // @todo Add a getIdentity() method to the UserInterface?
         $identityFields = $service->getOptions()->getAuthIdentityFields();
-        if (in_array('email', $identityFields)) {
-            $post['identity'] = $user->getEmail();
-        } elseif (in_array('username', $identityFields)) {
-            $post['identity'] = $user->getUsername();
-        }
-        $post['credential'] = $post['password'];
-        $request->setPost(new Parameters($post));
 
+        if (in_array('email', $identityFields)) {
+            $identity = $user->getEmail();
+        } elseif (in_array('username', $identityFields)) {
+            $identity = $user->getUsername();
+        }
+
+        // @todo Add getIdentity() & getCredential() use Register form
+        $request->setPost(new Parameters(array(
+            'identity' => $identity,
+            'credential' => $form->get('password')->getValue(),
+            'redirect' => $redirect,
+        )));
+
+        // @todo Extract the authentication part out of authenticateAction and have it called
+        // by authenticateAction, loginAction and here to avoid the pointless rewriting of this
+        // post parameters.
         return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
     }
 
@@ -518,6 +536,32 @@ class UserController extends AbstractActionController
     public function setChangeEmailForm($changeEmailForm)
     {
         $this->changeEmailForm = $changeEmailForm;
+        return $this;
+    }
+
+    /**
+     * Return the Form Hydrator
+     *
+     * @return \Zend\Stdlib\Hydrator\ClassMethods
+     */
+    public function getFormHydrator()
+    {
+        if (!$this->formHydrator) {
+            $this->setFormHydrator($this->getServiceLocator()->get('zfcuser_register_form_hydrator'));
+        }
+
+        return $this->formHydrator;
+    }
+
+    /**
+     * Set the Form Hydrator to use
+     *
+     * @param ClassMethods $formHydrator
+     * @return User
+     */
+    public function setFormHydrator(ClassMethods $formHydrator)
+    {
+        $this->formHydrator = $formHydrator;
         return $this;
     }
 }
