@@ -2,8 +2,6 @@
 
 namespace ZfcUser\Service;
 
-use ZfcUser\Entity\UserInterface;
-
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
@@ -11,10 +9,13 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Stdlib\Hydrator;
 use ZfcBase\EventManager\EventProvider;
+use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
 
-class User extends EventProvider implements ServiceManagerAwareInterface
+class User extends EventProvider implements
+    ServiceManagerAwareInterface,
+    UserInterface
 {
 
     /**
@@ -73,23 +74,14 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * registers the user.
      *
-     * @param  array $data
+     * @param  UserEntityInterface $user
      * @return boolean
      * @todo Check if the insert succeeds
      */
-    public function register(UserInterface $user)
+    public function register(UserEntityInterface $user)
     {
         $bcrypt = $this->getCrypt();
         $user->setPassword($bcrypt->create($user->getPassword()));
-
-        /*
-        if ($this->getOptions()->getEnableUsername()) {
-            $user->setUsername($data['username']);
-        }
-        if ($this->getOptions()->getEnableDisplayName()) {
-            $user->setDisplayName($data['display_name']);
-        }
-        */
 
         // If user state is enabled, set the default state value
         if ($this->getOptions()->getEnableUserState()) {
@@ -105,17 +97,15 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * change the current users password
+     * Change the current user's password
      *
-     * @param array $data
+     * @param  string $oldPass
+     * @param  string $newPass
      * @return boolean
      */
-    public function changePassword(array $data)
+    public function changePassword($oldPass, $newPass)
     {
         $currentUser = $this->getAuthService()->getIdentity();
-
-        $oldPass = $data['credential'];
-        $newPass = $data['newCredential'];
 
         $bcrypt = $this->getCrypt();
 
@@ -133,17 +123,24 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         return true;
     }
 
-    public function changeEmail(array $data)
+    /**
+     * Change the current users email address.
+     *
+     * @param  string $credential
+     * @param  string $newEmail
+     * @return boolean
+     */
+    public function changeEmail($credential, $newEmail)
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
         $bcrypt = $this->getCrypt();
 
-        if (!$bcrypt->verify($data['credential'], $currentUser->getPassword())) {
+        if (!$bcrypt->verify($credential, $currentUser->getPassword())) {
             return false;
         }
 
-        $currentUser->setEmail($data['newIdentity']);
+        $currentUser->setEmail($newEmail);
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
         $this->getUserMapper()->update($currentUser);

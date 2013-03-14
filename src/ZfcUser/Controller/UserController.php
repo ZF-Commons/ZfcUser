@@ -263,7 +263,10 @@ class UserController extends AbstractActionController
             );
         }
 
-        if (!$this->getUserService()->changePassword($form->getData())) {
+        if (!$this->getUserService()->changePassword(
+            $form->get('credential')->getValue(),
+            $form->get('newCredential')->getValue()
+        )) {
             return array(
                 'status' => false,
                 'changePasswordForm' => $form,
@@ -290,6 +293,7 @@ class UserController extends AbstractActionController
         $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
         $status = (isset($fm[0])) ? $fm[0] : null;
 
+        // @todo Extract to method
         $prg = $this->runPrg(
             $this->url()->fromRoute(static::ROUTE_CHANGEEMAIL),
             array(
@@ -309,8 +313,12 @@ class UserController extends AbstractActionController
                 'changeEmailForm' => $form,
             );
         }
+        // end todo
 
-        $change = $this->getUserService()->changeEmail($prg);
+        $change = $this->getUserService()->changeEmail(
+            $form->get('credential')->getValue(),
+            $form->get('newIdentity')->getValue()
+        );
 
         if (!$change) {
             $this->flashMessenger()->setNamespace('change-email')->addMessage(false);
