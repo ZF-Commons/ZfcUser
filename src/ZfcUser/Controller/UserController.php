@@ -144,7 +144,6 @@ class UserController extends AbstractActionController
             return array('enableRegistration' => false);
         }
 
-        $service = $this->getUserService();
         $form = $this->getRegisterForm();
 
         $redirect = $this->redirectUrl();
@@ -154,22 +153,24 @@ class UserController extends AbstractActionController
             'enableRegistration' => $this->getOptions()->getEnableRegistration(),
             'redirect'           => $redirect,
         );
-        $redirectUrl = $this->urlWithRedirect(static::ROUTE_REGISTER, $redirect);
-
-        $prg = $this->runPrg($redirectUrl, $viewParams);
-        if (!is_array($prg)) {
-            return $prg;
-        }
-
+        
         // @todo Create the user class via the service manager
         $class = $this->getOptions()->getUserEntityClass();
         $user  = new $class;
+
         $form->bind($user);
 
-        $form->setData($prg);
-        if (!$form->isValid()) {
-            return $viewParams;
+        $result = $this->prgForm(
+        	$form,
+        	$this->urlWithRedirect(static::ROUTE_REGISTER, $redirect),
+        	$viewParams,
+        	$viewParams
+        );
+        if ($result !== false) {
+        	return $result;
         }
+        
+        $service = $this->getUserService();
 
         if (!$service->register($user)) {
             return $viewParams;
@@ -209,7 +210,7 @@ class UserController extends AbstractActionController
 
         $result = $this->prgForm(
         	$form,
-        	static::ROUTE_CHANGEPASSWD,
+        	$this->url()->fromRoute(static::ROUTE_CHANGEPASSWD),
         	array(
                 'status' => $status,
                 'changePasswordForm' => $form,
@@ -258,7 +259,7 @@ class UserController extends AbstractActionController
 
         $result = $this->prgForm(
         	$form,
-        	static::ROUTE_CHANGEEMAIL,
+        	$this->url()->fromRoute(static::ROUTE_CHANGEEMAIL),
         	array(
                 'status' => $status,
                 'changeEmailForm' => $form,
@@ -300,17 +301,14 @@ class UserController extends AbstractActionController
      * Processes a form using the prg plugin.
      *
      * @param  Form   $form
-     * @param  string $route
+     * @param  string $url
      * @param  array  $firstTimeParams
      * @param  array  $formFailParams
      * @return Response|array|false
      */
-    protected function prgForm(Form $form, $route, array $firstTimeParams, array $formFailParams)
+    protected function prgForm(Form $form, $url, array $firstTimeParams, array $formFailParams)
     {
-    	$prg = $this->runPrg(
-    			$this->url()->fromRoute($route),
-    			$firstTimeParams
-    	);
+    	$prg = $this->runPrg($url, $firstTimeParams);
 
     	if (!is_array($prg)) {
     		return $prg;
