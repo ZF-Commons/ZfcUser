@@ -58,6 +58,19 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     protected $formHydrator;
 
     /**
+     * Returns the crypt for hashing passwords.
+     *
+     * @todo Move this into the service manager and inject it into this class.
+     * @return Bcrypt
+     */
+    protected function getCrypt()
+    {
+        $bcrypt = new Bcrypt;
+        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        return $bcrypt;
+    }
+
+    /**
      * registers the user.
      *
      * @param  array $data
@@ -66,8 +79,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      */
     public function register(UserInterface $user)
     {
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        $bcrypt = $this->getCrypt();
         $user->setPassword($bcrypt->create($user->getPassword()));
 
         /*
@@ -105,8 +117,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $oldPass = $data['credential'];
         $newPass = $data['newCredential'];
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        $bcrypt = $this->getCrypt();
 
         if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
             return false;
@@ -126,8 +137,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        $bcrypt = $this->getCrypt();
 
         if (!$bcrypt->verify($data['credential'], $currentUser->getPassword())) {
             return false;
