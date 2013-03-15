@@ -20,8 +20,21 @@
     ],
     "require": {
         "php": ">=5.3.3",
-        "zendframework/zendframework": "2.1.*",
+        "zendframework/zend-authentication": "2.1.*",
+        "zendframework/zend-crypt": "2.1.*",
+        "zendframework/zend-form": "2.1.*",
+        "zendframework/zend-inputfilter": "2.1.*",
+        "zendframework/zend-loader": "2.1.*",
+        "zendframework/zend-modulemanager": "2.1.*",
+        "zendframework/zend-mvc": "2.1.*",
+        "zendframework/zend-servicemanager": "2.1.*",
+        "zendframework/zend-stdlib": "2.1.*",
+        "zendframework/zend-validator": "2.1.*",
+        "zendframework/zend-view": "2.1.*",
         "zf-commons/zfc-base": "0.*"
+    },
+    "suggest": {
+        "zendframework/zend-session": "To use the default authentication adapter."
     },
     "autoload": {
         "psr-0": {
@@ -30,5 +43,11 @@
         "classmap": [
             "./Module.php"
         ]
-    }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.zendframework.com/"
+        }
+    ]
 }
