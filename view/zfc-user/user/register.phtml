@@ -27,6 +27,6 @@ $form->setAttribute('method', 'post');
     <?php endforeach ?>
     </dl>
     <?php if ($this->redirect): ?>
-        <input type="hidden" name="redirect" value="<?php echo $this->redirect ?>" />
+        <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
     <?php endif ?>
 <?php echo $this->form()->closeTag() ?>
