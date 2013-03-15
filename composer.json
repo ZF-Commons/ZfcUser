@@ -5,6 +5,12 @@
     "keywords": [
         "zf2"
     ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packages.zendframework.com/"
+        },
+    ],
     "homepage": "https://github.com/ZF-Commons/ZfcUser",
     "authors": [
         {
