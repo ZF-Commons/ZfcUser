@@ -79,18 +79,23 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
-            		
-            	'zfcuser_user_service' => function ($sm) {
-            		return new \ZfcUser\Service\User(
-            			$sm->get('zfcuser_credential_crypt')
-					);
-            	},
+
+                'zfcuser_user_service' => function ($sm) {
+                    return new \ZfcUser\Service\User(
+                        $sm->get('zfcuser_credential_crypt')
+                    );
+                },
+
+                'ZfcUser\Authentication\Adapter\Db' => function ($sm) {
+                    return new \ZfcUser\Authentication\Adapter\Db(
+                        $sm->get('zfcuser_credential_crypt')
+                    );
+                },
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
