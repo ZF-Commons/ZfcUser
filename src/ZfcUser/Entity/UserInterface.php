@@ -20,6 +20,13 @@ interface UserInterface
     public function setId($id);
 
     /**
+     * Return the value of which ever field is being used as the identity field.
+     *
+     * @return string
+     */
+    public function getIdentity();
+
+    /**
      * Get username.
      *
      * @return string

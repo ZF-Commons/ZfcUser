@@ -65,8 +65,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      */
     public function register(array $data)
     {
-        $class = $this->getOptions()->getUserEntityClass();
-        $user  = new $class;
+        $class = $sm->get('zfc_user_entity');
         $form  = $this->getRegisterForm();
         $form->setHydrator($this->getFormHydrator());
         $form->bind($user);

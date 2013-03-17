@@ -155,12 +155,22 @@ class Module implements
                     return $hydrator;
                 },
 
+                'zfc_user_entity' => function ($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $entityClass = $options->getUserEntityClass();
+                    $fields = $this->getOptions()->getAuthIdentityFields();
+                    while ( !is_object($userObject) && count($fields) > 0 ) {
+                        $mode = array_shift($fields);
+                    }
+                    
+                    return new $entityClass;
+                },
+
                 'zfcuser_user_mapper' => function ($sm) {
                     $options = $sm->get('zfcuser_module_options');
                     $mapper = new Mapper\User();
                     $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
-                    $entityClass = $options->getUserEntityClass();
-                    $mapper->setEntityPrototype(new $entityClass);
+                    $mapper->setEntityPrototype($sm->get('zfc_user_entity'));
                     $mapper->setHydrator(new Mapper\UserHydrator());
                     $mapper->setTableName($options->getTableName());
                     return $mapper;

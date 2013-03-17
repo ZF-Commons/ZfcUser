@@ -35,6 +35,19 @@ class User implements UserInterface
     protected $state;
 
     /**
+     * @var string
+     */
+    protected $identityField;
+
+    /**
+     * @param string $identityField
+     */
+    public function __construct($identityField)
+    {
+        $this->identityField;
+    }
+
+    /**
      * Get id.
      *
      * @return int
@@ -54,6 +67,16 @@ class User implements UserInterface
     {
         $this->id = (int) $id;
         return $this;
+    }
+
+    /**
+     * Return the value of which ever field is being used as the identity field.
+     *
+     * @return string
+     */
+    public function getIdentity()
+    {
+        
     }
 
     /**
