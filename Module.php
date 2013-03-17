@@ -140,9 +140,9 @@ class Module implements
                 },
                 
                 'zfcuser_credential_crypt' => function ($sm) {
-                	$bcrypt = new \Zend\Crypt\Password\Bcrypt;
-                	$bcrypt->setCost($sm->get('zfcuser_module_options')->getPasswordCost());
-                	return $bcrypt;
+                    $bcrypt = new \Zend\Crypt\Password\Bcrypt;
+                    $bcrypt->setCost($sm->get('zfcuser_module_options')->getPasswordCost());
+                    return $bcrypt;
                 },
 
                 'zfcuser_change_password_form' => function($sm) {

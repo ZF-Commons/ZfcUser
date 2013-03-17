@@ -153,7 +153,7 @@ class UserController extends AbstractActionController
             'enableRegistration' => $this->getOptions()->getEnableRegistration(),
             'redirect'           => $redirect,
         );
-        
+
         // @todo Create the user class via the service manager
         $class = $this->getOptions()->getUserEntityClass();
         $user  = new $class;
@@ -161,15 +161,15 @@ class UserController extends AbstractActionController
         $form->bind($user);
 
         $result = $this->prgForm(
-        	$form,
-        	$this->urlWithRedirect(static::ROUTE_REGISTER, $redirect),
-        	$viewParams,
-        	$viewParams
+            $form,
+            $this->urlWithRedirect(static::ROUTE_REGISTER, $redirect),
+            $viewParams,
+            $viewParams
         );
         if ($result !== false) {
-        	return $result;
+            return $result;
         }
-        
+
         $service = $this->getUserService();
 
         if (!$service->register($user)) {
@@ -188,7 +188,7 @@ class UserController extends AbstractActionController
         } elseif (in_array('username', $identityFields)) {
             $identity = $user->getUsername();
         }
-        
+
         return $this->authenticate($identity, $form->get('password')->getValue());
     }
 
@@ -209,20 +209,20 @@ class UserController extends AbstractActionController
         $status = (isset($fm[0])) ? $fm[0] : null;
 
         $result = $this->prgForm(
-        	$form,
-        	$this->url()->fromRoute(static::ROUTE_CHANGEPASSWD),
-        	array(
+            $form,
+            $this->url()->fromRoute(static::ROUTE_CHANGEPASSWD),
+            array(
                 'status' => $status,
                 'changePasswordForm' => $form,
             ),
-        	array(
+            array(
                 'status' => false,
                 'changePasswordForm' => $form,
             )
         );
 
         if ($result !== false) {
-        	return $result;
+           return $result;
         }
 
         if (!$this->getUserService()->changePassword(
@@ -258,21 +258,20 @@ class UserController extends AbstractActionController
         $status = (isset($fm[0])) ? $fm[0] : null;
 
         $result = $this->prgForm(
-        	$form,
-        	$this->url()->fromRoute(static::ROUTE_CHANGEEMAIL),
-        	array(
+            $form,
+            $this->url()->fromRoute(static::ROUTE_CHANGEEMAIL),
+            array(
                 'status' => $status,
                 'changeEmailForm' => $form,
             ),
-        	array(
+            array(
                 'status' => false,
                 'changeEmailForm' => $form,
             )
         );
-        
 
         if ($result !== false) {
-        	return $result;
+            return $result;
         }
 
         $change = $this->getUserService()->changeEmail(
@@ -296,7 +295,7 @@ class UserController extends AbstractActionController
     /*
      * Internal methods
      */
-    
+
     /**
      * Processes a form using the prg plugin.
      *
@@ -308,19 +307,19 @@ class UserController extends AbstractActionController
      */
     protected function prgForm(Form $form, $url, array $firstTimeParams, array $formFailParams)
     {
-    	$prg = $this->runPrg($url, $firstTimeParams);
+        $prg = $this->runPrg($url, $firstTimeParams);
 
-    	if (!is_array($prg)) {
-    		return $prg;
-    	}
-    	 
-    	$form->setData($prg);
-    	 
-    	if (!$form->isValid()) {
-    		return $formFailParams;
-    	}
-    
-    	return false;
+        if (!is_array($prg)) {
+            return $prg;
+        }
+
+        $form->setData($prg);
+
+        if (!$form->isValid()) {
+            return $formFailParams;
+        }
+
+        return false;
     }
 
     /**
@@ -389,9 +388,9 @@ class UserController extends AbstractActionController
      * @param  string $identity
      * @param  string $credential
      */
-	protected function authenticate($identity, $credential)
-	{
-		$adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+    protected function authenticate($identity, $credential)
+    {
+        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
 
         $result = $adapter->prepareForAuthentication($identity, $credential);
 
@@ -402,22 +401,22 @@ class UserController extends AbstractActionController
 
         $result = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
 
-		$redirect = $this->redirectUrl();
-		
-		if (!$result->isValid()) {
-			$this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-		
-			$this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-		
-			return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
-		}
-		
-		if ($redirect) {
-			return $this->redirect()->toUrl($redirect);
-		}
-		
-		return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
-	}
+        $redirect = $this->redirectUrl();
+
+        if (!$result->isValid()) {
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
+
+            $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
+
+            return $this->toRouteWithRedirect(static::ROUTE_LOGIN, $redirect);
+        }
+
+        if ($redirect) {
+            return $this->redirect()->toUrl($redirect);
+        }
+
+        return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+    }
 
     /**
      * Clears the current identity.
@@ -429,7 +428,7 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
 
         if ($logoutAdapters) {
-        	$this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
+            $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         }
 
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();

@@ -66,7 +66,7 @@ class User extends EventProvider implements
      */
     public function __construct(PasswordInterface $crypt)
     {
-    	$this->crypt = $crypt;
+        $this->crypt = $crypt;
     }
 
     /**
