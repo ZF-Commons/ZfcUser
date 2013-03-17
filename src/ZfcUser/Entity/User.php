@@ -43,7 +43,6 @@ class User implements UserInterface
 
     /**
      * @param  array $identityField
-     * @throws Exception\InvalidArgumentException
      */
     public function __construct(array $identityFields)
     {
