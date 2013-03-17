@@ -88,6 +88,12 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
+
+                'zfcuser_login_form'           => 'ZfcUser\Form\LoginFactory',
+                'zfcuser_register_form'        => 'ZfcUser\Form\RegisterFactory',
+                'zfcuser_change_password_form' => 'ZfcUser\Form\ChangePasswordFactory',
+                'zfcuser_change_email_form'    => 'ZfcUser\Form\ChangeEmailFactory',
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
@@ -102,16 +108,6 @@ class Module implements
                         $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
                     );
                 },
-
-                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
-
-                'zfcuser_login_form' => 'ZfcUser\Form\LoginFactory',
-
-                'zfcuser_register_form' => 'ZfcUser\Form\RegisterFactory',
-
-                'zfcuser_change_password_form' => 'ZfcUser\Form\ChangePasswordFactory',
-
-                'zfcuser_change_email_form' => 'ZfcUser\Form\ChangeEmailFactory',
 
                 'zfcuser_user_hydrator' => function ($sm) {
                     $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
