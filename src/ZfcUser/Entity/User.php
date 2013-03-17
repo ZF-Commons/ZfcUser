@@ -2,6 +2,8 @@
 
 namespace ZfcUser\Entity;
 
+use ZfcUser\Exception;
+
 class User implements UserInterface
 {
     /**
@@ -37,14 +39,15 @@ class User implements UserInterface
     /**
      * @var string
      */
-    protected $identityField;
+    protected $identityFields;
 
     /**
-     * @param string $identityField
+     * @param  array $identityField
+     * @throws Exception\InvalidArgumentException
      */
-    public function __construct($identityField)
+    public function __construct(array $identityFields)
     {
-        $this->identityField;
+        $this->identityFields = $identityFields;
     }
 
     /**
@@ -73,10 +76,19 @@ class User implements UserInterface
      * Return the value of which ever field is being used as the identity field.
      *
      * @return string
+     * @throws Exception\DomainException
      */
     public function getIdentity()
     {
-        
+        if (in_array('email', $this->identityFields)) {
+            return $this->getEmail();
+        }
+
+        if (in_array('username', $this->identityFields)) {
+            return $this->getUsername();
+        }
+
+        throw new Exception\DomainException('Invalid identityField value');
     }
 
     /**

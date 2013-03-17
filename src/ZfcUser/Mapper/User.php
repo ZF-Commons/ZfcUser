@@ -4,11 +4,23 @@ namespace ZfcUser\Mapper;
 
 use ZfcBase\Mapper\AbstractDbMapper;
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
+use ZfcUser\Exception;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class User extends AbstractDbMapper implements UserInterface
 {
     protected $tableName  = 'user';
+
+    protected $identityFields;
+
+    /**
+     * @param  array $identityField
+     * @throws Exception\InvalidArgumentException
+     */
+    public function __construct(array $identityFields)
+    {
+        $this->identityFields = $identityFields;
+    }
 
     public function findByEmail($email)
     {
@@ -28,6 +40,26 @@ class User extends AbstractDbMapper implements UserInterface
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         return $entity;
+    }
+
+    public function findByIdentity($identity)
+    {
+        $userObject = null;
+
+        // Cycle through the configured identity sources and test each
+        while ( !is_object($userObject) && count($this->identityFields) > 0 ) {
+            $mode = array_shift($this->identityFields);
+            switch ($mode) {
+                case 'username':
+                    $userObject = $this->findByUsername($identity);
+                    break;
+                case 'email':
+                    $userObject = $this->findByEmail($identity);
+                    break;
+            }
+        }
+
+        return $userObject;
     }
 
     public function findById($id)

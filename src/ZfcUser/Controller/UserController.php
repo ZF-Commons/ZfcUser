@@ -207,13 +207,9 @@ class UserController extends AbstractActionController
         }
 
         if ($service->getOptions()->getLoginAfterRegistration()) {
-            $identityFields = $service->getOptions()->getAuthIdentityFields();
-            if (in_array('email', $identityFields)) {
-                $post['identity'] = $user->getEmail();
-            } elseif (in_array('username', $identityFields)) {
-                $post['identity'] = $user->getUsername();
-            }
+            $post['identity'] = $user->getIdentity();
             $post['credential'] = $post['password'];
+
             $request->setPost(new Parameters($post));
             return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
         }
