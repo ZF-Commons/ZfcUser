@@ -7,7 +7,7 @@ return array(
     ),
     'controllers' => array(
         'invokables' => array(
-            'zfcuser'           => 'ZfcUser\Controller\UserController',
+            'zfcuser' => 'ZfcUser\Controller\UserController',
         ),
     ),
     'service_manager' => array(
