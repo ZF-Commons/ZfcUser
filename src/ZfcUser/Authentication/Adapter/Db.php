@@ -100,7 +100,6 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             }
         }
 
-        $this->crypt->setCost($this->getOptions()->getPasswordCost());
         if (!$this->crypt->verify($credential,$userObject->getPassword())) {
             // Password does not match
             $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
