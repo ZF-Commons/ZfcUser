@@ -71,7 +71,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 
         // Cycle through the configured identity sources and test each
         $fields = $this->getOptions()->getAuthIdentityFields();
-        while (count($fields) > 0) {
+        while ( !is_object($userObject) && count($fields) > 0 ) {
             $mode = array_shift($fields);
             switch ($mode) {
                 case 'username':
