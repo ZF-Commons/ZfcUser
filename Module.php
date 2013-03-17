@@ -105,50 +105,13 @@ class Module implements
 
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
 
-                'zfcuser_login_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Login(null, $options);
-                    $form->setInputFilter(new Form\LoginFilter($options));
-                    return $form;
-                },
+                'zfcuser_login_form' => 'ZfcUser\Form\LoginFactory',
 
-                'zfcuser_register_form' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Register(null, $options);
-                    //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
-                    $form->setInputFilter(new Form\RegisterFilter(
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'email'
-                        )),
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'username'
-                        )),
-                        $options
-                    ));
-                    return $form;
-                },
+                'zfcuser_register_form' => 'ZfcUser\Form\RegisterFactory',
 
-                'zfcuser_change_password_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
-                    $form->setInputFilter(new Form\ChangePasswordFilter($options));
-                    return $form;
-                },
+                'zfcuser_change_password_form' => 'ZfcUser\Form\ChangePasswordFactory',
 
-                'zfcuser_change_email_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangeEmail(null, $sm->get('zfcuser_module_options'));
-                    $form->setInputFilter(new Form\ChangeEmailFilter(
-                        $options,
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'email'
-                        ))
-                    ));
-                    return $form;
-                },
+                'zfcuser_change_email_form' => 'ZfcUser\Form\ChangeEmailFactory',
 
                 'zfcuser_user_hydrator' => function ($sm) {
                     $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
