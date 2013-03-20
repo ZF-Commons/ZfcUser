@@ -1,6 +1,8 @@
+[![Build Status](https://travis-ci.org/ZF-Commons/ZfcUser.png)](https://travis-ci.org/ZF-Commons/ZfcUser)
+
 ZfcUser
 =======
-Version 0.0.1 Created by Evan Coury and the ZF-Commons team
+Created by Evan Coury and the ZF-Commons team
 
 Introduction
 ------------
