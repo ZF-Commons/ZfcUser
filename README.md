@@ -88,7 +88,7 @@ Installation
     );
     ```
 
-2. Then Import the SQL schema located in `./vendor/ZfcUser/data/schema.sql`.
+2. Then Import the SQL schema located in `./vendor/zf-commons/zfc-user/data/schema.sql`.
 
 ### Post-Install: Doctrine2 ORM
 
