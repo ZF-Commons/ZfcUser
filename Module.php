@@ -86,6 +86,7 @@ class Module implements
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
+                'zfcuser_transport_sendmail'        => 'Zend\Mail\Transport\Sendmail',
             ),
             'factories' => array(
 
@@ -130,16 +131,30 @@ class Module implements
                     return $form;
                 },
 
+                'zfcuser_forgot_password_form' => function($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $form = new Form\ForgotPassword(null, $options);
+                    $form->setInputFilter(new Form\ForgotPasswordFilter($options));
+                    return $form;
+                },
+
+                'zfcuser_forgot_password__reset_form' => function($sm) {
+                    $options = $sm->get('zfcuser_module_options');
+                    $form = new Form\ForgotPasswordReset(null, $options);
+                    $form->setInputFilter(new Form\ForgotPasswordResetFilter($options));
+                    return $form;
+                },
+
                 'zfcuser_change_password_form' => function($sm) {
                     $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
+                    $form = new Form\ChangePassword(null, $options);
                     $form->setInputFilter(new Form\ChangePasswordFilter($options));
                     return $form;
                 },
 
                 'zfcuser_change_email_form' => function($sm) {
                     $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangeEmail(null, $sm->get('zfcuser_module_options'));
+                    $form = new Form\ChangeEmail(null, $options);
                     $form->setInputFilter(new Form\ChangeEmailFilter(
                         $options,
                         new Validator\NoRecordExists(array(

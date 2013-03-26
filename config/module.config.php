@@ -59,6 +59,27 @@ return array(
                             ),
                         ),
                     ),
+                    'forgotpassword' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/forgot-password',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'forgotpassword',
+                            ),
+                        ),
+                    ),
+                    'forgotpasswordreset' => array(
+                        'type' => 'Regex',
+                        'options' => array(
+                            'regex' => '/forgot-password-reset/(?P<token>[\d\w-._]+)',
+                            'spec' => '/forgot-password-reset/%token%',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action' => 'forgotpasswordreset'
+                            )
+                        )
+                    ),
                     'register' => array(
                         'type' => 'Literal',
                         'options' => array(

@@ -81,6 +81,43 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var bool
      */
+    protected $enableForgotPassword = true;
+
+    /**
+     * @var string
+     */
+    protected $mailFromAddress = 'localhost@localhost';
+
+    /**
+     * @var string
+     */
+    protected $mailFromName = 'localhost';
+
+    /**
+     * @var string
+     */
+    protected $mailTransportAlias = 'zfcuser_transport_sendmail';
+
+    /**
+     * @var string
+     */
+    protected $forgotMailTemplate = 'zfc-user/user/email/forgotpassword';
+
+    /**
+     * @var string
+     */
+    protected $forgotMailSubject = 'Forgot Password';
+
+    /**
+     * The time, in hours, that a forgot password request is valid.
+     *
+     * @var int
+     */
+    protected $forgotRequestValid = 8;
+
+    /**
+     * @var bool
+     */
     protected $enableRegistration = true;
 
     /**
@@ -555,5 +592,131 @@ class ModuleOptions extends AbstractOptions implements
     public function getFormCaptchaOptions()
     {
         return $this->formCaptchaOptions;
+    }
+
+    /**
+     * @param boolean $enableForgotPassword
+     * @return ModuleOptions
+     */
+    public function setEnableForgotPassword($enableForgotPassword)
+    {
+        $this->enableForgotPassword = $enableForgotPassword;
+        return $this;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getEnableForgotPassword()
+    {
+        return $this->enableForgotPassword;
+    }
+
+    /**
+     * @param string $forgotMailSubject
+     * @return ModuleOptions
+     */
+    public function setForgotMailSubject($forgotMailSubject)
+    {
+        $this->forgotMailSubject = $forgotMailSubject;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getForgotMailSubject()
+    {
+        return $this->forgotMailSubject;
+    }
+
+    /**
+     * @param string $mailFromName
+     * @return ModuleOptions
+     */
+    public function setMailFromName($mailFromName)
+    {
+        $this->mailFromName = $mailFromName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailFromName()
+    {
+        return $this->mailFromName;
+    }
+
+    /**
+     * @param string $mailFromAddress
+     * @return ModuleOptions
+     */
+    public function setMailFromAddress($mailFromAddress)
+    {
+        $this->mailFromAddress = $mailFromAddress;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailFromAddress()
+    {
+        return $this->mailFromAddress;
+    }
+
+    /**
+     * @param string $forgotMailTemplate
+     * @return ModuleOptions
+     */
+    public function setForgotMailTemplate($forgotMailTemplate)
+    {
+        $this->forgotMailTemplate = $forgotMailTemplate;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getForgotMailTemplate()
+    {
+        return $this->forgotMailTemplate;
+    }
+
+    /**
+     * @param string $mailTransportAlias
+     * @return ModuleOptions
+     */
+    public function setMailTransportAlias($mailTransportAlias)
+    {
+        $this->mailTransportAlias = $mailTransportAlias;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMailTransportAlias()
+    {
+        return $this->mailTransportAlias;
+    }
+
+    /**
+     * @param int $forgotRequestValid
+     * @return ModuleOptions
+     */
+    public function setForgotRequestValid($forgotRequestValid)
+    {
+        $this->forgotRequestValid = $forgotRequestValid;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getForgotRequestValid()
+    {
+        return $this->forgotRequestValid;
     }
 }

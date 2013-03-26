@@ -4,11 +4,15 @@ namespace ZfcUser\Service;
 
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
+use Zend\Mail\Message;
+use Zend\Mail\Transport\TransportInterface;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Stdlib\Hydrator;
+use Zend\View\Renderer\RendererInterface;
 use ZfcBase\EventManager\EventProvider;
+use ZfcUser\Entity\UserInterface;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
 
@@ -102,26 +106,97 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * change the current users password
+     * Determine if a forgot token hash is valid and, if so, return the user it belongs to.
+     *
+     * @param string $token
+     * @return null|\ZfcUser\Entity\UserInterface
+     */
+    public function getUserFromForgotToken($token)
+    {
+        $data = $this->base64UrlDecode($token);
+
+        if (!$data || !isset($data['email']) || !isset($data['token'])) {
+            return null;
+        }
+
+        $user = $this->getUserMapper()->findByEmail($data['email']);
+        if (!$user) {
+            return null;
+        }
+
+        if ($user->getForgotToken() == $data['token']) {
+            return $user;
+        }
+
+        return null;
+    }
+
+    /**
+     * send user a forgot password email
      *
      * @param array $data
      * @return boolean
      */
-    public function changePassword(array $data)
+    public function sendForgotPassword($identity, TransportInterface $transport, RendererInterface $renderer)
     {
-        $currentUser = $this->getAuthService()->getIdentity();
+        $mapper = $this->getUserMapper();
+        /** @var $user \ZfcUser\Entity\User */
+        $user   = $mapper->findByEmail($identity);
 
-        $oldPass = $data['credential'];
-        $newPass = $data['newCredential'];
+        if (!$user) {
+            return false;
+        }
+
+        $token   = substr(md5($user->getEmail() . microtime(true)), 0, 8);
+        $encoded = array(
+            'email' => $user->getEmail(),
+            'token' => $token
+        );
+        $body  = $renderer->render(
+            $this->getOptions()->getForgotMailTemplate(),
+            array(
+                'token'   => $this->base64UrlEncode($encoded),
+                'user'    => $user,
+                'options' => $this->getOptions()
+            )
+        );
+
+        $user->setForgotTimestamp(new \DateTime('now'));
+        $user->setForgotToken($token);
+        $this->getUserMapper()->update($user);
+
+        $message = new Message();
+        $message->addTo($user->getEmail())
+                ->addFrom($this->getOptions()->getMailFromAddress(), $this->getOptions()->getMailFromName())
+                ->setSubject($this->getOptions()->getForgotMailSubject())
+                ->setBody($body);
+
+        $transport->send($message);
+        return true;
+    }
+
+    /**
+     * Change the users password. Defaults to current user if one is not given.
+     *
+     * @param array $data
+     * @param boolean $verify
+     * @param UserInterface|null $currentUser
+     * @return boolean
+     */
+    public function changePassword(array $data, $verify = true, UserInterface $currentUser = null)
+    {
+        if (!$currentUser) {
+            $currentUser = $this->getAuthService()->getIdentity();
+        }
 
         $bcrypt = new Bcrypt;
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
 
-        if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
+        if ($verify && !$bcrypt->verify($data['credential'], $currentUser->getPassword())) {
             return false;
         }
 
-        $pass = $bcrypt->create($newPass);
+        $pass = $bcrypt->create($data['newCredential']);
         $currentUser->setPassword($pass);
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
@@ -312,5 +387,41 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     {
         $this->formHydrator = $formHydrator;
         return $this;
+    }
+
+    /**
+     * Encode to url-safe base64.
+     *
+     * @param array $input
+     * @return string
+     */
+    protected function base64UrlEncode(array $input)
+    {
+        if (!is_array($input)) {
+            throw new Exception\InvalidArgumentException(
+                'base64UrlEncode requires an array input'
+            );
+        }
+        return strtr(base64_encode(serialize($input)), '+/=', '-_.');
+    }
+
+    /**
+     * Decode url-safe base64.
+     *
+     * @param string $input
+     * @return null|array
+     */
+    protected function base64UrlDecode($input)
+    {
+        $input = base64_decode(strtr($input, '-_.', '+/='));
+        if (!$input) {
+            return null;
+        }
+
+        $input = unserialize($input);
+        if (!$input) {
+            return null;
+        }
+        return $input;
     }
 }

@@ -3,6 +3,7 @@
 namespace ZfcUser\Controller;
 
 use Zend\Form\Form;
+use Zend\Mail\Transport\TransportInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\Stdlib\Parameters;
@@ -12,10 +13,12 @@ use ZfcUser\Options\UserControllerOptionsInterface;
 
 class UserController extends AbstractActionController
 {
-    const ROUTE_CHANGEPASSWD = 'zfcuser/changepassword';
-    const ROUTE_LOGIN        = 'zfcuser/login';
-    const ROUTE_REGISTER     = 'zfcuser/register';
-    const ROUTE_CHANGEEMAIL  = 'zfcuser/changeemail';
+    const ROUTE_CHANGEPASSWD      = 'zfcuser/changepassword';
+    const ROUTE_LOGIN             = 'zfcuser/login';
+    const ROUTE_REGISTER          = 'zfcuser/register';
+    const ROUTE_CHANGEEMAIL       = 'zfcuser/changeemail';
+    const ROUTE_FORGOTPASSWD      = 'zfcuser/forgotpassword';
+    const ROUTE_FORGOTPASSWDRESET = 'zfcuser/forgotpasswordreset';
 
     const CONTROLLER_NAME    = 'zfcuser';
 
@@ -23,6 +26,11 @@ class UserController extends AbstractActionController
      * @var UserService
      */
     protected $userService;
+
+    /**
+     * @var TransportInterface
+     */
+    protected $mailTransport;
 
     /**
      * @var Form
@@ -43,6 +51,16 @@ class UserController extends AbstractActionController
      * @var Form
      */
     protected $changeEmailForm;
+
+    /**
+     * @var Form
+     */
+    protected $forgotPasswordForm;
+
+    /**
+     * @var Form
+     */
+    protected $forgotPasswordResetForm;
 
     /**
      * @todo Make this dynamic / translation-friendly
@@ -84,6 +102,7 @@ class UserController extends AbstractActionController
             return array(
                 'loginForm' => $form,
                 'redirect'  => $redirect,
+                'enableForgotPassword' => $this->getOptions()->getEnableForgotPassword(),
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
             );
         }
@@ -324,6 +343,108 @@ class UserController extends AbstractActionController
         return $this->redirect()->toRoute(static::ROUTE_CHANGEEMAIL);
     }
 
+    public function forgotPasswordResetAction()
+    {
+        $token = $this->params('token');
+        $user  = $this->getUserService()->getUserFromForgotToken($token);
+
+        if (!$user) {
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+
+        $form    = $this->getForgotPasswordResetForm();
+        $prg     = $this->prg();
+        $request = $this->getRequest();
+        $request->getPost()->set('identity', $user->getEmail());
+
+        $fm = $this->flashMessenger()->setNamespace('forgot-password-reset')->getMessages();
+        if (isset($fm[0])) {
+            $status = $fm[0];
+        } else {
+            $status = null;
+        }
+
+        if ($prg instanceof Response) {
+            return $prg;
+        } elseif ($prg === false) {
+            return array(
+                'user' => $user,
+                'token' => $token,
+                'status' => $status,
+                'forgotPasswordResetForm' => $form,
+            );
+        }
+
+        $form->setData($prg);
+
+        if (!$form->isValid()) {
+            return array(
+                'user' => $user,
+                'token' => $token,
+                'status' => false,
+                'forgotPasswordResetForm' => $form,
+            );
+        }
+
+        if (!$this->getUserService()->changePassword($form->getData(), false, $user)) {
+            return array(
+                'user' => $user,
+                'token' => $token,
+                'status' => false,
+                'forgotPasswordResetForm' => $form,
+            );
+        }
+
+        $this->flashMessenger()->setNamespace('forgot-password-reset')->addMessage(true);
+        return $this->redirect()->toRoute(static::ROUTE_FORGOTPASSWDRESET, array('token' => $token));
+    }
+
+    public function forgotPasswordAction()
+    {
+        $form = $this->getForgotPasswordForm();
+        $fm   = $this->flashMessenger()->setNamespace('forgot-password')->getMessages();
+        if (isset($fm[0])) {
+            $status = $fm[0];
+        } else {
+            $status = null;
+        }
+
+        $prg = $this->prg(static::ROUTE_FORGOTPASSWD);
+        if ($prg instanceof Response) {
+            return $prg;
+        } elseif ($prg === false) {
+            return array(
+                'status'              => $status,
+                'forgotPasswordForm' => $form,
+            );
+        }
+
+        $form->setData($prg);
+        if (!$form->isValid()) {
+            return array(
+                'status'             => false,
+                'forgotPasswordForm' => $form,
+            );
+        }
+
+        $sent = $this->getUserService()->sendForgotPassword(
+            $form->get('identity')->getValue(),
+            $this->getMailTransport(),
+            $this->getServiceLocator()->get('ViewRenderer')
+        );
+
+        if (!$sent) {
+            $this->flashMessenger()->setNamespace('forgot-password')->addMessage(false);
+            return array(
+                'status'             => false,
+                'forgotPasswordForm' => $form,
+            );
+        }
+
+        $this->flashMessenger()->setNamespace('forgot-password')->addMessage(true);
+        return $this->redirect()->toRoute(static::ROUTE_FORGOTPASSWD);
+    }
+
     /**
      * Getters/setters for DI stuff
      */
@@ -436,5 +557,65 @@ class UserController extends AbstractActionController
     {
         $this->changeEmailForm = $changeEmailForm;
         return $this;
+    }
+
+    /**
+     * @param \Zend\Form\Form $forgotPasswordResetForm
+     */
+    public function setForgotPasswordResetForm($forgotPasswordResetForm)
+    {
+        $this->forgotPasswordResetForm = $forgotPasswordResetForm;
+        return $this;
+    }
+
+    /**
+     * @return \Zend\Form\Form
+     */
+    public function getForgotPasswordResetForm()
+    {
+        if (!$this->forgotPasswordResetForm) {
+            $this->setForgotPasswordResetForm($this->getServiceLocator()->get('zfcuser_forgot_password_reset_form'));
+        }
+        return $this->forgotPasswordResetForm;
+    }
+
+    /**
+     * @param \Zend\Form\Form $forgotPasswordForm
+     */
+    public function setForgotPasswordForm($forgotPasswordForm)
+    {
+        $this->forgotPasswordForm = $forgotPasswordForm;
+        return $this;
+    }
+
+    /**
+     * @return \Zend\Form\Form
+     */
+    public function getForgotPasswordForm()
+    {
+        if (!$this->forgotPasswordForm) {
+            $this->setForgotPasswordForm($this->getServiceLocator()->get('zfcuser_forgot_password_form'));
+        }
+        return $this->forgotPasswordForm;
+    }
+
+    /**
+     * @param \Zend\Mail\Transport\TransportInterface $mailTransport
+     */
+    public function setMailTransport($mailTransport)
+    {
+        $this->mailTransport = $mailTransport;
+        return $this;
+    }
+
+    /**
+     * @return \Zend\Mail\Transport\TransportInterface
+     */
+    public function getMailTransport()
+    {
+        if (!$this->mailTransport) {
+            $this->setMailTransport($this->getServiceLocator()->get($this->getOptions()->getMailTransportAlias()));
+        }
+        return $this->mailTransport;
     }
 }
