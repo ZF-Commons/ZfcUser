@@ -35,6 +35,16 @@ class User implements UserInterface
     protected $state;
 
     /**
+     * @var null|string
+     */
+    protected $forgotToken;
+
+    /**
+     * @var null|string
+     */
+    protected $forgotTimestamp;
+
+    /**
      * Get id.
      *
      * @return int
@@ -163,6 +173,49 @@ class User implements UserInterface
     public function setState($state)
     {
         $this->state = $state;
+        return $this;
+    }
+
+    /**
+     * Get forgot token.
+     *
+     * @return null|string
+     */
+    public function getForgotToken()
+    {
+        return $this->forgotToken;
+    }
+
+    /**
+     * Set forgot token.
+     *
+     * @param string $token
+     * @return UserInterface
+     */
+    public function setForgotToken($token)
+    {
+        $this->forgotToken = $token;
+    }
+
+    /**
+     * Get forgot timestamp.
+     *
+     * @return null|\DateTime
+     */
+    public function getForgotTimestamp()
+    {
+        return $this->forgotTimestamp;
+    }
+
+    /**
+     * Set forgot timestamp.
+     *
+     * @param \DateTime $timestamp
+     * @return UserInterface
+     */
+    public function setForgotTimestamp(\DateTime $timestamp)
+    {
+        $this->forgotTimestamp = $timestamp;
         return $this;
     }
 }

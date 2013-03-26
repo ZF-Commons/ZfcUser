@@ -12,6 +12,36 @@ interface UserInterface
     public function getId();
 
     /**
+     * Get forgot token.
+     *
+     * @return null|string
+     */
+    public function getForgotToken();
+
+    /**
+     * Set forgot token.
+     *
+     * @param string $token
+     * @return UserInterface
+     */
+    public function setForgotToken($token);
+
+    /**
+     * Get forgot timestamp.
+     *
+     * @return null|\DateTime
+     */
+    public function getForgotTimestamp();
+
+    /**
+     * Set forgot timestamp.
+     *
+     * @param \DateTime $timestamp
+     * @return UserInterface
+     */
+    public function setForgotTimestamp(\DateTime $timestamp);
+
+    /**
      * Set id.
      *
      * @param int $id
@@ -93,5 +123,4 @@ interface UserInterface
      * @return UserInterface
      */
     public function setState($state);
-
 }
