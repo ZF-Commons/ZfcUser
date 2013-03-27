@@ -5,7 +5,6 @@ namespace ZfcUser\Authentication\Adapter;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\EventManager\Event;
-use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface as Response;
 use ZfcBase\EventManager\EventProvider;
 
@@ -36,10 +35,18 @@ class AdapterChain extends EventProvider implements AdapterInterface
         return $result;
     }
 
-    public function prepareForAuthentication(Request $request)
+    /**
+     * Prepares the adapter with the users credentials ready for an authentication attempt.
+     *
+     * @param  string $identity
+     * @param  string $credential
+     * @return boolean|Response
+     */
+    public function prepareForAuthentication($identity, $credential)
     {
-        $e = $this->getEvent()
-                  ->setRequest($request);
+        $e = $this->getEvent();
+
+        $e->setAuthenticationParams($identity, $credential);
 
         $this->getEventManager()->trigger('authenticate.pre', $e);
 

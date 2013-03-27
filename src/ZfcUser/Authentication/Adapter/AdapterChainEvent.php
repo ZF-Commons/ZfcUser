@@ -3,10 +3,12 @@
 namespace ZfcUser\Authentication\Adapter;
 
 use Zend\EventManager\Event;
-use Zend\Stdlib\RequestInterface as Request;
 
 class AdapterChainEvent extends Event
 {
+    const AUTH_IDENTITY_PARAM = 'auth_identity';
+    const AUTH_CREDENTIAL_PARAM = 'auth_credential';
+
     /**
      * getIdentity
      *
@@ -79,25 +81,30 @@ class AdapterChainEvent extends Event
     }
 
     /**
-     * getRequest
+     * Store the details for an authentication attempt.
      *
-     * @return Request
+     * @param  strimg $identity
+     * @param  string $credential
+     * @return AdapterChainEvent
      */
-    public function getRequest()
+    public function setAuthenticationParams($identity, $credential)
     {
-        return $this->getParam('request');
+        $this->setParam(self::AUTH_IDENTITY_PARAM, $identity);
+        $this->setParam(self::AUTH_CREDENTIAL_PARAM, $credential);
+
+        return $this;
     }
 
     /**
-     * setRequest
+     * Get the authentication parameters.
      *
-     * @param Request $request
-     * @return AuthEvent
+     * @return array
      */
-    public function setRequest(Request $request)
+    public function getAuthenticationParams()
     {
-        $this->setParam('request', $request);
-        $this->request = $request;
-        return $this;
+        return array(
+            'identity'   => $this->getParam(self::AUTH_IDENTITY_PARAM),
+            'credential' => $this->getParam(self::AUTH_CREDENTIAL_PARAM) 
+        );
     }
 }

@@ -3,19 +3,19 @@
 namespace ZfcUser\Service;
 
 use Zend\Authentication\AuthenticationService;
+use Zend\Crypt\Password\PasswordInterface;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
-use Zend\Crypt\Password\Bcrypt;
-use Zend\Stdlib\Hydrator;
 use ZfcBase\EventManager\EventProvider;
+use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
 
-
-class User extends EventProvider implements ServiceManagerAwareInterface
+class User extends EventProvider implements
+    ServiceManagerAwareInterface,
+    UserInterface
 {
-
     /**
      * @var UserMapperInterface
      */
@@ -55,39 +55,30 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * @var Hydrator\ClassMethods
      */
     protected $formHydrator;
+    
+    /**
+     * @var PasswordInterface
+     */
+    protected $crypt;
+    
+    /**
+     * @param PasswordInterface $crypt
+     */
+    public function __construct(PasswordInterface $crypt)
+    {
+        $this->crypt = $crypt;
+    }
 
     /**
-     * createFromForm
+     * registers the user.
      *
-     * @param array $data
-     * @return \ZfcUser\Entity\UserInterface
-     * @throws Exception\InvalidArgumentException
+     * @param  UserEntityInterface $user
+     * @return boolean
+     * @todo   Check if the insert succeeds
      */
-    public function register(array $data)
+    public function register(UserEntityInterface $user)
     {
-        $class = $this->getOptions()->getUserEntityClass();
-        $user  = new $class;
-        $form  = $this->getRegisterForm();
-        $form->setHydrator($this->getFormHydrator());
-        $form->bind($user);
-        $form->setData($data);
-        if (!$form->isValid()) {
-            return false;
-        }
-
-        $user = $form->getData();
-        /* @var $user \ZfcUser\Entity\UserInterface */
-
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        $user->setPassword($bcrypt->create($user->getPassword()));
-
-        if ($this->getOptions()->getEnableUsername()) {
-            $user->setUsername($data['username']);
-        }
-        if ($this->getOptions()->getEnableDisplayName()) {
-            $user->setDisplayName($data['display_name']);
-        }
+        $user->setPassword($this->crypt->create($user->getPassword()));
 
         // If user state is enabled, set the default state value
         if ($this->getOptions()->getEnableUserState()) {
@@ -95,33 +86,29 @@ class User extends EventProvider implements ServiceManagerAwareInterface
                 $user->setState($this->getOptions()->getDefaultUserState());
             }
         }
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user));
         $this->getUserMapper()->insert($user);
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
-        return $user;
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user));
+
+        return true;
     }
 
     /**
-     * change the current users password
+     * Change the current user's password
      *
-     * @param array $data
+     * @param  string $oldPass
+     * @param  string $newPass
      * @return boolean
      */
-    public function changePassword(array $data)
+    public function changePassword($oldPass, $newPass)
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
-        $oldPass = $data['credential'];
-        $newPass = $data['newCredential'];
-
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-
-        if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
+        if (!$this->crypt->verify($oldPass, $currentUser->getPassword())) {
             return false;
         }
 
-        $pass = $bcrypt->create($newPass);
+        $pass = $this->crypt->create($newPass);
         $currentUser->setPassword($pass);
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
@@ -131,18 +118,22 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         return true;
     }
 
-    public function changeEmail(array $data)
+    /**
+     * Change the current users email address.
+     *
+     * @param  string $credential
+     * @param  string $newEmail
+     * @return boolean
+     */
+    public function changeEmail($credential, $newEmail)
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-
-        if (!$bcrypt->verify($data['credential'], $currentUser->getPassword())) {
+        if (!$this->crypt->verify($credential, $currentUser->getPassword())) {
             return false;
         }
 
-        $currentUser->setEmail($data['newIdentity']);
+        $currentUser->setEmail($newEmail);
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
         $this->getUserMapper()->update($currentUser);
@@ -285,32 +276,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        return $this;
-    }
-
-    /**
-     * Return the Form Hydrator
-     *
-     * @return \Zend\Stdlib\Hydrator\ClassMethods
-     */
-    public function getFormHydrator()
-    {
-        if (!$this->formHydrator instanceof Hydrator\ClassMethods) {
-            $this->setFormHydrator($this->getServiceManager()->get('zfcuser_register_form_hydrator'));
-        }
-
-        return $this->formHydrator;
-    }
-
-    /**
-     * Set the Form Hydrator to use
-     *
-     * @param Hydrator\ClassMethods $formHydrator
-     * @return User
-     */
-    public function setFormHydrator(Hydrator\ClassMethods $formHydrator)
-    {
-        $this->formHydrator = $formHydrator;
         return $this;
     }
 }
