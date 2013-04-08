@@ -30,6 +30,11 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     protected $passwordService;
 
     /**
+     * @var closure
+     */
+    protected $updatePasswordService;
+
+    /**
      * @var ServiceManager
      */
     protected $serviceManager;
@@ -107,13 +112,8 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 
     protected function updateUserPasswordHash($userObject, $password)
     {
-        if (!$this->getPasswordService() instanceof Bcrypt) {
-            return;
-        }
-        $hash = explode('$', $userObject->getPassword());
-        if ($hash[2] === $this->getPasswordService()->getCost()) return;
-        $userObject->setPassword($this->getPasswordService()->create($password));
-        $this->getMapper()->update($userObject);
+        $service = $this->getUpdatePasswordService();
+        $service($userObject, $password);
         return $this;
     }
 
@@ -180,7 +180,6 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         if (!$this->passwordService instanceof PasswordInterface) {
             $this->setPasswordService($this->getServiceManager()->get('zfcuser_password_service'));
         }
-        return $this->passwordService;
     }
 
     /**
@@ -230,5 +229,43 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
         }
         return $this->options;
+    }
+
+    /**
+     * @return closure
+     */
+    public function getUpdatePasswordService()
+    {
+        if ($this->updatePasswordService === null) {
+
+            $passwordService = $this->getPasswordService();
+            $mapper          = $this->getMapper();
+
+            $this->updatePasswordService = function ($userObject, $password) use ($passwordService, $mapper) {
+
+                if (!$passwordService instanceof Bcrypt) {
+                    return;
+                }
+
+                $hash = explode('$', $userObject->getPassword());
+
+                if ($hash[2] === $passwordService->getCost()) {
+                    return;
+                }
+
+                $userObject->setPassword($passwordService->create($password));
+                $mapper->update($userObject);
+            };
+        }
+
+        return $this->updatePasswordService;
+    }
+
+    /**
+     * @param closure $updatePasswordService
+     */
+    public function setUpdatePasswordService($updatePasswordService)
+    {
+        $this->updatePasswordService = $updatePasswordService;
     }
 }
