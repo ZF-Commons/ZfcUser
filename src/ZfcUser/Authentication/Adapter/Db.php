@@ -180,6 +180,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         if (!$this->passwordService instanceof PasswordInterface) {
             $this->setPasswordService($this->getServiceManager()->get('zfcuser_password_service'));
         }
+        return $this->passwordService;
     }
 
     /**
