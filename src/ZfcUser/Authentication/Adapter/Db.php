@@ -2,11 +2,10 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use DateTime;
 use Zend\Authentication\Result as AuthenticationResult;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
 use ZfcUser\Mapper\User as UserMapperInterface;
 use ZfcUser\Options\AuthenticationOptionsInterface;

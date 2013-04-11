@@ -2,11 +2,10 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Form;
 use Zend\Form\Element\Csrf;
+use Zend\Form\Form;
 use ZfcBase\Form\ProvidesEventsForm;
 use ZfcUser\Options\AuthenticationOptionsInterface;
-use ZfcUser\Module as ZfcUser;
 
 class ChangePassword extends ProvidesEventsForm
 {

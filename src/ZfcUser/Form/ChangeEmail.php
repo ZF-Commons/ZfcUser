@@ -3,7 +3,6 @@
 namespace ZfcUser\Form;
 
 use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\RegistrationOptionsInterface;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class ChangeEmail extends ProvidesEventsForm
