@@ -18,10 +18,6 @@
             "homepage": "http://www.spiffyjr.me/"
         }
     ],
-    "replace": {
-        "zf-commons/zfc-user": "0.1.1",
-        "zf-commons/zfc-user": "0.1.0"
-    },
     "require": {
         "php": ">=5.3.3",
         "zendframework/zendframework": "2.*",
