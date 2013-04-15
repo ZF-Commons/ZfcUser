@@ -78,12 +78,6 @@ return array(
                                 'action'     => 'changepassword',
                             ),
                         ),
-                        'may_terminate' => true,
-                        'child_routes' => array(
-                            'query' => array(
-                                'type' => 'Query',
-                            ),
-                        ),
                     ),
                     'changeemail' => array(
                         'type' => 'Literal',
@@ -92,12 +86,6 @@ return array(
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action' => 'changeemail',
-                            ),
-                        ),
-                        'may_terminate' => true,
-                        'child_routes' => array(
-                            'query' => array(
-                                'type' => 'Query',
                             ),
                         ),
                     ),
