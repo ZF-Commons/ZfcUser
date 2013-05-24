@@ -99,14 +99,19 @@ class ModuleOptions extends AbstractOptions implements
     protected $useRegistrationFormCaptcha = false;
 
     /**
+     * @var bool
+     */
+    protected $registerVerifyPassword = true;
+
+    /**
      * @var int
      */
     protected $passwordCost = 14;
-    
+
     /**
      * @var string
      */
-    
+
     protected $tableName = 'user';
 
     /**
@@ -516,19 +521,40 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->passwordCost;
     }
-    
+
+    /**
+     * Do we ask user to validate password on register?
+     *
+     * @return bool
+     */
+    public function getRegisterVerifyPassword()
+    {
+        return $this->registerVerifyPassword;
+    }
+
+    /**
+     * Do we ask user to validate password on register?
+     *
+     * @param bool $verifyPassword
+    */
+    public function setRegisterVerifyPassword($verifyPassword = true)
+    {
+        $this->registerVerifyPassword = (bool) $verifyPassword;
+        return $this;
+    }
+
     /**
      * set user table name
-     * 
+     *
      * @param string $tableName
      */
     public function setTableName($tableName){
         $this->tableName=$tableName;
     }
-    
+
     /**
      * get user table name
-     * 
+     *
      * @return string
      */
     public function getTableName(){
