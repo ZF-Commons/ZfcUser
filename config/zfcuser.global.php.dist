@@ -143,6 +143,14 @@ $settings = array(
      * Accepted values: string path to a view script
 	 */
     //'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
+    
+     /**
+	 * Sets the view template for the user register widget
+	 *
+	 * Default value: 'zfc-user/user/register.phtml'
+     * Accepted values: string path to a view script
+	 */
+    //'user_register_widget_view_template' => 'zfc-user/user/register.phtml',
 
     /**
      * Login Redirect Route

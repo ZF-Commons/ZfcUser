@@ -77,6 +77,11 @@ class ModuleOptions extends AbstractOptions implements
      * @var string
      */
     protected $userLoginWidgetViewTemplate = 'zfc-user/user/login.phtml';
+    
+    /**
+     * @var string
+     */
+    protected $userRegisterWidgetViewTemplate = 'zfc-user/user/register.phtml';
 
     /**
      * @var bool
@@ -207,6 +212,28 @@ class ModuleOptions extends AbstractOptions implements
     public function getUserLoginWidgetViewTemplate()
     {
         return $this->userLoginWidgetViewTemplate;
+    }
+    
+    /**
+     * set the view template for the user Register widget
+     *
+     * @param string $userRegisterWidgetViewTemplate
+     * @return ModuleOptions
+     */
+    public function setUserRegisterWidgetViewTemplate($userRegisterWidgetViewTemplate)
+    {
+    	$this->userRegisterWidgetViewTemplate = $userRegisterWidgetViewTemplate;
+    	return $this;
+    }
+    
+    /**
+     * get the view template for the user Register widget
+     *
+     * @return string
+     */
+    public function getUserRegisterWidgetViewTemplate()
+    {
+    	return $this->userRegisterWidgetViewTemplate;
     }
 
     /**
