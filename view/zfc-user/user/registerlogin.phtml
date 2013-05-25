@@ -1,0 +1,70 @@
+<div class="container">
+<div class="row">
+	<div class="span6">
+<h1>Register</h1>
+
+<?php
+if (!$this->enableRegistration) {
+    print "Registration is disabled";
+    return;
+}
+$form = $this->registerForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/register'));
+$form->setAttribute('method', 'post');
+?>
+
+<?php echo $this->form()->openTag($form) ?>
+    <dl class="zend_form">
+    <?php foreach ($form as $element): ?>
+        <?php if (!$element instanceof Zend\Form\Element\Button): ?>
+            <dt><?php echo $this->formLabel($element) ?></dt>
+        <?php endif ?>
+        <?php if ($element instanceof Zend\Form\Element\Button): ?>
+            <dd><?php echo $this->formButton($element) ?></dd>
+        <?php elseif ($element instanceof Zend\Form\Element\Captcha): ?>
+            <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element) ?></dd>
+        <?php else: ?>
+            <dd><?php echo $this->formInput($element) . $this->formElementErrors($element) ?></dd>
+        <?php endif ?>
+    <?php endforeach ?>
+    </dl>
+    <?php if ($this->redirect): ?>
+        <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+    <?php endif ?>
+<?php echo $this->form()->closeTag() ?>
+
+	</div>	
+	<div class="span6">
+<h1>Sign In</h1>
+
+<?php
+$form = $this->loginForm;
+$form->prepare();
+$form->setAttribute('action', $this->url('zfcuser/login'));
+$form->setAttribute('method', 'post');
+?>
+
+<?php echo $this->form()->openTag($form) ?>
+
+    <dl class="zend_form">
+        <?php echo $this->formElementErrors($form->get('identity')) ?>
+
+        <dt><?php echo $this->formLabel($form->get('identity')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('identity')) ?></dd>
+
+        <dt><?php echo $this->formLabel($form->get('credential')) ?></dt>
+        <dd><?php echo $this->formInput($form->get('credential')) ?></dd>
+
+        <?php if ($this->redirect): ?>
+            <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
+        <?php endif ?>
+
+        <dd><?php echo $this->formButton($form->get('submit')) ?></dd>
+    </dl>
+
+<?php echo $this->form()->closeTag() ?>
+
+	</div>
+</div>
+</div>
