@@ -42,7 +42,7 @@ Features / Goals
 * Support for additional authentication mechanisms via plugins (Google,
   Facebook, LDAP, etc) [INCOMPLETE]
 * Optional E-mail address verification [INCOMPLETE]
-* Forgot Password [INCOMPLETE]
+* Forgot Password [INCOMPLETE] [IN PROGRESS #277]
 * Provide ActionController plugin and view helper [INCOMPLETE]
 
 Installation
