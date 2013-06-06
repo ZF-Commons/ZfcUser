@@ -6,6 +6,7 @@ use Zend\Stdlib\AbstractOptions;
 
 class ModuleOptions extends AbstractOptions implements
     UserControllerOptionsInterface,
+    RegistrationOptionsInterface,
     UserServiceOptionsInterface
 {
     /**
@@ -102,11 +103,11 @@ class ModuleOptions extends AbstractOptions implements
      * @var int
      */
     protected $passwordCost = 14;
-    
+
     /**
      * @var string
      */
-    
+
     protected $tableName = 'user';
 
     /**
@@ -516,19 +517,19 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->passwordCost;
     }
-    
+
     /**
      * set user table name
-     * 
+     *
      * @param string $tableName
      */
     public function setTableName($tableName){
         $this->tableName=$tableName;
     }
-    
+
     /**
      * get user table name
-     * 
+     *
      * @return string
      */
     public function getTableName(){
