@@ -2,137 +2,158 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
+use ZfcUser\Authentication\ChainEvent;
 use Zend\Authentication\Adapter\AdapterInterface;
-use Zend\Authentication\Result as AuthenticationResult;
-use Zend\EventManager\Event;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Stdlib\ResponseInterface as Response;
-use ZfcBase\EventManager\EventProvider;
-use ZfcUser\Exception;
+use Zend\Authentication\Result;
+use Zend\EventManager\EventManager;
+use Zend\EventManager\EventManagerAwareInterface;
+use Zend\EventManager\EventManagerInterface;
 
-class AdapterChain extends EventProvider implements AdapterInterface
+class AdapterChain implements
+    AdapterInterface,
+    EventManagerAwareInterface
 {
+    const EVENT_AUTHENTICATE = 'authenticate';
+    const EVENT_SETUP        = 'setup';
+    const EVENT_TEARDOWN     = 'teardown';
+
     /**
-     * @var AdapterChainEvent
+     * @var array
+     */
+    protected $adapters = array();
+
+    /**
+     * @var EventManagerInterface
+     */
+    protected $eventManager;
+
+    /**
+     * @var ChainEvent
      */
     protected $event;
 
     /**
-     * Returns the authentication result
-     *
-     * @return AuthenticationResult
+     * @var array
+     */
+    protected $eventParams = array();
+
+    /**
+     * {@inhericDoc}
      */
     public function authenticate()
     {
-        $e = $this->getEvent();
+        $event        = $this->getEvent();
+        $eventManager = $this->getEventManager();
 
-        $result = new AuthenticationResult(
-            $e->getCode(),
-            $e->getIdentity(),
-            $e->getMessages()
+        $event->setParams($this->getEventParams());
+
+        $eventManager->trigger(static::EVENT_SETUP, $event);
+        $eventManager->trigger(static::EVENT_AUTHENTICATE, $event);
+
+        $result = new Result(
+            $event->getCode(),
+            $event->getIdentity(),
+            $event->getMessages()
         );
 
-        $this->resetAdapters();
+        $eventManager->trigger(static::EVENT_TEARDOWN, $event);
 
         return $result;
     }
 
     /**
-     * prepareForAuthentication
-     *
-     * @param  Request $request
-     * @return Response|bool
-     * @throws Exception\AuthenticationEventException
+     * {@inhericDoc}
      */
-    public function prepareForAuthentication(Request $request)
+    public function setEventManager(EventManagerInterface $eventManager)
     {
-        $e = $this->getEvent();
-        $e->setRequest($request);
-
-        $this->getEventManager()->trigger('authenticate.pre', $e);
-
-        $result = $this->getEventManager()->trigger('authenticate', $e, function($test) {
-            return ($test instanceof Response);
-        });
-
-        if ($result->stopped()) {
-            if($result->last() instanceof Response) {
-                return $result->last();
-            }
-
-            throw new Exception\AuthenticationEventException(
-                sprintf(
-                    'Auth event was stopped without a response. Got "%s" instead',
-                    is_object($result->last()) ? get_class($result->last()) : gettype($result->last())
-                )
-            );
-        }
-
-        if ($e->getIdentity()) {
-            return true;
-        }
-
-        return false;
-    }
-
-    /**
-     * resetAdapters
-     *
-     * @return AdapterChain
-     */
-    public function resetAdapters()
-    {
-        $listeners = $this->getEventManager()->getListeners('authenticate');
-        foreach ($listeners as $listener) {
-            $listener = $listener->getCallback();
-            if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
-                $listener[0]->getStorage()->clear();
-            }
-        }
+        $this->eventManager = $eventManager;
         return $this;
     }
 
     /**
-     * logoutAdapters
-     *
-     * @return AdapterChain
+     * {@inhericDoc}
      */
-    public function logoutAdapters()
+    public function getEventManager()
     {
-        //Adapters might need to perform additional cleanup after logout
-        $this->getEventManager()->trigger('logout', $this->getEvent());
+        if (!$this->eventManager instanceof EventManagerInterface) {
+            $this->setEventManager(new EventManager());
+        }
+        return $this->eventManager;
     }
 
     /**
-     * Get the auth event
-     *
-     * @return AdapterChainEvent
+     * @param ChainEvent $event
+     * @return AdapterChain
+     */
+    public function setEvent($event)
+    {
+        $this->event = $event;
+        return $this;
+    }
+
+    /**
+     * @return ChainEvent
      */
     public function getEvent()
     {
-        if (null === $this->event) {
-            $this->setEvent(new AdapterChainEvent);
-            $this->event->setTarget($this);
+        if (!$this->event) {
+            $this->event = new ChainEvent();
+            $this->event->setAdapter($this);
         }
         return $this->event;
     }
 
     /**
-     * Set an event to use during dispatch
-     *
-     * By default, will re-cast to AdapterChainEvent if another event type is provided.
-     *
-     * @param  Event $e
+     * @param ChainableAdapterInterface $adapter
+     * @param int $priority
      * @return AdapterChain
      */
-    public function setEvent(Event $e)
+    public function addAdapter(ChainableAdapterInterface $adapter, $priority = 100)
     {
-        if (!$e instanceof AdapterChainEvent) {
-            $eventParams = $e->getParams();
-            $e = new AdapterChainEvent();
-            $e->setParams($eventParams);
-        }
-        $this->event = $e;
+        $this->getEventManager()->attach($adapter, $priority);
+        $this->adapters[] = $adapter;
         return $this;
+    }
+
+    /**
+     * @param array $adapters
+     * @return AdapterChain
+     */
+    public function setAdapters(array $adapters)
+    {
+        foreach ($adapters as $priority => $adapter) {
+            if (is_int($priority)) {
+                $this->addAdapter($adapter, $priority);
+            } else {
+                $this->addAdapter($adapter);
+            }
+        }
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getAdapters()
+    {
+        return $this->adapters;
+    }
+
+    /**
+     * @param array $eventParams
+     * @return AdapterChain
+     */
+    public function setEventParams($eventParams)
+    {
+        $this->eventParams = $eventParams;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getEventParams()
+    {
+        return $this->eventParams;
     }
 }

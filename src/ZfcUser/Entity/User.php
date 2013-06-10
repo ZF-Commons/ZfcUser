@@ -2,6 +2,8 @@
 
 namespace ZfcUser\Entity;
 
+use DateTime;
+
 class User implements UserInterface
 {
     /**
@@ -12,7 +14,7 @@ class User implements UserInterface
     /**
      * @var string
      */
-    protected $username;
+    protected $displayName;
 
     /**
      * @var string
@@ -22,99 +24,30 @@ class User implements UserInterface
     /**
      * @var string
      */
-    protected $displayName;
-
-    /**
-     * @var string
-     */
     protected $password;
 
     /**
-     * @var int
+     * @var DateTime
      */
-    protected $state;
+    protected $joinDate;
 
     /**
-     * Get id.
-     *
-     * @return int
+     * @var DateTime
      */
-    public function getId()
+    protected $loginDate;
+
+    /**
+     * Constructor.
+     */
+    public function __construct()
     {
-        return $this->id;
+        $this->joinDate  = new DateTime();
+        $this->loginDate = new DateTime();
     }
 
     /**
-     * Set id.
-     *
-     * @param int $id
-     * @return UserInterface
-     */
-    public function setId($id)
-    {
-        $this->id = (int) $id;
-        return $this;
-    }
-
-    /**
-     * Get username.
-     *
-     * @return string
-     */
-    public function getUsername()
-    {
-        return $this->username;
-    }
-
-    /**
-     * Set username.
-     *
-     * @param string $username
-     * @return UserInterface
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-        return $this;
-    }
-
-    /**
-     * Get email.
-     *
-     * @return string
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
-
-    /**
-     * Set email.
-     *
-     * @param string $email
-     * @return UserInterface
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-        return $this;
-    }
-
-    /**
-     * Get displayName.
-     *
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        return $this->displayName;
-    }
-
-    /**
-     * Set displayName.
-     *
      * @param string $displayName
-     * @return UserInterface
+     * @return \ZfcUser\Entity\UserInterface
      */
     public function setDisplayName($displayName)
     {
@@ -123,20 +56,88 @@ class User implements UserInterface
     }
 
     /**
-     * Get password.
-     *
      * @return string
      */
-    public function getPassword()
+    public function getDisplayName()
     {
-        return $this->password;
+        return $this->displayName;
     }
 
     /**
-     * Set password.
-     *
+     * @param string $email
+     * @return \ZfcUser\Entity\UserInterface
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * @param int $id
+     * @return \ZfcUser\Entity\UserInterface
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param Datetime $joinDate
+     * @return \ZfcUser\Entity\UserInterface
+     */
+    public function setJoinDate(DateTime $joinDate)
+    {
+        $this->joinDate = $joinDate;
+        return $this;
+    }
+
+    /**
+     * @return Datetime
+     */
+    public function getJoinDate()
+    {
+        return $this->joinDate;
+    }
+
+    /**
+     * @param Datetime $loginDate
+     * @return \ZfcUser\Entity\UserInterface
+     */
+    public function setLoginDate(DateTime$loginDate)
+    {
+        $this->loginDate = $loginDate;
+        return $this;
+    }
+
+    /**
+     * @return Datetime
+     */
+    public function getLoginDate()
+    {
+        return $this->loginDate;
+    }
+
+    /**
      * @param string $password
-     * @return UserInterface
+     * @return \ZfcUser\Entity\UserInterface
      */
     public function setPassword($password)
     {
@@ -145,24 +146,10 @@ class User implements UserInterface
     }
 
     /**
-     * Get state.
-     *
-     * @return int
+     * @return string
      */
-    public function getState()
+    public function getPassword()
     {
-        return $this->state;
-    }
-
-    /**
-     * Set state.
-     *
-     * @param int $state
-     * @return UserInterface
-     */
-    public function setState($state)
-    {
-        $this->state = $state;
-        return $this;
+        return $this->password;
     }
 }
