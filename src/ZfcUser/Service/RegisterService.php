@@ -3,9 +3,9 @@
 namespace ZfcUser\Service;
 
 use ZfcUser\Entity\UserInterface;
-use ZfcUser\Mapper\RegisterMapperInterface;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Service\Exception;
+use ZfcUser\Storage\AdapterInterface;
 use Zend\Form\FormInterface;
 
 class RegisterService
@@ -16,9 +16,9 @@ class RegisterService
     protected $form;
 
     /**
-     * @var \ZfcUser\Mapper\RegisterMapperInterface
+     * @var \ZfcUser\Storage\AdapterInterface
      */
-    protected $mapper;
+    protected $adapter;
 
     /**
      * @var ModuleOptions
@@ -32,16 +32,16 @@ class RegisterService
 
     /**
      * @param FormInterface $form
-     * @param RegisterMapperInterface $mapper
+     * @param AdapterInterface $storage
      * @param ModuleOptions $options
      */
     public function __construct(
         FormInterface $form,
-        RegisterMapperInterface $mapper,
+        AdapterInterface $storage,
         ModuleOptions $options
     ) {
         $this->form    = $form;
-        $this->mapper  = $mapper;
+        $this->storage = $storage;
         $this->options = $options;
     }
 
@@ -69,7 +69,7 @@ class RegisterService
             exit;
         }
 
-        $this->mapper->register($user);
+        $this->storage->register($user);
 
         return $user;
     }

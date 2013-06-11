@@ -1,10 +1,10 @@
 <?php
 
-namespace ZfcUser\Mapper;
+namespace ZfcUser\Storage;
 
 use ZfcUser\Entity\UserInterface;
 
-interface FindMapperInterface
+interface AdapterInterface
 {
     /**
      * Find an entity by id.
@@ -21,4 +21,12 @@ interface FindMapperInterface
      * @return UserInterface
      */
     public function findByEmail($email);
+
+    /**
+     * Register an entity.
+     *
+     * @param UserInterface $user
+     * @return mixed
+     */
+    public function register(UserInterface $user);
 }

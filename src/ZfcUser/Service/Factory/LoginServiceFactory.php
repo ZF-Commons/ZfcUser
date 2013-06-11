@@ -17,12 +17,6 @@ class LoginServiceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        if (!$serviceLocator->has('ZfcUser\Mapper\FindMapper')) {
-            // todo: throw exception
-            echo 'no find mapper has been set, have you installed a data provider?';
-            exit;
-        }
-
         /** @var \ZfcUser\Options\ModuleOptions $options */
         $options = $serviceLocator->get('ZfcUser\Options\ModuleOptions');
 

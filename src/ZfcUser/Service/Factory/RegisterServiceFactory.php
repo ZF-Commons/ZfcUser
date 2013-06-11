@@ -17,21 +17,21 @@ class RegisterServiceFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        if (!$serviceLocator->has('ZfcUser\Mapper\RegisterMapper')) {
+        if (!$serviceLocator->has('ZfcUser\Storage')) {
             // todo: throw exception
-            echo 'no register mapper has been set, have you installed a data provider?';
+            echo 'no storage adapter has been set, have you installed a storage provider?';
             exit;
         }
 
         /** @var \ZfcUser\Options\ModuleOptions $options */
         $options = $serviceLocator->get('ZfcUser\Options\ModuleOptions');
 
-        /** @var \ZfcUser\Mapper\RegisterMapperInterface $mapper */
-        $mapper = $serviceLocator->get('ZfcUser\Mapper\RegisterMapper');
+        /** @var \ZfcUser\Storage\AdapterInterface $storage */
+        $storage = $serviceLocator->get('ZfcUser\Storage');
 
         /** @var \ZfcUser\Form\RegisterForm $form */
         $form = $serviceLocator->get('ZfcUser\Form\RegisterForm');
 
-        return new RegisterService($form, $mapper, $options);
+        return new RegisterService($form, $storage, $options);
     }
 }
