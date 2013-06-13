@@ -2,13 +2,13 @@
 
 namespace ZfcUser\Service;
 
+use Zend\Form\FormInterface;
 use ZfcUser\Entity\UserInterface;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Service\Exception;
 use ZfcUser\Storage\AdapterInterface;
-use Zend\Form\FormInterface;
 
-class RegisterService
+class RegisterService extends AbstractEventService
 {
     /**
      * @var \Zend\Form\FormInterface
@@ -32,16 +32,13 @@ class RegisterService
 
     /**
      * @param FormInterface $form
-     * @param AdapterInterface $storage
      * @param ModuleOptions $options
      */
     public function __construct(
         FormInterface $form,
-        AdapterInterface $storage,
         ModuleOptions $options
     ) {
         $this->form    = $form;
-        $this->storage = $storage;
         $this->options = $options;
     }
 
@@ -50,6 +47,7 @@ class RegisterService
      * mapper.
      *
      * @param array $data
+     * @throws Exception\InvalidUserException
      * @return null|UserInterface
      */
     public function register(array $data)
@@ -64,14 +62,12 @@ class RegisterService
         $user = $this->form->getData();
 
         if (!$user instanceof UserInterface) {
-            // todo: throw exception
-            echo 'user is not right interface';
-            exit;
+            throw new Exception\InvalidUserException(
+                'User must be an instance of ZfcUser\Entity\UserInterface'
+            );
         }
 
-        $this->storage->register($user);
-
-        return $user;
+        return $this->getEventManager()->trigger(__FUNCTION__, $user)->last();
     }
 
     /**

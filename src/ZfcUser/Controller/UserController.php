@@ -41,7 +41,7 @@ class UserController extends AbstractActionController
             $this->redirect()->toRoute('zfc_user');
         }
         $prg  = $this->prg();
-        $form = $this->getLoginService()->getForm();
+        $form = $this->getLoginService()->getLoginForm();
 
         if ($prg instanceof Response) {
             return $prg;

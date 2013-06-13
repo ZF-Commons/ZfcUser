@@ -21,7 +21,7 @@ class LoginForm extends Form implements InputFilterProviderInterface
             'options' => array(
                 'label' => 'Email'
             )
-        ));
+        ), array('priority' => 999));
 
         $this->add(array(
             'name' => 'password',
@@ -29,7 +29,7 @@ class LoginForm extends Form implements InputFilterProviderInterface
             'options' => array(
                 'label' => 'Password'
             )
-        ));
+        ), array('priority' => 888));
 
         $this->add(array(
             'name' => 'submit',
@@ -37,7 +37,7 @@ class LoginForm extends Form implements InputFilterProviderInterface
             'attributes' => array(
                 'value' => 'Login'
             )
-        ));
+        ), array('priority' => -999));
     }
 
     /**

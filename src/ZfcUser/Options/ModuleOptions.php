@@ -14,12 +14,25 @@ class ModuleOptions extends AbstractOptions
     protected $entityClass;
 
     /**
-     * Listeners that are registered with the login service. Useful for preparing
-     * adapters prior to authentication..
+     * Service manager name of the authentication service.
+     *
+     * @var string
+     */
+    protected $authenticationService = 'Zend\Authentication\AuthenticationService';
+
+    /**
+     * Plugins that are registered with the register service.
      *
      * @var array
      */
-    protected $loginListeners = array();
+    protected $registerPlugins = array();
+
+    /**
+     * Plugins that are registered with the login service.
+     *
+     * @var array
+     */
+    protected $loginPlugins = array();
 
     /**
      * Adapters that are added to the login chain.
@@ -86,21 +99,21 @@ class ModuleOptions extends AbstractOptions
     }
 
     /**
-     * @param array $loginListeners
+     * @param array $loginPlugins
      * @return ModuleOptions
      */
-    public function setLoginListeners($loginListeners)
+    public function setLoginPlugins($loginPlugins)
     {
-        $this->loginListeners = $loginListeners;
+        $this->loginPlugins = $loginPlugins;
         return $this;
     }
 
     /**
      * @return array
      */
-    public function getLoginListeners()
+    public function getLoginPlugins()
     {
-        return $this->loginListeners;
+        return $this->loginPlugins;
     }
 
     /**
@@ -155,5 +168,41 @@ class ModuleOptions extends AbstractOptions
     public function getPasswordSalt()
     {
         return $this->passwordSalt;
+    }
+
+    /**
+     * @param array $registerPlugins
+     * @return ModuleOptions
+     */
+    public function setRegisterPlugins($registerPlugins)
+    {
+        $this->registerPlugins = $registerPlugins;
+        return $this;
+    }
+
+    /**
+     * @return array
+     */
+    public function getRegisterPlugins()
+    {
+        return $this->registerPlugins;
+    }
+
+    /**
+     * @param string $authenticationService
+     * @return ModuleOptions
+     */
+    public function setAuthenticationService($authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthenticationService()
+    {
+        return $this->authenticationService;
     }
 }

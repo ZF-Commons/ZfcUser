@@ -2,14 +2,12 @@
 
 namespace ZfcUser\Service;
 
-use ZfcUser\Authentication\Adapter\AdapterChain;
+use ZfcUser\Authentication\AdapterChain;
 use ZfcUser\Options\ModuleOptions;
 use Zend\Authentication\AuthenticationService;
-use Zend\EventManager\EventManager;
-use Zend\EventManager\EventManagerInterface;
 use Zend\Form\FormInterface;
 
-class LoginService
+class LoginService extends AbstractEventService
 {
     /**
      * @var AdapterChain
@@ -22,14 +20,9 @@ class LoginService
     protected $authenticationService;
 
     /**
-     * @var EventManagerInterface
-     */
-    protected $eventManager;
-
-    /**
      * @var \Zend\Form\FormInterface
      */
-    protected $form;
+    protected $loginForm;
 
     /**
      * @var ModuleOptions
@@ -37,15 +30,15 @@ class LoginService
     protected $options;
 
     /**
-     * @param FormInterface $form
+     * @param FormInterface $loginForm
      * @param \ZfcUser\Options\ModuleOptions $options
      */
     public function __construct(
-        FormInterface $form,
+        FormInterface $loginForm,
         ModuleOptions $options
     ) {
-        $this->form    = $form;
-        $this->options = $options;
+        $this->loginForm = $loginForm;
+        $this->options   = $options;
     }
 
     /**
@@ -89,28 +82,7 @@ class LoginService
     }
 
     /**
-     * {@inheritDoc}
-     */
-    public function setEventManager(EventManagerInterface $eventManager)
-    {
-        $eventManager->setIdentifiers(array(__CLASS__, get_class($this)));
-        $this->eventManager = $eventManager;
-        return $this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getEventManager()
-    {
-        if (!$this->eventManager instanceof EventManagerInterface) {
-            $this->setEventManager(new EventManager());
-        }
-        return $this->eventManager;
-    }
-
-    /**
-     * @param \ZfcUser\Authentication\Adapter\AdapterChain $adapterChain
+     * @param \ZfcUser\Authentication\AdapterChain $adapterChain
      * @return LoginService
      */
     public function setAdapterChain(AdapterChain $adapterChain)
@@ -120,7 +92,7 @@ class LoginService
     }
 
     /**
-     * @return \ZfcUser\Authentication\Adapter\AdapterChain
+     * @return \ZfcUser\Authentication\AdapterChain
      */
     public function getAdapterChain()
     {
@@ -154,8 +126,11 @@ class LoginService
     /**
      * @return \Zend\Form\FormInterface
      */
-    public function getForm()
+    public function getLoginForm()
     {
-        return $this->form;
+        $form    = $this->loginForm;
+        $results = $this->getEventManager()->trigger(__FUNCTION__, $form);
+
+        return $results->last() ? $results->last() : $form;
     }
 }

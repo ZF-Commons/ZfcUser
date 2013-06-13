@@ -6,7 +6,7 @@
     $form->prepare();
     ?>
 
-    <?php foreach ($form->getElements() as $element) : ?>
+    <?php foreach ($form as $element) : ?>
         <?php echo $this->formRow($element); ?>
     <?php endforeach; ?>
 </form>
