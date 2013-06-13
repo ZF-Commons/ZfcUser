@@ -54,7 +54,7 @@ interface UserInterface
      * @param Datetime $loginDate
      * @return UserInterface
      */
-    public function setLoginDate(DateTime$loginDate);
+    public function setLoginDate(DateTime $loginDate);
 
     /**
      * @return Datetime
