@@ -1,0 +1,24 @@
+{
+    "name": "zf-commons/zfc-user",
+    "require": {
+        "php": ">=5.3.3",
+        "doctrine/common": "2.*",
+        "zendframework/zend-cache": "2.*",
+        "zendframework/zend-code": "2.*",
+        "zendframework/zend-console": "2.*",
+        "zendframework/zend-mvc": "2.*",
+        "zendframework/zend-serializer": "2.*",
+        "zendframework/zend-version": "2.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "3.*",
+        "satooshi/php-coveralls": "dev-master",
+        "zendframework/zend-test": "2.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "ZfcUser": "src/",
+            "ZfcUserTest": "test/"
+        }
+    }
+}
