@@ -6,19 +6,13 @@ use Zend\Form\FormInterface;
 use ZfcUser\Entity\UserInterface;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Service\Exception;
-use ZfcUser\Storage\AdapterInterface;
 
-class RegisterService extends AbstractEventService
+class RegisterService extends AbstractPluginService
 {
     /**
      * @var \Zend\Form\FormInterface
      */
     protected $form;
-
-    /**
-     * @var \ZfcUser\Storage\AdapterInterface
-     */
-    protected $adapter;
 
     /**
      * @var ModuleOptions
@@ -29,6 +23,13 @@ class RegisterService extends AbstractEventService
      * @var UserInterface
      */
     protected $userPrototype;
+
+    /**
+     * @var array
+     */
+    protected $allowedPluginInterfaces = array(
+        'ZfcUser\Plugin\RegisterPluginInterface'
+    );
 
     /**
      * @param FormInterface $form

@@ -7,7 +7,7 @@ use ZfcUser\Options\ModuleOptions;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\FormInterface;
 
-class LoginService extends AbstractEventService
+class LoginService extends AbstractPluginService
 {
     /**
      * @var AdapterChain
@@ -28,6 +28,13 @@ class LoginService extends AbstractEventService
      * @var ModuleOptions
      */
     protected $options;
+
+    /**
+     * @var array
+     */
+    protected $allowedPluginInterfaces = array(
+        'ZfcUser\Plugin\LoginPluginInterface'
+    );
 
     /**
      * @param FormInterface $loginForm
