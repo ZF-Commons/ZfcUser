@@ -1,9 +1,9 @@
 <?php
 
 return array(
-    'router' => array(
-        'routes' => include 'route.config.php'
-    ),
+    'controllers'     => include 'controller.config.php',
+    'router'          => include 'router.config.php',
+    'service_manager' => include 'service.config.php',
 
     // See ZfcUser\Options\ModuleOptions for a list of all options.
     'zfc_user' => array(),

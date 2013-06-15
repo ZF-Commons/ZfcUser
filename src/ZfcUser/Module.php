@@ -2,14 +2,12 @@
 
 namespace ZfcUser;
 
+use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
-use Zend\ModuleManager\Feature\ControllerProviderInterface;
-use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements
-    ConfigProviderInterface,
-    ControllerProviderInterface,
-    ServiceProviderInterface
+    AutoloaderProviderInterface,
+    ConfigProviderInterface
 {
     /**
      * {@inheritDoc}
@@ -22,16 +20,14 @@ class Module implements
     /**
      * {@inheritDoc}
      */
-    public function getControllerConfig()
+    public function getAutoloaderConfig()
     {
-        return include __DIR__ . '/../../config/controller.config.php';
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    public function getServiceConfig()
-    {
-        return include __DIR__ . '/../../config/service.config.php';
+        return array(
+            'Zend\Loader\StandardAutoloader' => array(
+                'namespaces' => array(
+                    __NAMESPACE__ => __DIR__,
+                ),
+            ),
+        );
     }
 }

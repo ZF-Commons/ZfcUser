@@ -1,5 +1,23 @@
 {
     "name": "zf-commons/zfc-user",
+    "description": "A highly extensible and pluggable user module for ZF2.",
+    "type": "library",
+    "keywords": [
+        "zf2"
+    ],
+    "homepage": "https://github.com/ZF-Commons/ZfcUser",
+    "authors": [
+        {
+            "name": "Evan Coury",
+            "email": "me@evancoury.com",
+            "homepage": "http://blog.evan.pro/"
+        },
+        {
+            "name": "Kyle Spraggs",
+            "email": "theman@spiffyjr.me",
+            "homepage": "http://www.spiffyjr.me/"
+        }
+    ],
     "require": {
         "php": ">=5.3.3",
         "doctrine/common": "2.*",
@@ -10,10 +28,8 @@
         "zendframework/zend-serializer": "2.*",
         "zendframework/zend-version": "2.*"
     },
-    "require-dev": {
-        "phpunit/phpunit": "3.*",
-        "satooshi/php-coveralls": "dev-master",
-        "zendframework/zend-test": "2.*"
+    "suggest": {
+        "zendframework/zend-session": "To use the default authentication adapter."
     },
     "autoload": {
         "psr-0": {
