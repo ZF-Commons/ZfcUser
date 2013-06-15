@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Service\Exception;
 
-interface ExceptionInterface
-{
-}
+use ZfcUser\Exception;
+
+interface ExceptionInterface extends Exception\ExceptionInterface
+{}

@@ -2,96 +2,73 @@
 
 namespace ZfcUser\Entity;
 
+use DateTime;
+
 interface UserInterface
 {
     /**
-     * Get id.
-     *
-     * @return int
-     */
-    public function getId();
-
-    /**
-     * Set id.
-     *
-     * @param int $id
-     * @return UserInterface
-     */
-    public function setId($id);
-
-    /**
-     * Get username.
-     *
-     * @return string
-     */
-    public function getUsername();
-
-    /**
-     * Set username.
-     *
-     * @param string $username
-     * @return UserInterface
-     */
-    public function setUsername($username);
-
-    /**
-     * Get email.
-     *
-     * @return string
-     */
-    public function getEmail();
-
-    /**
-     * Set email.
-     *
-     * @param string $email
-     * @return UserInterface
-     */
-    public function setEmail($email);
-
-    /**
-     * Get displayName.
-     *
-     * @return string
-     */
-    public function getDisplayName();
-
-    /**
-     * Set displayName.
-     *
      * @param string $displayName
      * @return UserInterface
      */
     public function setDisplayName($displayName);
 
     /**
-     * Get password.
-     *
-     * @return string password
+     * @return string
      */
-    public function getPassword();
+    public function getDisplayName();
 
     /**
-     * Set password.
-     *
+     * @param string $email
+     * @return UserInterface
+     */
+    public function setEmail($email);
+
+    /**
+     * @return string
+     */
+    public function getEmail();
+
+    /**
+     * @param int $id
+     * @return UserInterface
+     */
+    public function setId($id);
+
+    /**
+     * @return int
+     */
+    public function getId();
+
+    /**
+     * @param Datetime $joinDate
+     * @return UserInterface
+     */
+    public function setJoinDate(DateTime $joinDate);
+
+    /**
+     * @return Datetime
+     */
+    public function getJoinDate();
+
+    /**
+     * @param Datetime $loginDate
+     * @return UserInterface
+     */
+    public function setLoginDate(DateTime $loginDate);
+
+    /**
+     * @return Datetime
+     */
+    public function getLoginDate();
+
+    /**
      * @param string $password
      * @return UserInterface
      */
     public function setPassword($password);
 
     /**
-     * Get state.
-     *
-     * @return int
+     * @return string
      */
-    public function getState();
-
-    /**
-     * Set state.
-     *
-     * @param int $state
-     * @return UserInterface
-     */
-    public function setState($state);
-
+    public function getPassword();
 }

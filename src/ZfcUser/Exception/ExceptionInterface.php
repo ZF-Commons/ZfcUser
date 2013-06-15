@@ -3,5 +3,4 @@
 namespace ZfcUser\Exception;
 
 interface ExceptionInterface
-{
-}
+{}
