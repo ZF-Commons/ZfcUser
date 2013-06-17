@@ -2,6 +2,8 @@
 
 return array(
     'invokables' => array(
-        'ZfcUser\Controller\UserController' => 'ZfcUser\Controller\UserController'
+        'ZfcUser\Controller\LoginController'    => 'ZfcUser\Controller\LoginController',
+        'ZfcUser\Controller\RegisterController' => 'ZfcUser\Controller\RegisterController',
+        'ZfcUser\Controller\UserController'     => 'ZfcUser\Controller\UserController',
     )
 );
