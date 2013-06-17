@@ -19,6 +19,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \ZfcUser\Authentication\AdapterChain::getEventManager
+     * @covers \ZfcUser\Authentication\AdapterChain::setEventManager
      */
     public function testGetEventManagerIsLazyLoaded()
     {
@@ -27,6 +28,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers \ZfcUser\Authentication\AdapterChain::getEvent
+     * @covers \ZfcUser\Authentication\AdapterChain::setEvent
      */
     public function testGetEventIsLazyLoaded()
     {
@@ -34,9 +36,11 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers \ZfcUser\Authentication\AdapterChain::addAdapter
      * @covers \ZfcUser\Authentication\AdapterChain::setAdapters
+     * @covers \ZfcUser\Authentication\AdapterChain::getAdapters
      */
-    public function testSetAdapters()
+    public function testAdapters()
     {
         $adapters = array(
             -1       => new ChainAdapter(),
@@ -56,6 +60,8 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
             $metadata = $listeners[$key]->getMetadata();
             $this->assertEquals($priority, $metadata['priority']);
         }
+
+        $this->assertEquals(array_values($adapters), $this->chain->getAdapters());
     }
 
     /**
@@ -86,5 +92,16 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($result->isValid());
         $this->assertNull($result->getIdentity());
         $this->assertEquals(array('failure'), $result->getMessages());
+    }
+
+    /**
+     * @covers \ZfcUser\Authentication\AdapterChain::setEventParams
+     * @covers \ZfcUser\Authentication\AdapterChain::getEventParams
+     */
+    public function testParams()
+    {
+        $expected = array('foo', 'bar');
+        $this->chain->setEventParams($expected);
+        $this->assertEquals($expected, $this->chain->getEventParams());
     }
 }
