@@ -9,7 +9,7 @@ use ZfcUser\Options\ModuleOptions;
 class PasswordStrategyFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers \ZfcUser\Form\PasswordStrategyFactory
+     * @covers \ZfcUser\Form\PasswordStrategyFactory::createService
      */
     public function testInstanceReturned()
     {

@@ -26,6 +26,7 @@
         "zendframework/zend-console": "2.*",
         "zendframework/zend-crypt": "2.*",
         "zendframework/zend-form": "2.*",
+        "zendframework/zend-modulemanager": "2.*",
         "zendframework/zend-mvc": "2.*",
         "zendframework/zend-serializer": "2.*",
         "zendframework/zend-version": "2.*"
