@@ -97,8 +97,7 @@ class AdapterChain implements
     public function getEvent()
     {
         if (!$this->event) {
-            $this->event = new ChainEvent();
-            $this->event->setAdapter($this);
+            $this->setEvent(new ChainEvent($this));
         }
         return $this->event;
     }
@@ -122,7 +121,7 @@ class AdapterChain implements
     public function setAdapters(array $adapters)
     {
         foreach ($adapters as $priority => $adapter) {
-            if (is_int($priority)) {
+            if (is_numeric($priority)) {
                 $this->addAdapter($adapter, $priority);
             } else {
                 $this->addAdapter($adapter);

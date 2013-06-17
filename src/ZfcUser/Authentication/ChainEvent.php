@@ -29,21 +29,11 @@ class ChainEvent extends Event
     protected $messages = array();
 
     /**
-     * @param \Zend\Authentication\Adapter\AdapterInterface $adapter
-     * @return ChainEvent
+     * @param AdapterChain $adapter
      */
-    public function setAdapter($adapter)
+    public function __construct(AdapterChain $adapter)
     {
         $this->adapter = $adapter;
-        return $this;
-    }
-
-    /**
-     * @return \Zend\Authentication\Adapter\AdapterInterface
-     */
-    public function getAdapter()
-    {
-        return $this->adapter;
     }
 
     /**

@@ -1,0 +1,13 @@
+<phpunit bootstrap="./bootstrap.php" colors="true">
+    <testsuite name="ZfcUser Module Tests">
+        <directory>./ZfcUserTest</directory>
+    </testsuite>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">../src/</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="../build/logs/clover.xml"/>
+    </logging>
+</phpunit>
