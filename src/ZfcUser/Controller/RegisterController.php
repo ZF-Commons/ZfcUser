@@ -18,14 +18,18 @@ class RegisterController extends AbstractActionController
      */
     public function registerAction()
     {
+        if ($this->identity()) {
+            return $this->redirect()->toRoute('zfc_user');
+        }
         $prg  = $this->prg();
         $form = $this->getRegisterService()->getForm();
 
         if ($prg instanceof Response) {
             return $prg;
         } elseif (false !== $prg) {
-            $this->getRegisterService()->register($prg);
-            return $this->redirect()->toRoute('zfc_user');
+            if ($this->getRegisterService()->register($prg)) {
+                return $this->redirect()->toRoute('zfc_user');
+            }
         }
 
         return array('form' => $form);

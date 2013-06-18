@@ -80,6 +80,7 @@ class RegisterService extends AbstractPluginService
     }
 
     /**
+     * @throws Exception\InvalidUserException
      * @return UserInterface
      */
     public function getUserPrototype()
@@ -87,9 +88,12 @@ class RegisterService extends AbstractPluginService
         if (!$this->userPrototype) {
             $userClass = $this->options->getEntityClass();
             if (!class_exists($userClass)) {
-                // todo: throw exception
-                echo 'userclass ' . $userClass . ' could not be found';
-                exit;
+                throw new Exception\InvalidUserException(
+                    sprintf(
+                        'class %s could not be found',
+                        $userClass
+                    )
+                );
             }
             $this->userPrototype = new $userClass();
         }

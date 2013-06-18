@@ -38,6 +38,9 @@ class LoginControllerTest extends AbstractControllerTestCase
         $this->assertRedirectTo('/user');
     }
 
+    /**
+     * @covers \ZfcUser\Controller\LoginController::loginAction
+     */
     public function testLoginActionDoesNotRedirect()
     {
         $this->logoutUser();
@@ -100,6 +103,16 @@ class LoginControllerTest extends AbstractControllerTestCase
 
         $this->dispatch('/user/login');
         $this->assertRedirect('/user');
+    }
+
+    /**
+     * @covers \ZfcUser\Controller\LoginController::getLoginService
+     * @covers \ZfcUser\Controller\LoginController::setLoginService
+     */
+    public function testGetRegisterService()
+    {
+        $controller = $this->getController('ZfcUser\Controller\LoginController');
+        $this->assertInstanceOf('ZfcUser\Service\LoginService', $controller->getLoginService());
     }
 
     protected function getMockService()
