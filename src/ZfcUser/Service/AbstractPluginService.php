@@ -46,11 +46,13 @@ abstract class AbstractPluginService
         $allowed    = $this->allowedPluginInterfaces;
 
         if (!empty($allowed) && 0 === count(array_intersect($implements, $allowed))) {
-            throw new Exception\InvalidPluginException(sprintf(
-                'Attempted to register invalid plugin %s, allowed: %s',
-                get_class($plugin),
-                implode(' ', $allowed)
-            ));
+            throw new Exception\InvalidPluginException(
+                sprintf(
+                    'Attempted to register invalid plugin %s, allowed: %s',
+                    get_class($plugin),
+                    implode(' ', $allowed)
+                )
+            );
         }
 
         $this->getEventManager()->attach($plugin);
