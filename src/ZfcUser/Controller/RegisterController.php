@@ -22,7 +22,7 @@ class RegisterController extends AbstractActionController
             return $this->redirect()->toRoute('zfc_user');
         }
         $prg  = $this->prg();
-        $form = $this->getRegisterService()->getForm();
+        $form = $this->getRegisterService()->getRegisterForm();
 
         if ($prg instanceof Response) {
             return $prg;

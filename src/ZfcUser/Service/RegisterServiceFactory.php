@@ -17,11 +17,7 @@ class RegisterServiceFactory extends AbstractServiceFactory
     {
         /** @var \ZfcUser\Options\ModuleOptions $options */
         $options = $serviceLocator->get('ZfcUser\Options\ModuleOptions');
-
-        /** @var \ZfcUser\Form\RegisterForm $form */
-        $form = $serviceLocator->get('ZfcUser\Form\RegisterForm');
-
-        $service = new RegisterService($form, $options);
+        $service = new RegisterService($options);
 
         foreach ($options->getRegisterPlugins() as $plugin) {
             $service->registerPlugin($this->get($serviceLocator, $plugin));

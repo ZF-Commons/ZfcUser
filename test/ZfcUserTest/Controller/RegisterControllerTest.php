@@ -131,13 +131,11 @@ class RegisterControllerTest extends AbstractControllerTestCase
             'ZfcUser\Service\RegisterService',
             array(),
             array(
-                new RegisterForm(),
                 new ModuleOptions()
             )
         );
 
         $controller->setRegisterService($service);
-
         return $service;
     }
 }

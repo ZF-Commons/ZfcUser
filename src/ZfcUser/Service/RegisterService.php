@@ -2,17 +2,17 @@
 
 namespace ZfcUser\Service;
 
-use Zend\Form\FormInterface;
 use ZfcUser\Entity\UserInterface;
+use ZfcUser\Form\RegisterForm;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Service\Exception;
 
 class RegisterService extends AbstractPluginService
 {
     /**
-     * @var \Zend\Form\FormInterface
+     * @var RegisterForm
      */
-    protected $form;
+    protected $registerForm;
 
     /**
      * @var ModuleOptions
@@ -32,14 +32,10 @@ class RegisterService extends AbstractPluginService
     );
 
     /**
-     * @param FormInterface $form
      * @param ModuleOptions $options
      */
-    public function __construct(
-        FormInterface $form,
-        ModuleOptions $options
-    ) {
-        $this->form    = $form;
+    public function __construct(ModuleOptions $options)
+    {
         $this->options = $options;
     }
 
@@ -53,30 +49,47 @@ class RegisterService extends AbstractPluginService
      */
     public function register(array $data)
     {
-        $this->form->bind(clone $this->getUserPrototype());
-        $this->form->setData($data);
+        $form = $this->getRegisterForm();
 
-        if (!$this->form->isValid()) {
+        $form->bind(clone $this->getUserPrototype());
+        $form->setData($data);
+
+        if (!$form->isValid()) {
             return null;
         }
 
-        $user = $this->form->getData();
+        $user = $form->getData();
 
         if (!$user instanceof UserInterface) {
             throw new Exception\InvalidUserException(
-                'User must be an instance of ZfcUser\Entity\UserInterface'
+                'user must be an instance of ZfcUser\Entity\UserInterface'
             );
         }
 
-        return $this->getEventManager()->trigger(__FUNCTION__, $user)->last();
+        $this->getEventManager()->trigger(__FUNCTION__, $user);
+
+        return $user;
     }
 
     /**
-     * @return \Zend\Form\FormInterface
+     * @param \ZfcUser\Form\RegisterForm $registerForm
+     * @return RegisterService
      */
-    public function getForm()
+    public function setRegisterForm(RegisterForm $registerForm)
     {
-        return $this->form;
+        $this->registerForm = $registerForm;
+        return $this;
+    }
+
+    /**
+     * @return \ZfcUser\Form\RegisterForm
+     */
+    public function getRegisterForm()
+    {
+        if (!$this->registerForm) {
+            $this->setRegisterForm(new RegisterForm());
+        }
+        return $this->registerForm;
     }
 
     /**
@@ -96,6 +109,11 @@ class RegisterService extends AbstractPluginService
                 );
             }
             $this->userPrototype = new $userClass();
+            if (!$this->userPrototype instanceof UserInterface) {
+                throw new Exception\InvalidUserException(
+                    'user must be an instance of ZfcUser\Entity\UserInterface'
+                );
+            }
         }
         return $this->userPrototype;
     }
