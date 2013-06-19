@@ -119,14 +119,7 @@ class LoginControllerTest extends AbstractControllerTestCase
     {
         /** @var \ZfcUser\Controller\LoginController $controller */
         $controller   = $this->getController('ZfcUser\Controller\LoginController');
-        $loginService = $this->getMock(
-            'ZfcUser\Service\LoginService',
-            array(),
-            array(
-                new LoginForm(),
-                new ModuleOptions()
-            )
-        );
+        $loginService = $this->getMock('ZfcUser\Service\LoginService');
 
         $controller->setLoginService($loginService);
 

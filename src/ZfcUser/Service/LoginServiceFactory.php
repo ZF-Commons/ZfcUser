@@ -17,18 +17,13 @@ class LoginServiceFactory extends AbstractServiceFactory
     {
         /** @var \ZfcUser\Options\ModuleOptions $options */
         $options = $serviceLocator->get('ZfcUser\Options\ModuleOptions');
-
-        /** @var \ZfcUser\Form\LoginForm $form */
-        $form = $serviceLocator->get('ZfcUser\Form\LoginForm');
-
-        $service = new LoginService($form, $options);
+        $service = new LoginService();
 
         foreach ($options->getLoginPlugins() as $plugin) {
             $service->registerPlugin($this->get($serviceLocator, $plugin));
         }
 
         $chain = $service->getAdapterChain();
-
         foreach ($options->getLoginAdapters() as $priority => $adapter) {
             $chain->addAdapter($this->get($serviceLocator, $adapter), $priority);
         }

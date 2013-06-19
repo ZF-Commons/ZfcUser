@@ -3,9 +3,10 @@
 namespace ZfcUser\Service;
 
 use ZfcUser\Authentication\AdapterChain;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\Form\LoginForm;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\FormInterface;
+use ZfcUser\Plugin\LoginPluginInterface;
 
 class LoginService extends AbstractPluginService
 {
@@ -25,11 +26,6 @@ class LoginService extends AbstractPluginService
     protected $loginForm;
 
     /**
-     * @var ModuleOptions
-     */
-    protected $options;
-
-    /**
      * @var array
      */
     protected $allowedPluginInterfaces = array(
@@ -37,25 +33,13 @@ class LoginService extends AbstractPluginService
     );
 
     /**
-     * @param FormInterface $loginForm
-     * @param \ZfcUser\Options\ModuleOptions $options
-     */
-    public function __construct(
-        FormInterface $loginForm,
-        ModuleOptions $options
-    ) {
-        $this->loginForm = $loginForm;
-        $this->options   = $options;
-    }
-
-    /**
      * Logs a user in with the given identity and credential. Takes an array of parameters
      * which gets passed directly to the pre and post login events. It's up to each adapter
      * to ignore the auth attempt if the parameters they are expecting aren't available.
      *
      * @param array $data
-     * @triggers pre.login
-     * @triggers post.login
+     * @triggers LoginPluginInterface::EVENT_PRE_LOGIN
+     * @triggers LoginPluginInterface::EVENT_POST_LOGIN
      * @return \Zend\Authentication\Result
      */
     public function login(array $data)
@@ -76,8 +60,8 @@ class LoginService extends AbstractPluginService
     /**
      * Clear authenticated identity.
      *
-     * @triggers pre.logout
-     * @triggers post.logout
+     * @triggers LoginPluginInterface::EVENT_PRE_LOGOUT
+     * @triggers LoginPluginInterface::EVENT_POST_LOGOUT
      */
     public function logout()
     {
@@ -104,7 +88,7 @@ class LoginService extends AbstractPluginService
     public function getAdapterChain()
     {
         if (!$this->adapterChain instanceof AdapterChain) {
-            $this->adapterChain = new AdapterChain();
+            $this->setAdapterChain(new AdapterChain());
         }
         return $this->adapterChain;
     }
@@ -125,19 +109,33 @@ class LoginService extends AbstractPluginService
     public function getAuthenticationService()
     {
         if (!$this->authenticationService instanceof AuthenticationService) {
-            $this->authenticationService = new AuthenticationService();
+            $this->setAuthenticationService(new AuthenticationService());
         }
         return $this->authenticationService;
     }
 
     /**
+     * @throws Exception\UnexpectedValueException
      * @return \Zend\Form\FormInterface
      */
     public function getLoginForm()
     {
-        $form    = $this->loginForm;
-        $results = $this->getEventManager()->trigger(__FUNCTION__, $form);
+        if (!$this->loginForm) {
+            $this->setLoginForm(new LoginForm());
+        }
 
-        return $results->last() ? $results->last() : $form;
+        return $this->loginForm;
+    }
+
+    /**
+     * @param LoginForm $loginForm
+     * @triggers LoginPluginInterface::EVENT_PREPARE_FORM
+     * @return $this
+     */
+    public function setLoginForm(LoginForm $loginForm)
+    {
+        $this->getEventManager()->trigger(LoginPluginInterface::EVENT_PREPARE_FORM, $loginForm);
+        $this->loginForm = $loginForm;
+        return $this;
     }
 }
