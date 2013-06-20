@@ -1,9 +1,11 @@
 <h1>Register for an account</h1>
 
-<form method="post" action="<?php echo $this->url('zfc_user/register') ?>">
-    <?php $form->prepare(); ?>
-
-    <?php foreach ($form->getElements() as $element) : ?>
-        <?php echo $this->formRow($element); ?>
-    <?php endforeach; ?>
-</form>
+<?php
+$action = $this->url('zfc_user/register');
+echo $this->partial(
+    'zfc-user/partial/form',
+    array(
+        'form'   => $form,
+        'action' => $action
+    )
+);

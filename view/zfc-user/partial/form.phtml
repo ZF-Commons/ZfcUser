@@ -1,0 +1,7 @@
+<form method="post" action="<?php echo $action;?>">
+    <?php $form->prepare(); ?>
+
+    <?php foreach ($form->getElements() as $element) : ?>
+        <?php echo $this->formRow($element); ?>
+    <?php endforeach; ?>
+</form>
