@@ -11,8 +11,8 @@ return array(
     'view_manager' => array(
         'template_map' => array(
             'zfc-user/user/index'    => __DIR__ . '/../view/zfc-user/user/index.phtml',
-            'zfc-user/user/login'    => __DIR__ . '/../view/zfc-user/user/login.phtml',
-            'zfc-user/user/register' => __DIR__ . '/../view/zfc-user/user/register.phtml',
+            'zfc-user/login/login'    => __DIR__ . '/../view/zfc-user/login/login.phtml',
+            'zfc-user/register/register' => __DIR__ . '/../view/zfc-user/register/register.phtml',
         )
     )
 );

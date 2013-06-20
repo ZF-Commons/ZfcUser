@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Service;
 
+use Zend\Stdlib\Hydrator\ClassMethods;
 use ZfcUser\Entity\UserInterface;
 use ZfcUser\Form\RegisterForm;
 use ZfcUser\Options\ModuleOptions;
@@ -88,6 +89,7 @@ class RegisterService extends AbstractPluginService
     {
         if (!$this->registerForm) {
             $this->setRegisterForm(new RegisterForm());
+            $this->registerForm->setHydrator(new ClassMethods());
         }
         return $this->registerForm;
     }
