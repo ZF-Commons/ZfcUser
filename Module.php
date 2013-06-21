@@ -72,6 +72,23 @@ class Module implements
                     $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
                     return $viewHelper;
                 },
+                'zfcUserRegisterWidget' => function ($sm) {
+                	$locator = $sm->getServiceLocator();
+                	$viewHelper = new View\Helper\ZfcUserRegisterWidget;
+                	$viewHelper->setEnableRegistration($locator->get('zfcuser_module_options')->getEnableRegistration());
+                	$viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserRegisterWidgetViewTemplate());
+                	$viewHelper->setRegisterForm($locator->get('zfcuser_register_form'));
+                	return $viewHelper;
+                },
+                'zfcUserRegisterLoginWidget' => function ($sm) {
+                	$locator = $sm->getServiceLocator();
+                	$viewHelper = new View\Helper\ZfcUserRegisterLoginWidget;
+                	$viewHelper->setEnableRegistration($locator->get('zfcuser_module_options')->getEnableRegistration());
+                	$viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserRegisterLoginWidgetViewTemplate());
+                	$viewHelper->setRegisterForm($locator->get('zfcuser_register_form'));
+                	$viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
+                	return $viewHelper;
+                },
             ),
         );
 

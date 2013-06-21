@@ -77,6 +77,16 @@ class ModuleOptions extends AbstractOptions implements
      * @var string
      */
     protected $userLoginWidgetViewTemplate = 'zfc-user/user/login.phtml';
+    
+    /**
+     * @var string
+     */
+    protected $userRegisterWidgetViewTemplate = 'zfc-user/user/register.phtml';
+    
+    /**
+     * @var string
+     */
+    protected $userRegisterLoginWidgetViewTemplate = 'zfc-user/user/registerlogin.phtml';
 
     /**
      * @var bool
@@ -208,7 +218,53 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->userLoginWidgetViewTemplate;
     }
+    
+    /**
+     * set the view template for the user Register widget
+     *
+     * @param string $userRegisterWidgetViewTemplate
+     * @return ModuleOptions
+     */
+    public function setUserRegisterWidgetViewTemplate($userRegisterWidgetViewTemplate)
+    {
+    	$this->userRegisterWidgetViewTemplate = $userRegisterWidgetViewTemplate;
+    	return $this;
+    }
+    
+    /**
+     * get the view template for the user Register widget
+     *
+     * @return string
+     */
+    public function getUserRegisterWidgetViewTemplate()
+    {
+    	return $this->userRegisterWidgetViewTemplate;
+    }
 
+
+    /**
+     * set the view template for the user register and login widget
+     *
+     * @param string $userRegisterLoginWidgetViewTemplate
+     * @return ModuleOptions
+     */
+    public function setUserRegisterLoginWidgetViewTemplate($userRegisterLoginWidgetViewTemplate)
+    {
+    	$this->userRegisterLoginWidgetViewTemplate = $userRegisterLoginWidgetViewTemplate;
+    	return $this;
+    }
+    
+    /**
+     * get the view template for the user register and login widget
+     *
+     * @return string
+     */
+    public function getUserRegisterLoginWidgetViewTemplate()
+    {
+    	return $this->userRegisterLoginWidgetViewTemplate;
+    }
+    
+    
     /**
      * set enable user registration
      *
