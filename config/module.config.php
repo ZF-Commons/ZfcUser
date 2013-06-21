@@ -72,7 +72,7 @@ return array(
                     'changepassword' => array(
                         'type' => 'Literal',
                         'options' => array(
-                            'route' => '/change-password',
+                            'route' => '/changepassword',
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'changepassword',
@@ -82,7 +82,7 @@ return array(
                     'changeemail' => array(
                         'type' => 'Literal',
                         'options' => array(
-                            'route' => '/change-email',
+                            'route' => '/changeemail',
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action' => 'changeemail',
