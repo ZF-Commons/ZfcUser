@@ -22,6 +22,7 @@ take advantage of other methods of persisting users:
 
 - [ZfcUserDoctrineORM](https://github.com/ZF-Commons/ZfcUserDoctrineORM) - Doctrine2 ORM
 - [ZfcUserDoctrineMongoODM](https://github.com/ZF-Commons/ZfcUserDoctrineMongoODM) - Doctrine2 MongoDB ODM
+- [ZfcUserDoctrineCouchODM](https://github.com/phaikawl/ZfcUserDoctrineCouchODM) - Doctrine2 CouchDB ODM
 
 Requirements
 ------------
@@ -97,6 +98,9 @@ Coming soon...
 ### Post-Install: Doctrine2 MongoDB ODM
 
 Coming soon...
+
+### Post-Install: Doctrine2 CouchDB ODM
+Read the README of [ZfcUserDoctrineCouchODM](https://github.com/phaikawl/ZfcUserDoctrineCouchODM)
 
 ### Post-Install: Zend\Db
 
