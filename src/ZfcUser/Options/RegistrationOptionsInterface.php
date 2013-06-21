@@ -49,6 +49,20 @@ interface RegistrationOptionsInterface
     public function getEnableUsername();
 
     /**
+     * Do we ask user to validate password on register?
+     *
+     * @return bool
+     */
+    public function getRegisterVerifyPassword();
+
+    /**
+     * Do we ask user to validate password on register?
+     *
+     * @param bool $verifyPassword
+     */
+    public function setRegisterVerifyPassword($verifyPassword = true);
+
+    /**
      * set user form timeout in seconds
      *
      * @param int $userFormTimeout

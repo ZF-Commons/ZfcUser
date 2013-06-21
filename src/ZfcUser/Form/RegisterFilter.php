@@ -81,25 +81,27 @@ class RegisterFilter extends ProvidesEventsInputFilter
             ),
         ));
 
-        $this->add(array(
-            'name'       => 'passwordVerify',
-            'required'   => true,
-            'filters'    => array(array('name' => 'StringTrim')),
-            'validators' => array(
-                array(
-                    'name'    => 'StringLength',
-                    'options' => array(
-                        'min' => 6,
+        if ($this->getOptions()->getRegisterVerifyPassword()) {
+            $this->add(array(
+                'name'       => 'passwordVerify',
+                'required'   => true,
+                'filters'    => array(array('name' => 'StringTrim')),
+                'validators' => array(
+                    array(
+                        'name'    => 'StringLength',
+                        'options' => array(
+                            'min' => 6,
+                        ),
+                    ),
+                    array(
+                        'name'    => 'Identical',
+                        'options' => array(
+                            'token' => 'password',
+                        ),
                     ),
                 ),
-                array(
-                    'name'    => 'Identical',
-                    'options' => array(
-                        'token' => 'password',
-                    ),
-                ),
-            ),
-        ));
+            ));
+        }
 
         $this->getEventManager()->trigger('init', $this);
     }

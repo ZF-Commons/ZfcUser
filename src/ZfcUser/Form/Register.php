@@ -24,6 +24,9 @@ class Register extends Base
         parent::__construct($name);
 
         $this->remove('userId');
+        if (!$this->getRegistrationOptions()->getRegisterVerifyPassword()) {
+            $this->remove('passwordVerify');
+        }
         if (!$this->getRegistrationOptions()->getEnableUsername()) {
             $this->remove('username');
         }
