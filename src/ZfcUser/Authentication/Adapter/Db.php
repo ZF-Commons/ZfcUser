@@ -57,21 +57,8 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         $identity   = $e->getRequest()->getPost()->get('identity');
         $credential = $e->getRequest()->getPost()->get('credential');
         $credential = $this->preProcessCredential($credential);
-        $userObject = NULL;
 
-        // Cycle through the configured identity sources and test each
-        $fields = $this->getOptions()->getAuthIdentityFields();
-        while ( !is_object($userObject) && count($fields) > 0 ) {
-            $mode = array_shift($fields);
-            switch ($mode) {
-                case 'username':
-                    $userObject = $this->getMapper()->findByUsername($identity);
-                    break;
-                case 'email':
-                    $userObject = $this->getMapper()->findByEmail($identity);
-                    break;
-            }
-        }
+        $userObject = $this->getMapper()->findByIdentity($identity);
 
         if (!$userObject) {
             $e->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND)

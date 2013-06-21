@@ -8,6 +8,8 @@ interface UserInterface
 
     public function findByUsername($username);
 
+    public function findByIdentity($identity);
+
     public function findById($id);
 
     public function insert($user);
