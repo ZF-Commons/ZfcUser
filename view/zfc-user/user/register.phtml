@@ -14,7 +14,7 @@ $form->setAttribute('method', 'post');
 <?php echo $this->form()->openTag($form) ?>
     <dl class="zend_form">
     <?php foreach ($form as $element): ?>
-        <?php if (!$element instanceof Zend\Form\Element\Button): ?>
+        <?php if (!$element instanceof Zend\Form\Element\Button && !$element instanceof Zend\Form\Element\Csrf): ?>
             <dt><?php echo $this->formLabel($element) ?></dt>
         <?php endif ?>
         <?php if ($element instanceof Zend\Form\Element\Button): ?>
