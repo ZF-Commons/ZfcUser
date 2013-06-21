@@ -65,6 +65,18 @@ class Module implements
                     $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
                     return $viewHelper;
                 },
+                'zfcUserImpersonatorDisplayName' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\ZfcUserImpersonatorDisplayName;
+                    $viewHelper->setUserService($locator->get('zfcuser_user_service'));
+                    return $viewHelper;
+                },
+                'zfcUserImpersonatorIdentity' => function ($sm) {
+                    $locator = $sm->getServiceLocator();
+                    $viewHelper = new View\Helper\ZfcUserImpersonatorIdentity;
+                    $viewHelper->setUserService($locator->get('zfcuser_user_service'));
+                    return $viewHelper;
+                },
                 'zfcUserLoginWidget' => function ($sm) {
                     $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserLoginWidget;

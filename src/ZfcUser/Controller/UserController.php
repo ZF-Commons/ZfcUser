@@ -107,6 +107,10 @@ class UserController extends AbstractActionController
      */
     public function logoutAction()
     {
+        // If the current user is being impersonated, the logout action must
+        // also end impersonation by clearing the impersonator (real user).
+        $this->getUserService()->getStorageForImpersonator()->clear();
+
         $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
