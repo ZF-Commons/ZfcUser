@@ -6,14 +6,21 @@ use ZfcBase\Mapper\AbstractDbMapper;
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
-class User extends AbstractDbMapper implements UserInterface
+class User
+    extends AbstractDbMapper
+    implements UserInterface
 {
     protected $tableName  = 'user';
+    protected $fieldNames = array(
+        'id'=>'user_id',
+        'email'=>'email',
+        'username'=>'username'
+    );
 
     public function findByEmail($email)
     {
         $select = $this->getSelect()
-                       ->where(array('email' => $email));
+                       ->where(array($this->fieldNames['email'] => $email));
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
@@ -23,7 +30,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function findByUsername($username)
     {
         $select = $this->getSelect()
-                       ->where(array('username' => $username));
+                       ->where(array($this->fieldNames['username'] => $username));
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
@@ -33,7 +40,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function findById($id)
     {
         $select = $this->getSelect()
-                       ->where(array('user_id' => $id));
+                       ->where(array($this->fieldNames['id'] => $id));
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
@@ -58,7 +65,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function update($entity, $where = null, $tableName = null, HydratorInterface $hydrator = null)
     {
         if (!$where) {
-            $where = 'user_id = ' . $entity->getId();
+            $where = array($this->fieldNames['id'] => $entity->getId() );
         }
 
         return parent::update($entity, $where, $tableName, $hydrator);
