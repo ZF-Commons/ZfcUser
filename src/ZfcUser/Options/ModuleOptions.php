@@ -76,6 +76,16 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var string
      */
+    protected $userMapperClass = 'ZfcUser\Mapper\User';
+
+    /**
+     * @var string
+     */
+    protected $userHydratorClass = 'ZfcUser\Mapper\UserHydrator';
+
+    /**
+     * @var string
+     */
     protected $userLoginWidgetViewTemplate = 'zfc-user/user/login.phtml';
 
     /**
@@ -493,6 +503,50 @@ class ModuleOptions extends AbstractOptions implements
     public function getUserEntityClass()
     {
         return $this->userEntityClass;
+    }
+
+    /**
+     * set user mapper class name
+     *
+     * @param string $userMapperClass
+     * @return ModuleOptions
+     */
+    public function setUserMapperClass($userMapperClass)
+    {
+        $this->userMapperClass = $userMapperClass;
+        return $this;
+    }
+
+    /**
+     * get user mapper class name
+     *
+     * @return string
+     */
+    public function getUserMapperClass()
+    {
+        return $this->userMapperClass;
+    }
+
+    /**
+     * set user hydrator class name
+     *
+     * @param string $userHydratorClass
+     * @return ModuleOptions
+     */
+    public function setUserHydratorClass($userHydratorClass)
+    {
+        $this->userHydratorClass = $userHydratorClass;
+        return $this;
+    }
+
+    /**
+     * get user hydrator class name
+     *
+     * @return string
+     */
+    public function getUserHydratorClass()
+    {
+        return $this->userHydratorClass;
     }
 
     /**

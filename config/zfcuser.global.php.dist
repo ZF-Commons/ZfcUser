@@ -24,6 +24,22 @@ $settings = array(
     //'user_entity_class' => 'ZfcUser\Entity\User',
 
     /**
+     * User Model Mapper Class
+     *
+     * Name of Mapper class to use. Useful for using your own mapper class
+     * instead of the default one provided. Default is ZfcUser\Mapper\User.
+     */
+    //'user_mapper_class' => 'ZfcUser\Mapper\User',
+
+    /**
+     * User Model Hydrator Class
+     *
+     * Name of Hydrator class to use. Useful for using your own hydrator class
+     * instead of the default one provided. Default is ZfcUser\Mapper\UserHydrator.
+     */
+    //'user_hydrator_class' => 'ZfcUser\Mapper\UserHydrator',
+
+    /**
      * Enable registration
      *
      * Allows users to register through the website.
