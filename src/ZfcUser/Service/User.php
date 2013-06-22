@@ -308,7 +308,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * @param Hydrator\ClassMethods $formHydrator
      * @return User
      */
-    public function setFormHydrator(Hydrator\ClassMethods $formHydrator)
+    public function setFormHydrator(Hydrator\AbstractHydrator $formHydrator)
     {
         $this->formHydrator = $formHydrator;
         return $this;
