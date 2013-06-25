@@ -139,7 +139,7 @@ class Module implements
 
                 'zfcuser_change_email_form' => function($sm) {
                     $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangeEmail(null, $sm->get('zfcuser_module_options'));
+                    $form = new Form\ChangeEmail(null, $options);
                     $form->setInputFilter(new Form\ChangeEmailFilter(
                         $options,
                         new Validator\NoRecordExists(array(
