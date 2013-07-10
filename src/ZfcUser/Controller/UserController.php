@@ -168,7 +168,7 @@ class UserController extends AbstractActionController
 
         $redirect = $this->redirectCallback;
 
-        return $redirect();
+        return $this->redirect()->toRoute($route);
     }
 
     /**
