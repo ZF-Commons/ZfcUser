@@ -1,20 +1,20 @@
 <?php
 
-namespace ZfcUser\Form;
+namespace ZfcUser\Extension;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class RegisterHydratorFactory implements FactoryInterface
+class AuthenticationFactory implements FactoryInterface
 {
     /**
      * Create service
      *
      * @param ServiceLocatorInterface $serviceLocator
-     * @return RegisterHydrator
+     * @return Authentication
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new RegisterHydrator($serviceLocator->get('ZfcUser\Form\PasswordStrategy'));
+        return new Authentication($serviceLocator->get('Zend\Authentication\AuthenticationService'));
     }
 }

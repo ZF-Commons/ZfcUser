@@ -4,7 +4,7 @@ namespace ZfcUserTest\Form;
 
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Form\PasswordStrategyFactory;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 
 class PasswordStrategyFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -14,7 +14,7 @@ class PasswordStrategyFactoryTest extends \PHPUnit_Framework_TestCase
     public function testInstanceReturned()
     {
         $sm = new ServiceManager();
-        $sm->setService('ZfcUser\Options\ModuleOptions', new ModuleOptions());
+        $sm->setService('ZfcUser\ModuleOptions', new ModuleOptions());
 
         $factory  = new PasswordStrategyFactory();
         $strategy = $factory->createService($sm);

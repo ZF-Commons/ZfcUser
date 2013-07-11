@@ -5,7 +5,7 @@ namespace ZfcUserTest\Service;
 use ArrayObject;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use ZfcUser\Form\RegisterForm;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 use ZfcUser\Service\RegisterService;
 use ZfcUserTest\Asset\User;
 

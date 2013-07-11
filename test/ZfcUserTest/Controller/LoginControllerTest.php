@@ -3,7 +3,7 @@
 namespace ZfcUserTest\Controller;
 
 use ZfcUser\Form\LoginForm;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 use ZfcUserTest\Asset\User;
 use Zend\Authentication\Result;
 use Zend\Http\Response;

@@ -5,7 +5,7 @@ namespace ZfcUserTest\Form;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use ZfcUser\Form\RegisterFormFactory;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 
 class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,7 +25,7 @@ class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
         $this->sm      = new ServiceManager();
         $this->factory = new RegisterFormFactory();
 
-        $this->sm->setService('ZfcUser\Options\ModuleOptions', new ModuleOptions());
+        $this->sm->setService('ZfcUser\ModuleOptions', new ModuleOptions());
     }
 
     /**
@@ -33,7 +33,7 @@ class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testStringHydrator()
     {
-        $this->sm->get('ZfcUser\Options\ModuleOptions')->setRegisterHydrator('Zend\Stdlib\Hydrator\ClassMethods');
+        $this->sm->get('ZfcUser\ModuleOptions')->setRegisterHydrator('Zend\Stdlib\Hydrator\ClassMethods');
 
         $form = $this->factory->createService($this->sm);
         $this->assertInstanceOf('ZfcUser\Form\RegisterForm', $form);
@@ -45,7 +45,7 @@ class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
     public function testSmHydrator()
     {
         $this->sm->setService('FooBar', new ClassMethods());
-        $this->sm->get('ZfcUser\Options\ModuleOptions')->setRegisterHydrator('FooBar');
+        $this->sm->get('ZfcUser\ModuleOptions')->setRegisterHydrator('FooBar');
 
         $form = $this->factory->createService($this->sm);
         $this->assertInstanceOf('ZfcUser\Form\RegisterForm', $form);

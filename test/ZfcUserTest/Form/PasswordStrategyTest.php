@@ -4,7 +4,7 @@ namespace ZfcUserTest\Form;
 
 use Zend\Crypt\Password\Bcrypt;
 use ZfcUser\Form\PasswordStrategy;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 
 class PasswordStrategyTest extends \PHPUnit_Framework_TestCase
 {

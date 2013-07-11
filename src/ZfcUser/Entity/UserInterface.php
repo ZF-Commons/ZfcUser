@@ -2,32 +2,8 @@
 
 namespace ZfcUser\Entity;
 
-use DateTime;
-
 interface UserInterface
 {
-    /**
-     * @param string $displayName
-     * @return UserInterface
-     */
-    public function setDisplayName($displayName);
-
-    /**
-     * @return string
-     */
-    public function getDisplayName();
-
-    /**
-     * @param string $email
-     * @return UserInterface
-     */
-    public function setEmail($email);
-
-    /**
-     * @return string
-     */
-    public function getEmail();
-
     /**
      * @param int $id
      * @return UserInterface
@@ -40,26 +16,15 @@ interface UserInterface
     public function getId();
 
     /**
-     * @param Datetime $joinDate
+     * @param string $email
      * @return UserInterface
      */
-    public function setJoinDate(DateTime $joinDate);
+    public function setEmail($email);
 
     /**
-     * @return Datetime
+     * @return string
      */
-    public function getJoinDate();
-
-    /**
-     * @param Datetime $loginDate
-     * @return UserInterface
-     */
-    public function setLoginDate(DateTime $loginDate);
-
-    /**
-     * @return Datetime
-     */
-    public function getLoginDate();
+    public function getEmail();
 
     /**
      * @param string $password

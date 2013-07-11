@@ -2,17 +2,11 @@
 
 namespace ZfcUser\Controller;
 
-use ZfcUser\Service\RegisterService;
 use Zend\Http\Response;
 use Zend\Mvc\Controller\AbstractActionController;
 
 class RegisterController extends AbstractActionController
 {
-    /**
-     * @var RegisterService
-     */
-    protected $registerService;
-
     /**
      * @return array|Response
      */
@@ -22,12 +16,12 @@ class RegisterController extends AbstractActionController
             return $this->redirect()->toRoute('zfc_user');
         }
         $prg  = $this->prg();
-        $form = $this->getRegisterService()->getRegisterForm();
+        $form = $this->getRegisterExtension()->getForm();
 
         if ($prg instanceof Response) {
             return $prg;
         } elseif (false !== $prg) {
-            if ($this->getRegisterService()->register($prg)) {
+            if ($this->getRegisterExtension()->register($prg)) {
                 return $this->redirect()->toRoute('zfc_user');
             }
         }
@@ -36,23 +30,10 @@ class RegisterController extends AbstractActionController
     }
 
     /**
-     * @return RegisterService
+     * @return \ZfcUser\Extension\Register
      */
-    public function getRegisterService()
+    public function getRegisterExtension()
     {
-        if (!$this->registerService) {
-            $this->setRegisterService($this->getServiceLocator()->get('ZfcUser\Service\RegisterService'));
-        }
-        return $this->registerService;
-    }
-
-    /**
-     * @param RegisterService $registerService
-     * @return RegisterController
-     */
-    public function setRegisterService($registerService)
-    {
-        $this->registerService = $registerService;
-        return $this;
+        return $this->plugin('zfcUserExtension')->get('register');
     }
 }

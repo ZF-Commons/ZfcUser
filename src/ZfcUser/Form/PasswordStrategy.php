@@ -4,21 +4,19 @@ namespace ZfcUser\Form;
 
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Stdlib\Hydrator\Strategy\StrategyInterface;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\Extension\Password;
+use ZfcUser\Service\PasswordService;
 
 class PasswordStrategy implements StrategyInterface
 {
     /**
-     * @var ModuleOptions
+     * @var Password
      */
-    protected $options;
+    protected $passwordExtension;
 
-    /**
-     * @param ModuleOptions $options
-     */
-    public function __construct(ModuleOptions $options)
+    public function __construct(Password $passwordExtension)
     {
-        $this->options = $options;
+        $this->passwordExtension = $passwordExtension;
     }
 
     /**
@@ -34,10 +32,6 @@ class PasswordStrategy implements StrategyInterface
      */
     public function hydrate($value)
     {
-        $bcrypt = new Bcrypt();
-        $bcrypt->setCost($this->options->getPasswordCost());
-        $bcrypt->setSalt($this->options->getPasswordSalt());
-
-        return $bcrypt->create($value);
+        return $this->passwordExtension->crypt($value);
     }
 }

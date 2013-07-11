@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUser\Service\Exception;
+namespace ZfcUser\Extension\Exception;
 
 use ZfcUser\Exception;
 

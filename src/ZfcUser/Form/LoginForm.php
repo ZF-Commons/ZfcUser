@@ -17,7 +17,7 @@ class LoginForm extends Form implements InputFilterProviderInterface
 
         $this->add(array(
             'name' => 'email',
-            'type' => 'email',
+            'type' => 'text',
             'options' => array(
                 'label' => 'Email'
             )
@@ -51,11 +51,6 @@ class LoginForm extends Form implements InputFilterProviderInterface
         return array(
             'email' => array(
                 'required' => true,
-                'validators' => array(
-                    array(
-                        'name' => 'emailaddress'
-                    )
-                )
             ),
             'password' => array(
                 'required' => true

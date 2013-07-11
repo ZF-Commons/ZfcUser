@@ -13,5 +13,5 @@ interface ChainableAdapterInterface extends ListenerAggregateInterface
      * @param ChainEvent $e
      * @return void
      */
-    public function authenticate(ChainEvent $e);
+    public function onAuthenticate(ChainEvent $e);
 }

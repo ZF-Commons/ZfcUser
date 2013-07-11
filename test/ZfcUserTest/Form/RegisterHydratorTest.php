@@ -5,7 +5,7 @@ namespace ZfcUserTest\Form;
 use ArrayObject;
 use ZfcUser\Form\PasswordStrategy;
 use ZfcUser\Form\RegisterHydrator;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 use ZfcUserTest\Asset\Entity;
 
 class RegisterHydratorTest extends \PHPUnit_Framework_TestCase

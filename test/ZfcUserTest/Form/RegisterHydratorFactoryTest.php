@@ -6,7 +6,7 @@ use Zend\ServiceManager\ServiceManager;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use ZfcUser\Form\PasswordStrategy;
 use ZfcUser\Form\RegisterHydratorFactory;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 
 class RegisterHydratorFactoryTest extends \PHPUnit_Framework_TestCase
 {
@@ -27,7 +27,7 @@ class RegisterHydratorFactoryTest extends \PHPUnit_Framework_TestCase
         $this->factory = new RegisterHydratorFactory();
         $options       = new ModuleOptions();
 
-        $this->sm->setService('ZfcUser\Options\ModuleOptions', $options);
+        $this->sm->setService('ZfcUser\ModuleOptions', $options);
         $this->sm->setService('ZfcUser\Form\PasswordStrategy', new PasswordStrategy($options));
     }
 
@@ -37,7 +37,7 @@ class RegisterHydratorFactoryTest extends \PHPUnit_Framework_TestCase
     public function testSmHydrator()
     {
         $this->sm->setService('FooBar', new ClassMethods());
-        $this->sm->get('ZfcUser\Options\ModuleOptions')->setRegisterHydrator('FooBar');
+        $this->sm->get('ZfcUser\ModuleOptions')->setRegisterHydrator('FooBar');
 
         $form = $this->factory->createService($this->sm);
         $this->assertInstanceOf('ZfcUser\Form\RegisterHydrator', $form);

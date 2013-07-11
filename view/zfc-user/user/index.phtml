@@ -1,6 +1,1 @@
-<h1>
-    <?php
-    echo $this->identity()->getDisplayName() ?
-        $this->identity()->getDisplayName() : $this->identity()->getEmail()
-    ?>
-</h1>
+<h1><?php echo $this->identity()->getEmail() ?></h1>

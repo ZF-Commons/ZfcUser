@@ -3,7 +3,7 @@
 namespace ZfcUserTest\Controller;
 
 use ZfcUser\Form\RegisterForm;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 use ZfcUserTest\Asset\User;
 
 class RegisterControllerTest extends AbstractControllerTestCase

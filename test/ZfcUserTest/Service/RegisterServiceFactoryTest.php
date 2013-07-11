@@ -3,7 +3,7 @@
 namespace ZfcUserTest\Service;
 
 use Zend\ServiceManager\ServiceManager;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 use ZfcUser\Service\RegisterServiceFactory;
 use ZfcUserTest\Asset\RegisterListener;
 
@@ -28,7 +28,7 @@ class RegisterServiceFactoryTest extends \PHPUnit_Framework_TestCase
         $options->setRegisterPlugins(array(new RegisterListener()));
 
         $sm = new ServiceManager();
-        $sm->setService('ZfcUser\Options\ModuleOptions', $options);
+        $sm->setService('ZfcUser\ModuleOptions', $options);
 
         $instance = $this->factory->createService($sm);
 

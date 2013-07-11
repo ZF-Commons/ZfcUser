@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUser\Options;
+namespace ZfcUser;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;

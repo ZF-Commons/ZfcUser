@@ -3,7 +3,7 @@
 namespace ZfcUserTest\Service;
 
 use Zend\ServiceManager\ServiceManager;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 use ZfcUser\Service\LoginServiceFactory;
 use ZfcUserTest\Asset\ChainAdapter;
 use ZfcUserTest\Asset\LoginListener;
@@ -30,7 +30,7 @@ class LoginServiceFactoryTest extends \PHPUnit_Framework_TestCase
         $options->setLoginAdapters(array(new ChainAdapter()));
 
         $sm = new ServiceManager();
-        $sm->setService('ZfcUser\Options\ModuleOptions', $options);
+        $sm->setService('ZfcUser\ModuleOptions', $options);
 
         $instance = $this->factory->createService($sm);
 

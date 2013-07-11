@@ -3,7 +3,7 @@
 namespace ZfcUserTest\Service;
 
 use ZfcUser\Form\LoginForm;
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 use ZfcUser\Service\LoginService;
 use ZfcUserTest\Asset\LoginListener;
 

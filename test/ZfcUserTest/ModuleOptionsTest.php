@@ -2,7 +2,7 @@
 
 namespace ZfcUserTest\Options;
 
-use ZfcUser\Options\ModuleOptions;
+use ZfcUser\ModuleOptions;
 
 class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
 {
