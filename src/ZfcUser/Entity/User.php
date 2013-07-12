@@ -144,15 +144,6 @@ class User implements UserInterface
         return $this;
     }
 
-    public function setItemCountPerPage()
-    {
-        return null;
-    }
-
-    public function setCurrentPageNumber()
-    {
-        return null;
-    }
     /**
      * Get state.
      *
