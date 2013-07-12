@@ -30,6 +30,14 @@ class User extends AbstractDbMapper implements UserInterface
         return $entity;
     }
 
+    public function findAll()
+    {
+        $select = $this->getSelect();
+        $entities = $this->select($select);
+        $this->getEventManager()->trigger('find', $this, array('entity' => $entities));
+        return $entities;
+    }
+
     public function findById($id)
     {
         $select = $this->getSelect()
@@ -38,6 +46,11 @@ class User extends AbstractDbMapper implements UserInterface
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         return $entity;
+    }
+
+    public function remove()
+    {
+        return null;
     }
 
     public function getTableName(){

@@ -13,6 +13,7 @@ class Module implements
     ConfigProviderInterface,
     ServiceProviderInterface
 {
+
     public function getAutoloaderConfig()
     {
         return array(
