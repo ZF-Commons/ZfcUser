@@ -29,6 +29,31 @@ class ModuleOptions extends AbstractOptions implements
     protected $logoutRedirectRoute = 'zfcuser/login';
 
     /**
+     * @var string
+     */
+    protected $loginRoute = 'zfcuser/login';
+
+    /**
+     * @var string
+     */
+    protected $changePasswordRoute = 'zfcuser/changepassword';
+
+    /**
+     * @var string
+     */
+    protected $registerRoute = 'zfcuser/register';
+
+    /**
+     * @var string
+     */
+    protected $changeEmailRoute = 'zfcuser/changeemail';
+
+    /**
+     * @var string
+     */
+    protected $userControllerName = 'zfcuser';
+
+    /**
      * @var int
      */
     protected $loginFormTimeout = 300;
@@ -120,6 +145,96 @@ class ModuleOptions extends AbstractOptions implements
             'timeout'    => 300,
         ),
     );
+
+    /**
+     * @param string $changeEmailRoute
+     * @return ModuleOptions
+     */
+    public function setChangeEmailRoute($changeEmailRoute)
+    {
+        $this->changeEmailRoute = $changeEmailRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChangeEmailRoute()
+    {
+        return $this->changeEmailRoute;
+    }
+
+    /**
+     * @param string $changePasswordRoute
+     * @return ModuleOptions
+     */
+    public function setChangePasswordRoute($changePasswordRoute)
+    {
+        $this->changePasswordRoute = $changePasswordRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getChangePasswordRoute()
+    {
+        return $this->changePasswordRoute;
+    }
+
+    /**
+     * @param string $loginRoute
+     * @return ModuleOptions
+     */
+    public function setLoginRoute($loginRoute)
+    {
+        $this->loginRoute = $loginRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLoginRoute()
+    {
+        return $this->loginRoute;
+    }
+
+    /**
+     * @param string $registerRoute
+     * @return ModuleOptions
+     */
+    public function setRegisterRoute($registerRoute)
+    {
+        $this->registerRoute = $registerRoute;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRegisterRoute()
+    {
+        return $this->registerRoute;
+    }
+
+    /**
+     * @param string $userControllerName
+     * @return ModuleOptions
+     */
+    public function setUserControllerName($userControllerName)
+    {
+        $this->userControllerName = $userControllerName;
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUserControllerName()
+    {
+        return $this->userControllerName;
+    }
 
     /**
      * set login redirect route
