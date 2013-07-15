@@ -63,6 +63,15 @@ class Manager
     }
 
     /**
+     * @param string $name
+     * @return bool
+     */
+    public function has($name)
+    {
+        return isset($this->extensions[$name]);
+    }
+
+    /**
      * @param ExtensionInterface $extension
      * @return $this
      */
