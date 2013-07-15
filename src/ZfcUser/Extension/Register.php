@@ -3,6 +3,7 @@
 namespace ZfcUser\Extension;
 
 use Zend\Crypt\Password\Bcrypt;
+use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
 use Zend\Stdlib\Hydrator\HydratorInterface;
@@ -43,16 +44,16 @@ class Register extends AbstractExtension
      */
     public function attach(EventManagerInterface $events)
     {
-        $this->listeners[] = $events->attach(Event::EXTENSION_LOAD, array($this, 'onLoad'));
+        $this->listeners[] = $events->attach(Manager::EVENT_EXTENSION_LOAD, array($this, 'onLoad'));
     }
 
     /**
-     * @param Event $e
+     * @param EventInterface $e
      */
-    public function onLoad(Event $e)
+    public function onLoad(EventInterface $e)
     {
         /** @var \ZfcUser\Extension\Password $password */
-        $password = $e->getManager()->get('password');
+        $password = $this->getManager()->get('password');
 
         $hydrator = new ClassMethods();
         $hydrator->addStrategy('password', new PasswordStrategy($password));

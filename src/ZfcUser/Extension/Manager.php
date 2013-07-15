@@ -2,10 +2,13 @@
 
 namespace ZfcUser\Extension;
 
+use Zend\EventManager\Event;
 use Zend\EventManager\EventManager;
 
 class Manager
 {
+    const EVENT_EXTENSION_LOAD = 'manager.extension.load';
+
     /**
      * @var ExtensionInterface[]
      */
@@ -38,20 +41,17 @@ class Manager
             return $this;
         }
 
-        $this->eventManager->trigger(Event::EXTENSION_LOAD, $this->getEvent());
+        $this->eventManager->trigger(static::EVENT_EXTENSION_LOAD, $this->getEvent());
         $this->loaded = true;
         return $this;
     }
 
     /**
-     * @return \ZfcUser\Extension\Event
+     * @return Event
      */
     public function getEvent()
     {
-        $event = new Event();
-        $event->setManager($this);
-
-        return $event;
+        return new Event();
     }
 
     /**

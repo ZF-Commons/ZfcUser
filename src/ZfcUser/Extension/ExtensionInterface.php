@@ -13,6 +13,13 @@ interface ExtensionInterface extends ListenerAggregateInterface
     public function getName();
 
     /**
+     * @param string $name
+     * @throws Exception\InvalidOptionException on invalid option name
+     * @return mixed
+     */
+    public function getOption($name);
+
+    /**
      * @param array $options
      * @return $this
      */

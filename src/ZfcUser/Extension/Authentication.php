@@ -56,10 +56,11 @@ class Authentication extends AbstractExtension
      */
     public function login(array $data)
     {
-        $event = $this->getManager()->getEvent();
+        $manager = $this->getManager();
+        $event   = $manager->getEvent();
         $event->setParams($data);
 
-        $this->getManager()->getEventManager()->trigger(static::EVENT_LOGIN_PRE, $event);
+        $manager->getEventManager()->trigger(static::EVENT_LOGIN_PRE, $event);
 
         $authService = $this->getAuthenticationService();
         $adapter     = $this->getAdapterChain();
@@ -68,9 +69,24 @@ class Authentication extends AbstractExtension
         $result = $authService->authenticate($adapter);
 
         $event->setParams(array('result' => $result));
-        $this->getManager()->getEventManager()->trigger(static::EVENT_LOGIN_POST, $event);
+        $manager->getEventManager()->trigger(static::EVENT_LOGIN_POST, $event);
 
         return $result;
+    }
+
+    /**
+     * Logout the identity.
+     */
+    public function logout()
+    {
+        $manager = $this->getManager();
+        $event   = $manager->getEvent();
+
+        $manager->getEventManager()->trigger(static::EVENT_LOGOUT_PRE, $event);
+
+        $this->getAuthenticationService()->clearIdentity();
+
+        $manager->getEventManager()->trigger(static::EVENT_LOGOUT_POST, $event);
     }
 
     /**

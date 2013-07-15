@@ -25,9 +25,22 @@ abstract class AbstractExtension extends AbstractListenerAggregate implements Ex
     }
 
     /**
-     * @param array $options
-     * @throws Exception\InvalidOptionException
-     * @return $this
+     * {@inheritDoc}
+     */
+    public function getOption($name)
+    {
+        if (!isset($this->options[$name])) {
+            throw new Exception\InvalidOptionException(sprintf(
+                'Unknown option "%s" for extension "%s"',
+                $name,
+                $this->getName()
+            ));
+        }
+        return $this->options[$name];
+    }
+
+    /**
+     * {@inheritDoc}
      */
     public function setOptions(array $options)
     {
