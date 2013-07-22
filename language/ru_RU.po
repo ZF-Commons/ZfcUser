@@ -1,0 +1,143 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZfcUser\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-07-22 12:24+0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: eugenzor <eugenzor@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: ru_RU\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+""
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/changeemail.phtml:1
+#, php-format
+msgid "Change Email for %s"
+msgstr "Изменить email для %s"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/changeemail.phtml:3
+msgid "Email address changed successfully."
+msgstr "Email успешно изменен"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/changeemail.phtml:5
+msgid "Unable to update your email address. Please try again."
+msgstr "Не могу изменить email. Пожалуйста, попробуйте еще раз."
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/index.phtml:2
+msgid "Hello"
+msgstr "Привет"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/index.phtml:3
+msgid "Sign Out"
+msgstr "Выйти"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/register.phtml:1
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:19
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:19
+msgid "Register"
+msgstr "Регистрация"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/changepassword.phtml:1
+#, php-format
+msgid "Change Password for %s"
+msgstr "Изменить пароль для %s"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/changepassword.phtml:3
+msgid "Password changed successfully."
+msgstr "Пароль успешно изменен"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/changepassword.phtml:5
+msgid "Unable to update your password. Please try again."
+msgstr "Не могу изменить пароль. Пожалуйста, попробуйте еще раз."
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/login.phtml:1
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:18
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:18
+msgid "Sign In"
+msgstr "Вход"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/login.phtml:31
+msgid "Not registered?"
+msgstr "Зарегистрированы?"
+
+#: /home/www/reg.net/module/ZfcUser/view/zfc-user/user/login.phtml:31
+msgid "Sign up!"
+msgstr "Регистрация"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:6
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:6
+msgid "Username"
+msgstr "Логин"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:7
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:7
+msgid "Email"
+msgstr "Email"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:8
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:8
+msgid "New Email"
+msgstr "Новый email"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:9
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:9
+msgid "Verify New Email"
+msgstr "Подтвердите новый email"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:10
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:10
+msgid "Display Name"
+msgstr "Отображаемое имя"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:11
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:11
+msgid "Password"
+msgstr "Пароль"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:12
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:12
+msgid "Password Verify"
+msgstr "Подтверждение пароля"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:13
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:13
+msgid "Current Password"
+msgstr "Текущий пароль"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:14
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:14
+msgid "Verify New Password"
+msgstr "Подтверждение нового пароля"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:15
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:15
+msgid "New Password"
+msgstr "Новый пароль"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:16
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:16
+msgid "Please type the following text"
+msgstr "Пожалуйста, введите следующий текст"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:17
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:17
+msgid "Submit"
+msgstr "Отправить"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:20
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "Нет записей, соответствующих вашему запросу"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:21
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:21
+msgid "A record matching the input was found"
+msgstr "Найдена запись, соответствующая вашему запросу"
+
+#: /home/www/reg.net/module/ZfcUser/src/ZfcUser/language/msgIds.php:22
+#: /home/www/reg.net/module/ZfcUser/language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr "Ошибка авторизации. Пожалуйста, попробуйте еще раз."
+
