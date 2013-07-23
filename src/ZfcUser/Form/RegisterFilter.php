@@ -112,6 +112,7 @@ class RegisterFilter extends ProvidesEventsInputFilter
     public function setEmailValidator($emailValidator)
     {
         $this->emailValidator = $emailValidator;
+
         return $this;
     }
 
@@ -123,6 +124,7 @@ class RegisterFilter extends ProvidesEventsInputFilter
     public function setUsernameValidator($usernameValidator)
     {
         $this->usernameValidator = $usernameValidator;
+
         return $this;
     }
 

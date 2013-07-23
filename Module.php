@@ -43,6 +43,7 @@ class Module implements
                     $controllerPlugin = new Controller\Plugin\ZfcUserAuthentication;
                     $controllerPlugin->setAuthService($authService);
                     $controllerPlugin->setAuthAdapter($authAdapter);
+
                     return $controllerPlugin;
                 },
             ),
@@ -57,12 +58,14 @@ class Module implements
                     $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserDisplayName;
                     $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
+
                     return $viewHelper;
                 },
                 'zfcUserIdentity' => function ($sm) {
                     $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserIdentity;
                     $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
+
                     return $viewHelper;
                 },
                 'zfcUserLoginWidget' => function ($sm) {
@@ -70,6 +73,7 @@ class Module implements
                     $viewHelper = new View\Helper\ZfcUserLoginWidget;
                     $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
                     $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
+
                     return $viewHelper;
                 },
             ),
@@ -91,6 +95,7 @@ class Module implements
 
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
+
                     return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
                 },
                 // We alias this one because it's ZfcUser's instance of
@@ -109,6 +114,7 @@ class Module implements
                     $options = $sm->get('zfcuser_module_options');
                     $form = new Form\Login(null, $options);
                     $form->setInputFilter(new Form\LoginFilter($options));
+
                     return $form;
                 },
 
@@ -127,6 +133,7 @@ class Module implements
                         )),
                         $options
                     ));
+
                     return $form;
                 },
 
@@ -134,6 +141,7 @@ class Module implements
                     $options = $sm->get('zfcuser_module_options');
                     $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
                     $form->setInputFilter(new Form\ChangePasswordFilter($options));
+
                     return $form;
                 },
 
@@ -147,11 +155,13 @@ class Module implements
                             'key'    => 'email'
                         ))
                     ));
+
                     return $form;
                 },
 
                 'zfcuser_user_hydrator' => function ($sm) {
                     $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
+
                     return $hydrator;
                 },
 
@@ -163,6 +173,7 @@ class Module implements
                     $mapper->setEntityPrototype(new $entityClass);
                     $mapper->setHydrator(new Mapper\UserHydrator());
                     $mapper->setTableName($options->getTableName());
+
                     return $mapper;
                 },
             ),

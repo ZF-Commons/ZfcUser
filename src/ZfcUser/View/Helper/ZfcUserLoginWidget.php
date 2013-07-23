@@ -67,6 +67,7 @@ class ZfcUserLoginWidget extends AbstractHelper
     public function setLoginForm(LoginForm $loginForm)
     {
         $this->loginForm = $loginForm;
+
         return $this;
     }
 
@@ -77,6 +78,7 @@ class ZfcUserLoginWidget extends AbstractHelper
     public function setViewTemplate($viewTemplate)
     {
         $this->viewTemplate = $viewTemplate;
+
         return $this;
     }
 
