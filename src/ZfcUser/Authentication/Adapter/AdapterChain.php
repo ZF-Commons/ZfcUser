@@ -56,7 +56,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
         });
 
         if ($result->stopped()) {
-            if($result->last() instanceof Response) {
+            if ($result->last() instanceof Response) {
                 return $result->last();
             }
 
@@ -89,6 +89,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
                 $listener[0]->getStorage()->clear();
             }
         }
+
         return $this;
     }
 
@@ -114,6 +115,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
             $this->setEvent(new AdapterChainEvent);
             $this->event->setTarget($this);
         }
+
         return $this->event;
     }
 
@@ -133,6 +135,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
             $e->setParams($eventParams);
         }
         $this->event = $e;
+
         return $this;
     }
 }

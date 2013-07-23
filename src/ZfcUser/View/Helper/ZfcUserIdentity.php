@@ -46,6 +46,7 @@ class ZfcUserIdentity extends AbstractHelper
     public function setAuthService(AuthenticationService $authService)
     {
         $this->authService = $authService;
+
         return $this;
     }
 }

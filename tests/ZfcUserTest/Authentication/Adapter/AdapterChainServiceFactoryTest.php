@@ -38,7 +38,7 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
         $this->options = $this->getMockBuilder('ZfcUser\Options\ModuleOptions')
             ->disableOriginalConstructor()
             ->getMock();
-        
+
         $this->serviceLocator->expects($this->any())
             ->method('get')
             ->with('zfcuser_module_options')

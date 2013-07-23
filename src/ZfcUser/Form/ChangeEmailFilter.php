@@ -60,6 +60,7 @@ class ChangeEmailFilter extends InputFilter
     public function setEmailValidator($emailValidator)
     {
         $this->emailValidator = $emailValidator;
+
         return $this;
     }
 }

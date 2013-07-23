@@ -62,6 +62,7 @@ class ZfcUserAuthentication extends AbstractPlugin
     public function setAuthAdapter(AuthAdapter $authAdapter)
     {
         $this->authAdapter = $authAdapter;
+
         return $this;
     }
 
@@ -83,6 +84,7 @@ class ZfcUserAuthentication extends AbstractPlugin
     public function setAuthService(AuthenticationService $authService)
     {
         $this->authService = $authService;
+
         return $this;
     }
 
