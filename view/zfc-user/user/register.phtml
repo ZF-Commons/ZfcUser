@@ -7,7 +7,7 @@ if (!$this->enableRegistration) {
 }
 $form = $this->registerForm;
 $form->prepare();
-$form->setAttribute('action', $this->url('zfcuser/register'));
+$form->setAttribute('action', $this->url($this->registerRoute));
 $form->setAttribute('method', 'post');
 ?>
 

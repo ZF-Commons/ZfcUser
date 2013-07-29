@@ -120,7 +120,37 @@ class ModuleOptions extends AbstractOptions implements
             'timeout'    => 300,
         ),
     );
-
+    
+    /**
+     * @var string
+     */
+    protected $changePasswordRoute = 'zfcuser/changepassword';
+    
+    /**
+     * @var string
+     */
+    protected $loginRoute = 'zfcuser/login';
+    
+    /**
+     * @var string
+     */
+    protected $logoutRoute = 'zfcuser/logout';
+    
+    /**
+     * @var string
+     */
+    protected $registerRoute = 'zfcuser/register';
+    
+    /**
+     * @var string
+     */
+    protected $changeEmailRoute = 'zfcuser/changeemail';
+    
+    /**
+     * @var string
+     */
+    protected $controllerName = 'zfcuser';
+    
     /**
      * set login redirect route
      *
@@ -556,4 +586,125 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->formCaptchaOptions;
     }
+    
+    /**
+     * set change password route
+     *
+     * @param string $changePasswordRoute
+     * @return ModuleOptions
+     */
+    public function setChangePasswordRoute($changePasswordRoute) {
+        $this->changePasswordRoute = $changePasswordRoute;
+        return $this;
+    }
+    
+    /**
+     * get change password route
+     *
+     * @return string
+     */
+    public function getChangePasswordRoute() {
+        return $this->changePasswordRoute;
+    }
+    
+    /**
+     * set login route
+     *
+     * @param string $loginRoute
+     * @return ModuleOptions
+     */
+    public function setLoginRoute($loginRoute) {
+        $this->loginRoute = $loginRoute;
+        return $this;
+    }
+    
+    /**
+     * get login route
+     *
+     * @return string
+     */
+    public function getLoginRoute() {
+        return $this->loginRoute;
+    }
+    
+    /**
+     * set logout route
+     *
+     * @param string $logoutRoute
+     * @return ModuleOptions
+     */
+    public function setLogoutRoute($logoutRoute) {
+        $this->logoutRoute = $logoutRoute;
+        return $this;
+    }
+    
+    /**
+     * get logout route
+     *
+     * @return string
+     */
+    public function getLogoutRoute() {
+        return $this->logoutRoute;
+    }
+    
+    /**
+     * set register route
+     *
+     * @param string $registerRoute
+     * @return ModuleOptions
+     */
+    public function setRegisterRoute($registerRoute) {
+        $this->registerRoute = $registerRoute;
+        return $this;
+    }
+    
+    /**
+     * get register route
+     *
+     * @return string
+     */
+    public function getRegisterRoute() {
+        return $this->registerRoute;
+    }
+    
+    /**
+     * set change email route
+     *
+     * @param string $changeEmailRoute
+     * @return ModuleOptions
+     */
+    public function setChangeEmailRoute($changeEmailRoute) {
+        $this->changeEmailRoute = $changeEmailRoute;
+        return $this;
+    }
+    
+    /**
+     * get change email route
+     *
+     * @return string
+     */
+    public function getChangeEmailRoute() {
+        return $this->changeEmailRoute;
+    }
+    
+    /**
+     * set controller name
+     *
+     * @param string $controllerName
+     * @return ModuleOptions
+     */
+    public function setControllerName($controllerName) {
+        $this->controllerName = $controllerName;
+        return $this;
+    }
+    
+    /**
+     * get controller name
+     *
+     * @return string
+     */
+    public function getControllerName() {
+        return $this->controllerName;
+    }
+
 }
