@@ -170,7 +170,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $adapter->logoutAdapters();
         $this->getAuthService()->clearIdentity();
 
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('user' => $currentUser));
 
         return true;
     }
