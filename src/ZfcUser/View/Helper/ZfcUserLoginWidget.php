@@ -18,6 +18,13 @@ class ZfcUserLoginWidget extends AbstractHelper
      * $var string template used for view
      */
     protected $viewTemplate;
+    
+    /**
+     * ModuleOptions
+     * @var module_options
+     */
+    protected $module_options;
+    
     /**
      * __invoke
      *
@@ -41,6 +48,7 @@ class ZfcUserLoginWidget extends AbstractHelper
         $vm = new ViewModel(array(
             'loginForm' => $this->getLoginForm(),
             'redirect'  => $redirect,
+            'options'   => $this->module_options
         ));
         $vm->setTemplate($this->viewTemplate);
         if ($render) {
