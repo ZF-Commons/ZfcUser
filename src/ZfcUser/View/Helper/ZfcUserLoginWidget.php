@@ -26,6 +26,12 @@ class ZfcUserLoginWidget extends AbstractHelper
     protected $module_options;
     
     /**
+     * RegistrationOptions
+     * @var registrationOptions
+     */
+    protected $enableRegistration;
+    
+    /**
      * __invoke
      *
      * @access public
@@ -85,6 +91,27 @@ class ZfcUserLoginWidget extends AbstractHelper
     public function setViewTemplate($viewTemplate)
     {
         $this->viewTemplate = $viewTemplate;
+        return $this;
+    }
+
+    /**
+     * Retrieve module options
+     * @param $options
+     * @return ZfcUserLoginWidget
+     */
+    public function getRegistrationOptions()
+    {
+        return $this->enableRegistration;
+    }
+
+    /**
+     * Inject module options
+     * @param bool $registrationOption
+     * @return ZfcUserLoginWidget
+     */
+    public function setRegistrationOptions($registrationOption)
+    {
+        $this->enableRegistration = $registrationOption;
         return $this;
     }
 }
