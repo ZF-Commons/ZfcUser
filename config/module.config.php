@@ -20,7 +20,7 @@ return array(
         'translation_file_patterns' => array(
             array(
                 'type'     => 'gettext',
-                'base_dir' => __DIR__ . '/../language',
+                'base_dir' => __DIR__ . '/../src/ZfcUser/language',
                 'pattern'  => '%s.mo',
             ),
         ),
