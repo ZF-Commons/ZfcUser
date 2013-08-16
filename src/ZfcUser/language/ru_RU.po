@@ -1,0 +1,133 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2013-08-09 13:40+0300\n"
+"PO-Revision-Date: 2013-08-09 15:46+0300\n"
+"Last-Translator: lexun <stepun@gmail.com>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-KeywordsList: _;gettext;gettext_noop\n"
+"X-Poedit-Basepath: .\n"
+
+#: src/ZfcUser/language/msgIds.php:6
+msgid "Username"
+msgstr "Имя пользователя"
+
+#: src/ZfcUser/language/msgIds.php:7
+msgid "Email"
+msgstr "Email"
+
+#: src/ZfcUser/language/msgIds.php:8
+msgid "New Email"
+msgstr "Новый Email"
+
+#: src/ZfcUser/language/msgIds.php:9
+msgid "Verify New Email"
+msgstr "Проверка нового Email"
+
+#: src/ZfcUser/language/msgIds.php:10
+msgid "Display Name"
+msgstr "Отображаемое имя"
+
+#: src/ZfcUser/language/msgIds.php:11
+msgid "Password"
+msgstr "Пароль"
+
+#: src/ZfcUser/language/msgIds.php:12
+msgid "Password Verify"
+msgstr "Проверка пароля"
+
+#: src/ZfcUser/language/msgIds.php:13
+msgid "Current Password"
+msgstr "Текущий пароль"
+
+#: src/ZfcUser/language/msgIds.php:14
+msgid "Verify New Password"
+msgstr "Проверка нового пароля"
+
+#: src/ZfcUser/language/msgIds.php:15
+msgid "New Password"
+msgstr "Новый пароль"
+
+#: src/ZfcUser/language/msgIds.php:16
+msgid "Please type the following text"
+msgstr "Пожалуйста, введите следующий текст"
+
+#: src/ZfcUser/language/msgIds.php:17
+msgid "Submit"
+msgstr "Отправить"
+
+#: src/ZfcUser/language/msgIds.php:18 view/zfc-user/user/login.phtml:1
+msgid "Sign In"
+msgstr "Вход"
+
+#: src/ZfcUser/language/msgIds.php:19 view/zfc-user/user/register.phtml:1
+msgid "Register"
+msgstr "Регистрация"
+
+#: src/ZfcUser/language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "Запись не найдена"
+
+#: src/ZfcUser/language/msgIds.php:21
+msgid "A record matching the input was found"
+msgstr "Такой email уже зарегистрирован в системе"
+
+#: src/ZfcUser/language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr "Ошиюка авторизации. Попробуйте еще раз. "
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Not registered?"
+msgstr "Регистрация"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Sign up!"
+msgstr "Зарегистрироваться!"
+
+#: view/zfc-user/user/changeemail.phtml:1
+#, php-format
+msgid "Change Email for %s"
+msgstr "Изменить Email для %s"
+
+#: view/zfc-user/user/changeemail.phtml:3
+msgid "Email address changed successfully."
+msgstr "Email изменен"
+
+#: view/zfc-user/user/changeemail.phtml:5
+msgid "Unable to update your email address. Please try again."
+msgstr ""
+"Не удается изменить ваш электронный адрес. Пожалуйста, попробуйте еще раз."
+
+#: view/zfc-user/user/changepassword.phtml:1
+#, php-format
+msgid "Change Password for %s"
+msgstr "Изменить пароль для  %s"
+
+#: view/zfc-user/user/changepassword.phtml:3
+msgid "Password changed successfully."
+msgstr "Пароль изменен."
+
+#: view/zfc-user/user/changepassword.phtml:5
+msgid "Unable to update your password. Please try again."
+msgstr "Не удается изменить пароль. Пожалуйста, попробуйте еще раз."
+
+#: view/zfc-user/user/index.phtml:2
+msgid "Hello"
+msgstr "Приветсвуем"
+
+#: view/zfc-user/user/index.phtml:3
+msgid "Sign Out"
+msgstr "Выход"
+
+msgid "The two given tokens do not match"
+msgstr "Введенные пароли не совпадают."
+
+msgid "The input is less than 6 characters long"
+msgstr "Пароль должен быть не менее 6 символов."
+
+msgid "Value is required and can't be empty"
+msgstr "Пароль не должен быть пустым."
