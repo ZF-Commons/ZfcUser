@@ -2,7 +2,6 @@
 
 <?php
 $form = $this->loginForm;
-$enableRegistration = $this->options->getEnableRegistration();
 $form->prepare();
 $form->setAttribute('action', $this->url('zfcuser/login'));
 $form->setAttribute('method', 'post');
