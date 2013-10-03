@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2013-08-09 13:40+0300\n"
-"PO-Revision-Date: 2013-09-19 15:57+0300\n"
+"PO-Revision-Date: 2013-09-26 19:16+0300\n"
 "Last-Translator: lexun <stepun@gmail.com>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -78,7 +78,7 @@ msgstr "Такой email уже зарегистрирован в системе
 
 #: src/ZfcUser/language/msgIds.php:22
 msgid "Authentication failed. Please try again."
-msgstr "Ошиюка авторизации. Попробуйте еще раз. "
+msgstr "Ошибка авторизации. Попробуйте еще раз. "
 
 #: view/zfc-user/user/login.phtml:31
 msgid "Not registered?"
