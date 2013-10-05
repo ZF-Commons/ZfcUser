@@ -207,7 +207,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getRegisterForm()
     {
         if (null === $this->registerForm) {
-            $this->registerForm = $this->getServiceManager()->get('zfcuser_register_form');
+            $this->registerForm = $this->getServiceManager()->get('FormElementManager')->get('zfcuser_register_form');
         }
         return $this->registerForm;
     }
@@ -228,7 +228,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getChangePasswordForm()
     {
         if (null === $this->changePasswordForm) {
-            $this->changePasswordForm = $this->getServiceManager()->get('zfcuser_change_password_form');
+            $this->changePasswordForm = $this->getServiceManager()->get('FormElementManager')->get('zfcuser_change_password_form');
         }
         return $this->changePasswordForm;
     }
