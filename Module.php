@@ -162,7 +162,7 @@ class Module implements
                     $entityClass = $options->getUserEntityClass();
                     $mapper->setEntityPrototype(new $entityClass);
                     $hydrator = $sm->get('zfcuser_user_hydrator');
-                    $mapper->setHydrator($hydrator;
+                    $mapper->setHydrator($hydrator);
                     $mapper->setTableName($options->getTableName());
                     return $mapper;
                 },
