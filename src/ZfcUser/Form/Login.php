@@ -36,8 +36,8 @@ class Login extends ProvidesEventsForm
         foreach ($this->getAuthenticationOptions()->getAuthIdentityFields() as $mode) {
             $label = (!empty($label) ? $label . ' or ' : '') . ucfirst($mode);
         }
-        $emailElement->setLabel($label);
-        //
+        $emailElement->setOptions(array('label' => $label));
+        
         $this->add(array(
             'name' => 'credential',
             'options' => array(
