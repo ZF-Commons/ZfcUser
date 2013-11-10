@@ -3,7 +3,7 @@ msgstr ""
 "Project-Id-Version: ZfcUser\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2013-02-26 13:38+0100\n"
-"PO-Revision-Date: 2013-11-11 00:07+0900\n"
+"PO-Revision-Date: 2013-11-11 01:19+0900\n"
 "Last-Translator: sasezaki <sasezaki@gmail.com>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: ja_JP\n"
@@ -96,7 +96,7 @@ msgstr "ユーザー登録！"
 #: view/zfc-user/user/changeemail.phtml:1
 #, php-format
 msgid "Change Email for %s"
-msgstr "メールアドレスを %s へ変更します"
+msgstr "%s のメールアドレスを変更します"
 
 #: view/zfc-user/user/changeemail.phtml:3
 msgid "Email address changed successfully."
@@ -109,7 +109,7 @@ msgstr "メールアドレスを更新できません。再度お試しくださ
 #: view/zfc-user/user/changepassword.phtml:1
 #, php-format
 msgid "Change Password for %s"
-msgstr "パスワードを %s へ変更します"
+msgstr "%s のパスワードを変更します"
 
 #: view/zfc-user/user/changepassword.phtml:3
 msgid "Password changed successfully."
