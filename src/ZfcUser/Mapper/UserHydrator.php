@@ -8,6 +8,20 @@ use ZfcUser\Entity\UserInterface as UserEntityInterface;
 class UserHydrator extends ClassMethods
 {
     /**
+     * On exctract, these keys will be unset, if they are null
+     *
+     * See the bug #352 (https://github.com/ZF-Commons/ZfcUser/issues/352)
+     *
+     * This is important for PostgreSQL user, error was:
+     * `SQLSTATE[23502]: Not null violation: 7 ERROR:  null value in column "user_id" violates not-null constraint`
+     *
+     * @var array
+     */
+    protected $deleteAttributeOnExtractIfNull = [
+        'user_id'
+    ];
+
+    /**
      * Extract values from an object
      *
      * @param  object $object
@@ -22,6 +36,11 @@ class UserHydrator extends ClassMethods
         /* @var $object UserInterface*/
         $data = parent::extract($object);
         $data = $this->mapField('id', 'user_id', $data);
+        foreach ($this->deleteAttributeOnExtractIfNull as $field) {
+            if (array_key_exists($field, $data)) {
+                unset($data[$field]);
+            }
+        }
         return $data;
     }
 
