@@ -102,7 +102,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
             array(true, true),
             array(false, false),
         );
-    } 
+    }
 
     /**
      * Tests prepareForAuthentication when falls through events.
