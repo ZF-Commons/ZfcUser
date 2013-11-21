@@ -17,9 +17,9 @@ class UserHydrator extends ClassMethods
      *
      * @var array
      */
-    protected $deleteAttributeOnExtractIfNull = [
+    protected $deleteAttributeOnExtractIfNull = array (
         'user_id'
-    ];
+    );
 
     /**
      * Extract values from an object
