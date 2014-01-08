@@ -19,7 +19,7 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
     protected $serviceLocator;
 
     /**
-     * @var \ZfcUser\Options\ModuleOptions'
+     * @var \ZfcUser\Options\ModuleOptions
      */
     protected $options;
 
@@ -39,12 +39,12 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
         
-        $this->serviceLocator->expects($this->any())
+        $this->serviceLocator->expects($this->at(0))
             ->method('get')
             ->with('zfcuser_module_options')
             ->will($this->returnValue($this->options));
 
-        $this->eventManager = new \Zend\EventManager\EventManager;
+        $this->eventManager = $this->getMock('Zend\EventManager\EventManager');
 
         $this->factory = new AdapterChainServiceFactory();
     }
@@ -54,14 +54,26 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateService()
     {
+        $adapterNames = array(100 => 'adapter1', 200 => 'adapter2');
         $this->options->expects($this->once())
-            ->method('getAuthAdapters')
-            ->will($this->returnValue(array()));
+                      ->method('getAuthAdapters')
+                      ->will($this->returnValue($adapterNames));
 
-        $this->markTestIncomplete('Test needs to check inside attach adapter loop');
+        $i = 1;
+        foreach ($adapterNames as $priority => $name) {
+            $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AbstractAdapter', array('authenticate', 'logout'));
+
+            $this->serviceLocator->expects($this->at($i))
+                 ->method('get')
+                 ->with($name)
+                 ->will($this->returnValue($adapter));
+
+            $i++;
+        }
 
         $adapterChain = $this->factory->createService($this->serviceLocator);
 
         $this->assertInstanceOf('ZfcUser\Authentication\Adapter\AdapterChain', $adapterChain);
+        $this->assertEquals(array('authenticate', 'logout'), $adapterChain->getEventManager()->getEvents());
     }
 }

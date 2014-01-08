@@ -55,7 +55,28 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
      */
     public function testAuthenticate()
     {
-        $this->markTestIncomplete('Needs to be implemented');
+        $event = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChainEvent');
+        $event->expects($this->once())
+              ->method('getCode')
+              ->will($this->returnValue(123));
+        $event->expects($this->once())
+              ->method('getIdentity')
+              ->will($this->returnValue('identity'));
+        $event->expects($this->once())
+              ->method('getMessages')
+              ->will($this->returnValue(array()));
+
+        $this->eventManager->expects($this->once())
+             ->method('getListeners')
+             ->with($this->equalTo('authenticate'))
+             ->will($this->returnValue(array()));
+
+        $this->adapterChain->setEvent($event);
+        $result = $this->adapterChain->authenticate();
+
+        $this->assertInstanceOf('Zend\Authentication\Result', $result);
+        $this->assertEquals($result->getIdentity(), 'identity');
+        $this->assertEquals($result->getMessages(), array());
     }
 
     /**
@@ -63,7 +84,34 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
      */
     public function testResetAdapters()
     {
-        $this->markTestIncomplete('Needs to be implemented');
+        $listeners = array();
+
+        for ($i=1; $i<=3; $i++) {
+            $storage = $this->getMock('ZfcUser\Authentication\Storage\db');
+            $storage->expects($this->once())
+                    ->method('clear');
+
+            $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AbstractAdapter');
+            $adapter->expects($this->once())
+                    ->method('getStorage')
+                    ->will($this->returnValue($storage));
+
+            $callback = $this->getMockBuilder('Zend\Stdlib\CallbackHandler')->disableOriginalConstructor()->getMock();
+            $callback->expects($this->once())
+                     ->method('getCallback')
+                     ->will($this->returnValue(array($adapter)));
+
+            $listeners[] = $callback;
+        }
+
+        $this->eventManager->expects($this->once())
+             ->method('getListeners')
+             ->with($this->equalTo('authenticate'))
+             ->will($this->returnValue($listeners));
+
+        $result = $this->adapterChain->resetAdapters();
+
+        $this->assertInstanceOf('ZfcUser\Authentication\Adapter\AdapterChain', $result);
     }
 
     /**
