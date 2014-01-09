@@ -36,6 +36,7 @@
         "zendframework/zend-stdlib": "~2.1",
         "zendframework/zend-validator": "~2.1",
         "zendframework/zend-view": "~2.1",
+        "zendframework/zend-session": "~2.1",
         "zf-commons/zfc-base": "0.*"
     },
     "suggest": {
