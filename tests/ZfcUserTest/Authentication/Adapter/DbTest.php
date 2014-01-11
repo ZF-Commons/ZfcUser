@@ -341,6 +341,66 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('zfcUser', $this->db->preprocessCredential('zfcUser'));
     }
 
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::setServiceManager
+     * @covers ZfcUser\Authentication\Adapter\Db::getServiceManager
+     */
+    public function testSetGetServicemanager()
+    {
+        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
+
+        $this->db->setServiceManager($sm);
+
+        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $this->db->getServiceManager());
+        $this->assertSame($sm, $this->db->getServiceManager());
+    }
+
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::getOptions
+     */
+    public function testGetOptionsWithNoOptionsSet()
+    {
+        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $this->db->getOptions());
+    }
+
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::setOptions
+     * @covers ZfcUser\Authentication\Adapter\Db::getOptions
+     */
+    public function testSetGetOptions()
+    {
+        $options = new \ZfcUser\Options\ModuleOptions;
+        $options->setLoginRedirectRoute('zfcUser');
+
+        $this->db->setOptions($options);
+
+        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $this->db->getOptions());
+        $this->assertSame('zfcUser', $this->db->getOptions()->getLoginRedirectRoute());
+    }
+
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::getMapper
+     */
+    public function testGetMapperWithNoMapperSet()
+    {
+        $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $this->db->getMapper());
+    }
+
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::setMapper
+     * @covers ZfcUser\Authentication\Adapter\Db::getMapper
+     */
+    public function testSetGetMapper()
+    {
+        $mapper = new \ZfcUser\Mapper\User;
+        $mapper->setTableName('zfcUser');
+
+        $this->db->setMapper($mapper);
+
+        $this->assertInstanceOf('ZfcUser\Mapper\User', $this->db->getMapper());
+        $this->assertSame('zfcUser', $this->db->getMapper()->getTableName());
+    }
+
     protected function setAuthenticationUser()
     {
         $this->mapper->expects($this->once())
