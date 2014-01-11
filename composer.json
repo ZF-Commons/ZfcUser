@@ -40,9 +40,6 @@
         "zendframework/zend-http": "~2.1",
         "zf-commons/zfc-base": "0.*"
     },
-    "suggest": {
-        "zendframework/zend-session": "To use the default authentication adapter."
-    },
     "autoload": {
         "psr-0": {
             "ZfcUser": "src/"
