@@ -56,7 +56,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
         });
 
         if ($result->stopped()) {
-            if($result->last() instanceof Response) {
+            if ($result->last() instanceof Response) {
                 return $result->last();
             }
 

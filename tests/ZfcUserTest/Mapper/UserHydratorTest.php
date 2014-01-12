@@ -15,7 +15,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Mapper\User::extract
+     * @covers ZfcUser\Mapper\UserHydrator::extract
      * @expectedException ZfcUser\Mapper\Exception\InvalidArgumentException
      */
     public function testExtractWithInvalidUserObject()
@@ -25,8 +25,8 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Mapper\User::extract
-     * @covers ZfcUser\Mapper\User::mapField
+     * @covers ZfcUser\Mapper\UserHydrator::extract
+     * @covers ZfcUser\Mapper\UserHydrator::mapField
      */
     public function testExtractWithValidUserObject()
     {
@@ -54,7 +54,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Mapper\User::hydrate
+     * @covers ZfcUser\Mapper\UserHydrator::hydrate
      * @expectedException ZfcUser\Mapper\Exception\InvalidArgumentException
      */
     public function testHydrateWithInvalidUserObject()
@@ -64,8 +64,8 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Mapper\User::hydate
-     * @covers ZfcUser\Mapper\User::mapField
+     * @covers ZfcUser\Mapper\UserHydrator::hydrate
+     * @covers ZfcUser\Mapper\UserHydrator::mapField
      */
     public function testHydrateWithValidUserObject()
     {

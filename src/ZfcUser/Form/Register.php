@@ -18,7 +18,7 @@ class Register extends Base
      * @param string|null $name
      * @param RegistrationOptionsInterface $options
      */
-    public function __construct($name = null, RegistrationOptionsInterface $options)
+    public function __construct($name, RegistrationOptionsInterface $options)
     {
         $this->setRegistrationOptions($options);
         parent::__construct($name);

@@ -87,7 +87,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $listeners = array();
 
         for ($i=1; $i<=3; $i++) {
-            $storage = $this->getMock('ZfcUser\Authentication\Storage\db');
+            $storage = $this->getMock('ZfcUser\Authentication\Storage\Db');
             $storage->expects($this->once())
                     ->method('clear');
 

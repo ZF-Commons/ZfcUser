@@ -57,11 +57,11 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         $identity   = $e->getRequest()->getPost()->get('identity');
         $credential = $e->getRequest()->getPost()->get('credential');
         $credential = $this->preProcessCredential($credential);
-        $userObject = NULL;
+        $userObject = null;
 
         // Cycle through the configured identity sources and test each
         $fields = $this->getOptions()->getAuthIdentityFields();
-        while ( !is_object($userObject) && count($fields) > 0 ) {
+        while (!is_object($userObject) && count($fields) > 0) {
             $mode = array_shift($fields);
             switch ($mode) {
                 case 'username':
@@ -92,7 +92,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        if (!$bcrypt->verify($credential,$userObject->getPassword())) {
+        if (!$bcrypt->verify($credential, $userObject->getPassword())) {
             // Password does not match
             $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
               ->setMessages(array('Supplied credential is invalid.'));
@@ -119,7 +119,9 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     protected function updateUserPasswordHash($userObject, $password, $bcrypt)
     {
         $hash = explode('$', $userObject->getPassword());
-        if ($hash[2] === $bcrypt->getCost()) return;
+        if ($hash[2] === $bcrypt->getCost()) {
+            return;
+        }
         $userObject->setPassword($bcrypt->create($password));
         $this->getMapper()->update($userObject);
         return $this;
