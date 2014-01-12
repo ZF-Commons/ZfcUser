@@ -86,23 +86,21 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
     {
         $listeners = array();
 
-        for ($i=1; $i<=3; $i++) {
-            $storage = $this->getMock('ZfcUser\Authentication\Storage\db');
-            $storage->expects($this->once())
-                    ->method('clear');
+        $storage = $this->getMock('ZfcUser\Authentication\Storage\db');
+        $storage->expects($this->once())
+                ->method('clear');
 
-            $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AbstractAdapter');
-            $adapter->expects($this->once())
-                    ->method('getStorage')
-                    ->will($this->returnValue($storage));
+        $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AbstractAdapter');
+        $adapter->expects($this->once())
+                ->method('getStorage')
+                ->will($this->returnValue($storage));
 
-            $callback = $this->getMockBuilder('Zend\Stdlib\CallbackHandler')->disableOriginalConstructor()->getMock();
-            $callback->expects($this->once())
-                     ->method('getCallback')
-                     ->will($this->returnValue(array($adapter)));
+        $callback = $this->getMockBuilder('Zend\Stdlib\CallbackHandler')->disableOriginalConstructor()->getMock();
+        $callback->expects($this->once())
+                 ->method('getCallback')
+                 ->will($this->returnValue(array($adapter)));
 
-            $listeners[] = $callback;
-        }
+        $listeners[] = $callback;
 
         $this->eventManager->expects($this->once())
              ->method('getListeners')
