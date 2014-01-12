@@ -93,5 +93,4 @@ interface UserInterface
      * @return UserInterface
      */
     public function setState($state);
-
 }

@@ -265,7 +265,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue('10'));
 
         $method = new \ReflectionMethod(
-            'ZfcUser\Authentication\Adapter\Db', 'updateUserPasswordHash'
+            'ZfcUser\Authentication\Adapter\Db',
+            'updateUserPasswordHash'
         );
         $method->setAccessible(true);
 
@@ -303,7 +304,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->db->setMapper($mapper);
 
         $method = new \ReflectionMethod(
-            'ZfcUser\Authentication\Adapter\Db', 'updateUserPasswordHash'
+            'ZfcUser\Authentication\Adapter\Db',
+            'updateUserPasswordHash'
         );
         $method->setAccessible(true);
 
