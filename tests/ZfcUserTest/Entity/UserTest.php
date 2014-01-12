@@ -4,7 +4,7 @@ namespace ZfcUserTest\Entity;
 
 use ZfcUser\Entity\User as Entity;
 
-class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
+class UserTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetId()
     {

@@ -4,7 +4,7 @@ namespace ZfcUserTest\Options;
 
 use ZfcUser\Options\ModuleOptions as Options;
 
-class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
+class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetLoginRedirectRoute()
     {

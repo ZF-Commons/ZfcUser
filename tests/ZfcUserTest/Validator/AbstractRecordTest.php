@@ -20,25 +20,29 @@ class AbstractRecordTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testSetMapper(){
+    public function testSetMapper()
+    {
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );
     }
 
-    public function testGetKey(){
+    public function testGetKey()
+    {
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );
     }
 
-    public function testSetKey(){
+    public function testSetKey()
+    {
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );
     }
 
-    public function testQuery(){
+    public function testQuery()
+    {
         $this->markTestIncomplete(
             'This test has not been implemented yet.'
         );

@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUserTest\Validator;
+namespace ZfcUserTest\View\Helper;
 
 use ZfcUser\View\Helper\ZfcUserDisplayName as ViewHelper;
 

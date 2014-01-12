@@ -319,7 +319,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     {
         $test = $this;
         $testVar = false;
-        $callable = function($credential) use ($test, &$testVar) {
+        $callable = function ($credential) use ($test, &$testVar) {
             $test->assertEquals('ZfcUser', $credential);
             $testVar = true;
         };

@@ -4,7 +4,7 @@ namespace ZfcUserTest\Controller;
 
 use ZfcUser\Controller\UserController as Controller;
 
-class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
+class UserControllerTest extends \PHPUnit_Framework_TestCase
 {
     public function testIndexAction()
     {
