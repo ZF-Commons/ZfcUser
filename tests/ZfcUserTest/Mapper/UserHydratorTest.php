@@ -64,7 +64,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Mapper\UserHydrator::hydate
+     * @covers ZfcUser\Mapper\UserHydrator::hydrate
      * @covers ZfcUser\Mapper\UserHydrator::mapField
      */
     public function testHydrateWithValidUserObject()
