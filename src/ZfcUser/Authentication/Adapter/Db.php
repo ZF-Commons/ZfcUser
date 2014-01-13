@@ -41,7 +41,10 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     public function logout(AuthEvent $e)
     {
         $session = new SessionContainer($this->getStorage()->getNameSpace());
-        $session->getManager()->destroy();
+        $session->getManager()
+            ->getStorage()
+            ->clear($this->getStorage()
+            ->getNameSpace());
     }
     
     public function authenticate(AuthEvent $e)
