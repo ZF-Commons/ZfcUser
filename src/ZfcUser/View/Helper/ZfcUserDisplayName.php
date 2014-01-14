@@ -41,6 +41,7 @@ class ZfcUserDisplayName extends AbstractHelper
         if (null === $displayName) {
             $displayName = $user->getUsername();
         }
+        // User will always have an email, so we do not have to throw error
         if (null === $displayName) {
             $displayName = $user->getEmail();
             $displayName = substr($displayName, 0, strpos($displayName, '@'));
