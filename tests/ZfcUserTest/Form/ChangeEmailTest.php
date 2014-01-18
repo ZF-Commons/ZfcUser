@@ -6,24 +6,32 @@ use ZfcUser\Form\ChangeEmail as Form;
 
 class ChangeEmailTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ZfcUser\Form\ChangeEmail::__construct
+     */
     public function testConstruct()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = $this->getMock('ZfcUser\Options\AuthenticationOptionsInterface');
+
+        $form = new Form(null, $options);
+
+        $elements = $form->getElements();
+
+        $this->assertArrayHasKey('identity', $elements);
+        $this->assertArrayHasKey('newIdentity', $elements);
+        $this->assertArrayHasKey('newIdentityVerify', $elements);
+        $this->assertArrayHasKey('credential', $elements);
     }
 
-    public function testSetAuthenticationOptions()
+    /**
+     * @covers ZfcUser\Form\ChangeEmail::getAuthenticationOptions
+     * @covers ZfcUser\Form\ChangeEmail::setAuthenticationOptions
+     */
+    public function testSetGetAuthenticationOptions()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
+        $options = $this->getMock('ZfcUser\Options\AuthenticationOptionsInterface');
+        $form = new Form(null, $options);
 
-    public function testGetAuthenticationOptions()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertSame($options, $form->getAuthenticationOptions());
     }
 }
