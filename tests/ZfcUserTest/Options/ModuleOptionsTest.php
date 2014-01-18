@@ -6,283 +6,388 @@ use ZfcUser\Options\ModuleOptions as Options;
 
 class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSetLoginRedirectRoute()
+    /**
+     * @var Options $options
+     */
+    protected $options;
+
+    public function setUp()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = new Options;
+        $this->options = $options;
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginRedirectRoute
+     * @covers ZfcUser\Options\ModuleOptions::setLoginRedirectRoute
+     */
+    public function testSetGetLoginRedirectRoute()
+    {
+        $this->options->setLoginRedirectRoute('zfcUserRoute');
+        $this->assertEquals('zfcUserRoute', $this->options->getLoginRedirectRoute());
+    }
+
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginRedirectRoute
+     */
     public function testGetLoginRedirectRoute()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals('zfcuser', $this->options->getLoginRedirectRoute());
     }
 
-    public function testSetLogoutRedirectRoute()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginRedirectRoute
+     * @covers ZfcUser\Options\ModuleOptions::setLoginRedirectRoute
+     */
+    public function testSetGetLogoutRedirectRoute()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setLogoutRedirectRoute('zfcUserRoute');
+        $this->assertEquals('zfcUserRoute', $this->options->getLogoutRedirectRoute());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginRedirectRoute
+     */
     public function testGetLogoutRedirectRoute()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertSame('zfcuser/login', $this->options->getLogoutRedirectRoute());
     }
 
-    public function testSetUseRedirectParameterIfPresent()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUseRedirectParameterIfPreset
+     * @covers ZfcUser\Options\ModuleOptions::setUseRedirectParameterIfPreset
+     */
+    public function testSetGetUseRedirectParameterIfPresent()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setUseRedirectParameterIfPresent(false);
+        $this->assertFalse($this->options->getUseRedirectParameterIfPresent());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUseRedirectParameterIfPreset
+     */
     public function testGetUseRedirectParameterIfPresent()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertTrue($this->options->getUseRedirectParameterIfPresent());
     }
 
-    public function testSetUserLoginWidgetViewTemplate()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUserLoginWidgetViewTemplate
+     * @covers ZfcUser\Options\ModuleOptions::setUserLoginWidgetViewTemplate
+     */
+    public function testSetGetUserLoginWidgetViewTemplate()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setUserLoginWidgetViewTemplate('zfcUser.phtml');
+        $this->assertEquals('zfcUser.phtml', $this->options->getUserLoginWidgetViewTemplate());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUserLoginWidgetViewTemplate
+     */
     public function testGetUserLoginWidgetViewTemplate()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals('zfc-user/user/login.phtml', $this->options->getUserLoginWidgetViewTemplate());
     }
 
-    public function testSetEnableRegistration()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableRegistration
+     * @covers ZfcUser\Options\ModuleOptions::setEnableRegistration
+     */
+    public function testSetGetEnableRegistration()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setEnableRegistration(false);
+        $this->assertFalse($this->options->getEnableRegistration());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableRegistration
+     */
     public function testGetEnableRegistration()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertTrue($this->options->getEnableRegistration());
     }
 
-    public function testSetLoginFormTimeout()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginFormTimeout
+     * @covers ZfcUser\Options\ModuleOptions::setLoginFormTimeout
+     */
+    public function testSetGetLoginFormTimeout()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setLoginFormTimeout(100);
+        $this->assertEquals(100, $this->options->getLoginFormTimeout());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginFormTimeout
+     */
     public function testGetLoginFormTimeout()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(300, $this->options->getLoginFormTimeout());
     }
 
-    public function testSetUserFormTimeout()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUserFormTimeout
+     * @covers ZfcUser\Options\ModuleOptions::setUserFormTimeout
+     */
+    public function testSetGetUserFormTimeout()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setUserFormTimeout(100);
+        $this->assertEquals(100, $this->options->getUserFormTimeout());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUserFormTimeout
+     */
     public function testGetUserFormTimeout()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(300, $this->options->getUserFormTimeout());
     }
 
-    public function testSetLoginAfterRegistration()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginAfterRegistration
+     * @covers ZfcUser\Options\ModuleOptions::setLoginAfterRegistration
+     */
+    public function testSetGetLoginAfterRegistration()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setLoginAfterRegistration(false);
+        $this->assertFalse($this->options->getLoginAfterRegistration());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getLoginAfterRegistration
+     */
     public function testGetLoginAfterRegistration()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertTrue($this->options->getLoginAfterRegistration());
     }
 
-    public function testSetEnableUserState()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableUserState
+     * @covers ZfcUser\Options\ModuleOptions::setEnableUserState
+     */
+    public function testSetGetEnableUserState()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setEnableUserState(true);
+        $this->assertTrue($this->options->getEnableUserState());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableUserState
+     */
     public function testGetEnableUserState()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertFalse($this->options->getEnableUserState());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserSate
+     */
     public function testGetDefaultUserState()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(1, $this->options->getDefaultUserState());
     }
 
-    public function testSetDefaultUserState()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserSate
+     * @covers ZfcUser\Options\ModuleOptions::setDefaultUserSate
+     */
+    public function testSetGetDefaultUserState()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setDefaultUserState(3);
+        $this->assertEquals(3, $this->options->getDefaultUserState());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getAllowedLoginStates
+     */
     public function testGetAllowedLoginStates()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(array(null, 1), $this->options->getAllowedLoginStates());
     }
 
-    public function testSetAllowedLoginStates()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getAllowedLoginStates
+     * @covers ZfcUser\Options\ModuleOptions::setAllowedLoginStates
+     */
+    public function testSetGetAllowedLoginStates()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setAllowedLoginStates(array(2, 5, null));
+        $this->assertEquals(array(2, 5, null), $this->options->getAllowedLoginStates());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getAuthAdapters
+     */
     public function testGetAuthAdapters()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(array(100 => 'ZfcUser\Authentication\Adapter\Db'), $this->options->getAuthAdapters());
     }
 
-    public function testSetAuthAdapters()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getAuthAdapters
+     * @covers ZfcUser\Options\ModuleOptions::setAuthAdapters
+     */
+    public function testSetGetAuthAdapters()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setAuthAdapters(array(40 => 'SomeAdapter'));
+        $this->assertEquals(array(40 => 'SomeAdapter'), $this->options->getAuthAdapters());
     }
 
-    public function testSetAuthIdentityFields()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getAuthIdentityFields
+     * @covers ZfcUser\Options\ModuleOptions::setAuthIdentityFields
+     */
+    public function testSetGetAuthIdentityFields()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setAuthIdentityFields(array('username'));
+        $this->assertEquals(array('username'), $this->options->getAuthIdentityFields());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getAuthIdentityFields
+     */
     public function testGetAuthIdentityFields()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(array('email'), $this->options->getAuthIdentityFields());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableUsername
+     */
     public function testGetEnableUsername()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertFalse($this->options->getEnableUsername());
     }
 
-    public function testSetEnableUsername()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableUsername
+     * @covers ZfcUser\Options\ModuleOptions::setEnableUsername
+     */
+    public function testSetGetEnableUsername()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setEnableUsername(true);
+        $this->assertTrue($this->options->getEnableUsername());
     }
 
-    public function testSetEnableDisplayName()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableDisplayName
+     * @covers ZfcUser\Options\ModuleOptions::setEnableDisplayName
+     */
+    public function testSetGetEnableDisplayName()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setEnableDisplayName(true);
+        $this->assertTrue($this->options->getEnableDisplayName());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableDisplayName
+     */
     public function testGetEnableDisplayName()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertFalse($this->options->getEnableDisplayName());
     }
 
-    public function testSetUseRegistrationFormCaptcha()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUseRegistrationFormCaptcha
+     * @covers ZfcUser\Options\ModuleOptions::setUseRegistrationFormCaptcha
+     */
+    public function testSetGetUseRegistrationFormCaptcha()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setUseRegistrationFormCaptcha(true);
+        $this->assertTrue($this->options->getUseRegistrationFormCaptcha());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUseRegistrationFormCaptcha
+     */
     public function testGetUseRegistrationFormCaptcha()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertFalse($this->options->getUseRegistrationFormCaptcha());
     }
 
-    public function testSetUserEntityClass()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUserEntityClass
+     * @covers ZfcUser\Options\ModuleOptions::setUserEntityClass
+     */
+    public function testSetGetUserEntityClass()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setUserEntityClass('zfcUser');
+        $this->assertEquals('zfcUser', $this->options->getUserEntityClass());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUserEntityClass
+     */
     public function testGetUserEntityClass()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals('ZfcUser\Entity\User', $this->options->getUserEntityClass());
     }
 
-    public function testSetPasswordCost()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getPasswordCost
+     * @covers ZfcUser\Options\ModuleOptions::setPasswordCost
+     */
+    public function testSetGetPasswordCost()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setPasswordCost(10);
+        $this->assertEquals(10, $this->options->getPasswordCost());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getPasswordCost
+     */
     public function testGetPasswordCost()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals(14, $this->options->getPasswordCost());
     }
 
-    public function testSetTableName()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getTableName
+     * @covers ZfcUser\Options\ModuleOptions::setTableName
+     */
+    public function testSetGetTableName()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->options->setTableName('zfcUser');
+        $this->assertEquals('zfcUser', $this->options->getTableName());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getTableName
+     */
     public function testGetTableName()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertEquals('user', $this->options->getTableName());
     }
 
-    public function testSetFormCaptchaOptions()
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getFormCaptchaOptions
+     * @covers ZfcUser\Options\ModuleOptions::setFormCaptchaOptions
+     */
+    public function testSetGetFormCaptchaOptions()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+        $expected = array(
+            'class'   => 'someClass',
+            'options' => array(
+                'anOption' => 3,
+            ),
         );
+        $this->options->setFormCaptchaOptions($expected);
+        $this->assertEquals($expected, $this->options->getFormCaptchaOptions());
     }
 
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getFormCaptchaOptions
+     */
     public function testGetFormCaptchaOptions()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
+        $expected = array(
+            'class'   => 'figlet',
+            'options' => array(
+                'wordLen'    => 5,
+                'expiration' => 300,
+                'timeout'    => 300,
+            ),
         );
+        $this->assertEquals($expected, $this->options->getFormCaptchaOptions());
     }
 }
