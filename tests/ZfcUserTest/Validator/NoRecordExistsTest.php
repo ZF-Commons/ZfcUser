@@ -22,6 +22,9 @@ class NoRecordExistsTest extends \PHPUnit_Framework_TestCase
         $validator->setMapper($mapper);
     }
 
+    /**
+     * @covers ZfcUser\Validator\NoRecordExists::isValid
+     */
     public function testIsValid()
     {
         $this->mapper->expects($this->once())
@@ -33,6 +36,9 @@ class NoRecordExistsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @covers ZfcUser\Validator\NoRecordExists::isValid
+     */
     public function testIsInvalid()
     {
         $this->mapper->expects($this->once())

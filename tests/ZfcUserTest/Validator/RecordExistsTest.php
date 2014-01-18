@@ -22,6 +22,9 @@ class RecordExistsTest extends \PHPUnit_Framework_TestCase
         $validator->setMapper($mapper);
     }
 
+    /**
+     * @covers ZfcUser\Validator\RecordExists::isValid
+     */
     public function testIsValid()
     {
         $this->mapper->expects($this->once())
@@ -33,6 +36,9 @@ class RecordExistsTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * @covers ZfcUser\Validator\RecordExists::isValid
+     */
     public function testIsInvalid()
     {
         $this->mapper->expects($this->once())
