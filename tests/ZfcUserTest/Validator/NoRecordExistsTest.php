@@ -44,7 +44,7 @@ class NoRecordExistsTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($result);
 
         $options = $this->validator->getOptions();
-        $this->assertArrayHasKey('recordFound', $options['messages']);
-        $this->assertEquals($options['messageTemplates'][\ZfcUser\Validator\AbstractRecord::ERROR_RECORD_FOUND], $options['messages']['recordFound']);
+        $this->assertArrayHasKey(\ZfcUser\Validator\AbstractRecord::ERROR_RECORD_FOUND, $options['messages']);
+        $this->assertEquals($options['messageTemplates'][\ZfcUser\Validator\AbstractRecord::ERROR_RECORD_FOUND], $options['messages'][\ZfcUser\Validator\AbstractRecord::ERROR_RECORD_FOUND]);
     }
 }
