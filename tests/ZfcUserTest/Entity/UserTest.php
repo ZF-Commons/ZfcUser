@@ -6,73 +6,71 @@ use ZfcUser\Entity\User as Entity;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
-    public function testSetId()
+    protected $user;
+
+    public function setUp()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $user = new Entity;
+        $this->user = $user;
     }
 
-    public function testGetId()
+    /**
+     * @covers ZfcUser\Entity\User::setId
+     * @covers ZfcUser\Entity\User::getId
+     */
+    public function testSetGetId()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setId(1);
+        $this->assertEquals(1, $this->user->getId());
     }
 
-    public function testGetUsername()
+    /**
+     * @covers ZfcUser\Entity\User::setUsername
+     * @covers ZfcUser\Entity\User::getUsername
+     */
+    public function testSetGetUsername()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setUsername('zfcUser');
+        $this->assertEquals('zfcUser', $this->user->getUsername());
     }
 
-    public function testSetDisplayName()
+    /**
+     * @covers ZfcUser\Entity\User::setDisplayName
+     * @covers ZfcUser\Entity\User::getDisplayName
+     */
+    public function testSetGetDisplayName()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setDisplayName('Zfc User');
+        $this->assertEquals('Zfc User', $this->user->getDisplayName());
     }
 
-    public function testGetEmail()
+    /**
+     * @covers ZfcUser\Entity\User::setEmail
+     * @covers ZfcUser\Entity\User::getEmail
+     */
+    public function testSetGetEmail()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setEmail('zfcUser@zfcUser.com');
+        $this->assertEquals('zfcUser@zfcUser.com', $this->user->getEmail());
     }
 
-    public function testSetEmail()
+    /**
+     * @covers ZfcUser\Entity\User::setPassword
+     * @covers ZfcUser\Entity\User::getPassword
+     */
+    public function testSetGetPassword()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setPassword('zfcUser');
+        $this->assertEquals('zfcUser', $this->user->getPassword());
     }
 
-    public function testGetPassword()
+    /**
+     * @covers ZfcUser\Entity\User::setState
+     * @covers ZfcUser\Entity\User::getState
+     */
+    public function testSetGetState()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    public function testSetPassword()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    public function testGetState()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
-
-    public function testSetState()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->user->setState(1);
+        $this->assertEquals(1, $this->user->getState());
     }
 }
