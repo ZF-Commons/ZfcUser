@@ -2,49 +2,111 @@
 
 namespace ZfcUserTest\Validator;
 
-use ZfcUser\Validator\AbstractRecord as Validator;
-
 class AbstractRecordTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ZfcUser\Validator\AbstractRecord::__construct
+     * @expectedException ZfcUser\Validator\Exception\InvalidArgumentException
+     * @expectedExceptionMessage No key provided
+     */
     public function testConstruct()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = array();
+        new AbstractRecordExtension($options);
     }
 
-    public function testGetMapper()
+    /**
+     * @covers ZfcUser\Validator\AbstractRecord::getMapper
+     * @covers ZfcUser\Validator\AbstractRecord::setMapper
+     */
+    public function testGetSetMapper()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = array('key' => '');
+        $validator = new AbstractRecordExtension($options);
+
+        $this->assertNull($validator->getMapper());
+
+        $mapper = $this->getMock('ZfcUser\Mapper\UserInterface');
+        $validator->setMapper($mapper);
+        $this->assertSame($mapper, $validator->getMapper());
     }
 
-    public function testSetMapper()
+    /**
+     * @covers ZfcUser\Validator\AbstractRecord::getKey
+     * @covers ZfcUser\Validator\AbstractRecord::setKey
+     */
+    public function testGetSetKey()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = array('key' => 'username');
+        $validator = new AbstractRecordExtension($options);
+
+        $this->assertEquals('username', $validator->getKey());
+
+        $validator->setKey('email');
+        $this->assertEquals('email', $validator->getKey());
     }
 
-    public function testGetKey()
+    /**
+     * @covers ZfcUser\Validator\AbstractRecord::query
+     * @expectedException \Exception
+     * @expectedExceptionMessage Invalid key used in ZfcUser validator
+     */
+    public function testQueryWithInvalidKey()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = array('key' => 'zfcUser');
+        $validator = new AbstractRecordExtension($options);
+
+        $method = new \ReflectionMethod('ZfcUserTest\Validator\AbstractRecordExtension', 'query');
+        $method->setAccessible(true);
+
+        $method->invoke($validator, array('test'));
     }
 
-    public function testSetKey()
+    /**
+     * @covers ZfcUser\Validator\AbstractRecord::query
+     */
+    public function testQueryWithKeyUsername()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = array('key' => 'username');
+        $validator = new AbstractRecordExtension($options);
+
+        $mapper = $this->getMock('ZfcUser\Mapper\UserInterface');
+        $mapper->expects($this->once())
+               ->method('findByUsername')
+               ->with('test')
+               ->will($this->returnValue('ZfcUser'));
+
+        $validator->setMapper($mapper);
+
+        $method = new \ReflectionMethod('ZfcUserTest\Validator\AbstractRecordExtension', 'query');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($validator, 'test');
+
+        $this->assertEquals('ZfcUser', $result);
     }
 
-    public function testQuery()
+    /**
+     * @covers ZfcUser\Validator\AbstractRecord::query
+     */
+    public function testQueryWithKeyEmail()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = array('key' => 'email');
+        $validator = new AbstractRecordExtension($options);
+
+        $mapper = $this->getMock('ZfcUser\Mapper\UserInterface');
+        $mapper->expects($this->once())
+            ->method('findByEmail')
+            ->with('test@test.com')
+            ->will($this->returnValue('ZfcUser'));
+
+        $validator->setMapper($mapper);
+
+        $method = new \ReflectionMethod('ZfcUserTest\Validator\AbstractRecordExtension', 'query');
+        $method->setAccessible(true);
+
+        $result = $method->invoke($validator, 'test@test.com');
+
+        $this->assertEquals('ZfcUser', $result);
     }
 }
