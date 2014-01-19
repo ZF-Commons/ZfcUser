@@ -6,24 +6,36 @@ use ZfcUser\Form\Login as Form;
 
 class LoginTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ZfcUser\Form\ChangePassword::__construct
+     */
     public function testConstruct()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = $this->getMock('ZfcUser\Options\AuthenticationOptionsInterface');
+        $options->expects($this->once())
+                ->method('getAuthIdentityFields')
+                ->will($this->returnValue(array()));
+
+        $form = new Form(null, $options);
+
+        $elements = $form->getElements();
+
+        $this->assertArrayHasKey('identity', $elements);
+        $this->assertArrayHasKey('credential', $elements);
     }
 
-    public function testSetAuthenticationOptions()
+    /**
+     * @covers ZfcUser\Form\ChangePassword::getAuthenticationOptions
+     * @covers ZfcUser\Form\ChangePassword::setAuthenticationOptions
+     */
+    public function testSetGetAuthenticationOptions()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
+        $options = $this->getMock('ZfcUser\Options\AuthenticationOptionsInterface');
+        $options->expects($this->once())
+                ->method('getAuthIdentityFields')
+                ->will($this->returnValue(array()));
+        $form = new Form(null, $options);
 
-    public function testGetAuthenticationOptions()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertSame($options, $form->getAuthenticationOptions());
     }
 }
