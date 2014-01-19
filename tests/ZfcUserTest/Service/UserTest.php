@@ -166,7 +166,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$wrongPassword'));
+             ->will($this->returnValue('$2a$04$onavTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
 
         $this->authService->expects($this->once())
                           ->method('getIdentity')
@@ -257,7 +257,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$wrongPassword'));
+             ->will($this->returnValue('$2a$04$onabTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
 
         $this->authService->expects($this->once())
              ->method('getIdentity')
