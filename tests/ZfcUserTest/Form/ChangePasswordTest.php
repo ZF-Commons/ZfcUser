@@ -6,24 +6,32 @@ use ZfcUser\Form\ChangePassword as Form;
 
 class ChangePasswordTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ZfcUser\Form\ChangePassword::__construct
+     */
     public function testConstruct()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $options = $this->getMock('ZfcUser\Options\AuthenticationOptionsInterface');
+
+        $form = new Form(null, $options);
+
+        $elements = $form->getElements();
+
+        $this->assertArrayHasKey('identity', $elements);
+        $this->assertArrayHasKey('credential', $elements);
+        $this->assertArrayHasKey('newCredential', $elements);
+        $this->assertArrayHasKey('newCredentialVerify', $elements);
     }
 
-    public function testSetAuthenticationOptions()
+    /**
+     * @covers ZfcUser\Form\ChangePassword::getAuthenticationOptions
+     * @covers ZfcUser\Form\ChangePassword::setAuthenticationOptions
+     */
+    public function testSetGetAuthenticationOptions()
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
-    }
+        $options = $this->getMock('ZfcUser\Options\AuthenticationOptionsInterface');
+        $form = new Form(null, $options);
 
-    public function testGetAuthenticationOptions()
-    {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $this->assertSame($options, $form->getAuthenticationOptions());
     }
 }
