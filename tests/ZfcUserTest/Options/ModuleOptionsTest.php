@@ -54,8 +54,8 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Options\ModuleOptions::getUseRedirectParameterIfPreset
-     * @covers ZfcUser\Options\ModuleOptions::setUseRedirectParameterIfPreset
+     * @covers ZfcUser\Options\ModuleOptions::getUseRedirectParameterIfPresent
+     * @covers ZfcUser\Options\ModuleOptions::setUseRedirectParameterIfPresent
      */
     public function testSetGetUseRedirectParameterIfPresent()
     {
@@ -64,7 +64,7 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Options\ModuleOptions::getUseRedirectParameterIfPreset
+     * @covers ZfcUser\Options\ModuleOptions::getUseRedirectParameterIfPresent
      */
     public function testGetUseRedirectParameterIfPresent()
     {
@@ -180,7 +180,7 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserSate
+     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserState
      */
     public function testGetDefaultUserState()
     {
@@ -188,8 +188,8 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserSate
-     * @covers ZfcUser\Options\ModuleOptions::setDefaultUserSate
+     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserState
+     * @covers ZfcUser\Options\ModuleOptions::setDefaultUserState
      */
     public function testSetGetDefaultUserState()
     {
