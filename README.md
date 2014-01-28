@@ -62,7 +62,8 @@ Installation
 
     ```json
     "require": {
-        "zf-commons/zfc-user": "dev-master"
+        "zf-commons/zfc-user": "dev-master",
+        "zendframework/zendframework": "2.2.*"
     }
     ```
 
