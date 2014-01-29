@@ -58,7 +58,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function update($entity, $where = null, $tableName = null, HydratorInterface $hydrator = null)
     {
         if (!$where) {
-            $where = 'user_id = ' . $entity->getId();
+            $where = array('user_id' => $entity->getId());
         }
 
         return parent::update($entity, $where, $tableName, $hydrator);
