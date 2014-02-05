@@ -350,7 +350,7 @@ class UserController extends AbstractActionController
     public function getRegisterForm()
     {
         if (!$this->registerForm) {
-            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
+            $this->setRegisterForm($this->getServiceLocator()->get('FormElementManager')->get('zfcuser_register_form'));
         }
         return $this->registerForm;
     }
@@ -363,7 +363,7 @@ class UserController extends AbstractActionController
     public function getLoginForm()
     {
         if (!$this->loginForm) {
-            $this->setLoginForm($this->getServiceLocator()->get('zfcuser_login_form'));
+            $this->setLoginForm($this->getServiceLocator()->get('FormElementManager')->get('zfcuser_login_form'));
         }
         return $this->loginForm;
     }
@@ -383,7 +383,7 @@ class UserController extends AbstractActionController
     public function getChangePasswordForm()
     {
         if (!$this->changePasswordForm) {
-            $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
+            $this->setChangePasswordForm($this->getServiceLocator()->get('FormElementManager')->get('zfcuser_change_password_form'));
         }
         return $this->changePasswordForm;
     }
@@ -427,7 +427,7 @@ class UserController extends AbstractActionController
     public function getChangeEmailForm()
     {
         if (!$this->changeEmailForm) {
-            $this->setChangeEmailForm($this->getServiceLocator()->get('zfcuser_change_email_form'));
+            $this->setChangeEmailForm($this->getServiceLocator()->get('FormElementManager')->get('zfcuser_change_email_form'));
         }
         return $this->changeEmailForm;
     }
