@@ -22,7 +22,7 @@ $form->setAttribute('method', 'post');
         <?php elseif ($element instanceof Zend\Form\Element\Captcha): ?>
             <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element) ?></dd>
         <?php else: ?>
-            <dd><?php echo $this->formInput($element) . $this->formElementErrors($element) ?></dd>
+            <dd><?php echo $this->formInput($element->setAttributes(array('class'=>'form-control'))) . $this->formElementErrors($element) ?></dd>
         <?php endif ?>
     <?php endforeach ?>
     </dl>
