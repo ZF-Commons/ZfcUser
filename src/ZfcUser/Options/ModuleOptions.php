@@ -344,7 +344,7 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * get list of states to allow user login
      *
-     * @return int
+     * @return array
      */
     public function getAllowedLoginStates()
     {
