@@ -12,7 +12,7 @@ use ZfcUser\Options\UserControllerOptionsInterface;
 
 class UserController extends AbstractActionController
 {
-    const ROUTE_CHANGEPASSWD = 'zfcuser/changepassword';
+    const ROUTE_CHANGEPASSWD = 'sklad/profile';
     const ROUTE_LOGIN        = 'zfcuser/login';
     const ROUTE_REGISTER     = 'zfcuser/register';
     const ROUTE_CHANGEEMAIL  = 'zfcuser/changeemail';

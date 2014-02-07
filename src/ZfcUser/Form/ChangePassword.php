@@ -30,7 +30,7 @@ class ChangePassword extends ProvidesEventsForm
             ),
         ));
 
-        $this->add(array(
+        /*$this->add(array(
             'name' => 'credential',
             'options' => array(
                 'label' => 'Current Password',
@@ -38,7 +38,7 @@ class ChangePassword extends ProvidesEventsForm
             'attributes' => array(
                 'type' => 'password',
             ),
-        ));
+        ));*/
 
         $this->add(array(
             'name' => 'newCredential',

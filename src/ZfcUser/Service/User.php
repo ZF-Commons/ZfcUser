@@ -111,15 +111,15 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     {
         $currentUser = $this->getAuthService()->getIdentity();
 
-        $oldPass = $data['credential'];
+        //$oldPass = $data['credential'];
         $newPass = $data['newCredential'];
 
         $bcrypt = new Bcrypt;
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
 
-        if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
-            return false;
-        }
+        //if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
+            //return false;
+        //}
 
         $pass = $bcrypt->create($newPass);
         $currentUser->setPassword($pass);
