@@ -13,16 +13,16 @@ $form->setAttribute('method', 'post');
         <?php echo $this->formElementErrors($form->get('identity')) ?>
 
         <dt><?php echo $this->formLabel($form->get('identity')) ?></dt>
-        <dd><?php echo $this->formInput($form->get('identity')) ?></dd>
+        <dd><?php echo $this->formInput($form->get('identity')->setAttributes(array('class'=>'form-control'))) ?></dd>
 
         <dt><?php echo $this->formLabel($form->get('credential')) ?></dt>
-        <dd><?php echo $this->formInput($form->get('credential')) ?></dd>
+        <dd><?php echo $this->formInput($form->get('credential')->setAttributes(array('class'=>'form-control'))) ?></dd>
 
         <?php if ($this->redirect): ?>
             <input type="hidden" name="redirect" value="<?php echo $this->escapeHtml($this->redirect) ?>" />
         <?php endif ?>
 
-        <dd><?php echo $this->formButton($form->get('submit')) ?></dd>
+        <dd><?php echo $this->formButton($form->get('submit')->setAttributes(array('class'=>'btn btn-success btn-lg'))) ?></dd>
     </dl>
 
 <?php echo $this->form()->closeTag() ?>

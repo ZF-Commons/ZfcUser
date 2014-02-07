@@ -78,6 +78,7 @@ class Base extends ProvidesEventsForm
             ->setLabel('Submit')
             ->setAttributes(array(
                 'type'  => 'submit',
+                'class'  => 'btn',
             ));
 
         $this->add($submitElement, array(

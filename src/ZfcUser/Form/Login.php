@@ -62,6 +62,7 @@ class Login extends ProvidesEventsForm
             ->setLabel('Sign In')
             ->setAttributes(array(
                 'type'  => 'submit',
+                'class'  => 'btn',
             ));
 
         $this->add($submitElement, array(

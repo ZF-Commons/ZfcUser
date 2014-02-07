@@ -105,7 +105,7 @@ abstract class AbstractRecord extends AbstractValidator
                 break;
 
             case 'username':
-                $result = $this->getMapper()->findByUsername($value);
+                //$result = $this->getMapper()->findByUsername($value);
                 break;
 
             default:
