@@ -18,7 +18,7 @@ $form->setAttribute('method', 'post');
             <dt><?php echo $this->formLabel($element) ?></dt>
         <?php endif ?>
         <?php if ($element instanceof Zend\Form\Element\Button): ?>
-            <dd><?php echo $this->formButton($element) ?></dd>
+            <dd><?php echo $this->formButton($element->setAttributes(array('class'=>'btn btn-success btn-lg'))) ?></dd>
         <?php elseif ($element instanceof Zend\Form\Element\Captcha): ?>
             <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element) ?></dd>
         <?php else: ?>
