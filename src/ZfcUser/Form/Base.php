@@ -23,12 +23,10 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
+            'type' => 'email',
             'name' => 'email',
             'options' => array(
                 'label' => 'Email',
-            ),
-            'attributes' => array(
-                'type' => 'text'
             ),
         ));
 
@@ -43,22 +41,18 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
+            'type' => 'password',
             'name' => 'password',
             'options' => array(
                 'label' => 'Password',
             ),
-            'attributes' => array(
-                'type' => 'password'
-            ),
         ));
 
         $this->add(array(
+            'type' => 'password',
             'name' => 'passwordVerify',
             'options' => array(
                 'label' => 'Password Verify',
-            ),
-            'attributes' => array(
-                'type' => 'password'
             ),
         ));
 
@@ -73,12 +67,8 @@ class Base extends ProvidesEventsForm
             ));
         }
 
-        $submitElement = new Element\Button('submit');
-        $submitElement
-            ->setLabel('Submit')
-            ->setAttributes(array(
-                'type'  => 'submit',
-            ));
+        $submitElement = new Element\Submit('submit');
+        $submitElement->setLabel('Submit');
 
         $this->add($submitElement, array(
             'priority' => -100,

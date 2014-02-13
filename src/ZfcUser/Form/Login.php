@@ -39,12 +39,10 @@ class Login extends ProvidesEventsForm
         $emailElement->setLabel($label);
         //
         $this->add(array(
+            'type' => 'password',
             'name' => 'credential',
             'options' => array(
                 'label' => 'Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
             ),
         ));
 
@@ -57,12 +55,8 @@ class Login extends ProvidesEventsForm
         //$csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
         //$this->add($csrf);
 
-        $submitElement = new Element\Button('submit');
-        $submitElement
-            ->setLabel('Sign In')
-            ->setAttributes(array(
-                'type'  => 'submit',
-            ));
+        $submitElement = new Element\Submit('submit');
+        $submitElement->setLabel('Sign In');
 
         $this->add($submitElement, array(
             'priority' => -100,

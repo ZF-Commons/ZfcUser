@@ -24,32 +24,34 @@ class ChangeEmail extends ProvidesEventsForm
         ));
 
         $this->add(array(
+            'type' => 'email',
             'name' => 'newIdentity',
             'options' => array(
                 'label' => 'New Email',
             ),
-            'attributes' => array(
-                'type' => 'text',
-            ),
         ));
 
         $this->add(array(
+            'type' => 'email',
             'name' => 'newIdentityVerify',
             'options' => array(
                 'label' => 'Verify New Email',
             ),
-            'attributes' => array(
-                'type' => 'text',
-            ),
         ));
 
         $this->add(array(
+            'type' => 'password',
             'name' => 'credential',
             'options' => array(
                 'label' => 'Password',
             ),
+        ));
+
+        $this->add(array(
+            'type' => 'submit',
+            'name' => 'submit',
             'attributes' => array(
-                'type' => 'password',
+                'value' => 'Submit',
             ),
         ));
 
