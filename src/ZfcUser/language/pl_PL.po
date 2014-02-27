@@ -1,0 +1,128 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZfcUser\n"
+"Report-Msgid-Bugs-To: zf-devteam@zend.com\n"
+"POT-Creation-Date: 2013-11-08 00:38+0100\n"
+"PO-Revision-Date: 2014-02-27 13:22+0100\n"
+"Last-Translator: Thomas Szteliga <ts@websafe.pl>\n"
+"Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/ZfcUser/language/msgIds.php:6
+msgid "Username"
+msgstr "Nazwa użytkownika"
+
+#: src/ZfcUser/language/msgIds.php:7
+msgid "Email"
+msgstr "E-mail"
+
+#: src/ZfcUser/language/msgIds.php:8
+msgid "New Email"
+msgstr "Nowy e-mail"
+
+#: src/ZfcUser/language/msgIds.php:9
+msgid "Verify New Email"
+msgstr "Powtórz nowy e-mail"
+
+#: src/ZfcUser/language/msgIds.php:10
+msgid "Display Name"
+msgstr "Nazwa wyświetlana"
+
+#: src/ZfcUser/language/msgIds.php:11
+msgid "Password"
+msgstr "Hasło"
+
+#: src/ZfcUser/language/msgIds.php:12
+msgid "Password Verify"
+msgstr "Powtórz hasło"
+
+#: src/ZfcUser/language/msgIds.php:13
+msgid "Current Password"
+msgstr "Aktualne hasło"
+
+#: src/ZfcUser/language/msgIds.php:14
+msgid "Verify New Password"
+msgstr "Powtórz nowe hasło"
+
+#: src/ZfcUser/language/msgIds.php:15
+msgid "New Password"
+msgstr "Nowe hasło"
+
+#: src/ZfcUser/language/msgIds.php:16
+msgid "Please type the following text"
+msgstr "Proszę przepisz następujący tekst"
+
+#: src/ZfcUser/language/msgIds.php:17
+msgid "Submit"
+msgstr "Prześlij"
+
+#: src/ZfcUser/language/msgIds.php:18 view/zfc-user/user/login.phtml:1
+msgid "Sign In"
+msgstr "Logowanie"
+
+#: src/ZfcUser/language/msgIds.php:19 view/zfc-user/user/register.phtml:1
+msgid "Register"
+msgstr "Rejestracja"
+
+#: src/ZfcUser/language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "Nie znaleziono konta o podanym identyfikatorze"
+
+#: src/ZfcUser/language/msgIds.php:21
+msgid "A record matching the input was found"
+msgstr "Konto o podanym identyfikatorze już istnieje"
+
+#: src/ZfcUser/language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr ""
+"Logowanie nie powiodło się. "
+"Proszę spróbuj ponownie."
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Not registered?"
+msgstr "Nie posiadasz konta?"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Sign up!"
+msgstr "Zarejestruj się!"
+
+#: view/zfc-user/user/changeemail.phtml:1
+#, php-format
+msgid "Change Email for %s"
+msgstr "Zmień e-mail dla %s"
+
+#: view/zfc-user/user/changeemail.phtml:3
+msgid "Email address changed successfully."
+msgstr "Pomyślnie zaktualizowano e-mail."
+
+#: view/zfc-user/user/changeemail.phtml:5
+msgid "Unable to update your email address. Please try again."
+msgstr ""
+"Nie udało się zaktualizować Twojego adresu e-mail. "
+"Proszę spróbuj ponownie."
+
+#: view/zfc-user/user/changepassword.phtml:1
+#, php-format
+msgid "Change Password for %s"
+msgstr "Zmień hasło dla %s"
+
+#: view/zfc-user/user/changepassword.phtml:3
+msgid "Password changed successfully."
+msgstr "Pomyślnie zmieniono hasło."
+
+#: view/zfc-user/user/changepassword.phtml:5
+msgid "Unable to update your password. Please try again."
+msgstr ""
+"Nie udało się zaktualizować Twojego hasła. "
+"Proszę spróbuj ponownie."
+
+#: view/zfc-user/user/index.phtml:2
+msgid "Hello"
+msgstr "Witaj"
+
+#: view/zfc-user/user/index.phtml:3
+msgid "Sign Out"
+msgstr "Wyloguj"
