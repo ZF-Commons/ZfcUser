@@ -14,7 +14,7 @@ class ChangePasswordFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $options = $serviceLocator->get('zfcuser_module_options');
-        $form = new ChangePassword(null, $serviceLocator->get('zfcuser_module_options'));
+        $form = new ChangePassword(null, $options);
         $form->setInputFilter(new ChangePasswordFilter($options));
 
         return $form;        
