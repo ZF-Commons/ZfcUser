@@ -86,85 +86,20 @@ class Module implements
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
+                'zfcuser_user_hydrator'             => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
-
-                'zfcuser_module_options' => function ($sm) {
-                    $config = $sm->get('Config');
-                    return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
-                },
+                'zfcuser_module_options' => 'ZfcUser\Factory\ModuleOptionsFactory',
                 // We alias this one because it's ZfcUser's instance of
                 // Zend\Authentication\AuthenticationService. We don't want to
                 // hog the FQCN service alias for a Zend\* class.
-                'zfcuser_auth_service' => function ($sm) {
-                    return new \Zend\Authentication\AuthenticationService(
-                        $sm->get('ZfcUser\Authentication\Storage\Db'),
-                        $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
-                    );
-                },
-
+                'zfcuser_auth_service' => 'ZfcUser\Factory\AuthenticationServiceFactory',
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
-
-                'zfcuser_login_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Login(null, $options);
-                    $form->setInputFilter(new Form\LoginFilter($options));
-                    return $form;
-                },
-
-                'zfcuser_register_form' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Register(null, $options);
-                    //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
-                    $form->setInputFilter(new Form\RegisterFilter(
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'email'
-                        )),
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'username'
-                        )),
-                        $options
-                    ));
-                    return $form;
-                },
-
-                'zfcuser_change_password_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
-                    $form->setInputFilter(new Form\ChangePasswordFilter($options));
-                    return $form;
-                },
-
-                'zfcuser_change_email_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangeEmail(null, $options);
-                    $form->setInputFilter(new Form\ChangeEmailFilter(
-                        $options,
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'email'
-                        ))
-                    ));
-                    return $form;
-                },
-
-                'zfcuser_user_hydrator' => function ($sm) {
-                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
-                    return $hydrator;
-                },
-
-                'zfcuser_user_mapper' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $mapper = new Mapper\User();
-                    $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
-                    $entityClass = $options->getUserEntityClass();
-                    $mapper->setEntityPrototype(new $entityClass);
-                    $mapper->setHydrator(new Mapper\UserHydrator());
-                    $mapper->setTableName($options->getTableName());
-                    return $mapper;
-                },
+                'zfcuser_login_form' => 'ZfcUser\Factory\LoginFormFactory',
+                'zfcuser_register_form' => 'ZfcUser\Factory\RegisterFormFactory',
+                'zfcuser_change_password_form' => 'ZfcUser\Factory\ChangePasswordFormFactory',
+                'zfcuser_change_email_form' => 'ZfcUser\Factory\ChangeEmailFormFactory',
+                'zfcuser_user_mapper' => 'ZfcUser\Factory\UserMapperFactory',
             ),
         );
     }
