@@ -36,15 +36,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserAuthentication' => function ($sm) {
-                    $serviceLocator = $sm->getServiceLocator();
-                    $authService = $serviceLocator->get('zfcuser_auth_service');
-                    $authAdapter = $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain');
-                    $controllerPlugin = new Controller\Plugin\ZfcUserAuthentication;
-                    $controllerPlugin->setAuthService($authService);
-                    $controllerPlugin->setAuthAdapter($authAdapter);
-                    return $controllerPlugin;
-                },
+                'zfcUserAuthentication' => 'ZfcUser\Controller\Plugin\Factory\ZfcUserAuthenticationFactory'
             ),
         );
     }
@@ -53,25 +45,9 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserDisplayName' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-                    $viewHelper = new View\Helper\ZfcUserDisplayName;
-                    $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
-                    return $viewHelper;
-                },
-                'zfcUserIdentity' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-                    $viewHelper = new View\Helper\ZfcUserIdentity;
-                    $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
-                    return $viewHelper;
-                },
-                'zfcUserLoginWidget' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-                    $viewHelper = new View\Helper\ZfcUserLoginWidget;
-                    $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
-                    $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
-                    return $viewHelper;
-                },
+                'zfcUserDisplayName' => 'ZfcUser\View\Helper\Factory\DisplayNameFactory',
+                'zfcUserIdentity' => 'ZfcUser\View\Helper\Factory\IdentityFactory',
+                'zfcUserLoginWidget' => 'ZfcUser\View\Helper\Factory\LoginWidgetFactory',
             ),
         );
 
