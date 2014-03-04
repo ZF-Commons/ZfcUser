@@ -45,9 +45,9 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserDisplayName' => 'ZfcUser\View\Helper\Factory\DisplayNameFactory',
-                'zfcUserIdentity' => 'ZfcUser\View\Helper\Factory\IdentityFactory',
-                'zfcUserLoginWidget' => 'ZfcUser\View\Helper\Factory\LoginWidgetFactory',
+                'zfcUserDisplayName'    => 'ZfcUser\View\Helper\Factory\DisplayNameFactory',
+                'zfcUserIdentity'       => 'ZfcUser\View\Helper\Factory\IdentityFactory',
+                'zfcUserLoginWidget'    => 'ZfcUser\View\Helper\Factory\LoginWidgetFactory',
             ),
         );
 
@@ -62,20 +62,17 @@ class Module implements
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
-                'zfcuser_user_hydrator'             => 'Zend\Stdlib\Hydrator\ClassMethods',
+                'zfcuser_user_hydrator'             => 'ZfcUser\Mapper\UserHydrator',
             ),
             'factories' => array(
-                'zfcuser_module_options' => 'ZfcUser\Factory\ModuleOptionsFactory',
-                // We alias this one because it's ZfcUser's instance of
-                // Zend\Authentication\AuthenticationService. We don't want to
-                // hog the FQCN service alias for a Zend\* class.
-                'zfcuser_auth_service' => 'ZfcUser\Factory\AuthenticationServiceFactory',
-                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
-                'zfcuser_login_form' => 'ZfcUser\Factory\LoginFormFactory',
-                'zfcuser_register_form' => 'ZfcUser\Factory\RegisterFormFactory',
-                'zfcuser_change_password_form' => 'ZfcUser\Factory\ChangePasswordFormFactory',
-                'zfcuser_change_email_form' => 'ZfcUser\Factory\ChangeEmailFormFactory',
-                'zfcuser_user_mapper' => 'ZfcUser\Factory\UserMapperFactory',
+                'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
+                'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
+                'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
+                'zfcuser_login_form'                            => 'ZfcUser\Factory\LoginFormFactory',
+                'zfcuser_register_form'                         => 'ZfcUser\Factory\RegisterFormFactory',
+                'zfcuser_change_password_form'                  => 'ZfcUser\Factory\ChangePasswordFormFactory',
+                'zfcuser_change_email_form'                     => 'ZfcUser\Factory\ChangeEmailFormFactory',
+                'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
             ),
         );
     }
