@@ -1,7 +1,7 @@
 <?php
-namespace ZfcUserTest\View\Helper\Factory;
+namespace ZfcUserTest\Factory\View\Helper;
 
-use ZfcUser\View\Helper\Factory\IdentityFactory;
+use ZfcUser\Factory\View\Helper\IdentityFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class IdentityFactoryTest extends \PHPUnit_Framework_TestCase

@@ -1,7 +1,7 @@
 <?php
-namespace ZfcUserTest\View\Helper\Factory;
+namespace ZfcUserTest\Factory\View\Helper;
 
-use ZfcUser\View\Helper\Factory\DisplayNameFactory;
+use ZfcUser\Factory\View\Helper\DisplayNameFactory;
 use Zend\ServiceManager\ServiceManager;
 
 class DisplayNameFactoryTest extends \PHPUnit_Framework_TestCase

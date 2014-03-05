@@ -36,7 +36,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserAuthentication' => 'ZfcUser\Controller\Plugin\Factory\ZfcUserAuthenticationFactory'
+                'zfcUserAuthentication' => 'ZfcUser\Factory\Controller\Plugin\ZfcUserAuthenticationFactory'
             ),
         );
     }
@@ -45,9 +45,9 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserDisplayName'    => 'ZfcUser\View\Helper\Factory\DisplayNameFactory',
-                'zfcUserIdentity'       => 'ZfcUser\View\Helper\Factory\IdentityFactory',
-                'zfcUserLoginWidget'    => 'ZfcUser\View\Helper\Factory\LoginWidgetFactory',
+                'zfcUserDisplayName'    => 'ZfcUser\Factory\View\Helper\DisplayNameFactory',
+                'zfcUserIdentity'       => 'ZfcUser\Factory\View\Helper\IdentityFactory',
+                'zfcUserLoginWidget'    => 'ZfcUser\Factory\View\Helper\LoginWidgetFactory',
             ),
         );
 
@@ -68,10 +68,10 @@ class Module implements
                 'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
                 'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
                 'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
-                'zfcuser_login_form'                            => 'ZfcUser\Factory\LoginFormFactory',
-                'zfcuser_register_form'                         => 'ZfcUser\Factory\RegisterFormFactory',
-                'zfcuser_change_password_form'                  => 'ZfcUser\Factory\ChangePasswordFormFactory',
-                'zfcuser_change_email_form'                     => 'ZfcUser\Factory\ChangeEmailFormFactory',
+                'zfcuser_login_form'                            => 'ZfcUser\Factor\Form\LoginFormFactory',
+                'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
+                'zfcuser_change_password_form'                  => 'ZfcUser\Factory\Form\ChangePasswordFormFactory',
+                'zfcuser_change_email_form'                     => 'ZfcUser\Factory\Form\ChangeEmailFormFactory',
                 'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
             ),
         );

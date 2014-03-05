@@ -1,8 +1,8 @@
 <?php
-namespace ZfcUserTest\Factory;
+namespace ZfcUserTest\Factory\Form;
 
 use Zend\ServiceManager\ServiceManager;
-use ZfcUser\Factory\LoginFormFactory;
+use ZfcUser\Factory\Form\LoginFormFactory;
 use ZfcUser\Options\ModuleOptions;
 
 class LoginFormFactoryTest extends \PHPUnit_Framework_TestCase 

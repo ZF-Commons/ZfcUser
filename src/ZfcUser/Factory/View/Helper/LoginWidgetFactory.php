@@ -1,5 +1,5 @@
 <?php
-namespace ZfcUser\View\Helper\Factory;
+namespace ZfcUser\Factory\View\Helper;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
@@ -7,6 +7,9 @@ use ZfcUser\View\Helper\ZfcUserLoginWidget;
 
 class LoginWidgetFactory implements FactoryInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function createService(ServiceLocatorInterface $helpers)
     {
         $locator = $helpers->getServiceLocator();
