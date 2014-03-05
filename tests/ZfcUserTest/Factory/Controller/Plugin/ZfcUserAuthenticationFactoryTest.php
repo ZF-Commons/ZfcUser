@@ -1,8 +1,8 @@
 <?php
-namespace ZfcUserTest\Controller\Plugin\Factory;
+namespace ZfcUserTest\Factory\Controller\Plugin;
 
 use Zend\ServiceManager\ServiceManager;
-use ZfcUser\Controller\Plugin\Factory\ZfcUserAuthenticationFactory;
+use ZfcUser\Factory\Controller\Plugin\ZfcUserAuthenticationFactory;
 
 class ZfcUserAuthenticationFactoryTest extends \PHPUnit_Framework_TestCase
 {

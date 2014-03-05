@@ -1,7 +1,7 @@
 <?php
-namespace ZfcUserTest\View\Helper\Factory;
+namespace ZfcUserTest\Factory\View\Helper;
 
-use ZfcUser\View\Helper\Factory\LoginWidgetFactory;
+use ZfcUser\Factory\View\Helper\LoginWidgetFactory;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Form\Login as LoginForm;

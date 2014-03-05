@@ -1,13 +1,13 @@
 <?php
-namespace ZfcUser\Factory;
+namespace ZfcUser\Factory\Form;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
-use ZfcUser\Form\ChangeEmail;
-use ZfcUser\Form\ChangeEmailFilter;
+use ZfcUser\Form\Register;
+use ZfcUser\Form\RegisterFilter;
 use ZfcUser\Validator\NoRecordExists;
 
-class ChangeEmailFormFactory implements FactoryInterface
+class RegisterFormFactory implements FactoryInterface
 {
     /**
      * {@inheritDoc}
@@ -15,13 +15,18 @@ class ChangeEmailFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $options = $serviceLocator->get('zfcuser_module_options');
-        $form = new ChangeEmail(null, $options);
-        $form->setInputFilter(new ChangeEmailFilter(
-            $options,
+        $form = new Register(null, $options);
+        //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
+        $form->setInputFilter(new RegisterFilter(
             new NoRecordExists(array(
                 'mapper' => $serviceLocator->get('zfcuser_user_mapper'),
                 'key'    => 'email'
-            ))
+            )),
+            new NoRecordExists(array(
+                'mapper' => $serviceLocator->get('zfcuser_user_mapper'),
+                'key'    => 'username'
+            )),
+            $options
         ));
 
         return $form;        

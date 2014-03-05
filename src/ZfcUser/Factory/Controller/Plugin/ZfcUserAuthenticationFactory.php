@@ -1,5 +1,5 @@
 <?php
-namespace ZfcUser\Controller\Plugin\Factory;
+namespace ZfcUser\Factory\Controller\Plugin;
 
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;

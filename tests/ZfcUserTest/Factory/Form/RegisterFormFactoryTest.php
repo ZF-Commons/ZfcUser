@@ -1,8 +1,8 @@
 <?php
-namespace ZfcUserTest\Factory;
+namespace ZfcUserTest\Factory\Form;
 
 use Zend\ServiceManager\ServiceManager;
-use ZfcUser\Factory\RegisterFormFactory;
+use ZfcUser\Factory\Form\RegisterFormFactory;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Mapper\User as UserMapper;
 
