@@ -3,6 +3,7 @@
 namespace ZfcUserTest\Service;
 
 use ZfcUser\Service\User as Service;
+use Zend\Crypt\Password\Bcrypt;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
@@ -163,10 +164,13 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
+
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$onavTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
+             ->will($this->returnValue($bcrypt->create('wrongPassword')));
 
         $this->authService->expects($this->once())
                           ->method('getIdentity')
@@ -187,10 +191,13 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
+
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$onKkTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
+             ->will($this->returnValue($bcrypt->create($data['credential'])));
         $user->expects($this->once())
              ->method('setPassword');
 
@@ -220,10 +227,13 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
+
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$fquYVqPthdfz5d3O7BohtufHvyj7fowzI..WxfH7ux/xmjYBTGg/G'));
+             ->will($this->returnValue($bcrypt->create($data['credential'])));
         $user->expects($this->once())
              ->method('setEmail')
              ->with('zfcUser@zfcUser.com');
@@ -254,10 +264,13 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
+
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$onabTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
+             ->will($this->returnValue($bcrypt->create('wrongPassword')));
 
         $this->authService->expects($this->once())
              ->method('getIdentity')
