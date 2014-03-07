@@ -69,9 +69,11 @@ class AdapterChain extends EventProvider implements AdapterInterface
         }
 
         if ($e->getIdentity()) {
+            $this->getEventManager()->trigger('authenticate.success', $e);
             return true;
         }
 
+        $this->getEventManager()->trigger('authenticate.fail', $e);
         return false;
     }
 
