@@ -160,7 +160,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('newCredential' => 'zfcUser', 'credential' => 'zfcUserOld');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
@@ -168,11 +168,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('getPassword')
              ->will($this->returnValue($bcrypt->create('wrongPassword')));
 
-        $this->authService->expects($this->once())
+        $this->authService->expects($this->any())
                           ->method('getIdentity')
                           ->will($this->returnValue($user));
 
@@ -187,7 +187,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('newCredential' => 'zfcUser', 'credential' => 'zfcUserOld');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
@@ -195,13 +195,13 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('getPassword')
              ->will($this->returnValue($bcrypt->create($data['credential'])));
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('setPassword');
 
-        $this->authService->expects($this->once())
+        $this->authService->expects($this->any())
              ->method('getIdentity')
              ->will($this->returnValue($user));
 
@@ -223,7 +223,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('credential' => 'zfcUser', 'newIdentity' => 'zfcUser@zfcUser.com');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
@@ -231,14 +231,14 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('getPassword')
              ->will($this->returnValue($bcrypt->create($data['credential'])));
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('setEmail')
              ->with('zfcUser@zfcUser.com');
 
-        $this->authService->expects($this->once())
+        $this->authService->expects($this->any())
              ->method('getIdentity')
              ->will($this->returnValue($user));
 
@@ -260,7 +260,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('credential' => 'zfcUserOld');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
@@ -268,11 +268,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('getPassword')
              ->will($this->returnValue($bcrypt->create('wrongPassword')));
 
-        $this->authService->expects($this->once())
+        $this->authService->expects($this->any())
              ->method('getIdentity')
              ->will($this->returnValue($user));
 
