@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUserTest\Authentication\Adapter;
+namespace ZfcUserTest\Authentication\Adapter\TestAsset;
 
 use ZfcUser\Authentication\Adapter\AbstractAdapter;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent;

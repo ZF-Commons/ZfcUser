@@ -2,6 +2,9 @@
 
 namespace ZfcUserTest\Authentication\Adapter;
 
+
+use ZfcUserTest\Authentication\Adapter\TestAsset\AbstractAdapterExtension;
+
 class AbstractAdapterTest extends \PHPUnit_Framework_TestCase
 {
     /**

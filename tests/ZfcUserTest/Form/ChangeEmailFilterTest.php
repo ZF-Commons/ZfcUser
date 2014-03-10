@@ -11,7 +11,7 @@ class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstruct()
     {
-        $options = $this->getMock('ZfcUser\Options\ModuleOptions');
+        $options = $this->getMock('ZfcUser\Options\ModuleOptions', array('getAuthIdentityFields'));
         $options->expects($this->once())
                 ->method('getAuthIdentityFields')
                 ->will($this->returnValue(array()));
@@ -32,7 +32,7 @@ class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
      */
     public function testConstructIdentityEmail()
     {
-        $options = $this->getMock('ZfcUser\Options\ModuleOptions');
+        $options = $this->getMock('ZfcUser\Options\ModuleOptions', array('getAuthIdentityFields'));
         $options->expects($this->once())
                 ->method('getAuthIdentityFields')
                 ->will($this->returnValue(array('email')));

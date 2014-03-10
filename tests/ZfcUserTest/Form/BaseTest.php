@@ -2,7 +2,7 @@
 
 namespace ZfcUserTest\Form;
 
-use ZfcUserTest\Form\BaseExtension as Form;
+use ZfcUserTest\Form\TestAsset\BaseExtension as Form;
 
 class BaseTest extends \PHPUnit_Framework_TestCase
 {

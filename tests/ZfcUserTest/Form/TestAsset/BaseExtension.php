@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUserTest\Form;
+namespace ZfcUserTest\Form\TestAsset;
 
 use ZfcUser\Form\Base;
 use ZfcUser\Options\RegistrationOptionsInterface;

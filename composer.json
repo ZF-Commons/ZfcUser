@@ -41,8 +41,7 @@
 	"require-dev" : {
 		"phpunit/phpunit" : ">=3.7,<4",
 		"phpmd/phpmd" : "1.4.*",
-		"squizlabs/php_codesniffer" : "1.4.*",
-		"satooshi/php-coveralls" : "~0.6"
+		"squizlabs/php_codesniffer" : "1.4.*"
 	},
 	"autoload" : {
 		"psr-0" : {
