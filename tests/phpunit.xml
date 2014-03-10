@@ -24,4 +24,8 @@
         <const name="DB_SQLITE_PASSWORD" value="" />
         <const name="DB_SQLITE_SCHEMA" value="../data/schema.sqlite.sql" />
     </php>
+    
+    <logging>
+        <log type="coverage-text" target="php://stdout"/>
+    </logging>
 </phpunit>

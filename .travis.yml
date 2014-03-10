@@ -15,7 +15,7 @@ before_script:
   - mysql -e "create database IF NOT EXISTS zfc_user;" -uroot
 
 script:
-  - ./vendor/bin/phpunit --bootstrap=tests/bootstrap.php --coverage-clover ../build/logs/clover.xml
+  - ./vendor/bin/phpunit --bootstrap=tests/bootstrap.php
   - ./vendor/bin/phpcs -n --standard=PSR2 ./src/ ./tests/
 
 after_script:
