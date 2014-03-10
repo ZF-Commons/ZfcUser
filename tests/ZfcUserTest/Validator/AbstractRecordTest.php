@@ -2,14 +2,25 @@
 
 namespace ZfcUserTest\Validator;
 
+use ZfcUserTest\Validator\TestAsset\AbstractRecordExtension;
+
 class AbstractRecordTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @covers ZfcUser\Validator\AbstractRecord::__construct
+     */
+    public function testConstruct()
+    {
+        $options = array('key'=>'value');
+        new AbstractRecordExtension($options);
+    }
+
     /**
      * @covers ZfcUser\Validator\AbstractRecord::__construct
      * @expectedException ZfcUser\Validator\Exception\InvalidArgumentException
      * @expectedExceptionMessage No key provided
      */
-    public function testConstruct()
+    public function testConstructEmptyArray()
     {
         $options = array();
         new AbstractRecordExtension($options);
@@ -56,7 +67,7 @@ class AbstractRecordTest extends \PHPUnit_Framework_TestCase
         $options = array('key' => 'zfcUser');
         $validator = new AbstractRecordExtension($options);
 
-        $method = new \ReflectionMethod('ZfcUserTest\Validator\AbstractRecordExtension', 'query');
+        $method = new \ReflectionMethod('ZfcUserTest\Validator\TestAsset\AbstractRecordExtension', 'query');
         $method->setAccessible(true);
 
         $method->invoke($validator, array('test'));
@@ -78,7 +89,7 @@ class AbstractRecordTest extends \PHPUnit_Framework_TestCase
 
         $validator->setMapper($mapper);
 
-        $method = new \ReflectionMethod('ZfcUserTest\Validator\AbstractRecordExtension', 'query');
+        $method = new \ReflectionMethod('ZfcUserTest\Validator\TestAsset\AbstractRecordExtension', 'query');
         $method->setAccessible(true);
 
         $result = $method->invoke($validator, 'test');
@@ -102,7 +113,7 @@ class AbstractRecordTest extends \PHPUnit_Framework_TestCase
 
         $validator->setMapper($mapper);
 
-        $method = new \ReflectionMethod('ZfcUserTest\Validator\AbstractRecordExtension', 'query');
+        $method = new \ReflectionMethod('ZfcUserTest\Validator\TestAsset\AbstractRecordExtension', 'query');
         $method->setAccessible(true);
 
         $result = $method->invoke($validator, 'test@test.com');

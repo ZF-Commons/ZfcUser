@@ -329,7 +329,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Service\User::setRegisterForm
+     * @covers ZfcUser\Service\User::getRegisterForm
      */
     public function testGetRegisterForm()
     {
@@ -342,7 +342,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $service = new Service;
         $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('ZfcUser\Form\Register', $service->getRegisterForm());
+
+        $result = $service->getRegisterForm();
+
+        $this->assertInstanceOf('ZfcUser\Form\Register', $result);
+        $this->assertSame($form, $result);
     }
 
     /**

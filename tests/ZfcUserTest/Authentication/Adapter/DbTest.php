@@ -67,8 +67,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
         $this->db = new Db;
         $this->db->setStorage($this->storage);
-        $this->db->setOptions($this->options);
-        $this->db->setMapper($mapper);
 
         $sessionManager = $this->getMock('Zend\Session\SessionManager');
         \Zend\Session\AbstractContainer::setDefaultManager($sessionManager);
@@ -135,6 +133,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->with(array('A record with the supplied identity could not be found.'))
             ->will($this->returnValue($this->authEvent));
 
+        $this->db->setOptions($this->options);
+
         $result = $this->db->authenticate($this->authEvent);
 
         $this->assertFalse($result);
@@ -169,6 +169,9 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->method('getState')
             ->will($this->returnValue(1));
 
+        $this->db->setMapper($this->mapper);
+        $this->db->setOptions($this->options);
+
         $result = $this->db->authenticate($this->authEvent);
 
         $this->assertFalse($result);
@@ -200,6 +203,9 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->method('setMessages')
             ->with(array('Supplied credential is invalid.'));
 
+        $this->db->setMapper($this->mapper);
+        $this->db->setOptions($this->options);
+
         $result = $this->db->authenticate($this->authEvent);
 
         $this->assertFalse($result);
@@ -209,10 +215,10 @@ class DbTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ZfcUser\Authentication\Adapter\Db::Authenticate
      */
-    public function testAuthenticationAuthenticates()
+    public function testAuthenticationAuthenticatesWithEmail()
     {
-        $this->setAuthenticationCredentials();
-        $this->setAuthenticationUser();
+        $this->setAuthenticationCredentials('zfc-user@zf-commons.io');
+        $this->setAuthenticationEmail();
 
         $this->options->expects($this->once())
             ->method('getEnableUserState')
@@ -245,6 +251,62 @@ class DbTest extends \PHPUnit_Framework_TestCase
                         ->method('setMessages')
                         ->with(array('Authentication successful.'))
                         ->will($this->returnValue($this->authEvent));
+
+        $this->db->setMapper($this->mapper);
+        $this->db->setOptions($this->options);
+
+        $result = $this->db->authenticate($this->authEvent);
+    }
+
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::Authenticate
+     */
+    public function testAuthenticationAuthenticates()
+    {
+        $this->setAuthenticationCredentials();
+        $this->setAuthenticationUser();
+
+        $this->options->expects($this->once())
+             ->method('getEnableUserState')
+             ->will($this->returnValue(true));
+
+        $this->options->expects($this->once())
+             ->method('getAllowedLoginStates')
+             ->will($this->returnValue(array(1, 2, 3)));
+
+        $this->options->expects($this->once())
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
+
+        $this->user->expects($this->exactly(2))
+                   ->method('getPassword')
+                   ->will($this->returnValue('$2a$04$5kq1mnYWbww8X.rIj7eOVOHXtvGw/peefjIcm0lDGxRTEjm9LnOae'));
+        $this->user->expects($this->once())
+                   ->method('getId')
+                   ->will($this->returnValue(1));
+        $this->user->expects($this->once())
+                   ->method('getState')
+                   ->will($this->returnValue(1));
+
+        $this->storage->expects($this->any())
+                      ->method('getNameSpace')
+                      ->will($this->returnValue('test'));
+
+        $this->authEvent->expects($this->once())
+                        ->method('setIdentity')
+                        ->with(1)
+                        ->will($this->returnValue($this->authEvent));
+        $this->authEvent->expects($this->once())
+                        ->method('setCode')
+                        ->with(\Zend\Authentication\Result::SUCCESS)
+                        ->will($this->returnValue($this->authEvent));
+        $this->authEvent->expects($this->once())
+                        ->method('setMessages')
+                        ->with(array('Authentication successful.'))
+                        ->will($this->returnValue($this->authEvent));
+
+        $this->db->setMapper($this->mapper);
+        $this->db->setOptions($this->options);
 
         $result = $this->db->authenticate($this->authEvent);
     }
@@ -316,6 +378,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ZfcUser\Authentication\Adapter\Db::preprocessCredential
+     * @covers ZfcUser\Authentication\Adapter\Db::setCredentialPreprocessor
+     * @covers ZfcUser\Authentication\Adapter\Db::getCredentialPreprocessor
      */
     public function testPreprocessCredentialWithCallable()
     {
@@ -333,6 +397,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ZfcUser\Authentication\Adapter\Db::preprocessCredential
+     * @covers ZfcUser\Authentication\Adapter\Db::setCredentialPreprocessor
+     * @covers ZfcUser\Authentication\Adapter\Db::getCredentialPreprocessor
      */
     public function testPreprocessCredentialWithoutCallable()
     {
@@ -350,8 +416,10 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
         $this->db->setServiceManager($sm);
 
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $this->db->getServiceManager());
-        $this->assertSame($sm, $this->db->getServiceManager());
+        $serviceManager = $this->db->getServiceManager();
+
+        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $serviceManager);
+        $this->assertSame($sm, $serviceManager);
     }
 
     /**
@@ -359,7 +427,18 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOptionsWithNoOptionsSet()
     {
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $this->db->getOptions());
+        $serviceMapper = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $serviceMapper->expects($this->once())
+            ->method('get')
+            ->with('zfcuser_module_options')
+            ->will($this->returnValue($this->options));
+
+        $this->db->setServiceManager($serviceMapper);
+
+        $options = $this->db->getOptions();
+
+        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $options);
+        $this->assertSame($this->options, $options);
     }
 
     /**
@@ -382,7 +461,17 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMapperWithNoMapperSet()
     {
-        $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $this->db->getMapper());
+        $serviceMapper = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $serviceMapper->expects($this->once())
+            ->method('get')
+            ->with('zfcuser_user_mapper')
+            ->will($this->returnValue($this->mapper));
+
+        $this->db->setServiceManager($serviceMapper);
+
+        $mapper = $this->db->getMapper();
+        $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $mapper);
+        $this->assertSame($this->mapper, $mapper);
     }
 
     /**
@@ -400,6 +489,18 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('zfcUser', $this->db->getMapper()->getTableName());
     }
 
+    protected function setAuthenticationEmail()
+    {
+        $this->mapper->expects($this->once())
+            ->method('findByEmail')
+            ->with('zfc-user@zf-commons.io')
+            ->will($this->returnValue($this->user));
+
+        $this->options->expects($this->once())
+            ->method('getAuthIdentityFields')
+            ->will($this->returnValue(array('email')));
+    }
+
     protected function setAuthenticationUser()
     {
         $this->mapper->expects($this->once())
@@ -412,7 +513,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue(array('username')));
     }
 
-    protected function setAuthenticationCredentials()
+    protected function setAuthenticationCredentials($identity = 'ZfcUser', $credential = 'ZfcUserPassword')
     {
         $this->storage->expects($this->at(0))
             ->method('read')
@@ -422,11 +523,11 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $post->expects($this->at(0))
             ->method('get')
             ->with('identity')
-            ->will($this->returnValue('ZfcUser'));
+            ->will($this->returnValue($identity));
         $post->expects($this->at(1))
             ->method('get')
             ->with('credential')
-            ->will($this->returnValue('ZfcUserPassword'));
+            ->will($this->returnValue($credential));
 
         $request = $this->getMock('Zend\Http\Request');
         $request->expects($this->exactly(2))

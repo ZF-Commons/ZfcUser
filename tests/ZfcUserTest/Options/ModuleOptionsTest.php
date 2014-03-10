@@ -36,8 +36,8 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Options\ModuleOptions::getLoginRedirectRoute
-     * @covers ZfcUser\Options\ModuleOptions::setLoginRedirectRoute
+     * @covers ZfcUser\Options\ModuleOptions::getLogoutRedirectRoute
+     * @covers ZfcUser\Options\ModuleOptions::setLogoutRedirectRoute
      */
     public function testSetGetLogoutRedirectRoute()
     {
@@ -46,7 +46,7 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Options\ModuleOptions::getLoginRedirectRoute
+     * @covers ZfcUser\Options\ModuleOptions::getLogoutRedirectRoute
      */
     public function testGetLogoutRedirectRoute()
     {

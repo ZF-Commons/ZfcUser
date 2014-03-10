@@ -32,14 +32,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $db = new Db;
         $this->db = $db;
 
-        $storage = $this->getMock('Zend\Authentication\Storage\Session');
-        $this->storage = $storage;
-
-        $mapper = $this->getMock('ZfcUser\Mapper\User');
-        $this->mapper = $mapper;
-
-        $this->db->setStorage($storage);
-        $this->db->setMapper($mapper);
+        $this->storage = $this->getMock('Zend\Authentication\Storage\Session');
+        $this->mapper = $this->getMock('ZfcUser\Mapper\User');
     }
 
     /**
@@ -50,6 +44,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->storage->expects($this->once())
                       ->method('isEmpty')
                       ->will($this->returnValue(true));
+
+        $this->db->setStorage($this->storage);
 
         $this->assertTrue($this->db->isEmpty());
     }
@@ -76,6 +72,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
                       ->method('read')
                       ->will($this->returnValue(1));
 
+        $this->db->setStorage($this->storage);
+
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->setUsername('zfcUser');
 
@@ -83,6 +81,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
                      ->method('findById')
                      ->with(1)
                      ->will($this->returnValue($user));
+
+        $this->db->setMapper($this->mapper);
 
         $result = $this->db->read();
 
@@ -98,10 +98,14 @@ class DbTest extends \PHPUnit_Framework_TestCase
                       ->method('read')
                       ->will($this->returnValue(1));
 
+        $this->db->setStorage($this->storage);
+
         $this->mapper->expects($this->once())
                      ->method('findById')
                      ->with(1)
                      ->will($this->returnValue(false));
+
+        $this->db->setMapper($this->mapper);
 
         $result = $this->db->read();
 
@@ -119,6 +123,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->storage->expects($this->once())
                       ->method('read')
                       ->will($this->returnValue($user));
+
+        $this->db->setStorage($this->storage);
 
         $result = $this->db->read();
 
@@ -138,6 +144,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
                       ->method('write')
                       ->with('zfcUser');
 
+        $this->db->setStorage($this->storage);
+
         $this->db->write('zfcUser');
 
         $this->assertNull($reflectionProperty->getValue($this->db));
@@ -155,6 +163,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->storage->expects($this->once())
             ->method('clear');
 
+        $this->db->setStorage($this->storage);
+
         $this->db->clear();
 
         $this->assertNull($reflectionProperty->getValue($this->db));
@@ -165,6 +175,14 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMapperWithNoMapperSet()
     {
+        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $sm->expects($this->once())
+           ->method('get')
+           ->with('zfcuser_user_mapper')
+           ->will($this->returnValue($this->mapper));
+
+        $this->db->setServiceManager($sm);
+
         $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $this->db->getMapper());
     }
 
@@ -199,6 +217,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers ZfcUser\Authentication\Storage\Db::getStorage
+     * @covers ZfcUser\Authentication\Storage\Db::setStorage
      */
     public function testGetStorageWithoutStorageSet()
     {

@@ -126,17 +126,24 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
         $this->eventManager->expects($this->at(0))->method('trigger')->with('authenticate.pre');
 
-        $result = $this->getMock('Zend\EventManager\ResponseCollection');
+        /**
+         * @var $response Zend\EventManager\ResponseCollection
+         */
+        $responses = $this->getMock('Zend\EventManager\ResponseCollection');
 
-        // @todo Test the closure
         $this->eventManager->expects($this->at(1))
             ->method('trigger')
             ->with('authenticate', $this->event)
-            ->will($this->returnValue($result));
+            ->will($this->returnCallback(function ($event, $target, $callback) use ($responses) {
+                if (call_user_func($callback, $responses->last())) {
+                    $responses->setStopped(true);
+                }
+                return $responses;
+            }));
 
         $this->adapterChain->setEvent($this->event);
 
-        return $result;
+        return $responses;
     }
 
     /**
