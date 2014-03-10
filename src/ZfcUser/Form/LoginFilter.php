@@ -17,8 +17,7 @@ class LoginFilter extends ProvidesEventsInputFilter
 
         $identityFields = $options->getAuthIdentityFields();
         if ($identityFields == array('email')) {
-            $validators = array('name' => 'EmailAddress');
-            array_push($identityParams['validators'], $validators);
+            array_push($identityParams['validators'], array('name' => 'EmailAddress'));
         }
 
         $this->add($identityParams);
