@@ -73,6 +73,20 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($captcha, $reflection->getValue($form));
     }
 
+    public function testCsrfTimeoutSetting()
+    {
+        $timeout = 666;
+        $options = $this->getMock('ZfcUser\Options\RegistrationOptionsInterface');
+        $options->expects($this->atLeastOnce())
+            ->method('getUserFormTimeout')
+            ->will($this->returnValue($timeout));
+
+        $form = new Register(null, $options);
+
+        /** @var Csrf $csrf */
+        $csrf = $form->get('csrf');
+        $this->assertEquals($timeout, $csrf->getCsrfValidator()->getTimeout());
+    }
 
     /**
      *
