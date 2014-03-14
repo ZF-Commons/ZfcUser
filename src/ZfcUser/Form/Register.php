@@ -35,15 +35,15 @@ class Register extends Base
         }
         $this->get('submit')->setLabel('Register');
 
-        $this->add([
+        $this->add(array(
             'name' => 'csrf',
             'type' => 'Zend\Form\Element\Csrf',
-            'options' => [
-                'csrf_options' => [
+            'options' => array(
+                'csrf_options' => array(
                     'timeout' => $this->getRegistrationOptions()->getUserFormTimeout()
-                ]
-            ]
-        ]);
+                )
+            )
+        ));
 
         $this->getEventManager()->trigger('init', $this);
     }
