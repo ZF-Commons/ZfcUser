@@ -92,9 +92,14 @@ class Base extends ProvidesEventsForm
             ),
         ));
 
-        // @TODO: Fix this... getValidator() is a protected method.
-        //$csrf = new Element\Csrf('csrf');
-        //$csrf->getValidator()->setTimeout($this->getRegistrationOptions()->getUserFormTimeout());
-        //$this->add($csrf);
+        $this->add([
+            'name' => 'csrf',
+            'type' => 'Zend\Form\Element\Csrf',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => $this->getRegistrationOptions()->getUserFormTimeout()
+                ]
+            ]
+        ]);
     }
 }
