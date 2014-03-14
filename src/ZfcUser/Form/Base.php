@@ -91,15 +91,5 @@ class Base extends ProvidesEventsForm
                 'type' => 'hidden'
             ),
         ));
-
-        $this->add([
-            'name' => 'csrf',
-            'type' => 'Zend\Form\Element\Csrf',
-            'options' => [
-                'csrf_options' => [
-                    'timeout' => $this->getRegistrationOptions()->getUserFormTimeout()
-                ]
-            ]
-        ]);
     }
 }

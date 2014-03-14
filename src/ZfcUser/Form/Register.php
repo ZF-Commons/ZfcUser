@@ -34,6 +34,17 @@ class Register extends Base
             $this->add($this->captchaElement, array('name'=>'captcha'));
         }
         $this->get('submit')->setLabel('Register');
+
+        $this->add([
+            'name' => 'csrf',
+            'type' => 'Zend\Form\Element\Csrf',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => $this->getRegistrationOptions()->getUserFormTimeout()
+                ]
+            ]
+        ]);
+
         $this->getEventManager()->trigger('init', $this);
     }
 
