@@ -1,5 +1,13 @@
 <?php
 return array(
+    'translator' => array(
+        'translation_file_patterns' => array(
+            array(
+                'base_dir' => __DIR__ . '/../../language',
+            ),
+        ),
+    ),
+
     'view_manager' => array(
         'template_path_stack' => array(
             'zfcuser' => __DIR__ . '/../view',
@@ -77,7 +85,7 @@ return array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'changepassword',
                             ),
-                        ),                        
+                        ),
                     ),
                     'changeemail' => array(
                         'type' => 'Literal',
@@ -87,7 +95,7 @@ return array(
                                 'controller' => 'zfcuser',
                                 'action' => 'changeemail',
                             ),
-                        ),                        
+                        ),
                     ),
                 ),
             ),
