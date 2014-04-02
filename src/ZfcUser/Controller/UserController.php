@@ -96,7 +96,8 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+            $route = $this->flashMessenger()->setNamespace('zfcuser-login-widget')->getMessages()[0] ?: static::ROUTE_LOGIN;
+            return $this->redirect()->toUrl($this->url()->fromRoute($route).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
         }
 
         // clear adapters
@@ -148,8 +149,9 @@ class UserController extends AbstractActionController
         if (!$auth->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
+            $route = $this->flashMessenger()->setNamespace('zfcuser-login-widget')->getMessages()[0] ?: static::ROUTE_LOGIN;
             return $this->redirect()->toUrl(
-                $this->url()->fromRoute(static::ROUTE_LOGIN) .
+                $this->url()->fromRoute($route) .
                 ($redirect ? '?redirect='. rawurlencode($redirect) : '')
             );
         }

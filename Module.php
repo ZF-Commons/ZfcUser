@@ -70,6 +70,7 @@ class Module implements
                     $viewHelper = new View\Helper\ZfcUserLoginWidget;
                     $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
                     $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
+                    $viewHelper->setRouteMatch($locator->get('router')->match($locator->get('request')));
                     return $viewHelper;
                 },
             ),
