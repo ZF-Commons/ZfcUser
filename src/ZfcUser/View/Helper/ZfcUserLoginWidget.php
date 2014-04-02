@@ -18,6 +18,12 @@ class ZfcUserLoginWidget extends AbstractHelper
      * $var string template used for view
      */
     protected $viewTemplate;
+
+    /**
+     * @var RouteMatch
+     */
+    protected $routeMatch;
+
     /**
      * __invoke
      *
@@ -36,6 +42,10 @@ class ZfcUserLoginWidget extends AbstractHelper
             $redirect = $options['redirect'];
         } else {
             $redirect = false;
+        }
+
+        if($this->routeMatch) {
+            $this->getView()->plugin('flashMessenger')->setNamespace('zfcuser-login-widget')->addMessage($this->routeMatch->getMatchedRouteName());
         }
 
         $vm = new ViewModel(array(
@@ -77,6 +87,11 @@ class ZfcUserLoginWidget extends AbstractHelper
     public function setViewTemplate($viewTemplate)
     {
         $this->viewTemplate = $viewTemplate;
+        return $this;
+    }
+    public function setRouteMatch($routeMatch)
+    {
+        $this->routeMatch = $routeMatch;
         return $this;
     }
 }
