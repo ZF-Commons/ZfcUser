@@ -10,7 +10,7 @@ php:
 
 before_script:
   - composer self-update
-  - composer update --prefer-source; composer install --dev --prefer-source;
+  - composer install --dev --prefer-source;
   - wget https://scrutinizer-ci.com/ocular.phar
   - mysql -e "create database IF NOT EXISTS zfc_user;" -uroot
 
