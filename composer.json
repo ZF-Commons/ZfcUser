@@ -1,57 +1,54 @@
 {
-    "name": "zf-commons/zfc-user",
-    "description": "A generic user registration and authentication module for ZF2. Supports Zend\\Db and Doctrine2.",
-    "type": "library",
-    "keywords": [
-        "zf2"
-    ],
-    "homepage": "https://github.com/ZF-Commons/ZfcUser",
-    "authors": [
-        {
-            "name": "Evan Coury",
-            "email": "me@evancoury.com",
-            "homepage": "http://blog.evan.pro/"
-        },
-        {
-            "name": "Kyle Spraggs",
-            "email": "theman@spiffyjr.me",
-            "homepage": "http://www.spiffyjr.me/"
-        }
-    ],
-    "extra": {
-        "branch-alias": {
-            "dev-master": "0.1.x-dev"
-        }
-    },
-    "require": {
-        "php": ">=5.3.3",
-        "zendframework/zend-authentication": "~2.1",
-        "zendframework/zend-crypt": "~2.1",
-        "zendframework/zend-form": "~2.1",
-        "zendframework/zend-inputfilter": "~2.1",
-        "zendframework/zend-loader": "~2.1",
-        "zendframework/zend-modulemanager": "~2.1",
-        "zendframework/zend-mvc": "~2.1",
-        "zendframework/zend-servicemanager": "~2.1",
-        "zendframework/zend-stdlib": "~2.1",
-        "zendframework/zend-validator": "~2.1",
-        "zendframework/zend-view": "~2.1",
-        "zendframework/zend-session": "~2.1",
-        "zendframework/zend-http": "~2.1",
-        "zf-commons/zfc-base": "0.*"
-    },
-    "require-dev": {
-        "phpunit/phpunit":           ">=3.7",
-        "phpmd/phpmd":               "1.4.*",
-        "squizlabs/php_codesniffer": "1.4.*",
-        "satooshi/php-coveralls":    "~0.6"
-    },
-    "autoload": {
-        "psr-0": {
-            "ZfcUser": "src/"
-        },
-        "classmap": [
-            "./Module.php"
-        ]
-    }
+	"name" : "zf-commons/zfc-user",
+	"description" : "A generic user registration and authentication module for ZF2. Supports Zend\\Db and Doctrine2.",
+	"type" : "library",
+	"keywords" : [
+		"zf2"
+	],
+	"homepage" : "https://github.com/ZF-Commons/ZfcUser",
+	"authors" : [{
+			"name" : "Evan Coury",
+			"email" : "me@evancoury.com",
+			"homepage" : "http://blog.evan.pro/"
+		}, {
+			"name" : "Kyle Spraggs",
+			"email" : "theman@spiffyjr.me",
+			"homepage" : "http://www.spiffyjr.me/"
+		}
+	],
+	"extra" : {
+		"branch-alias" : {
+			"dev-master" : "0.1.x-dev"
+		}
+	},
+	"require" : {
+		"php" : ">=5.3.3",
+		"zendframework/zend-authentication" : "~2.1",
+		"zendframework/zend-crypt" : "~2.1",
+		"zendframework/zend-form" : "~2.1",
+		"zendframework/zend-inputfilter" : "~2.1",
+		"zendframework/zend-loader" : "~2.1",
+		"zendframework/zend-modulemanager" : "~2.1",
+		"zendframework/zend-mvc" : "~2.1",
+		"zendframework/zend-servicemanager" : "~2.1",
+		"zendframework/zend-stdlib" : "~2.1",
+		"zendframework/zend-validator" : "~2.1",
+		"zendframework/zend-view" : "~2.1",
+		"zendframework/zend-session" : "~2.1",
+		"zendframework/zend-http" : "~2.1",
+		"zf-commons/zfc-base" : "0.*"
+	},
+	"require-dev" : {
+		"phpunit/phpunit" : ">=3.7,<4",
+		"phpmd/phpmd" : "1.4.*",
+		"squizlabs/php_codesniffer" : "1.4.*"
+	},
+	"autoload" : {
+		"psr-0" : {
+			"ZfcUser" : "src/"
+		},
+		"classmap" : [
+			"./Module.php"
+		]
+	}
 }

@@ -3,6 +3,7 @@
 namespace ZfcUserTest\Service;
 
 use ZfcUser\Service\User as Service;
+use Zend\Crypt\Password\Bcrypt;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
@@ -159,16 +160,19 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('newCredential' => 'zfcUser', 'credential' => 'zfcUserOld');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
-        $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
-             ->method('getPassword')
-             ->will($this->returnValue('$2a$04$onavTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
 
-        $this->authService->expects($this->once())
+        $user = $this->getMock('ZfcUser\Entity\User');
+        $user->expects($this->any())
+             ->method('getPassword')
+             ->will($this->returnValue($bcrypt->create('wrongPassword')));
+
+        $this->authService->expects($this->any())
                           ->method('getIdentity')
                           ->will($this->returnValue($user));
 
@@ -183,18 +187,21 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('newCredential' => 'zfcUser', 'credential' => 'zfcUserOld');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
+
         $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$onKkTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
-        $user->expects($this->once())
+             ->will($this->returnValue($bcrypt->create($data['credential'])));
+        $user->expects($this->any())
              ->method('setPassword');
 
-        $this->authService->expects($this->once())
+        $this->authService->expects($this->any())
              ->method('getIdentity')
              ->will($this->returnValue($user));
 
@@ -216,19 +223,22 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('credential' => 'zfcUser', 'newIdentity' => 'zfcUser@zfcUser.com');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
+
         $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
+        $user->expects($this->any())
              ->method('getPassword')
-             ->will($this->returnValue('$2a$04$fquYVqPthdfz5d3O7BohtufHvyj7fowzI..WxfH7ux/xmjYBTGg/G'));
-        $user->expects($this->once())
+             ->will($this->returnValue($bcrypt->create($data['credential'])));
+        $user->expects($this->any())
              ->method('setEmail')
              ->with('zfcUser@zfcUser.com');
 
-        $this->authService->expects($this->once())
+        $this->authService->expects($this->any())
              ->method('getIdentity')
              ->will($this->returnValue($user));
 
@@ -250,16 +260,19 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $data = array('credential' => 'zfcUserOld');
 
-        $this->options->expects($this->once())
+        $this->options->expects($this->any())
              ->method('getPasswordCost')
              ->will($this->returnValue(4));
 
-        $user = $this->getMock('ZfcUser\Entity\User');
-        $user->expects($this->once())
-             ->method('getPassword')
-             ->will($this->returnValue('$2a$04$onabTAbh45WrXBz63rNekucaHg0xrveXS.xVieoen8Or7t8Sii5Hm'));
+        $bcrypt = new Bcrypt();
+        $bcrypt->setCost($this->options->getPasswordCost());
 
-        $this->authService->expects($this->once())
+        $user = $this->getMock('ZfcUser\Entity\User');
+        $user->expects($this->any())
+             ->method('getPassword')
+             ->will($this->returnValue($bcrypt->create('wrongPassword')));
+
+        $this->authService->expects($this->any())
              ->method('getIdentity')
              ->will($this->returnValue($user));
 
@@ -316,7 +329,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Service\User::setRegisterForm
+     * @covers ZfcUser\Service\User::getRegisterForm
      */
     public function testGetRegisterForm()
     {
@@ -329,7 +342,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $service = new Service;
         $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('ZfcUser\Form\Register', $service->getRegisterForm());
+
+        $result = $service->getRegisterForm();
+
+        $this->assertInstanceOf('ZfcUser\Form\Register', $result);
+        $this->assertSame($form, $result);
     }
 
     /**

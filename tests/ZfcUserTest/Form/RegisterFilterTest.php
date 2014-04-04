@@ -7,7 +7,7 @@ use ZfcUser\Form\RegisterFilter as Filter;
 class RegisterFilterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ZfcUser\Form\RegusterFilter::__construct
+     * @covers ZfcUser\Form\RegisterFilter::__construct
      */
     public function testConstruct()
     {

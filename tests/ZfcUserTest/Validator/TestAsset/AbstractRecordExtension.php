@@ -1,6 +1,6 @@
 <?php
 
-namespace ZfcUserTest\Validator;
+namespace ZfcUserTest\Validator\TestAsset;
 
 use ZfcUser\Validator\AbstractRecord;
 
