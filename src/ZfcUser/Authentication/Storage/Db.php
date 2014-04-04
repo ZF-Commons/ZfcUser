@@ -33,7 +33,8 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
     /**
      * Returns true if and only if storage is empty
      *
-     * @throws \Zend\Authentication\Exception\InvalidArgumentException If it is impossible to determine whether storage is empty
+     * @throws \Zend\Authentication\Exception\InvalidArgumentException If it is impossible to determine whether
+     * storage is empty or not
      * @return boolean
      */
     public function isEmpty()

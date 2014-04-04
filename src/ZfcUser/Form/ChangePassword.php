@@ -15,7 +15,7 @@ class ChangePassword extends ProvidesEventsForm
      */
     protected $authOptions;
 
-    public function __construct($name = null, AuthenticationOptionsInterface $options)
+    public function __construct($name, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);
         parent::__construct($name);

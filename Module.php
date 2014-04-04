@@ -105,7 +105,7 @@ class Module implements
 
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
 
-                'zfcuser_login_form' => function($sm) {
+                'zfcuser_login_form' => function ($sm) {
                     $options = $sm->get('zfcuser_module_options');
                     $form = new Form\Login(null, $options);
                     $form->setInputFilter(new Form\LoginFilter($options));
@@ -130,14 +130,14 @@ class Module implements
                     return $form;
                 },
 
-                'zfcuser_change_password_form' => function($sm) {
+                'zfcuser_change_password_form' => function ($sm) {
                     $options = $sm->get('zfcuser_module_options');
                     $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
                     $form->setInputFilter(new Form\ChangePasswordFilter($options));
                     return $form;
                 },
 
-                'zfcuser_change_email_form' => function($sm) {
+                'zfcuser_change_email_form' => function ($sm) {
                     $options = $sm->get('zfcuser_module_options');
                     $form = new Form\ChangeEmail(null, $options);
                     $form->setInputFilter(new Form\ChangeEmailFilter(

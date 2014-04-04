@@ -51,12 +51,12 @@ class AdapterChain extends EventProvider implements AdapterInterface
 
         $this->getEventManager()->trigger('authenticate.pre', $e);
 
-        $result = $this->getEventManager()->trigger('authenticate', $e, function($test) {
+        $result = $this->getEventManager()->trigger('authenticate', $e, function ($test) {
             return ($test instanceof Response);
         });
 
         if ($result->stopped()) {
-            if($result->last() instanceof Response) {
+            if ($result->last() instanceof Response) {
                 return $result->last();
             }
 
