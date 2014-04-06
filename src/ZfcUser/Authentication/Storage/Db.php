@@ -43,11 +43,8 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
             return true;
         }
         $identity = $this->read();
-        if (!$identity) {
-            return true;
-        }
 
-        return false;
+        return $identity === null ? false : true;
     }
 
     /**
