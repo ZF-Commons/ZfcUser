@@ -8,14 +8,19 @@ use ZfcBase\Form\ProvidesEventsForm;
 
 class Base extends ProvidesEventsForm
 {
+	
+    protected $translator;
+
     public function __construct()
     {
         parent::__construct();
 
+	$translator = new \Zend\I18n\Translator\Translator();
+
         $this->add(array(
             'name' => 'username',
             'options' => array(
-                'label' => 'Username',
+                'label' => $translator->translate('Username'),
             ),
             'attributes' => array(
                 'type' => 'text'
@@ -25,7 +30,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'email',
             'options' => array(
-                'label' => 'Email',
+                'label' => $translator->translate('Email'),
             ),
             'attributes' => array(
                 'type' => 'text'
@@ -35,7 +40,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'display_name',
             'options' => array(
-                'label' => 'Display Name',
+                'label' => $translator->translate('Display Name'),
             ),
             'attributes' => array(
                 'type' => 'text'
@@ -45,7 +50,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'password',
             'options' => array(
-                'label' => 'Password',
+                'label' => $translator->translate('Passwort'),
             ),
             'attributes' => array(
                 'type' => 'password'
@@ -55,7 +60,7 @@ class Base extends ProvidesEventsForm
         $this->add(array(
             'name' => 'passwordVerify',
             'options' => array(
-                'label' => 'Password Verify',
+                'label' => $translator->translate('Password Verify'),
             ),
             'attributes' => array(
                 'type' => 'password'
@@ -67,7 +72,7 @@ class Base extends ProvidesEventsForm
                 'name' => 'captcha',
                 'type' => 'Zend\Form\Element\Captcha',
                 'options' => array(
-                    'label' => 'Please type the following text',
+                    'label' => $translator->translate('Please type the following text'),
                     'captcha' => $this->getRegistrationOptions()->getFormCaptchaOptions(),
                 ),
             ));

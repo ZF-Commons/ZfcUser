@@ -14,11 +14,14 @@ class Login extends ProvidesEventsForm
      * @var AuthenticationOptionsInterface
      */
     protected $authOptions;
+    protected $translator;
 
     public function __construct($name = null, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);
         parent::__construct($name);
+
+	$translator = new \Zend\I18n\Translator\Translator();
 
         $this->add(array(
             'name' => 'identity',
@@ -41,7 +44,7 @@ class Login extends ProvidesEventsForm
         $this->add(array(
             'name' => 'credential',
             'options' => array(
-                'label' => 'Password',
+                'label' => $translator->translate('Password'),
             ),
             'attributes' => array(
                 'type' => 'password',
@@ -59,7 +62,7 @@ class Login extends ProvidesEventsForm
 
         $submitElement = new Element\Button('submit');
         $submitElement
-            ->setLabel('Sign In')
+            ->setLabel($translator->translate('Sign In'))
             ->setAttributes(array(
                 'type'  => 'submit',
             ));

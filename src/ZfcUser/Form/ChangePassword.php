@@ -14,11 +14,14 @@ class ChangePassword extends ProvidesEventsForm
      * @var AuthenticationOptionsInterface
      */
     protected $authOptions;
+    protected $translator;
 
     public function __construct($name = null, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);
         parent::__construct($name);
+
+	$translator = new \Zend\I18n\Translator\Translator();
 
         $this->add(array(
             'name' => 'identity',
@@ -33,7 +36,7 @@ class ChangePassword extends ProvidesEventsForm
         $this->add(array(
             'name' => 'credential',
             'options' => array(
-                'label' => 'Current Password',
+                'label' => $translator->translate('Current Password'),
             ),
             'attributes' => array(
                 'type' => 'password',
@@ -43,7 +46,7 @@ class ChangePassword extends ProvidesEventsForm
         $this->add(array(
             'name' => 'newCredential',
             'options' => array(
-                'label' => 'New Password',
+                'label' => $translator->translate('New Password'),
             ),
             'attributes' => array(
                 'type' => 'password',
@@ -53,7 +56,7 @@ class ChangePassword extends ProvidesEventsForm
         $this->add(array(
             'name' => 'newCredentialVerify',
             'options' => array(
-                'label' => 'Verify New Password',
+                'label' => $translator->translate('Verify New Password'),
             ),
             'attributes' => array(
                 'type' => 'password',
@@ -63,7 +66,7 @@ class ChangePassword extends ProvidesEventsForm
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(
-                'value' => 'Submit',
+                'value' => $translator->translate('Submit'),
                 'type'  => 'submit'
             ),
         ));

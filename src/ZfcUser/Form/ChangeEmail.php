@@ -8,10 +8,15 @@ use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class ChangeEmail extends ProvidesEventsForm
 {
+
+    protected $translator;	
+
     public function __construct($name = null, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);
         parent::__construct($name);
+
+	$translator = new \Zend\I18n\Translator\Translator();
 
         $this->add(array(
             'name' => 'identity',
@@ -26,7 +31,7 @@ class ChangeEmail extends ProvidesEventsForm
         $this->add(array(
             'name' => 'newIdentity',
             'options' => array(
-                'label' => 'New Email',
+                'label' => $translator->translate('New Email'),
             ),
             'attributes' => array(
                 'type' => 'text',
@@ -36,7 +41,7 @@ class ChangeEmail extends ProvidesEventsForm
         $this->add(array(
             'name' => 'newIdentityVerify',
             'options' => array(
-                'label' => 'Verify New Email',
+                'label' => $translator->translate('Verify New Email'),
             ),
             'attributes' => array(
                 'type' => 'text',
@@ -46,7 +51,7 @@ class ChangeEmail extends ProvidesEventsForm
         $this->add(array(
             'name' => 'credential',
             'options' => array(
-                'label' => 'Password',
+                'label' => $translator->translate('Password'),
             ),
             'attributes' => array(
                 'type' => 'password',
