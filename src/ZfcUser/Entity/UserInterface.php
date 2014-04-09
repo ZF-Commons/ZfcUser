@@ -4,7 +4,6 @@ namespace ZfcUser\Entity;
 
 interface UserInterface
 {
-
     /**
      * Get id.
      *
@@ -46,5 +45,4 @@ interface UserInterface
      * @return int
      */
     public function getState();
-
 }
