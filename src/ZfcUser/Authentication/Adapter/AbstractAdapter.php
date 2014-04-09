@@ -21,7 +21,7 @@ abstract class AbstractAdapter implements ChainableAdapter
     public function getStorage()
     {
         if (null === $this->storage) {
-            $this->setStorage(new Storage\Session(get_called_class()));
+            $this->setStorage(new Storage\Session(get_class($this)));
         }
 
         return $this->storage;
