@@ -103,31 +103,24 @@ Coming soon...
 1. If you do not already have a valid Zend\Db\Adapter\Adapter in your service
    manager configuration, put the following in `./config/autoload/database.local.php`:
 
-        <?php
+```php
+<?php
+return array(
+    'db' => array(
+        'driver'    => 'PdoMysql',
+        'database'  => 'changeme',
+        'username'  => 'changeme',
+        'password'  => 'changeme',
+        'hostname'  => 'changeme',
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
+);
 
-        $dbParams = array(
-            'database'  => 'changeme',
-            'username'  => 'changeme',
-            'password'  => 'changeme',
-            'hostname'  => 'changeme',
-        );
-
-        return array(
-            'service_manager' => array(
-                'factories' => array(
-                    'Zend\Db\Adapter\Adapter' => function ($sm) use ($dbParams) {
-                        return new Zend\Db\Adapter\Adapter(array(
-                            'driver'    => 'pdo',
-                            'dsn'       => 'mysql:dbname='.$dbParams['database'].';host='.$dbParams['hostname'],
-                            'database'  => $dbParams['database'],
-                            'username'  => $dbParams['username'],
-                            'password'  => $dbParams['password'],
-                            'hostname'  => $dbParams['hostname'],
-                        ));
-                    },
-                ),
-            ),
-        );
+```
 
 Navigate to http://yourproject/user and you should land on a login page.
 
