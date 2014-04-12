@@ -108,10 +108,10 @@ Coming soon...
 return array(
     'db' => array(
         'driver'    => 'PdoMysql',
+        'hostname'  => 'changeme',
         'database'  => 'changeme',
         'username'  => 'changeme',
         'password'  => 'changeme',
-        'hostname'  => 'changeme',
     ),
     'service_manager' => array(
         'factories' => array(
