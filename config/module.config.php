@@ -17,15 +17,15 @@ return array(
         ],
     ],
 
-    'input_filters' => [
-        'factories' => [
-            'ZfcUser\InputFilter\Registration' => 'ZfcUser\Factory\InputFilter\RegistrationFactory',
-        ],
-    ],
-
     'hydrators' => [
         'invokables' => [
             'ZfcUser\Hydrator\Registration' => 'Zend\Stdlib\Hydrator\ClassMethods',
+        ],
+    ],
+
+    'input_filters' => [
+        'factories' => [
+            'ZfcUser\InputFilter\Registration' => 'ZfcUser\Factory\InputFilter\RegistrationFactory',
         ],
     ],
 
