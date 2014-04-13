@@ -5,10 +5,10 @@ use Zend\Form\Form;
 use ZfcUser\Options\RegistrationOptionsInterface;
 
 /**
- * Class Registration
+ * Class RegistrationForm
  * @package ZfcUser\Form
  */
-class Registration extends Form
+class RegistrationForm extends Form
 {
     /**
      * @var RegistrationOptionsInterface

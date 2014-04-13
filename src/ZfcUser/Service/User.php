@@ -191,7 +191,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     {
         if (null === $this->registrationForm) {
             $fem = $this->getServiceManager()->get(('FormElementManager'));
-            $this->setRegistrationForm($fem->get('ZfcUser\Form\Registration'));
+            $this->setRegistrationForm($fem->get('ZfcUser\Form\RegistrationForm'));
         }
         return $this->registrationForm;
     }

@@ -3,17 +3,17 @@ namespace ZfcUser\Factory\InputFilter;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\InputFilter\Registration;
+use ZfcUser\InputFilter\RegistrationFilter;
 
 /**
- * Class RegistrationFactory
+ * Class RegistrationFilterFactory
  * @package ZfcUser\Factory\InputFilter
  */
-class RegistrationFactory implements FactoryInterface
+class RegistrationFilterFactory implements FactoryInterface
 {
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @return Registration
+     * @return RegistrationFilter
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -25,6 +25,6 @@ class RegistrationFactory implements FactoryInterface
         $serviceManager = $serviceLocator->getServiceLocator();
         $options = $serviceManager->get('zfcuser_module_options');
 
-        return new Registration($options);
+        return new RegistrationFilter($options);
     }
 }

@@ -5,10 +5,10 @@ use Zend\InputFilter\InputFilter;
 use ZfcUser\Options\RegistrationOptionsInterface;
 
 /**
- * Class Registration
+ * Class RegistrationFilter
  * @package ZfcUser\InputFilter
  */
-class Registration extends InputFilter
+class RegistrationFilter extends InputFilter
 {
     /**
      * @var RegistrationOptionsInterface

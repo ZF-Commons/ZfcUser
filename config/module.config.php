@@ -13,19 +13,19 @@ return array(
 
     'form_elements' => [
         'factories' => [
-            'ZfcUser\Form\Registration' => 'ZfcUser\Factory\Form\RegistrationFactory',
+            'ZfcUser\Form\RegistrationForm' => 'ZfcUser\Factory\Form\RegistrationFormFactory',
         ],
     ],
 
     'hydrators' => [
         'invokables' => [
-            'ZfcUser\Hydrator\Registration' => 'Zend\Stdlib\Hydrator\ClassMethods',
+            'ZfcUser\Hydrator\RegistrationHydrator' => 'Zend\Stdlib\Hydrator\ClassMethods',
         ],
     ],
 
     'input_filters' => [
         'factories' => [
-            'ZfcUser\InputFilter\Registration' => 'ZfcUser\Factory\InputFilter\RegistrationFactory',
+            'ZfcUser\InputFilter\RegistrationFilter' => 'ZfcUser\Factory\InputFilter\RegistrationFilterFactory',
         ],
     ],
 

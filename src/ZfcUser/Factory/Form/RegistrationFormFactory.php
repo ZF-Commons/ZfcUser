@@ -3,17 +3,17 @@ namespace ZfcUser\Factory\Form;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\Form\Registration;
+use ZfcUser\Form\RegistrationForm;
 
 /**
- * Class RegistrationFactory
+ * Class RegistrationFormFactory
  * @package ZfcUser\Factory\Form
  */
-class RegistrationFactory implements FactoryInterface
+class RegistrationFormFactory implements FactoryInterface
 {
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @return Registration
+     * @return RegistrationForm
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -26,9 +26,9 @@ class RegistrationFactory implements FactoryInterface
         $options = $serviceManager->get('zfcuser_module_options');
         $class = $options->getUserEntityClass();
 
-        $form =  new Registration(null, $options);
-        $form->setHydrator($serviceManager->get('HydratorManager')->get('ZfcUser\Hydrator\Registration'));
-        $form->setInputFilter($serviceManager->get('InputFilterManager')->get('ZfcUser\InputFilter\Registration'));
+        $form =  new RegistrationForm(null, $options);
+        $form->setHydrator($serviceManager->get('HydratorManager')->get('ZfcUser\Hydrator\RegistrationHydrator'));
+        $form->setInputFilter($serviceManager->get('InputFilterManager')->get('ZfcUser\InputFilter\RegistrationFilter'));
         $form->setObject(new $class);
 
         return $form;
