@@ -2,7 +2,6 @@
 
 namespace ZfcUser\Controller;
 
-use Zend\Crypt\Password\Bcrypt;
 use Zend\Form\Form;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
