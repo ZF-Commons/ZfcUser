@@ -1,8 +1,12 @@
 <?php
 return array(
     'view_manager' => array(
-        'template_path_stack' => array(
-            'zfcuser' => __DIR__ . '/../view',
+        'template_map' => array(
+            'zfc-user/user/changeemail'     => __DIR__ .'/../view/zfc-user/user/changeemail.phtml',
+            'zfc-user/user/changepassword'  => __DIR__ .'/../view/zfc-user/user/changepassword.phtml',
+            'zfc-user/user/index'           => __DIR__ .'/../view/zfc-user/user/index.phtml',
+            'zfc-user/user/login'           => __DIR__ .'/../view/zfc-user/user/login.phtml',
+            'zfc-user/user/register'        => __DIR__ .'/../view/zfc-user/user/register.phtml',
         ),
     ),
     'controllers' => array(
