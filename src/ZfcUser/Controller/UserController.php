@@ -2,7 +2,9 @@
 
 namespace ZfcUser\Controller;
 
+use Zend\Crypt\Password\Bcrypt;
 use Zend\Form\Form;
+use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\Stdlib\Parameters;
@@ -30,9 +32,9 @@ class UserController extends AbstractActionController
     protected $loginForm;
 
     /**
-     * @var Form
+     * @var FormInterface
      */
-    protected $registerForm;
+    protected $registrationForm;
 
     /**
      * @var Form
@@ -176,7 +178,7 @@ class UserController extends AbstractActionController
         
         $request = $this->getRequest();
         $service = $this->getUserService();
-        $form = $this->getRegisterForm();
+        $form = $this->getRegistrationForm();
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
             $redirect = $request->getQuery()->get('redirect');
@@ -192,7 +194,7 @@ class UserController extends AbstractActionController
             return $prg;
         } elseif ($prg === false) {
             return array(
-                'registerForm' => $form,
+                'registrationForm' => $form,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
                 'redirect' => $redirect,
             );
@@ -205,7 +207,7 @@ class UserController extends AbstractActionController
 
         if (!$user) {
             return array(
-                'registerForm' => $form,
+                'registrationForm' => $form,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
                 'redirect' => $redirect,
             );
@@ -347,17 +349,24 @@ class UserController extends AbstractActionController
         return $this;
     }
 
-    public function getRegisterForm()
+    /**
+     * @return FormInterface
+     */
+    public function getRegistrationForm()
     {
-        if (!$this->registerForm) {
-            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
+        if (!$this->registrationForm) {
+            $fem = $this->getServiceLocator()->get(('FormElementManager'));
+            $this->setRegistrationForm($fem->get('ZfcUser\Form\Registration'));
         }
-        return $this->registerForm;
+        return $this->registrationForm;
     }
 
-    public function setRegisterForm(Form $registerForm)
+    /**
+     * @param FormInterface $registrationForm
+     */
+    public function setRegistrationForm(FormInterface $registrationForm)
     {
-        $this->registerForm = $registerForm;
+        $this->registrationForm = $registrationForm;
     }
 
     public function getLoginForm()

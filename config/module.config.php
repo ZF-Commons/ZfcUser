@@ -10,6 +10,25 @@ return array(
             'zfcuser' => 'ZfcUser\Controller\UserController',
         ),
     ),
+
+    'form_elements' => [
+        'factories' => [
+            'ZfcUser\Form\Registration' => 'ZfcUser\Factory\Form\RegistrationFactory',
+        ],
+    ],
+
+    'input_filters' => [
+        'factories' => [
+            'ZfcUser\InputFilter\Registration' => 'ZfcUser\Factory\InputFilter\RegistrationFactory',
+        ],
+    ],
+
+    'hydrators' => [
+        'invokables' => [
+            'ZfcUser\Hydrator\Registration' => 'Zend\Stdlib\Hydrator\ClassMethods',
+        ],
+    ],
+
     'service_manager' => array(
         'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
