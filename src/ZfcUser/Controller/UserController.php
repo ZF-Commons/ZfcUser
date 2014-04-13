@@ -2,7 +2,6 @@
 
 namespace ZfcUser\Controller;
 
-use Zend\Form\Form;
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
@@ -26,7 +25,7 @@ class UserController extends AbstractActionController
     protected $userService;
 
     /**
-     * @var Form
+     * @var FormInterface
      */
     protected $loginForm;
 
@@ -36,12 +35,12 @@ class UserController extends AbstractActionController
     protected $registrationForm;
 
     /**
-     * @var Form
+     * @var FormInterface
      */
     protected $changePasswordForm;
 
     /**
-     * @var Form
+     * @var FormInterface
      */
     protected $changeEmailForm;
 
@@ -368,6 +367,9 @@ class UserController extends AbstractActionController
         $this->registrationForm = $registrationForm;
     }
 
+    /**
+     * @return FormInterface
+     */
     public function getLoginForm()
     {
         if (!$this->loginForm) {
@@ -376,7 +378,11 @@ class UserController extends AbstractActionController
         return $this->loginForm;
     }
 
-    public function setLoginForm(Form $loginForm)
+    /**
+     * @param FormInterface $loginForm
+     * @return $this
+     */
+    public function setLoginForm(FormInterface $loginForm)
     {
         $this->loginForm = $loginForm;
         $fm = $this->flashMessenger()->setNamespace('zfcuser-login-form')->getMessages();
@@ -388,6 +394,9 @@ class UserController extends AbstractActionController
         return $this;
     }
 
+    /**
+     * @return FormInterface
+     */
     public function getChangePasswordForm()
     {
         if (!$this->changePasswordForm) {
@@ -396,7 +405,11 @@ class UserController extends AbstractActionController
         return $this->changePasswordForm;
     }
 
-    public function setChangePasswordForm(Form $changePasswordForm)
+    /**
+     * @param FormInterface $changePasswordForm
+     * @return $this
+     */
+    public function setChangePasswordForm(FormInterface $changePasswordForm)
     {
         $this->changePasswordForm = $changePasswordForm;
         return $this;
@@ -430,7 +443,7 @@ class UserController extends AbstractActionController
     /**
      * Get changeEmailForm.
      *
-     * @return changeEmailForm.
+     * @return FormInterface
      */
     public function getChangeEmailForm()
     {
@@ -443,9 +456,10 @@ class UserController extends AbstractActionController
     /**
      * Set changeEmailForm.
      *
-     * @param changeEmailForm the value to set.
+     * @param FormInterface $changeEmailForm
+     * @return $this
      */
-    public function setChangeEmailForm($changeEmailForm)
+    public function setChangeEmailForm(FormInterface $changeEmailForm)
     {
         $this->changeEmailForm = $changeEmailForm;
         return $this;
