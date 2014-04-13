@@ -48,6 +48,16 @@ class Registration extends Form
             ],
         ]);
 
+        if ($this->options->getEnableDisplayName()) {
+            $this->add([
+                'name' => 'display_name',
+                'type' => 'Text',
+                'options' => [
+                    'label' => 'Display Name',
+                ],
+            ]);
+        }
+
         $this->add([
             'name' => 'password',
             'type' => 'Password',
