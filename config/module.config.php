@@ -29,6 +29,13 @@ return array(
         ],
     ],
 
+    'validators' => [
+        'factories' => [
+            'ZfcUser\Validator\NoRecordExists'  => 'ZfcUser\Factory\Validator\NoRecordExistsFactory',
+            'ZfcUser\Validator\RecordExists'    => 'ZfcUser\Factory\Validator\RecordExistsFactory',
+        ],
+    ],
+
     'service_manager' => array(
         'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',

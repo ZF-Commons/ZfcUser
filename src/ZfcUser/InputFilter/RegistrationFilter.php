@@ -38,6 +38,7 @@ class RegistrationFilter extends InputFilter
                     ],
                 ],
                 'validators' => [
+                    // TODO: Add unique validator
                     [
                         'name' => 'StringLength',
                         // TODO: Make min/max configurable
@@ -59,9 +60,14 @@ class RegistrationFilter extends InputFilter
                 ],
             ],
             'validators' => [
-                // TODO: Add unique email validator
                 [
                     'name' => 'EmailAddress',
+                ],
+                [
+                    'name' => 'ZfcUser\Validator\NoRecordExists',
+                    'options' => [
+                        'key' => 'email',
+                    ],
                 ],
             ],
         ]);

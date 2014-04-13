@@ -19,12 +19,6 @@ $form->setAttribute('method', 'post');
         <input type="hidden" name="redirect" value="<?= $this->escapeHtml($this->redirect) ?>" />
     <?php endif ?>
 
-    <?php foreach ($form as $elementOrFieldset): ?>
-        <?php if ($elementOrFieldset instanceof Zend\Form\Fieldset): ?>
-            <?= $this->formCollection($elementOrFieldset) ?>
-        <?php else: ?>
-            <?= $this->formRow($elementOrFieldset) ?>
-        <?php endif; ?>
-    <?php endforeach; ?>
+    <?= $this->formCollection($form) ?>
 
 <?= $this->form()->closeTag() ?>
