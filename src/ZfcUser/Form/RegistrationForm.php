@@ -89,6 +89,17 @@ class RegistrationForm extends Form
             ],
         ]);
 
+        if ($this->options->getUseRegistrationFormCaptcha()) {
+            $this->add([
+                'name' => 'captcha',
+                'type' => 'Captcha',
+                'options' => [
+                    'label' => 'Please type the following text',
+                    'captcha' => $this->options->getFormCaptchaOptions(),
+                ],
+            ]);
+        }
+
         $this->add([
             'name' => 'submit',
             'type' => 'Button',
