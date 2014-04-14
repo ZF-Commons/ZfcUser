@@ -7,7 +7,7 @@ interface RegistrationOptionsInterface
     /**
      * set enable display name
      *
-     * @param bool $flag
+     * @param bool $enableDisplayName
      * @return ModuleOptions
      */
     public function setEnableDisplayName($enableDisplayName);
@@ -36,7 +36,7 @@ interface RegistrationOptionsInterface
     /**
      * set enable username
      *
-     * @param bool $flag
+     * @param bool $enableUsername
      * @return ModuleOptions
      */
     public function setEnableUsername($enableUsername);
@@ -106,4 +106,19 @@ interface RegistrationOptionsInterface
      * @return array
      */
     public function getFormCaptchaOptions();
+
+    /**
+     * set user entity class name
+     *
+     * @param string $userEntityClass
+     * @return ModuleOptions
+     */
+    public function setUserEntityClass($userEntityClass);
+
+    /**
+     * get user entity class name
+     *
+     * @return string
+     */
+    public function getUserEntityClass();
 }

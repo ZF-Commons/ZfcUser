@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcUser\Options;
 
 use Zend\Stdlib\AbstractOptions;

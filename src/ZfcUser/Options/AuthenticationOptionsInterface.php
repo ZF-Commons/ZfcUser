@@ -1,10 +1,12 @@
 <?php
-
 namespace ZfcUser\Options;
 
+/**
+ * Interface AuthenticationOptionsInterface
+ * @package ZfcUser\Options
+ */
 interface AuthenticationOptionsInterface extends PasswordOptionsInterface
 {
-
     /**
      * set login form timeout in seconds
      *
@@ -15,7 +17,7 @@ interface AuthenticationOptionsInterface extends PasswordOptionsInterface
     /**
      * set login form timeout in seconds
      *
-     * @param int $loginFormTimeout
+     * @return int
      */
     public function getLoginFormTimeout();
 

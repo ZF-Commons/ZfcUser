@@ -2,8 +2,9 @@
 
 namespace ZfcUser\Validator;
 
+use Exception as PhpException;
 use Zend\Validator\AbstractValidator;
-use ZfcUser\Mapper\UserInterface;
+use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 
 abstract class AbstractRecord extends AbstractValidator
 {
@@ -22,7 +23,7 @@ abstract class AbstractRecord extends AbstractValidator
     );
 
     /**
-     * @var UserInterface
+     * @var UserMapperInterface
      */
     protected $mapper;
 
@@ -33,84 +34,44 @@ abstract class AbstractRecord extends AbstractValidator
 
     /**
      * Required options are:
-     *  - key     Field to use, 'emial' or 'username'
+     *  - key: Field to use, 'email' or 'username'
+     *
+     * @param array $options
+     * @param UserMapperInterface $mapper
+     * @throws Exception\InvalidArgumentException
      */
-    public function __construct(array $options)
+    public function __construct(array $options, UserMapperInterface $mapper)
     {
         if (!array_key_exists('key', $options)) {
             throw new Exception\InvalidArgumentException('No key provided');
         }
 
-        $this->setKey($options['key']);
+        $this->key      = $options['key'];
+        $this->mapper   = $mapper;
 
         parent::__construct($options);
     }
 
     /**
-     * getMapper
-     *
-     * @return UserInterface
-     */
-    public function getMapper()
-    {
-        return $this->mapper;
-    }
-
-    /**
-     * setMapper
-     *
-     * @param UserInterface $mapper
-     * @return AbstractRecord
-     */
-    public function setMapper(UserInterface $mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
-    }
-
-    /**
-     * Get key.
-     *
-     * @return string
-     */
-    public function getKey()
-    {
-        return $this->key;
-    }
-
-    /**
-     * Set key.
-     *
-     * @param string $key
-     */
-    public function setKey($key)
-    {
-        $this->key = $key;
-        return $this;
-    }
-
-    /**
      * Grab the user from the mapper
      *
-     * @param string $value
-     * @return mixed
+     * @param $value
+     * @return bool
+     * @throws PhpException
      */
     protected function query($value)
     {
-        $result = false;
-
-        switch ($this->getKey()) {
+        switch ($this->key) {
             case 'email':
-                $result = $this->getMapper()->findByEmail($value);
+                $result = $this->mapper->findByEmail($value);
                 break;
 
             case 'username':
-                $result = $this->getMapper()->findByUsername($value);
+                $result = $this->mapper->findByUsername($value);
                 break;
 
             default:
-                throw new \Exception('Invalid key used in ZfcUser validator');
-                break;
+                throw new PhpException('Invalid key used');
         }
 
         return $result;
