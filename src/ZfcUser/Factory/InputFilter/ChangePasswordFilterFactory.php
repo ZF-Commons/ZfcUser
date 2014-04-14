@@ -3,28 +3,28 @@ namespace ZfcUser\Factory\InputFilter;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\InputFilter\RegistrationFilter;
+use ZfcUser\InputFilter\ChangePasswordFilter;
 
 /**
  * Class RegistrationFilterFactory
  * @package ZfcUser\Factory\InputFilter
  */
-class RegistrationFilterFactory implements FactoryInterface
+class ChangePasswordFilterFactory implements FactoryInterface
 {
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @return RegistrationFilter
+     * @return ChangePasswordFilter
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $options        \ZfcUser\Options\RegistrationOptionsInterface
-         * @var $serviceLocator \Zend\InputFilter\InputFilterPluginManager
-         * @var $serviceManager \Zend\ServiceManager\ServiceManager
+         * @var $authenticationOptions  \ZfcUser\Options\AuthenticationOptionsInterface
+         * @var $serviceLocator         \Zend\InputFilter\InputFilterPluginManager
+         * @var $serviceManager         \Zend\ServiceManager\ServiceManager
          */
-        $serviceManager = $serviceLocator->getServiceLocator();
-        $options = $serviceManager->get('zfcuser_module_options');
+        $serviceManager         = $serviceLocator->getServiceLocator();
+        $authenticationOptions  = $serviceManager->get('zfcuser_module_options');
 
-        return new RegistrationFilter($options);
+        return new ChangePasswordFilter($authenticationOptions);
     }
 }

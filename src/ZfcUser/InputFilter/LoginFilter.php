@@ -2,7 +2,6 @@
 namespace ZfcUser\InputFilter;
 
 use Zend\InputFilter\InputFilter;
-use ZfcUser\Options\AuthenticationOptionsInterface;
 
 /**
  * Class LoginFilter
@@ -10,19 +9,6 @@ use ZfcUser\Options\AuthenticationOptionsInterface;
  */
 class LoginFilter extends InputFilter
 {
-    /**
-     * @var AuthenticationOptionsInterface
-     */
-    protected $options;
-
-    /**
-     * @param AuthenticationOptionsInterface $options
-     */
-    public function __construct(AuthenticationOptionsInterface $options)
-    {
-        $this->options = $options;
-    }
-
     /**
      * {@inheritdoc}
      */

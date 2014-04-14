@@ -18,15 +18,15 @@ class RegistrationForm extends Form
     /**
      * @var RegistrationOptionsInterface
      */
-    protected $options;
+    protected $registrationOptions;
 
     /**
-     * @param null|int|string               $name    Optional name for the element
-     * @param RegistrationOptionsInterface  $options Options for this form
+     * @param null|int|string               $name                   Optional name for the element
+     * @param RegistrationOptionsInterface  $registrationOptions    Options for this form
      */
-    public function __construct($name = null, RegistrationOptionsInterface $options)
+    public function __construct($name = null, RegistrationOptionsInterface $registrationOptions)
     {
-        $this->options = $options;
+        $this->registrationOptions = $registrationOptions;
         parent::__construct($name);
     }
 
@@ -45,7 +45,7 @@ class RegistrationForm extends Form
 
         $this->initialized = true;
 
-        if ($this->options->getEnableUsername()) {
+        if ($this->registrationOptions->getEnableUsername()) {
             $this->add([
                 'name' => 'username',
                 'type' => 'Text',
@@ -63,7 +63,7 @@ class RegistrationForm extends Form
             ],
         ]);
 
-        if ($this->options->getEnableDisplayName()) {
+        if ($this->registrationOptions->getEnableDisplayName()) {
             $this->add([
                 'name' => 'display_name',
                 'type' => 'Text',
@@ -89,13 +89,13 @@ class RegistrationForm extends Form
             ],
         ]);
 
-        if ($this->options->getUseRegistrationFormCaptcha()) {
+        if ($this->registrationOptions->getUseRegistrationFormCaptcha()) {
             $this->add([
                 'name' => 'captcha',
                 'type' => 'Captcha',
                 'options' => [
                     'label' => 'Please type the following text',
-                    'captcha' => $this->options->getFormCaptchaOptions(),
+                    'captcha' => $this->registrationOptions->getFormCaptchaOptions(),
                 ],
             ]);
         }

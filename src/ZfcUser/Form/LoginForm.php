@@ -50,7 +50,7 @@ class LoginForm extends Form
                 'type' => 'submit',
             ],
             'options' => [
-                'label' => 'Login',
+                'label' => 'Sign In',
             ],
         ]);
     }

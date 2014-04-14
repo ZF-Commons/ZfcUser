@@ -2,68 +2,51 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Form;
-use ZfcUser\Options\AuthenticationOptionsInterface;
 
 /**
  * Class ChangePassword
  * @package ZfcUser\Form
  */
-class ChangePassword extends Form
+class ChangePasswordForm extends Form
 {
-    /**
-     * @var AuthenticationOptionsInterface
-     */
-    protected $authOptions;
-
-    /**
-     * @param null|int|string $name Optional name for the element
-     */
-    public function __construct($name = null)
-    {
-        parent::__construct($name);
-    }
-
     /**
      * {@inheritdoc}
      */
     public function init()
     {
-        $this->add(array(
+        $this->add([
             'name' => 'credential',
-            'options' => array(
+            'type' => 'Password',
+            'options' => [
                 'label' => 'Current Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'newCredential',
-            'options' => array(
+            'type' => 'Password',
+            'options' => [
                 'label' => 'New Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'newCredentialVerify',
-            'options' => array(
+            'type' => 'Password',
+            'options' => [
                 'label' => 'Verify New Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'submit',
-            'attributes' => array(
-                'value' => 'Submit',
-                'type'  => 'submit'
-            ),
-        ));
+            'type' => 'Button',
+            'attributes' => [
+                'type' => 'submit',
+            ],
+            'options' => [
+                'label' => 'Submit',
+            ],
+        ]);
     }
 }

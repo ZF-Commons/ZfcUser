@@ -3,17 +3,17 @@ namespace ZfcUser\Factory\Form;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\Form\LoginForm;
+use ZfcUser\Form\ChangePasswordForm;
 
 /**
- * Class LoginFormFactory
+ * Class ChangePasswordFormFactory
  * @package ZfcUser\Factory\Form
  */
-class LoginFormFactory implements FactoryInterface
+class ChangePasswordFormFactory implements FactoryInterface
 {
     /**
      * @param ServiceLocatorInterface $serviceLocator
-     * @return LoginForm
+     * @return ChangePasswordForm
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
@@ -23,8 +23,8 @@ class LoginFormFactory implements FactoryInterface
          */
         $serviceManager = $serviceLocator->getServiceLocator();
 
-        $form = new LoginForm();
-        $form->setInputFilter($serviceManager->get('InputFilterManager')->get('ZfcUser\InputFilter\LoginFilter'));
+        $form = new ChangePasswordForm();
+        $form->setInputFilter($serviceManager->get('InputFilterManager')->get('ZfcUser\InputFilter\ChangePasswordFilter'));
 
         return $form;
     }

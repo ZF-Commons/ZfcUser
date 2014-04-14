@@ -87,14 +87,16 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      */
     public function changePassword(array $data)
     {
+        // TODO: Use forms for validation
         $currentUser = $this->getAuthService()->getIdentity();
 
         $oldPass = $data['credential'];
         $newPass = $data['newCredential'];
 
-        $bcrypt = new Bcrypt;
+        $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
 
+        // TODO: Move to form validator
         if (!$bcrypt->verify($oldPass, $currentUser->getPassword())) {
             return false;
         }

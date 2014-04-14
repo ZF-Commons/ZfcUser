@@ -137,6 +137,9 @@ class UserController extends AbstractActionController
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
         $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
 
+        /*
+         * TODO: This method does not take filtered value into account (StringTrim)
+        */
         $result = $adapter->prepareForAuthentication($this->getRequest());
 
         // Return early if an adapter returned a response
@@ -231,7 +234,7 @@ class UserController extends AbstractActionController
     /**
      * Change the users password
      */
-    public function changepasswordAction()
+    public function changePasswordAction()
     {
         // if the user isn't logged in, we can't change password
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
@@ -288,7 +291,7 @@ class UserController extends AbstractActionController
 
         $form = $this->getChangeEmailForm();
         $request = $this->getRequest();
-        $request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
+        //$request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
 
         $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
         if (isset($fm[0])) {
@@ -394,19 +397,18 @@ class UserController extends AbstractActionController
     public function getChangePasswordForm()
     {
         if (!$this->changePasswordForm) {
-            $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
+            $fem = $this->getServiceLocator()->get(('FormElementManager'));
+            $this->setChangePasswordForm($fem->get('ZfcUser\Form\ChangePasswordForm'));
         }
         return $this->changePasswordForm;
     }
 
     /**
      * @param FormInterface $changePasswordForm
-     * @return $this
      */
     public function setChangePasswordForm(FormInterface $changePasswordForm)
     {
         $this->changePasswordForm = $changePasswordForm;
-        return $this;
     }
 
     /**
