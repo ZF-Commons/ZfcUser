@@ -21,8 +21,8 @@ class RegistrationForm extends Form
     protected $options;
 
     /**
-     * @param null $name
-     * @param RegistrationOptionsInterface $options
+     * @param null|int|string               $name    Optional name for the element
+     * @param RegistrationOptionsInterface  $options Options for this form
      */
     public function __construct($name = null, RegistrationOptionsInterface $options)
     {

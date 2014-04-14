@@ -28,11 +28,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * @var FormInterface
      */
-    protected $loginForm;
-
-    /**
-     * @var FormInterface
-     */
     protected $registrationForm;
 
     /**

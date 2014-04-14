@@ -13,9 +13,14 @@ return array(
 
     'form_elements' => [
         'factories' => [
-            'ZfcUser\Form\RegistrationForm' => 'ZfcUser\Factory\Form\RegistrationFormFactory',
+            'ZFcUser\Form\Element\IdentityElement'  => 'ZfcUser\Factory\Form\Element\IdentityElementFactory',
+            'ZfcUser\Form\RegistrationForm'         => 'ZfcUser\Factory\Form\RegistrationFormFactory',
+        ],
+        'invokables' => [
+            'ZfcUser\Form\LoginForm' => 'ZfcUser\Form\LoginForm',
         ],
         'shared' => [
+            'ZfcUser\Form\LoginForm'        => true,
             'ZfcUser\Form\RegistrationForm' => true,
         ],
     ],
@@ -28,7 +33,8 @@ return array(
 
     'input_filters' => [
         'factories' => [
-            'ZfcUser\InputFilter\RegistrationFilter' => 'ZfcUser\Factory\InputFilter\RegistrationFilterFactory',
+            'ZfcUser\InputFilter\LoginFilter'           => 'ZfcUser\Factory\InputFilter\LoginFilterFactory',
+            'ZfcUser\InputFilter\RegistrationFilter'    => 'ZfcUser\Factory\InputFilter\RegistrationFilterFactory',
         ],
     ],
 
