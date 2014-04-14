@@ -15,6 +15,9 @@ return array(
         'factories' => [
             'ZfcUser\Form\RegistrationForm' => 'ZfcUser\Factory\Form\RegistrationFormFactory',
         ],
+        'shared' => [
+            'ZfcUser\Form\RegistrationForm' => true,
+        ],
     ],
 
     'hydrators' => [

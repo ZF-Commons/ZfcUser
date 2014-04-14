@@ -199,12 +199,11 @@ class UserController extends AbstractActionController
         }
 
         $post = $prg;
+        $user = $service->register($post);
+
         $redirect = isset($prg['redirect']) ? $prg['redirect'] : null;
 
-        // This is needed to get the error messages if a user could not be created
-        // TODO: Fix this ugliness somehow (probably needs a service/action rewrite)
-        $form->setData($post);
-        if (!$form->isValid() || !$user = $service->register($post)) {
+        if (!$user) {
             return array(
                 'registrationForm' => $form,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
