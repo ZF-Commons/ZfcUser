@@ -26,7 +26,7 @@ class RegistrationFormFactory implements FactoryInterface
         $options = $serviceManager->get('zfcuser_module_options');
         $class = $options->getUserEntityClass();
 
-        $form =  new RegistrationForm(null, $options);
+        $form = new RegistrationForm(null, $options);
         $form->setHydrator($serviceManager->get('HydratorManager')->get('ZfcUser\Hydrator\RegistrationHydrator'));
         $form->setInputFilter($serviceManager->get('InputFilterManager')->get('ZfcUser\InputFilter\RegistrationFilter'));
         $form->setObject(new $class);

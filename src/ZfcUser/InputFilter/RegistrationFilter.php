@@ -38,13 +38,18 @@ class RegistrationFilter extends InputFilter
                     ],
                 ],
                 'validators' => [
-                    // TODO: Add unique validator
                     [
                         'name' => 'StringLength',
                         // TODO: Make min/max configurable
                         'options' => [
                             'min' => 3,
                             'max' => 255,
+                        ],
+                    ],
+                    [
+                        'name' => 'ZfcUser\Validator\NoRecordExists',
+                        'options' => [
+                            'key' => 'username',
                         ],
                     ],
                 ],
