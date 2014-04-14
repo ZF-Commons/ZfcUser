@@ -27,28 +27,20 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     /**
      * @covers ZfcUser\Mapper\UserHydrator::extract
      * @covers ZfcUser\Mapper\UserHydrator::mapField
+     * @dataProvider dataProviderTestExtractWithValidUserObject
+     * @see https://github.com/ZF-Commons/ZfcUser/pull/421
      */
-    public function testExtractWithValidUserObject()
+    public function testExtractWithValidUserObject($object, $expectArray)
     {
-        $user = new \ZfcUser\Entity\User;
-
-        $expectArray = array(
-            'username' => 'zfcuser',
-            'email' => 'Zfc User',
-            'display_name' => 'ZfcUser',
-            'password' => 'ZfcUserPassword',
-            'state' => 1,
-            'user_id' => 1
-        );
-
-        $user->setUsername($expectArray['username']);
-        $user->setDisplayName($expectArray['display_name']);
-        $user->setEmail($expectArray['email']);
-        $user->setPassword($expectArray['password']);
-        $user->setState($expectArray['state']);
-        $user->setId($expectArray['user_id']);
-
-        $result = $this->hydrator->extract($user);
+        $result = $this->hydrator->extract($object);
+        /**
+         * @TODO remove this skip after 421 is merge
+         */
+        if (!array_key_exists('user_id', $expectArray) &&
+             array_key_exists('user_id', $result)
+        ) {
+            $this->markTestSkipped("remove this skip after 421 is merge");
+        }
 
         $this->assertEquals($expectArray, $result);
     }
@@ -88,5 +80,48 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectArray['password'], $result->getPassword());
         $this->assertEquals($expectArray['state'], $result->getState());
         $this->assertEquals($expectArray['user_id'], $result->getId());
+    }
+
+    public function dataProviderTestExtractWithValidUserObject()
+    {
+        $createUserObject = function ($data) {
+            $user = new \ZfcUser\Entity\User;
+            foreach ($data as $key => $value) {
+                if ($key == 'user_id') {
+                    $key='id';
+                }
+                $methode = 'set' . str_replace(" ", "", ucwords(str_replace("_", " ", $key)));
+                call_user_func(array($user,$methode), $value);
+            }
+            return $user;
+        };
+        $return = array();
+        $expectArray = array();
+
+        $buffer = array(
+            'username' => 'zfcuser',
+            'email' => 'Zfc User',
+            'display_name' => 'ZfcUser',
+            'password' => 'ZfcUserPassword',
+            'state' => 1,
+            'user_id' => 1
+        );
+
+        $return[]=array($createUserObject($buffer), $buffer);
+
+        /**
+         * @see https://github.com/ZF-Commons/ZfcUser/pull/421
+         */
+        $buffer = array(
+            'username' => 'zfcuser',
+            'email' => 'Zfc User',
+            'display_name' => 'ZfcUser',
+            'password' => 'ZfcUserPassword',
+            'state' => 1
+        );
+
+        $return[]=array($createUserObject($buffer), $buffer);
+
+        return $return;
     }
 }
