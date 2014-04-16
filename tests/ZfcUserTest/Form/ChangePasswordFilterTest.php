@@ -6,15 +6,12 @@ use ZfcUser\Form\ChangePasswordFilter as Filter;
 
 class ChangePasswordFilterTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers ZfcUser\Form\ChangePasswordFilter::__construct
-     */
     public function testConstruct()
     {
-        $options = $this->getMock('ZfcUser\Options\ModuleOptions', array('getAuthIdentityFields'));
+        $options = $this->getMock('ZfcUser\Options\ModuleOptions');
         $options->expects($this->once())
-            ->method('getAuthIdentityFields')
-            ->will($this->returnValue(array()));
+                ->method('getAuthIdentityFields')
+                ->will($this->returnValue(array('email')));
 
         $filter = new Filter($options);
 
@@ -28,14 +25,14 @@ class ChangePasswordFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Form\ChangePasswordFilter::__construct
+     * @dataProvider providerTestConstructIdentityEmail
      */
-    public function testConstructIdentityEmail()
+    public function testConstructIdentityEmail($onlyEmail)
     {
-        $options = $this->getMock('ZfcUser\Options\ModuleOptions', array('getAuthIdentityFields'));
+        $options = $this->getMock('ZfcUser\Options\ModuleOptions');
         $options->expects($this->once())
                 ->method('getAuthIdentityFields')
-                ->will($this->returnValue(array('email')));
+                ->will($this->returnValue($onlyEmail ? array('email') : array()));
 
         $filter = new Filter($options);
 
@@ -47,14 +44,26 @@ class ChangePasswordFilterTest extends \PHPUnit_Framework_TestCase
 
         $identity = $inputs['identity'];
 
-        // @todo remove this test skip if #383 is fixed
-        if ($identity instanceof \Zend\InputFilter\Input && $identity->getValidatorChain()->count() == 0) {
-            $this->markTestSkipped("currently we have a bug in this validator, pls fix #383");
-        }
+        if ($onlyEmail === false) {
+            $this->assertEquals(0, $inputs['identity']->getValidatorChain()->count());
+        } else {
+            // @todo remove this test skip if #383 is fixed
+            if ($identity instanceof \Zend\InputFilter\Input && $identity->getValidatorChain()->count() == 0) {
+                $this->markTestSkipped("currently we have a bug in this validator, pls fix #383");
+            }
 
-        // test email as identity
-        $validators = $identity->getValidatorChain()->getValidators();
-        $this->assertArrayHasKey('instance', $validators[0]);
-        $this->assertInstanceOf('\Zend\Validator\EmailAddress', $validators[0]['instance']);
+            // test email as identity
+            $validators = $identity->getValidatorChain()->getValidators();
+            $this->assertArrayHasKey('instance', $validators[0]);
+            $this->assertInstanceOf('\Zend\Validator\EmailAddress', $validators[0]['instance']);
+        }
+    }
+
+    public function providerTestConstructIdentityEmail()
+    {
+        return array(
+            array(true),
+            array(false)
+        );
     }
 }
