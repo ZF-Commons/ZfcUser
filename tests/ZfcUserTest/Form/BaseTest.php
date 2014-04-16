@@ -9,7 +9,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerTestConstruct
      */
-    public function testConstruct($useCaptcha = true, $captchaOptions = array())
+    public function testConstruct($useCaptcha = true)
     {
         $options = $this->getMock('ZfcUser\Options\RegistrationOptionsInterface');
         $options->expects($this->once())
@@ -17,9 +17,11 @@ class BaseTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($useCaptcha));
 
         if ($useCaptcha) {
+            $captcha = $this->getMockForAbstractClass('\Zend\Captcha\AbstractAdapter');
+
             $options->expects($this->once())
                     ->method('getFormCaptchaOptions')
-                    ->will($this->returnValue($captchaOptions));
+                    ->will($this->returnValue($captcha));
         }
 
         $form = new Form($options);
@@ -38,8 +40,8 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     public function providerTestConstruct()
     {
         return array(
-            array(true, array('class'=>'dumb')),
-            array(false, array('class'=>'dumb'))
+            array(true),
+            array(false)
         );
     }
 }
