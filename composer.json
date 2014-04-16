@@ -48,7 +48,7 @@
         "zendframework/zend-captcha" : "~2.1"
     },
     "suggest": {
-        "zendframework/zend-captcha" : "Zend\Captcha if you want to use the captcha component"
+        "zendframework/zend-captcha" : "Zend\\Captcha if you want to use the captcha component"
     },
     "autoload": {
         "psr-0": {
