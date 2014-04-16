@@ -1195,10 +1195,10 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             array(false,   $registerPostRedirect,   true, 'email'),
             array(true,    $registerPostRedirect,   true, 'email'),
 
-            array(false,   $registerPost,   true, 'user'),
-            array(true,    $registerPost,   true, 'user'),
-            array(false,   $registerPostRedirect,   true, 'user'),
-            array(true,    $registerPostRedirect,   true, 'user'),
+            array(false,   $registerPost,   true, 'username'),
+            array(true,    $registerPost,   true, 'username'),
+            array(false,   $registerPostRedirect,   true, 'username'),
+            array(true,    $registerPostRedirect,   true, 'username'),
 
         );
     }
