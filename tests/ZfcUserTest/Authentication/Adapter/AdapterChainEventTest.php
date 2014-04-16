@@ -68,6 +68,9 @@ class AdapterChainEventTest extends \PHPUnit_Framework_TestCase
 
     public function testRequest()
     {
-        $this->markTestIncomplete('Implement this test or remove it');
+        $request = $this->getMock('Zend\Stdlib\RequestInterface');
+        $this->event->setRequest($request);
+
+        $this->assertInstanceOf('Zend\Stdlib\RequestInterface', $this->event->getRequest());
     }
 }

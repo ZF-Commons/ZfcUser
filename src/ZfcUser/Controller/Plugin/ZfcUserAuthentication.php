@@ -85,5 +85,4 @@ class ZfcUserAuthentication extends AbstractPlugin
         $this->authService = $authService;
         return $this;
     }
-
 }
