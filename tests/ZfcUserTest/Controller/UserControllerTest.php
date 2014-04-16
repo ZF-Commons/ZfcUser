@@ -561,13 +561,152 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
+     * @dataProvider providerTestRegisterAction
      * @depend testActionControllHasIdentity
+     * @depend testRegisterActionIsNotAllowed
      */
-    public function testRegisterAction()
+    public function testRegisterAction($wantRedirect, $postRedirectGetReturn, $registerSuccess, $loginAfterSuccessWith)
     {
-        $this->markTestIncomplete(
-            'This test has not been implemented yet.'
-        );
+        $controller = $this->controller;
+        $redirectUrl = 'http://localhost/redirect1';
+        $route_url = '/user/register';
+        $expectedResult = null;
+
+        $this->setUpZfcUserAuthenticationPlugin(array(
+            'hasIdentity'=>false
+        ));
+
+        $this->options->expects($this->any())
+                      ->method('getEnableRegistration')
+                      ->will($this->returnValue(true));
+
+        $request = $this->getMock('Zend\Http\Request');
+        $this->helperMakePropertyAccessable($controller, 'request', $request);
+
+        $userService = $this->getMock('\ZfcUser\Service\User');
+        $controller->setUserService($userService);
+
+        $form = $this->getMockBuilder('\Zend\Form\Form')
+                     ->disableOriginalConstructor()
+                     ->getMock();
+
+        $controller->setRegisterForm($form);
+
+        $this->options->expects($this->any())
+                      ->method('getUseRedirectParameterIfPresent')
+                      ->will($this->returnValue((bool) $wantRedirect));
+
+        if ($wantRedirect) {
+            $params = new Parameters();
+            $params->set('redirect', $redirectUrl);
+
+            $request->expects($this->any())
+                    ->method('getQuery')
+                    ->will($this->returnValue($params));
+        }
+
+
+        $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url');
+        $url->expects($this->at(0))
+            ->method('fromRoute')
+            ->with($controller::ROUTE_REGISTER)
+            ->will($this->returnValue($route_url));
+
+        $this->pluginManagerPlugins['url']= $url;
+
+        $prg = $this->getMock('\Zend\Mvc\Controller\Plugin\PostRedirectGet');
+        $this->pluginManagerPlugins['prg'] = $prg;
+
+        $redirectQuery = $wantRedirect ? '?redirect=' . rawurlencode($redirectUrl) : '';
+        $prg->expects($this->once())
+            ->method('__invoke')
+            ->with($route_url . $redirectQuery)
+            ->will($this->returnValue($postRedirectGetReturn));
+
+        if ($registerSuccess) {
+            $user = new UserIdentity();
+            $user->setEmail('zfc-user@trash-mail.com');
+            $user->setUsername('zfc-user');
+
+            $userService->expects($this->once())
+                        ->method('register')
+                        ->with($postRedirectGetReturn)
+                        ->will($this->returnValue($user));
+
+            $userService->expects($this->any())
+                        ->method('getOptions')
+                        ->will($this->returnValue($this->options));
+
+            $this->options->expects($this->once())
+                          ->method('getLoginAfterRegistration')
+                          ->will($this->returnValue(!empty($loginAfterSuccessWith)));
+
+            if ($loginAfterSuccessWith) {
+                $this->options->expects($this->once())
+                              ->method('getAuthIdentityFields')
+                              ->will($this->returnValue(array($loginAfterSuccessWith)));
+
+
+                $expectedResult = new \stdClass();
+                $forwardPlugin = $this->getMockBuilder('Zend\Mvc\Controller\Plugin\Forward')
+                                     ->disableOriginalConstructor()
+                                     ->getMock();
+                $forwardPlugin->expects($this->once())
+                              ->method('dispatch')
+                              ->with($controller::CONTROLLER_NAME, array('action' => 'authenticate'))
+                              ->will($this->returnValue($expectedResult));
+
+                $this->pluginManagerPlugins['forward']= $forwardPlugin;
+            } else {
+            }
+        }
+
+
+
+
+        /***********************************************
+         * run
+         */
+        $result = $controller->registerAction();
+
+
+        /***********************************************
+         * assert
+         */
+        if ($postRedirectGetReturn instanceof Response) {
+            $expectedResult = $postRedirectGetReturn;
+        }
+        if ($expectedResult) {
+            $this->assertSame($expectedResult, $result);
+            return;
+        }
+
+
+        if ($postRedirectGetReturn === false) {
+            $expectedResult = array(
+                'registerForm' => $form,
+                'enableRegistration' => true,
+                'redirect' => $wantRedirect ? $redirectUrl : false
+            );
+        }
+        elseif ($registerSuccess === false) {
+            $expectedResult = array(
+                'registerForm' => $form,
+                'enableRegistration' => true,
+                'redirect' => isset($postRedirectGetReturn['redirect']) ? $postRedirectGetReturn['redirect'] : null
+            );
+        }
+
+        if ($expectedResult) {
+            $this->assertInternalType('array', $result);
+            $this->assertArrayHasKey('registerForm', $result);
+            $this->assertArrayHasKey('enableRegistration', $result);
+            $this->assertArrayHasKey('redirect', $result);
+            $this->assertEquals($expectedResult, $result);
+        } else {
+            $this->assertInstanceOf('\Zend\Http\Response', $result);
+            $this->assertSame($response, $result);
+        }
     }
 
 
@@ -1023,6 +1162,43 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
             array(false,   array("test"),   true, true),
             array(true,    array("test"),   true, true),
+
+        );
+    }
+
+
+    public function providerTestRegisterAction()
+    {
+        $registerPost = array (
+            'username'=>'zfc-user',
+            'email'=>'zfc-user@trash-mail.com',
+            'password'=>'secret'
+        );
+        $registerPostRedirect = array_merge($registerPost, array("redirect" => 'test'));
+
+
+        return array(
+            //    $status, $postRedirectGetReturn, $registerSuccess, $loginAfterSuccessWith
+            array(false,   new Response(),  null,  null),
+            array(true,    new Response(),  null,  null),
+
+            array(false,   false,           null,  null),
+            array(true,    false,           null,  null),
+
+            array(false,   $registerPost,   false,  null),
+            array(true,    $registerPost,   false,  null),
+            array(false,   $registerPostRedirect,   false,  null),
+            array(true,    $registerPostRedirect,   false,  null),
+
+            array(false,   $registerPost,   true, 'email'),
+            array(true,    $registerPost,   true, 'email'),
+            array(false,   $registerPostRedirect,   true, 'email'),
+            array(true,    $registerPostRedirect,   true, 'email'),
+
+            array(false,   $registerPost,   true, 'user'),
+            array(true,    $registerPost,   true, 'user'),
+            array(false,   $registerPostRedirect,   true, 'user'),
+            array(true,    $registerPostRedirect,   true, 'user'),
 
         );
     }
