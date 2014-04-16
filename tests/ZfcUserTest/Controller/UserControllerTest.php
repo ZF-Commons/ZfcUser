@@ -688,8 +688,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 'enableRegistration' => true,
                 'redirect' => $wantRedirect ? $redirectUrl : false
             );
-        }
-        elseif ($registerSuccess === false) {
+        } elseif ($registerSuccess === false) {
             $expectedResult = array(
                 'registerForm' => $form,
                 'enableRegistration' => true,
