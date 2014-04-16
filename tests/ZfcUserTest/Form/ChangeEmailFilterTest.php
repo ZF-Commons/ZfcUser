@@ -6,15 +6,12 @@ use ZfcUser\Form\ChangeEmailFilter as Filter;
 
 class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @covers ZfcUser\Form\ChangeEmailFilter::__construct
-     */
     public function testConstruct()
     {
-        $options = $this->getMock('ZfcUser\Options\ModuleOptions', array('getAuthIdentityFields'));
+        $options = $this->getMock('ZfcUser\Options\ModuleOptions');
         $options->expects($this->once())
                 ->method('getAuthIdentityFields')
-                ->will($this->returnValue(array()));
+                ->will($this->returnValue(array('email')));
 
         $validator = $this->getMockBuilder('ZfcUser\Validator\NoRecordExists')->disableOriginalConstructor()->getMock();
         $filter = new Filter($options, $validator);
@@ -28,11 +25,11 @@ class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Form\ChangeEmailFilter::__construct
+     * @dataProvider providerTestConstructIdentityEmail
      */
-    public function testConstructIdentityEmail()
+    public function testConstructIdentityEmail($onlyEmail)
     {
-        $options = $this->getMock('ZfcUser\Options\ModuleOptions', array('getAuthIdentityFields'));
+        $options = $this->getMock('ZfcUser\Options\ModuleOptions');
         $options->expects($this->once())
                 ->method('getAuthIdentityFields')
                 ->will($this->returnValue(array('email')));
@@ -47,24 +44,28 @@ class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
 
         $identity = $inputs['identity'];
 
-        // @todo remove this test skip if #383 is fixed
-        if ($identity instanceof \Zend\InputFilter\Input && $identity->getValidatorChain()->count() == 0) {
-            $this->markTestSkipped("currently we have a bug in this validator, pls fix #383");
-        }
+        if ($onlyEmail === false) {
+            $this->assertEquals(0, $inputs['identity']->getValidatorChain()->count());
+        } else {
+            // @todo remove this test skip if #383 is fixed
+            if ($identity instanceof \Zend\InputFilter\Input && $identity->getValidatorChain()->count() == 0) {
+                $this->markTestSkipped("currently we have a bug in this validator, pls fix #383");
+            }
 
-        // test email as identity
-        $validators = $identity->getValidatorChain()->getValidators();
-        $this->assertArrayHasKey('instance', $validators[0]);
-        $this->assertInstanceOf('\Zend\Validator\EmailAddress', $validators[0]['instance']);
+            // test email as identity
+            $validators = $identity->getValidatorChain()->getValidators();
+            $this->assertArrayHasKey('instance', $validators[0]);
+            $this->assertInstanceOf('\Zend\Validator\EmailAddress', $validators[0]['instance']);
+        }
     }
 
-    /**
-     * @covers ZfcUser\Form\ChangeEmailFilter::getEmailValidator
-     * @covers ZfcUser\Form\ChangeEmailFilter::setEmailValidator
-     */
     public function testSetGetEmailValidator()
     {
         $options = $this->getMock('ZfcUser\Options\ModuleOptions');
+        $options->expects($this->once())
+                ->method('getAuthIdentityFields')
+                ->will($this->returnValue(array()));
+
         $validatorInit = $this->getMockBuilder('ZfcUser\Validator\NoRecordExists')->disableOriginalConstructor()->getMock();
         $validatorNew = $this->getMockBuilder('ZfcUser\Validator\NoRecordExists')->disableOriginalConstructor()->getMock();
 
@@ -73,5 +74,13 @@ class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($validatorInit, $filter->getEmailValidator());
         $filter->setEmailValidator($validatorNew);
         $this->assertSame($validatorNew, $filter->getEmailValidator());
+    }
+
+    public function providerTestConstructIdentityEmail()
+    {
+        return array(
+            array(true),
+            array(false)
+        );
     }
 }
