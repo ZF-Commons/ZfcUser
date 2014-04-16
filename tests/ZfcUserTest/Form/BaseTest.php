@@ -9,14 +9,13 @@ class BaseTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerTestConstruct
      */
-    public function testConstruct($useCaptcha = true)
+    public function testConstruct($useCaptcha = false)
     {
         $options = $this->getMock('ZfcUser\Options\RegistrationOptionsInterface');
         $options->expects($this->once())
                 ->method('getUseRegistrationFormCaptcha')
                 ->will($this->returnValue($useCaptcha));
-
-        if ($useCaptcha) {
+        if ($useCaptcha && class_exists('\Zend\Captcha\AbstractAdapter')) {
             $captcha = $this->getMockForAbstractClass('\Zend\Captcha\AbstractAdapter');
 
             $options->expects($this->once())
