@@ -658,6 +658,28 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
                 $this->pluginManagerPlugins['forward']= $forwardPlugin;
             } else {
+                $response = new Response();
+                $route_url = '/user/login';
+
+                $redirectUrl = isset($postRedirectGetReturn['redirect'])
+                    ? $postRedirectGetReturn['redirect']
+                    : null;
+
+                $redirectQuery = $redirectUrl ? '?redirect='. rawurlencode($redirectUrl) : '';
+
+                $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
+                $redirect->expects($this->once())
+                         ->method('toUrl')
+                         ->with($route_url . $redirectQuery)
+                         ->will($this->returnValue($response));
+
+                $this->pluginManagerPlugins['redirect']= $redirect;
+
+
+                $url->expects($this->at(1))
+                    ->method('fromRoute')
+                    ->with($controller::ROUTE_LOGIN)
+                    ->will($this->returnValue($route_url));
             }
         }
 
@@ -1198,6 +1220,11 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             array(true,    $registerPost,   true, 'username'),
             array(false,   $registerPostRedirect,   true, 'username'),
             array(true,    $registerPostRedirect,   true, 'username'),
+
+            array(false,   $registerPost,   true, null),
+            array(true,    $registerPost,   true, null),
+            array(false,   $registerPostRedirect,   true, null),
+            array(true,    $registerPostRedirect,   true, null),
 
         );
     }
