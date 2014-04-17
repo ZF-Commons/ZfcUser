@@ -73,15 +73,14 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($captcha, $reflection->getValue($form));
     }
 
-
     /**
      *
-     * @param mixed $objectOrClass
-     * @param string $property
-     * @param mixed $value = null
+     * @param  mixed               $objectOrClass
+     * @param  string              $property
+     * @param  mixed               $value         = null
      * @return \ReflectionProperty
      */
-    public function helperMakePropertyAccessable ($objectOrClass, $property, $value = null)
+    public function helperMakePropertyAccessable($objectOrClass, $property, $value = null)
     {
         $reflectionProperty = new \ReflectionProperty($objectOrClass, $property);
         $reflectionProperty->setAccessible(true);
@@ -89,6 +88,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         if ($value !== null) {
             $reflectionProperty->setValue($objectOrClass, $value);
         }
+
         return $reflectionProperty;
     }
 }

@@ -375,7 +375,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ZfcUser\Authentication\Adapter\Db', $result);
     }
 
-
     /**
      * @covers ZfcUser\Authentication\Adapter\Db::preprocessCredential
      * @covers ZfcUser\Authentication\Adapter\Db::setCredentialPreprocessor

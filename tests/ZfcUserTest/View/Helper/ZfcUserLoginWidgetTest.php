@@ -71,6 +71,7 @@ class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
              ->method('render')
              ->will($this->returnCallback(function ($vm) use (&$viewModel) {
                  $viewModel = $vm;
+
                  return "test";
              }));
 
@@ -78,7 +79,6 @@ class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNotInstanceOf('Zend\View\Model\ViewModel', $result);
         $this->assertInternalType('string', $result);
-
 
         $this->assertInstanceOf('Zend\View\Model\ViewModel', $viewModel);
         foreach ($expect as $name => $value) {

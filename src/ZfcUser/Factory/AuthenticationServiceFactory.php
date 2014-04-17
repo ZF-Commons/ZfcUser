@@ -15,6 +15,6 @@ class AuthenticationServiceFactory implements FactoryInterface
         return new AuthenticationService(
             $serviceLocator->get('ZfcUser\Authentication\Storage\Db'),
             $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain')
-        );        
-    }    
+        );
+    }
 }

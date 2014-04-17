@@ -22,7 +22,7 @@ interface AuthenticationOptionsInterface extends PasswordOptionsInterface
     /**
      * set auth identity fields
      *
-     * @param array $authIdentityFields
+     * @param  array         $authIdentityFields
      * @return ModuleOptions
      */
     public function setAuthIdentityFields($authIdentityFields);

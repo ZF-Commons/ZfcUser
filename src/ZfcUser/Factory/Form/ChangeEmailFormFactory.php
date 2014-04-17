@@ -24,6 +24,6 @@ class ChangeEmailFormFactory implements FactoryInterface
             ))
         ));
 
-        return $form;        
-    }    
+        return $form;
+    }
 }

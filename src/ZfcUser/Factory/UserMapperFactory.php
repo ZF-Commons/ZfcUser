@@ -19,6 +19,7 @@ class UserMapperFactory implements FactoryInterface
         $mapper->setEntityPrototype(new $entityClass);
         $mapper->setHydrator($serviceLocator->get('zfcuser_user_hydrator'));
         $mapper->setTableName($options->getTableName());
+
         return $mapper;
-    }    
+    }
 }

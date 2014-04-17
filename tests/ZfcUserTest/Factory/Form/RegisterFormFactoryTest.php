@@ -6,7 +6,7 @@ use ZfcUser\Factory\Form\RegisterFormFactory;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Mapper\User as UserMapper;
 
-class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase 
+class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
@@ -14,6 +14,6 @@ class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager->setService('zfcuser_module_options', new ModuleOptions);
         $serviceManager->setService('zfcuser_user_mapper', new UserMapper);
         $factory = new RegisterFormFactory;
-        $this->assertInstanceOf('ZfcUser\Form\Register', $factory->createService($serviceManager)); 
-    }    
+        $this->assertInstanceOf('ZfcUser\Form\Register', $factory->createService($serviceManager));
+    }
 }

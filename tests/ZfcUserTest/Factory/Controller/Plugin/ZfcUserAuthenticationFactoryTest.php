@@ -14,8 +14,8 @@ class ZfcUserAuthenticationFactoryTest extends \PHPUnit_Framework_TestCase
         $plugins = $this->getMock('Zend\ServiceManager\AbstractPluginManager');
         $plugins->expects($this->any())
             ->method('getServiceLocator')
-            ->will($this->returnValue($serviceManager));      
+            ->will($this->returnValue($serviceManager));
         $factory = new ZfcUserAuthenticationFactory;
-        $this->assertInstanceOf('ZfcUser\Controller\Plugin\ZfcUserAuthentication', $factory->createService($plugins));    
+        $this->assertInstanceOf('ZfcUser\Controller\Plugin\ZfcUserAuthentication', $factory->createService($plugins));
     }
 }

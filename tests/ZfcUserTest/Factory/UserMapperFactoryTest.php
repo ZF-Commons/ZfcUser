@@ -16,6 +16,6 @@ class UserMapperFactoryTest extends \PHPUnit_Framework_TestCase
         $dbAdapter = $this->getMockBuilder('Zend\Db\Adapter\Adapter')->disableOriginalConstructor()->getMock();
         $serviceManager->setService('zfcuser_zend_db_adapter', $dbAdapter);
         $factory = new UserMapperFactory;
-        $this->assertInstanceOf('ZfcUser\Mapper\User', $factory->createService($serviceManager)); 
+        $this->assertInstanceOf('ZfcUser\Mapper\User', $factory->createService($serviceManager));
     }
 }
