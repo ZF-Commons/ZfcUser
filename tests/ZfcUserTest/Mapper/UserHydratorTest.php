@@ -33,15 +33,6 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     public function testExtractWithValidUserObject($object, $expectArray)
     {
         $result = $this->hydrator->extract($object);
-        /**
-         * @TODO remove this skip after 421 is merge
-         */
-        if (!array_key_exists('user_id', $expectArray) &&
-             array_key_exists('user_id', $result)
-        ) {
-            $this->markTestSkipped("remove this skip after 421 is merge");
-        }
-
         $this->assertEquals($expectArray, $result);
     }
 
