@@ -7,7 +7,6 @@ use ZfcUser\Entity\UserInterface as UserEntityInterface;
 
 class UserHydrator extends ClassMethods
 {
-
     /**
      * Extract values from an object
      *
