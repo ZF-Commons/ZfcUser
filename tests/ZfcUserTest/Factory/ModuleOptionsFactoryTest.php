@@ -3,6 +3,7 @@ namespace ZfcUserTest\Factory;
 
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Factory\ModuleOptionsFactory;
+use ZfcUser\Options\ModuleOptions;
 
 class ModuleOptionsFactoryTest extends \PHPUnit_Framework_TestCase
 {
