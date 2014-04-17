@@ -79,5 +79,4 @@ class ZfcUserLoginWidget extends AbstractHelper
         $this->viewTemplate = $viewTemplate;
         return $this;
     }
-
 }

@@ -33,7 +33,7 @@ abstract class AbstractRecord extends AbstractValidator
 
     /**
      * Required options are:
-     *  - key     Field to use, 'emial' or 'username'
+     *  - key     Field to use, 'email' or 'username'
      */
     public function __construct(array $options)
     {

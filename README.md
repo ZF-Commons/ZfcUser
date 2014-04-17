@@ -1,6 +1,11 @@
 ZfcUser
 =======
-Version 0.0.1 Created by Evan Coury and the ZF-Commons team
+[![Build Status](https://travis-ci.org/ZF-Commons/ZfcUser.png)](https://travis-ci.org/ZF-Commons/ZfcUser)
+[![Code Coverage](https://scrutinizer-ci.com/g/ZF-Commons/ZfcUser/badges/coverage.png?s=7d5932c77bea64a417ac8e3da51dca6da1fcb22e)](https://scrutinizer-ci.com/g/ZF-Commons/ZfcUser/)
+[![Latest Stable Version](https://poser.pugx.org/zf-commons/zfc-user/v/stable.png)](https://packagist.org/packages/zf-commons/zfc-user)
+[![Latest Unstable Version](https://poser.pugx.org/zf-commons/zfc-user/v/unstable.png)](https://packagist.org/packages/zf-commons/zfc-user)
+
+Created by Evan Coury and the ZF-Commons team
 
 Introduction
 ------------
@@ -103,31 +108,24 @@ Coming soon...
 1. If you do not already have a valid Zend\Db\Adapter\Adapter in your service
    manager configuration, put the following in `./config/autoload/database.local.php`:
 
-        <?php
+```php
+<?php
+return array(
+    'db' => array(
+        'driver'    => 'PdoMysql',
+        'hostname'  => 'changeme',
+        'database'  => 'changeme',
+        'username'  => 'changeme',
+        'password'  => 'changeme',
+    ),
+    'service_manager' => array(
+        'factories' => array(
+            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+        ),
+    ),
+);
 
-        $dbParams = array(
-            'database'  => 'changeme',
-            'username'  => 'changeme',
-            'password'  => 'changeme',
-            'hostname'  => 'changeme',
-        );
-
-        return array(
-            'service_manager' => array(
-                'factories' => array(
-                    'Zend\Db\Adapter\Adapter' => function ($sm) use ($dbParams) {
-                        return new Zend\Db\Adapter\Adapter(array(
-                            'driver'    => 'pdo',
-                            'dsn'       => 'mysql:dbname='.$dbParams['database'].';host='.$dbParams['hostname'],
-                            'database'  => $dbParams['database'],
-                            'username'  => $dbParams['username'],
-                            'password'  => $dbParams['password'],
-                            'hostname'  => $dbParams['hostname'],
-                        ));
-                    },
-                ),
-            ),
-        );
+```
 
 Navigate to http://yourproject/user and you should land on a login page.
 
