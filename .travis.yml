@@ -11,7 +11,6 @@ php:
 before_script:
   - composer self-update
   - composer install --dev --prefer-source;
-  - wget https://scrutinizer-ci.com/ocular.phar
   - mysql -e "create database IF NOT EXISTS zfc_user;" -uroot
 
 script:
@@ -19,10 +18,14 @@ script:
   - ./vendor/bin/phpcs -n --standard=PSR2 ./src/ ./tests/
 
 after_script:
-  - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
+  - php vendor/bin/coveralls -v
 
 notifications:
   email: false
+  irc: "irc.freenode.org#zftalk.dev"
+  
+tools:
+  external_code_coverage: true
 
 matrix:
   fast_finish: true
