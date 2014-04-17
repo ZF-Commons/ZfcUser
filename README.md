@@ -1,7 +1,7 @@
 ZfcUser
 =======
 [![Build Status](https://travis-ci.org/ZF-Commons/ZfcUser.png)](https://travis-ci.org/ZF-Commons/ZfcUser)
-[![Coverage Status](https://coveralls.io/repos/ZF-Commons/ZfcUser/badge.png)](https://coveralls.io/r/ZF-Commons/ZfcUser)
+[![Coverage Status](https://coveralls.io/repos/ZF-Commons/ZfcUser/badge.png?branch=master)](https://coveralls.io/r/ZF-Commons/ZfcUser?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/zf-commons/zfc-user/v/stable.png)](https://packagist.org/packages/zf-commons/zfc-user)
 [![Latest Unstable Version](https://poser.pugx.org/zf-commons/zfc-user/v/unstable.png)](https://packagist.org/packages/zf-commons/zfc-user)
 
