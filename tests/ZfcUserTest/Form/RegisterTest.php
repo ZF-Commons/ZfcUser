@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Form;
 
+use Zend\Form\Element\Csrf;
 use ZfcUser\Form\Register as Form;
 
 class RegisterTest extends \PHPUnit_Framework_TestCase
@@ -73,6 +74,20 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($captcha, $reflection->getValue($form));
     }
 
+    public function testCsrfTimeoutSetting()
+    {
+        $timeout = 666;
+        $options = $this->getMock('ZfcUser\Options\RegistrationOptionsInterface');
+        $options->expects($this->atLeastOnce())
+            ->method('getUserFormTimeout')
+            ->will($this->returnValue($timeout));
+
+        $form = new Form(null, $options);
+
+        /** @var Csrf $csrf */
+        $csrf = $form->get('csrf');
+        $this->assertEquals($timeout, $csrf->getCsrfValidator()->getTimeout());
+    }
 
     /**
      *
