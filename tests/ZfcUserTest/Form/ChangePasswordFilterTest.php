@@ -47,11 +47,6 @@ class ChangePasswordFilterTest extends \PHPUnit_Framework_TestCase
         if ($onlyEmail === false) {
             $this->assertEquals(0, $inputs['identity']->getValidatorChain()->count());
         } else {
-            // @todo remove this test skip if #383 is fixed
-            if ($identity instanceof \Zend\InputFilter\Input && $identity->getValidatorChain()->count() == 0) {
-                $this->markTestSkipped("currently we have a bug in this validator, pls fix #383");
-            }
-
             // test email as identity
             $validators = $identity->getValidatorChain()->getValidators();
             $this->assertArrayHasKey('instance', $validators[0]);
