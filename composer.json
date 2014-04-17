@@ -45,8 +45,7 @@
         "phpunit/phpunit" : ">=3.7,<4",
         "phpmd/phpmd" : "1.4.*",
         "squizlabs/php_codesniffer" : "1.4.*",
-        "zendframework/zend-captcha" : "~2.1",
-        "satooshi/php-coveralls": "~0.6"
+        "zendframework/zend-captcha" : "~2.1"
     },
     "suggest": {
         "zendframework/zend-captcha" : "Zend\\Captcha if you want to use the captcha component"

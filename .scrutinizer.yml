@@ -4,3 +4,4 @@ imports:
 tools:
     php_cpd: true
     php_pdepend: true
+    external_code_coverage: true
