@@ -22,7 +22,7 @@ class ChangeEmailFilter extends InputFilter
         $identityFields = $options->getAuthIdentityFields();
         if ($identityFields == array('email')) {
             $validators = array('name' => 'EmailAddress');
-            array_push($validators, $identityParams['validators']);
+            array_push($identityParams['validators'], $validators);
         }
 
         $this->add($identityParams);
