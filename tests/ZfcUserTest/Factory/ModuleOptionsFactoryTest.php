@@ -6,11 +6,34 @@ use ZfcUser\Factory\ModuleOptionsFactory;
 
 class ModuleOptionsFactoryTest extends \PHPUnit_Framework_TestCase
 {
-    public function testFactory()
+    /**
+     * @dataProvider providerTestFactory
+     */
+    public function testFactory($config)
     {
         $serviceManager = new ServiceManager;
-        $serviceManager->setService('Config', array());
+        $serviceManager->setService('Config', $config);
         $factory = new ModuleOptionsFactory;
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $factory->createService($serviceManager));
+        $defaultOption = new ModuleOptions(array());
+
+        $object = $factory->createService($serviceManager);
+        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $object);
+
+        if (isset($config['zfcuser'])) {
+            $this->assertNotEqual($defaultOption->getLoginRedirectRoute(), $object->getLoginRedirectRoute());
+            $this->assertEqual($config['zfcuser']['loginRedirectRoute'], $object->getLoginRedirectRoute());
+        } else {
+            $this->assertEqual($defaultOption->getLoginRedirectRoute(), $object->getLoginRedirectRoute());
+        }
+    }
+
+    public function providerTestFactory()
+    {
+        return array(
+            array(array()), // config without zfcuser
+            array(array('zfcuser'=>array(
+                'loginRedirectRoute'=>'user'
+            )))
+        );
     }
 }
