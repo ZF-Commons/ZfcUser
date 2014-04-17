@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Form;
 
+use Zend\Form\Element\Csrf;
 use ZfcUser\Form\Register as Form;
 
 class RegisterTest extends \PHPUnit_Framework_TestCase
@@ -81,7 +82,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
             ->method('getUserFormTimeout')
             ->will($this->returnValue($timeout));
 
-        $form = new Register(null, $options);
+        $form = new Form(null, $options);
 
         /** @var Csrf $csrf */
         $csrf = $form->get('csrf');
