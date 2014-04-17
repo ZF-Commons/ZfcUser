@@ -18,7 +18,7 @@ class BaseTest extends \PHPUnit_Framework_TestCase
 
         if ($useCaptcha) {
             if (!class_exists('\Zend\Captcha\AbstractAdapter')) {
-                $this->markAsSkipped('we need zendframework/zend-captcha to cover this');
+                $this->markTestSkipped('we need zendframework/zend-captcha to cover this');
             }
             $captcha = $this->getMockForAbstractClass('\Zend\Captcha\AbstractAdapter');
 
