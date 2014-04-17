@@ -29,6 +29,6 @@ class RegisterFormFactory implements FactoryInterface
             $options
         ));
 
-        return $form;        
-    }    
+        return $form;
+    }
 }

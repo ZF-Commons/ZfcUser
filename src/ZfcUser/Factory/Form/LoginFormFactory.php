@@ -17,6 +17,6 @@ class LoginFormFactory implements FactoryInterface
         $form = new Login(null, $options);
         $form->setInputFilter(new LoginFilter($options));
 
-        return $form;        
-    }    
+        return $form;
+    }
 }

@@ -16,6 +16,6 @@ class IdentityFactory implements FactoryInterface
         $viewHelper = new ZfcUserIdentity;
         $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
 
-        return $viewHelper;        
-    }    
+        return $viewHelper;
+    }
 }

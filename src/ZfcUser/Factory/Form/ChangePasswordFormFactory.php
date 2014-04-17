@@ -17,6 +17,6 @@ class ChangePasswordFormFactory implements FactoryInterface
         $form = new ChangePassword(null, $options);
         $form->setInputFilter(new ChangePasswordFilter($options));
 
-        return $form;        
-    }    
+        return $form;
+    }
 }

@@ -18,7 +18,7 @@ class LoginWidgetFactoryTest extends \PHPUnit_Framework_TestCase
         $helpers = $this->getMock('Zend\ServiceManager\AbstractPluginManager');
         $helpers->expects($this->any())
             ->method('getServiceLocator')
-            ->will($this->returnValue($serviceManager));  
-        $this->assertInstanceOf('ZfcUser\View\Helper\ZfcUserLoginWidget', $factory->createService($helpers));    
-    }    
+            ->will($this->returnValue($serviceManager));
+        $this->assertInstanceOf('ZfcUser\View\Helper\ZfcUserLoginWidget', $factory->createService($helpers));
+    }
 }

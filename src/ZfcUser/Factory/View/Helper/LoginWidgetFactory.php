@@ -17,6 +17,6 @@ class LoginWidgetFactory implements FactoryInterface
         $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
         $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
 
-        return $viewHelper;        
+        return $viewHelper;
     }
 }

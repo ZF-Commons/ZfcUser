@@ -16,6 +16,6 @@ class DisplayNameFactory implements FactoryInterface
         $viewHelper = new ZfcUserDisplayName;
         $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
 
-        return $viewHelper;        
-    }    
+        return $viewHelper;
+    }
 }
