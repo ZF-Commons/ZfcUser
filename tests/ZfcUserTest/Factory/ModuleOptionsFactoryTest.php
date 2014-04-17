@@ -21,10 +21,10 @@ class ModuleOptionsFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $object);
 
         if (isset($config['zfcuser'])) {
-            $this->assertNotEqual($defaultOption->getLoginRedirectRoute(), $object->getLoginRedirectRoute());
-            $this->assertEqual($config['zfcuser']['loginRedirectRoute'], $object->getLoginRedirectRoute());
+            $this->assertNotEquals($defaultOption->getLoginRedirectRoute(), $object->getLoginRedirectRoute());
+            $this->assertEquals($config['zfcuser']['loginRedirectRoute'], $object->getLoginRedirectRoute());
         } else {
-            $this->assertEqual($defaultOption->getLoginRedirectRoute(), $object->getLoginRedirectRoute());
+            $this->assertEquals($defaultOption->getLoginRedirectRoute(), $object->getLoginRedirectRoute());
         }
     }
 
