@@ -5,7 +5,6 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\View\Helper\UsernameHelper;
 use ZfcUser\View\Helper\ZfcUserLoginWidget;
 
 /**
