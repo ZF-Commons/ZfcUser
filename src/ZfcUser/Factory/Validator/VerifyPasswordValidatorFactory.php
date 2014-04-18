@@ -18,9 +18,9 @@ class VerifyPasswordValidatorFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $authenticationService  \Zend\Authentication\AuthenticationServiceInterface
-         * @var $serviceLocator         \Zend\InputFilter\InputFilterPluginManager
-         * @var $serviceManager         \Zend\ServiceManager\ServiceManager
+         * @var \Zend\Authentication\AuthenticationServiceInterface $authenticationService
+         * @var \Zend\InputFilter\InputFilterPluginManager          $serviceLocator
+         * @var \Zend\ServiceManager\ServiceManager                 $serviceManager
          */
         $serviceManager         = $serviceLocator->getServiceLocator();
         $authenticationService  = $serviceManager->get('zfcuser_auth_service');

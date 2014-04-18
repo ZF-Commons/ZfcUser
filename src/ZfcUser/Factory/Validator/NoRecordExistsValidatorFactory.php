@@ -24,9 +24,9 @@ class NoRecordExistsValidatorFactory implements FactoryInterface, MutableCreatio
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $serviceLocator \Zend\InputFilter\InputFilterPluginManager
-         * @var $serviceManager \Zend\ServiceManager\ServiceManager
-         * @var $userMapper     \ZfcUser\Mapper\UserInterface
+         * @var \Zend\InputFilter\InputFilterPluginManager  $serviceLocator
+         * @var \Zend\ServiceManager\ServiceManager         $serviceManager
+         * @var \ZfcUser\Mapper\UserInterface               $userMapper
          */
         $serviceManager = $serviceLocator->getServiceLocator();
         $userMapper = $serviceManager->get('zfcuser_user_mapper');

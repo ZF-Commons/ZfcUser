@@ -61,7 +61,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         }
 
         // TODO: Move to hydrator
-        /* @var $user \ZfcUser\Entity\UserInterface */
+        /* @var \ZfcUser\Entity\UserInterface $user */
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
         $user = $form->getData();

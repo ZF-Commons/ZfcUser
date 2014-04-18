@@ -18,9 +18,9 @@ class RegistrationFilterFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $registrationOptions    \ZfcUser\Options\RegistrationOptionsInterface
-         * @var $serviceLocator         \Zend\InputFilter\InputFilterPluginManager
-         * @var $serviceManager         \Zend\ServiceManager\ServiceManager
+         * @var \ZfcUser\Options\RegistrationOptionsInterface   $registrationOptions
+         * @var \Zend\InputFilter\InputFilterPluginManager      $serviceLocator
+         * @var \Zend\ServiceManager\ServiceManager             $serviceManager
          */
         $serviceManager         = $serviceLocator->getServiceLocator();
         $registrationOptions    = $serviceManager->get('zfcuser_module_options');

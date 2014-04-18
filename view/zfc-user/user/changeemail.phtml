@@ -6,7 +6,7 @@
 <?php endif; ?>
 
 <?php
-/** @var \Zend\Form\Form $form */
+/** @var $form \Zend\Form\Form */
 $form = $this->changeEmailForm;
 $form->prepare();
 $form->setAttribute('action', $this->url('zfcuser/changeemail'));

@@ -18,9 +18,9 @@ class IdentityElementFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $authenticationOptions  \ZfcUser\Options\AuthenticationOptionsInterface
-         * @var $serviceLocator         \Zend\Form\FormElementManager
-         * @var $serviceManager         \Zend\ServiceManager\ServiceManager
+         * @var \ZfcUser\Options\AuthenticationOptionsInterface $authenticationOptions
+         * @var \Zend\Form\FormElementManager                   $serviceLocator
+         * @var \Zend\ServiceManager\ServiceManager             $serviceManager
          */
         $serviceManager = $serviceLocator->getServiceLocator();
         $authenticationOptions = $serviceManager->get('zfcuser_module_options');

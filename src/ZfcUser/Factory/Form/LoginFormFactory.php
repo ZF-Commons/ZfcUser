@@ -18,8 +18,8 @@ class LoginFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $serviceLocator \Zend\Form\FormElementManager
-         * @var $serviceManager \Zend\ServiceManager\ServiceManager
+         * @var \Zend\Form\FormElementManager       $serviceLocator
+         * @var \Zend\ServiceManager\ServiceManager $serviceManager
          */
         $serviceManager = $serviceLocator->getServiceLocator();
 
