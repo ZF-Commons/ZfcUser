@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Controller;
 
+use Zend\Authentication\Result;
 use Zend\Form\Form;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
@@ -143,9 +144,11 @@ class UserController extends AbstractActionController
             return $result;
         }
 
+        /** @var Result $auth */
         $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
 
         if (!$auth->isValid()) {
+            $this->failedLoginMessage = count($auth->getMessages()) ? reset($auth->getMessages()) : $this->failedLoginMessage;
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
             return $this->redirect()->toUrl(
