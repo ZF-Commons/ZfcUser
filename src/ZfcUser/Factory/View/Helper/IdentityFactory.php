@@ -1,8 +1,8 @@
 <?php
 namespace ZfcUser\Factory\View\Helper;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\View\Helper\ZfcUserIdentity;
 
 class IdentityFactory implements FactoryInterface

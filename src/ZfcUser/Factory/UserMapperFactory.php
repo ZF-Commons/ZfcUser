@@ -1,8 +1,8 @@
 <?php
 namespace ZfcUser\Factory;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Mapper\User as UserMapper;
 
 class UserMapperFactory implements FactoryInterface

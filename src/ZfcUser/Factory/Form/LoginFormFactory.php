@@ -1,8 +1,8 @@
 <?php
 namespace ZfcUser\Factory\Form;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Form\Login;
 use ZfcUser\Form\LoginFilter;
 

@@ -1,9 +1,9 @@
 <?php
 namespace ZfcUser\Factory;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\FactoryInterface;
 use Zend\Authentication\AuthenticationService;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AuthenticationServiceFactory implements FactoryInterface
 {
