@@ -28,8 +28,4 @@ $form->setAttribute('method', 'post');
         <?php endif ?>
     <?php endforeach ?>
     </dl>
-    <?php if ($this->redirect): ?>
-        <input type="hidden" name="redirect" value="<?php echo $this->redirect ?>" />
-    <?php endif ?>
-    <input type="submit" value="Submit" />
 <?php echo $this->form()->closeTag() ?>

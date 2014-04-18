@@ -36,7 +36,7 @@ class ChangeEmailFilter extends InputFilter
                     'name' => 'EmailAddress'
                 ],
                 [
-                    'name' => 'ZfcUser\Validator\NoRecordExists',
+                    'name' => 'ZfcUser\Validator\NoRecordExistsValidator',
                     'options' => [
                         'key' => 'email',
                     ],
