@@ -1,95 +1,60 @@
 <?php
-
 namespace ZfcUser\Form;
 
 use Zend\Form\Form;
 use Zend\Form\Element;
-use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\AuthenticationOptionsInterface;
-use ZfcUser\Module as ZfcUser;
 
-class Login extends ProvidesEventsForm
+/**
+ * Class LoginForm
+ * @package ZfcUser\Form
+ */
+class LoginForm extends Form
 {
     /**
-     * @var AuthenticationOptionsInterface
+     * @var bool
      */
-    protected $authOptions;
+    protected $initialized = false;
 
-    public function __construct($name, AuthenticationOptionsInterface $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
     {
-        $this->setAuthenticationOptions($options);
-        parent::__construct($name);
-
-        $this->add(array(
-            'name' => 'identity',
-            'options' => array(
-                'label' => '',
-            ),
-            'attributes' => array(
-                'type' => 'text'
-            ),
-        ));
-
-        $emailElement = $this->get('identity');
-        $label = $emailElement->getLabel('label');
-        // @TODO: make translation-friendly
-        foreach ($this->getAuthenticationOptions()->getAuthIdentityFields() as $mode) {
-            $label = (!empty($label) ? $label . ' or ' : '') . ucfirst($mode);
+        /**
+         * This is needed as ZF2 runs init() on every call for a shared form (prior to 2.3.1)
+         * See: https://github.com/zendframework/zf2/pull/6132
+         */
+        if ($this->initialized) {
+            return;
         }
-        $emailElement->setLabel($label);
-        //
-        $this->add(array(
+
+        $this->initialized = true;
+
+        $this->add([
+            'name' => 'identity',
+            'type' => 'ZfcUser\Form\Element\IdentityElement',
+            'options' => [
+                'label' => 'Identity',
+            ]
+        ]);
+
+        $this->add([
             'name' => 'credential',
-            'options' => array(
+            'type' => 'Password',
+            'options' => [
                 'label' => 'Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        // @todo: Fix this
-        // 1) getValidator() is a protected method
-        // 2) i don't believe the login form is actually being validated by the login action
-        // (but keep in mind we don't want to show invalid username vs invalid password or
-        // anything like that, it should just say "login failed" without any additional info)
-        //$csrf = new Element\Csrf('csrf');
-        //$csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
-        //$this->add($csrf);
-
-        $submitElement = new Element\Button('submit');
-        $submitElement
-            ->setLabel('Sign In')
-            ->setAttributes(array(
-                'type'  => 'submit',
-            ));
-
-        $this->add($submitElement, array(
-            'priority' => -100,
-        ));
-
-        $this->getEventManager()->trigger('init', $this);
-    }
-
-    /**
-     * Set Authentication-related Options
-     *
-     * @param AuthenticationOptionsInterface $authOptions
-     * @return Login
-     */
-    public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
-    {
-        $this->authOptions = $authOptions;
-        return $this;
-    }
-
-    /**
-     * Get Authentication-related Options
-     *
-     * @return AuthenticationOptionsInterface
-     */
-    public function getAuthenticationOptions()
-    {
-        return $this->authOptions;
+        $this->add([
+            'name' => 'submit',
+            'type' => 'Button',
+            'attributes' => [
+                'type' => 'submit',
+            ],
+            'options' => [
+                'label' => 'Sign In',
+            ],
+        ]);
     }
 }

@@ -1,80 +1,73 @@
 <?php
-
 namespace ZfcUser\Form;
 
-use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\RegistrationOptionsInterface;
-use ZfcUser\Options\AuthenticationOptionsInterface;
+use Zend\Form\Form;
 
-class ChangeEmail extends ProvidesEventsForm
+/**
+ * Class ChangeEmailForm
+ * @package ZfcUser\Form
+ */
+class ChangeEmailForm extends Form
 {
-    public function __construct($name, AuthenticationOptionsInterface $options)
+    /**
+     * @var bool
+     */
+    protected $initialized = false;
+
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
     {
-        $this->setAuthenticationOptions($options);
-        parent::__construct($name);
+        /**
+         * This is needed as ZF2 runs init() on every call for a shared form (prior to 2.3.1)
+         * See: https://github.com/zendframework/zf2/pull/6132
+         */
+        if ($this->initialized) {
+            return;
+        }
 
-        $this->add(array(
-            'name' => 'identity',
-            'options' => array(
-                'label' => '',
-            ),
-            'attributes' => array(
-                'type' => 'hidden',
-            ),
-        ));
+        $this->initialized = true;
 
-        $this->add(array(
+        $this->add([
             'name' => 'newIdentity',
-            'options' => array(
+            'options' => [
                 'label' => 'New Email',
-            ),
-            'attributes' => array(
+            ],
+            'attributes' => [
                 'type' => 'text',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'newIdentityVerify',
-            'options' => array(
+            'options' => [
                 'label' => 'Verify New Email',
-            ),
-            'attributes' => array(
+            ],
+            'attributes' => [
                 'type' => 'text',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'credential',
-            'options' => array(
+            'options' => [
                 'label' => 'Password',
-            ),
-            'attributes' => array(
+            ],
+            'attributes' => [
                 'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->getEventManager()->trigger('init', $this);
-    }
-
-    /**
-     * Set Authentication-related Options
-     *
-     * @param AuthenticationOptionsInterface $authOptions
-     * @return Login
-     */
-    public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
-    {
-        $this->authOptions = $authOptions;
-        return $this;
-    }
-
-    /**
-     * Get Authentication-related Options
-     *
-     * @return AuthenticationOptionsInterface
-     */
-    public function getAuthenticationOptions()
-    {
-        return $this->authOptions;
+        $this->add([
+            'name' => 'submit',
+            'type' => 'Button',
+            'attributes' => [
+                'type' => 'submit',
+            ],
+            'options' => [
+                'label' => 'Submit',
+            ],
+        ]);
     }
 }

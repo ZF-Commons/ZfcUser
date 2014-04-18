@@ -1,95 +1,67 @@
 <?php
-
 namespace ZfcUser\Form;
 
 use Zend\Form\Form;
-use Zend\Form\Element\Csrf;
-use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\AuthenticationOptionsInterface;
-use ZfcUser\Module as ZfcUser;
 
-class ChangePassword extends ProvidesEventsForm
+/**
+ * Class ChangePassword
+ * @package ZfcUser\Form
+ */
+class ChangePasswordForm extends Form
 {
     /**
-     * @var AuthenticationOptionsInterface
+     * @var bool
      */
-    protected $authOptions;
+    protected $initialized = false;
 
-    public function __construct($name, AuthenticationOptionsInterface $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
     {
-        $this->setAuthenticationOptions($options);
-        parent::__construct($name);
+        /**
+         * This is needed as ZF2 runs init() on every call for a shared form (prior to 2.3.1)
+         * See: https://github.com/zendframework/zf2/pull/6132
+         */
+        if ($this->initialized) {
+            return;
+        }
 
-        $this->add(array(
-            'name' => 'identity',
-            'options' => array(
-                'label' => '',
-            ),
-            'attributes' => array(
-                'type' => 'hidden'
-            ),
-        ));
+        $this->initialized = true;
 
-        $this->add(array(
+        $this->add([
             'name' => 'credential',
-            'options' => array(
+            'type' => 'Password',
+            'options' => [
                 'label' => 'Current Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'newCredential',
-            'options' => array(
+            'type' => 'Password',
+            'options' => [
                 'label' => 'New Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'newCredentialVerify',
-            'options' => array(
+            'type' => 'Password',
+            'options' => [
                 'label' => 'Verify New Password',
-            ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
-        ));
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name' => 'submit',
-            'attributes' => array(
-                'value' => 'Submit',
-                'type'  => 'submit'
-            ),
-        ));
-
-        $this->getEventManager()->trigger('init', $this);
-    }
-
-    /**
-     * Set Authentication-related Options
-     *
-     * @param AuthenticationOptionsInterface $authOptions
-     * @return Login
-     */
-    public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
-    {
-        $this->authOptions = $authOptions;
-        return $this;
-    }
-
-    /**
-     * Get Authentication-related Options
-     *
-     * @return AuthenticationOptionsInterface
-     */
-    public function getAuthenticationOptions()
-    {
-        return $this->authOptions;
+            'type' => 'Button',
+            'attributes' => [
+                'type' => 'submit',
+            ],
+            'options' => [
+                'label' => 'Submit',
+            ],
+        ]);
     }
 }
