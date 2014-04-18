@@ -18,18 +18,18 @@ class RegistrationFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         /**
-         * @var $options        \ZfcUser\Options\RegistrationOptionsInterface
-         * @var $serviceLocator \Zend\Form\FormElementManager
-         * @var $serviceManager \Zend\ServiceManager\ServiceManager
+         * @var $registrationOptions    \ZfcUser\Options\RegistrationOptionsInterface
+         * @var $serviceLocator         \Zend\Form\FormElementManager
+         * @var $serviceManager         \Zend\ServiceManager\ServiceManager
          */
-        $serviceManager = $serviceLocator->getServiceLocator();
-        $options = $serviceManager->get('zfcuser_module_options');
-        $class = $options->getUserEntityClass();
+        $serviceManager         = $serviceLocator->getServiceLocator();
+        $registrationOptions    = $serviceManager->get('zfcuser_module_options');
+        $className              = $registrationOptions->getUserEntityClass();
 
-        $form = new RegistrationForm(null, $options);
+        $form = new RegistrationForm(null, $registrationOptions);
         $form->setHydrator($serviceManager->get('HydratorManager')->get('ZfcUser\Hydrator\RegistrationHydrator'));
         $form->setInputFilter($serviceManager->get('InputFilterManager')->get('ZfcUser\InputFilter\RegistrationFilter'));
-        $form->setObject(new $class);
+        $form->setObject(new $className);
 
         return $form;
     }

@@ -2,7 +2,6 @@
 namespace ZfcUser\Factory\Form\Element;
 
 use Zend\ServiceManager\FactoryInterface;
-use Zend\ServiceManager\MutableCreationOptionsInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Form\Element\IdentityElement;
 
@@ -10,13 +9,8 @@ use ZfcUser\Form\Element\IdentityElement;
  * Class IdentityElementFactory
  * @package ZfcUser\Factory\Form\Element
  */
-class IdentityElementFactory implements FactoryInterface, MutableCreationOptionsInterface
+class IdentityElementFactory implements FactoryInterface
 {
-    /**
-     * @var array
-     */
-    protected $options;
-
     /**
      * @param ServiceLocatorInterface $serviceLocator
      * @return IdentityElement
@@ -31,14 +25,6 @@ class IdentityElementFactory implements FactoryInterface, MutableCreationOptions
         $serviceManager = $serviceLocator->getServiceLocator();
         $authenticationOptions = $serviceManager->get('zfcuser_module_options');
 
-        return new IdentityElement(null, $this->options, $authenticationOptions);
-    }
-
-    /**
-     * @param array $options
-     */
-    public function setCreationOptions(array $options)
-    {
-        $this->options = $options;
+        return new IdentityElement(null, $authenticationOptions);
     }
 }

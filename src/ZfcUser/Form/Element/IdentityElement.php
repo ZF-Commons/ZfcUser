@@ -17,20 +17,21 @@ class IdentityElement extends Text
 
     /**
      * @param null|int|string                   $name    Optional name for the element
-     * @param array                             $options Optional options for the element
      * @param AuthenticationOptionsInterface    $authenticationOptions
      */
-    public function __construct($name = null, $options = array(), AuthenticationOptionsInterface $authenticationOptions)
+    public function __construct($name = null, AuthenticationOptionsInterface $authenticationOptions)
     {
         $this->authenticationOptions = $authenticationOptions;
-        parent::__construct($name, $options);
+        parent::__construct($name);
     }
 
     /**
      * {@inheritdoc}
      */
-    public function init()
+    public function setOptions($options)
     {
+        parent::setOptions($options);
+
         $identityFields = $this->authenticationOptions->getAuthIdentityFields();
 
         if (count($identityFields) === 1) {

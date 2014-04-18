@@ -33,6 +33,9 @@ class LoginForm extends Form
         $this->add([
             'name' => 'identity',
             'type' => 'ZfcUser\Form\Element\IdentityElement',
+            'options' => [
+                'label' => 'Identity',
+            ]
         ]);
 
         $this->add([
