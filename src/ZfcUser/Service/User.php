@@ -3,7 +3,7 @@
 namespace ZfcUser\Service;
 
 use Zend\Authentication\AuthenticationService;
-use Zend\Form\Form;
+use Zend\Form\FormInterface;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
@@ -26,19 +26,9 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     protected $authService;
 
     /**
-     * @var Form
-     */
-    protected $loginForm;
-
-    /**
-     * @var Form
+     * @var FormInterface
      */
     protected $registerForm;
-
-    /**
-     * @var Form
-     */
-    protected $changePasswordForm;
 
     /**
      * @var ServiceManager
@@ -201,45 +191,23 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * @return Form
+     * @return FormInterface
      */
-    public function getRegisterForm()
+    public function getRegistrationForm()
     {
-        if (null === $this->registerForm) {
-            $this->registerForm = $this->getServiceManager()->get('zfcuser_register_form');
+        if (null === $this->registrationForm) {
+            $fem = $this->getServiceManager()->get('FormElementManager');
+            $this->setRegistrationForm($fem->get('ZfcUser\Form\RegistrationForm'));
         }
-        return $this->registerForm;
+        return $this->registrationForm;
     }
 
     /**
-     * @param Form $registerForm
-     * @return User
+     * @param FormInterface $registrationForm
      */
-    public function setRegisterForm(Form $registerForm)
+    public function setRegistrationForm(FormInterface $registrationForm)
     {
-        $this->registerForm = $registerForm;
-        return $this;
-    }
-
-    /**
-     * @return Form
-     */
-    public function getChangePasswordForm()
-    {
-        if (null === $this->changePasswordForm) {
-            $this->changePasswordForm = $this->getServiceManager()->get('zfcuser_change_password_form');
-        }
-        return $this->changePasswordForm;
-    }
-
-    /**
-     * @param Form $changePasswordForm
-     * @return User
-     */
-    public function setChangePasswordForm(Form $changePasswordForm)
-    {
-        $this->changePasswordForm = $changePasswordForm;
-        return $this;
+        $this->registrationForm = $registrationForm;
     }
 
     /**
@@ -284,32 +252,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
-        return $this;
-    }
-
-    /**
-     * Return the Form Hydrator
-     *
-     * @return \Zend\Stdlib\Hydrator\ClassMethods
-     */
-    public function getFormHydrator()
-    {
-        if (!$this->formHydrator instanceof Hydrator\HydratorInterface) {
-            $this->setFormHydrator($this->getServiceManager()->get('zfcuser_register_form_hydrator'));
-        }
-
-        return $this->formHydrator;
-    }
-
-    /**
-     * Set the Form Hydrator to use
-     *
-     * @param Hydrator\HydratorInterface $formHydrator
-     * @return User
-     */
-    public function setFormHydrator(Hydrator\HydratorInterface $formHydrator)
-    {
-        $this->formHydrator = $formHydrator;
         return $this;
     }
 }
