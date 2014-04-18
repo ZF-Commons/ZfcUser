@@ -28,10 +28,9 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected $eventManager;
 
-
     protected $serviceLocatorArray;
 
-    public function helperServiceLocator ($index)
+    public function helperServiceLocator($index)
     {
         return $this->serviceLocatorArray[$index];
     }
@@ -101,7 +100,6 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $options);
         $this->assertSame($this->options, $options);
-
 
         $options2 = clone $this->options;
         $this->factory->setOptions($options2);

@@ -21,12 +21,13 @@ class BaseExtension extends Base
     /**
      * Set Regsitration Options
      *
-     * @param RegistrationOptionsInterface $registrationOptions
+     * @param  RegistrationOptionsInterface $registrationOptions
      * @return Register
      */
     public function setRegistrationOptions(RegistrationOptionsInterface $registrationOptions)
     {
         $this->registrationOptions = $registrationOptions;
+
         return $this;
     }
 

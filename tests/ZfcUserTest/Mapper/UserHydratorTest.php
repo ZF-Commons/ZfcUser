@@ -84,6 +84,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
                 $methode = 'set' . str_replace(" ", "", ucwords(str_replace("_", " ", $key)));
                 call_user_func(array($user,$methode), $value);
             }
+
             return $user;
         };
         $return = array();

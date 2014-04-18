@@ -34,7 +34,7 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
      * Returns true if and only if storage is empty
      *
      * @throws \Zend\Authentication\Exception\InvalidArgumentException If it is impossible to determine whether
-     * storage is empty or not
+     *                                                                 storage is empty or not
      * @return boolean
      */
     public function isEmpty()
@@ -45,6 +45,7 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
         $identity = $this->read();
         if ($identity === null) {
             $this->clear();
+
             return true;
         }
 
@@ -83,7 +84,7 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
     /**
      * Writes $contents to storage
      *
-     * @param  mixed $contents
+     * @param  mixed                                                   $contents
      * @throws \Zend\Authentication\Exception\InvalidArgumentException If writing $contents to storage is impossible
      * @return void
      */
@@ -115,19 +116,21 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
         if (null === $this->storage) {
             $this->setStorage(new Storage\Session);
         }
+
         return $this->storage;
     }
 
     /**
      * setStorage
      *
-     * @param Storage\StorageInterface $storage
-     * @access public
+     * @param  Storage\StorageInterface $storage
+     *                                           @access public
      * @return Db
      */
     public function setStorage(Storage\StorageInterface $storage)
     {
         $this->storage = $storage;
+
         return $this;
     }
 
@@ -141,18 +144,20 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
         if (null === $this->mapper) {
             $this->mapper = $this->getServiceManager()->get('zfcuser_user_mapper');
         }
+
         return $this->mapper;
     }
 
     /**
      * setMapper
      *
-     * @param UserMapper $mapper
+     * @param  UserMapper $mapper
      * @return Db
      */
     public function setMapper(UserMapper $mapper)
     {
         $this->mapper = $mapper;
+
         return $this;
     }
 
@@ -169,7 +174,7 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
     /**
      * Set service manager instance
      *
-     * @param ServiceManager $locator
+     * @param  ServiceManager $locator
      * @return void
      */
     public function setServiceManager(ServiceManager $serviceManager)

@@ -15,7 +15,7 @@ class Register extends Base
     protected $registrationOptions;
 
     /**
-     * @param string|null $name
+     * @param string|null                  $name
      * @param RegistrationOptionsInterface $options
      */
     public function __construct($name, RegistrationOptionsInterface $options)
@@ -45,12 +45,13 @@ class Register extends Base
     /**
      * Set Registration Options
      *
-     * @param RegistrationOptionsInterface $registrationOptions
+     * @param  RegistrationOptionsInterface $registrationOptions
      * @return Register
      */
     public function setRegistrationOptions(RegistrationOptionsInterface $registrationOptions)
     {
         $this->registrationOptions = $registrationOptions;
+
         return $this;
     }
 

@@ -138,6 +138,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
                 if (call_user_func($callback, $responses->last())) {
                     $responses->setStopped(true);
                 }
+
                 return $responses;
             }));
 

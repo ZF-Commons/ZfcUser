@@ -74,12 +74,13 @@ class Login extends ProvidesEventsForm
     /**
      * Set Authentication-related Options
      *
-     * @param AuthenticationOptionsInterface $authOptions
+     * @param  AuthenticationOptionsInterface $authOptions
      * @return Login
      */
     public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
     {
         $this->authOptions = $authOptions;
+
         return $this;
     }
 

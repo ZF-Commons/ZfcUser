@@ -3,7 +3,6 @@
 namespace ZfcUser\Mapper;
 
 use ZfcBase\Mapper\AbstractDbMapper;
-use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use Zend\Stdlib\Hydrator\HydratorInterface;
 
 class User extends AbstractDbMapper implements UserInterface
@@ -17,6 +16,7 @@ class User extends AbstractDbMapper implements UserInterface
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
+
         return $entity;
     }
 
@@ -27,6 +27,7 @@ class User extends AbstractDbMapper implements UserInterface
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
+
         return $entity;
     }
 
@@ -37,6 +38,7 @@ class User extends AbstractDbMapper implements UserInterface
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
+
         return $entity;
     }
 
@@ -54,6 +56,7 @@ class User extends AbstractDbMapper implements UserInterface
     {
         $result = parent::insert($entity, $tableName, $hydrator);
         $entity->setId($result->getGeneratedValue());
+
         return $result;
     }
 

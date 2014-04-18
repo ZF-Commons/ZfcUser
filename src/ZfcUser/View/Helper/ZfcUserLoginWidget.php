@@ -22,7 +22,7 @@ class ZfcUserLoginWidget extends AbstractHelper
      * __invoke
      *
      * @access public
-     * @param array $options array of options
+     * @param  array  $options array of options
      * @return string
      */
     public function __invoke($options = array())
@@ -61,22 +61,24 @@ class ZfcUserLoginWidget extends AbstractHelper
 
     /**
      * Inject Login Form Object
-     * @param LoginForm $loginForm
+     * @param  LoginForm          $loginForm
      * @return ZfcUserLoginWidget
      */
     public function setLoginForm(LoginForm $loginForm)
     {
         $this->loginForm = $loginForm;
+
         return $this;
     }
 
     /**
-     * @param string $viewTemplate
+     * @param  string             $viewTemplate
      * @return ZfcUserLoginWidget
      */
     public function setViewTemplate($viewTemplate)
     {
         $this->viewTemplate = $viewTemplate;
+
         return $this;
     }
 }

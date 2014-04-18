@@ -58,7 +58,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * createFromForm
      *
-     * @param array $data
+     * @param  array                              $data
      * @return \ZfcUser\Entity\UserInterface
      * @throws Exception\InvalidArgumentException
      */
@@ -97,13 +97,14 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         $this->getUserMapper()->insert($user);
         $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
+
         return $user;
     }
 
     /**
      * change the current users password
      *
-     * @param array $data
+     * @param  array   $data
      * @return boolean
      */
     public function changePassword(array $data)
@@ -160,18 +161,20 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         if (null === $this->userMapper) {
             $this->userMapper = $this->getServiceManager()->get('zfcuser_user_mapper');
         }
+
         return $this->userMapper;
     }
 
     /**
      * setUserMapper
      *
-     * @param UserMapperInterface $userMapper
+     * @param  UserMapperInterface $userMapper
      * @return User
      */
     public function setUserMapper(UserMapperInterface $userMapper)
     {
         $this->userMapper = $userMapper;
+
         return $this;
     }
 
@@ -185,18 +188,20 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         if (null === $this->authService) {
             $this->authService = $this->getServiceManager()->get('zfcuser_auth_service');
         }
+
         return $this->authService;
     }
 
     /**
      * setAuthenticationService
      *
-     * @param AuthenticationService $authService
+     * @param  AuthenticationService $authService
      * @return User
      */
     public function setAuthService(AuthenticationService $authService)
     {
         $this->authService = $authService;
+
         return $this;
     }
 
@@ -208,16 +213,18 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         if (null === $this->registerForm) {
             $this->registerForm = $this->getServiceManager()->get('zfcuser_register_form');
         }
+
         return $this->registerForm;
     }
 
     /**
-     * @param Form $registerForm
+     * @param  Form $registerForm
      * @return User
      */
     public function setRegisterForm(Form $registerForm)
     {
         $this->registerForm = $registerForm;
+
         return $this;
     }
 
@@ -229,16 +236,18 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         if (null === $this->changePasswordForm) {
             $this->changePasswordForm = $this->getServiceManager()->get('zfcuser_change_password_form');
         }
+
         return $this->changePasswordForm;
     }
 
     /**
-     * @param Form $changePasswordForm
+     * @param  Form $changePasswordForm
      * @return User
      */
     public function setChangePasswordForm(Form $changePasswordForm)
     {
         $this->changePasswordForm = $changePasswordForm;
+
         return $this;
     }
 
@@ -252,6 +261,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         if (!$this->options instanceof UserServiceOptionsInterface) {
             $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
         }
+
         return $this->options;
     }
 
@@ -278,12 +288,13 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * Set service manager instance
      *
-     * @param ServiceManager $serviceManager
+     * @param  ServiceManager $serviceManager
      * @return User
      */
     public function setServiceManager(ServiceManager $serviceManager)
     {
         $this->serviceManager = $serviceManager;
+
         return $this;
     }
 
@@ -304,12 +315,13 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * Set the Form Hydrator to use
      *
-     * @param Hydrator\HydratorInterface $formHydrator
+     * @param  Hydrator\HydratorInterface $formHydrator
      * @return User
      */
     public function setFormHydrator(Hydrator\HydratorInterface $formHydrator)
     {
         $this->formHydrator = $formHydrator;
+
         return $this;
     }
 }

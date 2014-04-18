@@ -3,7 +3,6 @@ namespace ZfcUser\Authentication\Adapter;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\Authentication\Adapter\AdapterChain;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Authentication\Adapter\Exception\OptionsNotFoundException;
 
@@ -37,24 +36,24 @@ class AdapterChainServiceFactory implements FactoryInterface
         return $chain;
     }
 
-
     /**
      * set options
      *
-     * @param ModuleOptions $options
+     * @param  ModuleOptions              $options
      * @return AdapterChainServiceFactory
      */
     public function setOptions(ModuleOptions $options)
     {
         $this->options = $options;
+
         return $this;
     }
 
     /**
      * get options
      *
-     * @param ServiceLocatorInterface $serviceLocator (optional) Service Locator
-     * @return ModuleOptions $options
+     * @param  ServiceLocatorInterface  $serviceLocator (optional) Service Locator
+     * @return ModuleOptions            $options
      * @throws OptionsNotFoundException If options tried to retrieve without being set but no SL was provided
      */
     public function getOptions(ServiceLocatorInterface $serviceLocator = null)

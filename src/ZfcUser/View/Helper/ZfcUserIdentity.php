@@ -40,12 +40,13 @@ class ZfcUserIdentity extends AbstractHelper
     /**
      * Set authService.
      *
-     * @param AuthenticationService $authService
+     * @param  AuthenticationService                $authService
      * @return \ZfcUser\View\Helper\ZfcUserIdentity
      */
     public function setAuthService(AuthenticationService $authService)
     {
         $this->authService = $authService;
+
         return $this;
     }
 }

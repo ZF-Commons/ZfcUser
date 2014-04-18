@@ -34,7 +34,6 @@ class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
         $this->mockedAuthenticationAdapter = $this->getMockForAbstractClass('\ZfcUser\Authentication\Adapter\AdapterChain');
     }
 
-
     /**
      * @covers ZfcUser\Controller\Plugin\ZfcUserAuthentication::hasIdentity
      * @covers ZfcUser\Controller\Plugin\ZfcUserAuthentication::getIdentity
@@ -46,6 +45,7 @@ class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
         $callbackIndex = 0;
         $callback = function () use (&$callbackIndex) {
             $callbackIndex++;
+
             return (bool) ($callbackIndex % 2);
         };
 

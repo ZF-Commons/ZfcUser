@@ -41,7 +41,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $mapper->setHydrator(new UserHydrator());
         $this->mapper = $mapper;
 
-
         $this->setUpMockedAdapter();
 
         $this->mockedSelect = $this->getMock('\Zend\Db\Sql\Select', array('where'));
@@ -139,7 +138,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * @param arra $eventListenerArray
+     * @param  arra  $eventListenerArray
      * @return array
      */
     public function setUpMockMapperInsert($mapperMethods)
@@ -164,7 +163,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     /**
      *
-     * @param arra $eventListenerArray
+     * @param  arra  $eventListenerArray
      * @return array
      */
     public function &setUpMockedMapper($eventListenerArray, array $mapperMethods = array())
@@ -186,6 +185,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                            ->method('where')
                            ->will($this->returnCallback(function () use (&$returnMockedParams, $mockedSelect) {
                                $returnMockedParams['whereArgs'] = func_get_args();
+
                                return $mockedSelect;
                            }));
 
@@ -202,8 +202,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerTestFindBy
      * @param string $methode
-     * @param array $args
-     * @param array $expectedParams
+     * @param array  $args
+     * @param array  $expectedParams
      */
     public function testFindBy($methode, $args, $expectedParams, $eventListener, $entityEqual)
     {

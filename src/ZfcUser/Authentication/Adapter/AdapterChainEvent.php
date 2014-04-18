@@ -20,7 +20,7 @@ class AdapterChainEvent extends Event
     /**
      * setIdentity
      *
-     * @param mixed $identity
+     * @param  mixed             $identity
      * @return AdapterChainEvent
      */
     public function setIdentity($identity = null)
@@ -31,6 +31,7 @@ class AdapterChainEvent extends Event
             $this->setMessages();
         }
         $this->setParam('identity', $identity);
+
         return $this;
     }
 
@@ -47,12 +48,13 @@ class AdapterChainEvent extends Event
     /**
      * setCode
      *
-     * @param int $code
+     * @param  int               $code
      * @return AdapterChainEvent
      */
     public function setCode($code = null)
     {
         $this->setParam('code', $code);
+
         return $this;
     }
 
@@ -69,12 +71,13 @@ class AdapterChainEvent extends Event
     /**
      * setMessages
      *
-     * @param array $messages
+     * @param  array             $messages
      * @return AdapterChainEvent
      */
     public function setMessages($messages = array())
     {
         $this->setParam('messages', $messages);
+
         return $this;
     }
 
@@ -91,13 +94,14 @@ class AdapterChainEvent extends Event
     /**
      * setRequest
      *
-     * @param Request $request
+     * @param  Request           $request
      * @return AdapterChainEvent
      */
     public function setRequest(Request $request)
     {
         $this->setParam('request', $request);
         $this->request = $request;
+
         return $this;
     }
 }
