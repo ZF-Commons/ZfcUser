@@ -1,10 +1,10 @@
 <?php
 
-namespace ZfcUserTest\Form;
+namespace ZfcUserTest\InputFilter;
 
-use ZfcUser\Form\ChangeEmailFilter as Filter;
+use ZfcUser\InputFilter\ChangeEmail as Filter;
 
-class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
+class ChangeEmailTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {

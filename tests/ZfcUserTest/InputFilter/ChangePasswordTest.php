@@ -1,10 +1,10 @@
 <?php
 
-namespace ZfcUserTest\Form;
+namespace ZfcUserTest\InputFilter;
 
-use ZfcUser\Form\ChangePasswordFilter as Filter;
+use ZfcUser\InputFilter\ChangePassword as Filter;
 
-class ChangePasswordFilterTest extends \PHPUnit_Framework_TestCase
+class ChangePasswordTest extends \PHPUnit_Framework_TestCase
 {
     public function testConstruct()
     {

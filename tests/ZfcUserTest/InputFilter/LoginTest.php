@@ -1,13 +1,13 @@
 <?php
 
-namespace ZfcUserTest\Form;
+namespace ZfcUserTest\InputFilter;
 
-use ZfcUser\Form\LoginFilter as Filter;
+use ZfcUser\InputFilter\Login as Filter;
 
-class LoginFilterTest extends \PHPUnit_Framework_TestCase
+class LoginTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ZfcUser\Form\LoginFilter::__construct
+     * @covers ZfcUser\InputFilter\Login::__construct
      */
     public function testConstruct()
     {
@@ -26,7 +26,7 @@ class LoginFilterTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Form\LoginFilter::__construct
+     * @covers ZfcUser\InputFilter\Login::__construct
      */
     public function testConstructIdentityEmail()
     {

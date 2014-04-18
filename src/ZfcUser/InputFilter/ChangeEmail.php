@@ -1,11 +1,11 @@
 <?php
 
-namespace ZfcUser\Form;
+namespace ZfcUser\InputFilter;
 
 use Zend\InputFilter\InputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class ChangeEmailFilter extends InputFilter
+class ChangeEmail extends InputFilter
 {
     protected $emailValidator;
 

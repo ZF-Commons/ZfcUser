@@ -1,11 +1,11 @@
 <?php
 
-namespace ZfcUser\Form;
+namespace ZfcUser\InputFilter;
 
 use Zend\InputFilter\InputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class ChangePasswordFilter extends InputFilter
+class ChangePassword extends InputFilter
 {
     public function __construct(AuthenticationOptionsInterface $options)
     {
