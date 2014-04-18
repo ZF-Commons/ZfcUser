@@ -7,7 +7,6 @@ use Zend\Form\FormInterface;
 use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
-use Zend\Stdlib\Hydrator;
 use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
@@ -39,11 +38,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * @var UserServiceOptionsInterface
      */
     protected $options;
-
-    /**
-     * @var Hydrator\ClassMethods
-     */
-    protected $formHydrator;
 
     /**
      * createFromForm

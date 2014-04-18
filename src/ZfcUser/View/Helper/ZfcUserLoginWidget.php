@@ -1,16 +1,19 @@
 <?php
-
 namespace ZfcUser\View\Helper;
 
+use Zend\Form\FormInterface;
 use Zend\View\Helper\AbstractHelper;
-use ZfcUser\Form\Login as LoginForm;
 use Zend\View\Model\ViewModel;
 
+/**
+ * Class ZfcUserLoginWidget
+ * @package ZfcUser\View\Helper
+ */
 class ZfcUserLoginWidget extends AbstractHelper
 {
     /**
      * Login Form
-     * @var LoginForm
+     * @var FormInterface
      */
     protected $loginForm;
 
@@ -52,7 +55,7 @@ class ZfcUserLoginWidget extends AbstractHelper
 
     /**
      * Retrieve Login Form Object
-     * @return LoginForm
+     * @return FormInterface
      */
     public function getLoginForm()
     {
@@ -61,10 +64,10 @@ class ZfcUserLoginWidget extends AbstractHelper
 
     /**
      * Inject Login Form Object
-     * @param LoginForm $loginForm
+     * @param FormInterface $loginForm
      * @return ZfcUserLoginWidget
      */
-    public function setLoginForm(LoginForm $loginForm)
+    public function setLoginForm(FormInterface $loginForm)
     {
         $this->loginForm = $loginForm;
         return $this;
