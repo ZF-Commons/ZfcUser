@@ -29,27 +29,31 @@ class ChangePasswordFilter extends InputFilter
     public function init()
     {
         $this->add([
-            // TODO: Check if password is correct
-            'name'       => 'credential',
-            'required'   => true,
-            'filters' => [
+            'name'      => 'credential',
+            'required'  => true,
+            'filters'   => [
                 [
                     'name' => 'StringTrim'
+                ],
+            ],
+            'validators' => [
+                [
+                    'name' => 'ZfcUser\Validator\VerifyPasswordValidator',
                 ],
             ],
         ]);
 
         $this->add([
-            'name'       => 'newCredential',
-            'required'   => true,
-            'filters' => [
+            'name'      => 'newCredential',
+            'required'  => true,
+            'filters'   => [
                 [
                     'name' => 'StringTrim',
                 ],
             ],
             'validators' => [
                 [
-                    'name'    => 'StringLength',
+                    'name' => 'StringLength',
                     // TODO: Make min configurable
                     'options' => [
                         'min' => 6,
@@ -59,9 +63,9 @@ class ChangePasswordFilter extends InputFilter
         ]);
 
         $this->add([
-            'name'       => 'newCredentialVerify',
-            'required'   => true,
-            'filters' => [
+            'name'      => 'newCredentialVerify',
+            'required'  => true,
+            'filters'   => [
                 [
                     'name' => 'StringTrim',
                 ],

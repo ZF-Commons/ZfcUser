@@ -14,8 +14,5 @@ $form->setAttribute('method', 'post');
 ?>
 
 <?= $this->form()->openTag($form) ?>
-    <?php if ($this->redirect): ?>
-        <input type="hidden" name="redirect" value="<?= $this->redirect ?>" />
-    <?php endif ?>
     <?= $this->formCollection($form) ?>
 <?= $this->form()->closeTag() ?>

@@ -47,8 +47,9 @@ return array(
 
     'validators' => [
         'factories' => [
-            'ZfcUser\Validator\NoRecordExists'  => 'ZfcUser\Factory\Validator\NoRecordExistsFactory',
-            'ZfcUser\Validator\RecordExists'    => 'ZfcUser\Factory\Validator\RecordExistsFactory',
+            'ZfcUser\Validator\NoRecordExists'          => 'ZfcUser\Factory\Validator\NoRecordExistsFactory',
+            'ZfcUser\Validator\RecordExists'            => 'ZfcUser\Factory\Validator\RecordExistsFactory',
+            'ZfcUser\Validator\VerifyPasswordValidator' => 'ZfcUser\Factory\Validator\VerifyPasswordValidatorFactory',
         ],
     ],
 

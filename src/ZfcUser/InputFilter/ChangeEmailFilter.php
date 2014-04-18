@@ -58,12 +58,16 @@ class ChangeEmailFilter extends InputFilter
         ]);
 
         $this->add([
-            // TODO: Check if password is correct
             'name'       => 'credential',
             'required'   => true,
             'filters' => [
                 [
                     'name' => 'StringTrim'
+                ],
+            ],
+            'validators' => [
+                [
+                    'name' => 'ZfcUser\Validator\VerifyPasswordValidator',
                 ],
             ],
         ]);
