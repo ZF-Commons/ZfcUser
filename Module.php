@@ -36,7 +36,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserAuthentication' => 'ZfcUser\Factory\Controller\Plugin\ZfcUserAuthenticationFactory'
+                'zfcUserAuthentication' => 'ZfcUser\Factory\Controller\Plugin\ZfcUserAuthenticationFactory',
             ),
         );
     }
@@ -50,7 +50,6 @@ class Module implements
                 'zfcUserLoginWidget'    => 'ZfcUser\Factory\View\Helper\LoginWidgetFactory',
             ),
         );
-
     }
 
     public function getServiceConfig()
