@@ -47,7 +47,7 @@ class RegistrationFilter extends InputFilter
                         ],
                     ],
                     [
-                        'name' => 'ZfcUser\Validator\NoRecordExists',
+                        'name' => 'ZfcUser\Validator\NoRecordExistsValidator',
                         'options' => [
                             'key' => 'username',
                         ],
@@ -69,7 +69,7 @@ class RegistrationFilter extends InputFilter
                     'name' => 'EmailAddress',
                 ],
                 [
-                    'name' => 'ZfcUser\Validator\NoRecordExists',
+                    'name' => 'ZfcUser\Validator\NoRecordExistsValidator',
                     'options' => [
                         'key' => 'email',
                     ],

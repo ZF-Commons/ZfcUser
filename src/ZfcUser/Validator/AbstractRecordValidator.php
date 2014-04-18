@@ -5,7 +5,7 @@ namespace ZfcUser\Validator;
 use Zend\Validator\AbstractValidator;
 use ZfcUser\Mapper\UserInterface;
 
-abstract class AbstractRecord extends AbstractValidator
+abstract class AbstractRecordValidator extends AbstractValidator
 {
     /**
      * Error constants

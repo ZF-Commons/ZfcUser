@@ -1,20 +1,25 @@
 <?php
-
 namespace ZfcUser\Validator;
 
-class NoRecordExists extends AbstractRecord
+/**
+ * Class NoRecordExistsValidator
+ * @package ZfcUser\Validator
+ */
+class NoRecordExistsValidator extends AbstractRecordValidator
 {
+    /**
+     * @param mixed $value
+     * @return bool
+     */
     public function isValid($value)
     {
-        $valid = true;
         $this->setValue($value);
 
-        $result = $this->query($value);
-        if ($result) {
-            $valid = false;
+        if ($this->query($value)) {
             $this->error(self::ERROR_RECORD_FOUND);
+            return false;
         }
 
-        return $valid;
+        return true;
     }
 }
