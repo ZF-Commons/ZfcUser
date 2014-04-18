@@ -13,6 +13,7 @@ class IdentityFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $helpers)
     {
         $locator = $helpers->getServiceLocator();
+
         $viewHelper = new ZfcUserIdentity;
         $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
 

@@ -15,6 +15,7 @@ class RegisterFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $options = $serviceLocator->get('zfcuser_module_options');
+
         $form = new Register(null, $options);
         //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
         $form->setInputFilter(new RegisterFilter(

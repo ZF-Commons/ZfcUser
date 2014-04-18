@@ -14,6 +14,7 @@ class LoginFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $options = $serviceLocator->get('zfcuser_module_options');
+
         $form = new Login(null, $options);
         $form->setInputFilter(new LoginFilter($options));
 

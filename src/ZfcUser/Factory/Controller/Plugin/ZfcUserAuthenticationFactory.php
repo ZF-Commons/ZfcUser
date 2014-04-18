@@ -13,6 +13,7 @@ class ZfcUserAuthenticationFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $plugins)
     {
         $serviceLocator = $plugins->getServiceLocator();
+
         $controllerPlugin = new ZfcUserAuthentication;
         $controllerPlugin->setAuthService($serviceLocator->get('zfcuser_auth_service'));
         $controllerPlugin->setAuthAdapter($serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain'));

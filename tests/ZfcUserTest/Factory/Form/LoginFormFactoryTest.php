@@ -11,7 +11,9 @@ class LoginFormFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $serviceManager = new ServiceManager;
         $serviceManager->setService('zfcuser_module_options', new ModuleOptions);
+
         $factory = new LoginFormFactory;
+
         $this->assertInstanceOf('ZfcUser\Form\Login', $factory->createService($serviceManager));
     }
 }

@@ -15,6 +15,7 @@ class ChangeEmailFormFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $options = $serviceLocator->get('zfcuser_module_options');
+
         $form = new ChangeEmail(null, $options);
         $form->setInputFilter(new ChangeEmailFilter(
             $options,

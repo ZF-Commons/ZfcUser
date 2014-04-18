@@ -13,6 +13,7 @@ class DisplayNameFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $helpers)
     {
         $locator = $helpers->getServiceLocator();
+
         $viewHelper = new ZfcUserDisplayName;
         $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
 
