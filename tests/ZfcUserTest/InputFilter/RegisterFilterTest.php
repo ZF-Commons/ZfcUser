@@ -1,13 +1,13 @@
 <?php
 
-namespace ZfcUserTest\Form;
+namespace ZfcUserTest\InputFilter;
 
-use ZfcUser\Form\RegisterFilter as Filter;
+use ZfcUser\InputFilter\Register as Filter;
 
-class RegisterFilterTest extends \PHPUnit_Framework_TestCase
+class RegisterTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ZfcUser\Form\RegisterFilter::__construct
+     * @covers ZfcUser\InputFilter\Register::__construct
      */
     public function testConstruct()
     {
