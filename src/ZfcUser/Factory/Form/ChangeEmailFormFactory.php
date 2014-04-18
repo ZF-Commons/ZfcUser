@@ -13,12 +13,12 @@ class ChangeEmailFormFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function createService(ServiceLocatorInterface $serviceManager)
     {
         /* @var $options Options\ModuleOptions */
-        $options = $serviceLocator->get('zfcuser_module_options');
+        $options = $serviceManager->get('zfcuser_module_options');
 
-        $userMapper = $serviceLocator->get('zfcuser_user_mapper');
+        $userMapper = $serviceManager->get('zfcuser_user_mapper');
 
         $emailValidator = new NoRecordExists(array(
             'mapper' => $userMapper,

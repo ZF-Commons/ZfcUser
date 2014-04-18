@@ -12,10 +12,10 @@ class LoginFormFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function createService(ServiceLocatorInterface $serviceManager)
     {
         /* @var $options Options\ModuleOptions */
-        $options = $serviceLocator->get('zfcuser_module_options');
+        $options = $serviceManager->get('zfcuser_module_options');
 
         $inputFilter = new LoginFilter($options);
 

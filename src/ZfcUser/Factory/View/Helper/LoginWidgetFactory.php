@@ -13,17 +13,17 @@ class LoginWidgetFactory implements FactoryInterface
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $helpers)
+    public function createService(ServiceLocatorInterface $pluginManager)
     {
-        /* @var $helpers HelperPluginManager */
-        $locator = $helpers->getServiceLocator();
+        /* @var $pluginManager HelperPluginManager */
+        $serviceManager = $pluginManager->getServiceLocator();
 
         /* @var $options Options\ModuleOptions */
-        $options = $locator->get('zfcuser_module_options');
+        $options = $serviceManager->get('zfcuser_module_options');
         $viewTemplate = $options->getUserLoginWidgetViewTemplate();
 
         /* @var $loginForm Form\Login */
-        $loginForm = $locator->get('zfcuser_login_form');
+        $loginForm = $serviceManager->get('zfcuser_login_form');
 
         $viewHelper = new ZfcUserLoginWidget;
         $viewHelper
