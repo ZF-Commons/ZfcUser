@@ -1,10 +1,14 @@
 <?php
-
 namespace ZfcUser\Validator;
 
+use Exception as PhpException;
 use Zend\Validator\AbstractValidator;
-use ZfcUser\Mapper\UserInterface;
+use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 
+/**
+ * Class AbstractRecordValidator
+ * @package ZfcUser\Validator
+ */
 abstract class AbstractRecordValidator extends AbstractValidator
 {
     /**
@@ -17,12 +21,12 @@ abstract class AbstractRecordValidator extends AbstractValidator
      * @var array Message templates
      */
     protected $messageTemplates = array(
-        self::ERROR_NO_RECORD_FOUND => "No record matching the input was found",
-        self::ERROR_RECORD_FOUND    => "A record matching the input was found",
+        self::ERROR_NO_RECORD_FOUND => 'No record matching the input was found',
+        self::ERROR_RECORD_FOUND    => 'A record matching the input was found',
     );
 
     /**
-     * @var UserInterface
+     * @var UserMapperInterface
      */
     protected $mapper;
 
@@ -33,84 +37,40 @@ abstract class AbstractRecordValidator extends AbstractValidator
 
     /**
      * Required options are:
-     *  - key     Field to use, 'email' or 'username'
+     *  - key: Field to use, 'email' or 'username'
      */
-    public function __construct(array $options)
+    public function __construct(array $options, UserMapperInterface $mapper)
     {
         if (!array_key_exists('key', $options)) {
             throw new Exception\InvalidArgumentException('No key provided');
         }
 
-        $this->setKey($options['key']);
+        $this->key      = $options['key'];
+        $this->mapper   = $mapper;
 
         parent::__construct($options);
     }
 
     /**
-     * getMapper
-     *
-     * @return UserInterface
-     */
-    public function getMapper()
-    {
-        return $this->mapper;
-    }
-
-    /**
-     * setMapper
-     *
-     * @param UserInterface $mapper
-     * @return AbstractRecord
-     */
-    public function setMapper(UserInterface $mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
-    }
-
-    /**
-     * Get key.
-     *
-     * @return string
-     */
-    public function getKey()
-    {
-        return $this->key;
-    }
-
-    /**
-     * Set key.
-     *
-     * @param string $key
-     */
-    public function setKey($key)
-    {
-        $this->key = $key;
-        return $this;
-    }
-
-    /**
      * Grab the user from the mapper
      *
-     * @param string $value
-     * @return mixed
+     * @param   string $value
+     * @throws  PhpException
+     * @return  mixed
      */
     protected function query($value)
     {
-        $result = false;
-
-        switch ($this->getKey()) {
+        switch ($this->key) {
             case 'email':
-                $result = $this->getMapper()->findByEmail($value);
+                $result = $this->mapper->findByEmail($value);
                 break;
 
             case 'username':
-                $result = $this->getMapper()->findByUsername($value);
+                $result = $this->mapper->findByUsername($value);
                 break;
 
             default:
-                throw new \Exception('Invalid key used in ZfcUser validator');
-                break;
+                throw new PhpException('Invalid key used');
         }
 
         return $result;

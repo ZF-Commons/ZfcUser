@@ -28,7 +28,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * @var FormInterface
      */
-    protected $registerForm;
+    protected $registrationForm;
 
     /**
      * @var ServiceManager
@@ -54,39 +54,28 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      */
     public function register(array $data)
     {
-        $class = $this->getOptions()->getUserEntityClass();
-        $user  = new $class;
-        $form  = $this->getRegisterForm();
-        $form->setHydrator($this->getFormHydrator());
-        $form->bind($user);
+        $form  = $this->getRegistrationForm();
         $form->setData($data);
         if (!$form->isValid()) {
             return false;
         }
 
-        $user = $form->getData();
+        // TODO: Move to hydrator
         /* @var $user \ZfcUser\Entity\UserInterface */
-
-        $bcrypt = new Bcrypt;
+        $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
+        $user = $form->getData();
         $user->setPassword($bcrypt->create($user->getPassword()));
 
-        if ($this->getOptions()->getEnableUsername()) {
-            $user->setUsername($data['username']);
-        }
-        if ($this->getOptions()->getEnableDisplayName()) {
-            $user->setDisplayName($data['display_name']);
+        // If user state is enabled, set the default state value
+        if ($this->getOptions()->getEnableUserState() && $this->getOptions()->getDefaultUserState()) {
+            $user->setState($this->getOptions()->getDefaultUserState());
         }
 
-        // If user state is enabled, set the default state value
-        if ($this->getOptions()->getEnableUserState()) {
-            if ($this->getOptions()->getDefaultUserState()) {
-                $user->setState($this->getOptions()->getDefaultUserState());
-            }
-        }
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user));
         $this->getUserMapper()->insert($user);
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user, 'form' => $form));
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user));
+
         return $user;
     }
 
