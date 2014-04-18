@@ -77,28 +77,6 @@ class RegistrationFilter extends InputFilter
             ],
         ]);
 
-        if ($this->options->getEnableDisplayName()) {
-            $this->add([
-                'name' => 'display_name',
-                'required' => true,
-                'filters' => [
-                    [
-                        'name' => 'StringTrim',
-                    ],
-                ],
-                'validators' => [
-                    [
-                        'name' => 'StringLength',
-                        // TODO: Make min/max configurable
-                        'options' => [
-                            'min' => 3,
-                            'max' => 128,
-                        ],
-                    ],
-                ],
-            ]);
-        }
-
         $this->add([
             'name' => 'password',
             'require' => true,

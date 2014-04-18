@@ -5,21 +5,6 @@ namespace ZfcUser\Options;
 interface RegistrationOptionsInterface
 {
     /**
-     * set enable display name
-     *
-     * @param bool $flag
-     * @return ModuleOptions
-     */
-    public function setEnableDisplayName($enableDisplayName);
-
-    /**
-     * get enable display name
-     *
-     * @return bool
-     */
-    public function getEnableDisplayName();
-
-    /**
      * set enable user registration
      *
      * @param bool $enableRegistration
