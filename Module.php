@@ -4,6 +4,8 @@ namespace ZfcUser;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcUser\View\Helper\UsernameHelper;
 use ZfcUser\View\Helper\ZfcUserLoginWidget;
 
 /**
@@ -55,12 +57,6 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserDisplayName' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-                    $viewHelper = new View\Helper\ZfcUserDisplayName;
-                    $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
-                    return $viewHelper;
-                },
                 'zfcUserIdentity' => function ($sm) {
                     $locator = $sm->getServiceLocator();
                     $viewHelper = new View\Helper\ZfcUserIdentity;
@@ -68,22 +64,22 @@ class Module implements
                     return $viewHelper;
                 },
                 'zfcUserLoginWidget' => function (ServiceLocatorInterface $serviceLocator) {
-                        /**
-                         * @var \Zend\Form\FormInterface                    $form
-                         * @var \Zend\Form\FormElementManager               $formElementManager
-                         * @var \Zend\InputFilter\InputFilterPluginManager  $serviceLocator
-                         * @var \Zend\ServiceManager\ServiceManager         $serviceManager
-                         */
-                        $serviceManager = $serviceLocator->getServiceLocator();
-                        $formElementManager = $serviceManager->get('FormElementManager');
-                        $form = $formElementManager->get('ZfcUser\Form\LoginForm');
+                    /**
+                     * @var \Zend\Form\FormInterface            $form
+                     * @var \Zend\Form\FormElementManager       $formElementManager
+                     * @var \Zend\View\HelperPluginManager      $serviceLocator
+                     * @var \Zend\ServiceManager\ServiceManager $serviceManager
+                     */
+                    $serviceManager = $serviceLocator->getServiceLocator();
+                    $formElementManager = $serviceManager->get('FormElementManager');
+                    $form = $formElementManager->get('ZfcUser\Form\LoginForm');
 
-                        $viewHelper = new ZfcUserLoginWidget();
-                        $viewHelper->setViewTemplate($serviceManager->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
-                        $viewHelper->setLoginForm($form);
+                    $viewHelper = new ZfcUserLoginWidget();
+                    $viewHelper->setViewTemplate($serviceManager->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
+                    $viewHelper->setLoginForm($form);
 
-                        return $viewHelper;
-                    },
+                    return $viewHelper;
+                },
             ),
         );
 
