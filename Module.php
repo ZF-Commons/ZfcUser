@@ -150,7 +150,7 @@ class Module implements
                     return $form;
                 },
 
-                'zfcuser_user_hydrator' => function ($sm) {
+                'zfcuser_user_hydrator' => function () {
                     $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
                     return $hydrator;
                 },
