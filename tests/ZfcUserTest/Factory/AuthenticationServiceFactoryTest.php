@@ -1,5 +1,4 @@
 <?php
-
 namespace ZfcUserTest\Factory;
 
 use Zend\ServiceManager\ServiceManager;
