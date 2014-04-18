@@ -232,7 +232,7 @@ class UserController extends AbstractActionController
     /**
      * Change the users password
      */
-    public function changepasswordAction()
+    public function changePasswordAction()
     {
         // if the user isn't logged in, we can't change password
         if (!$this->zfcUserAuthentication()->hasIdentity()) {
@@ -393,12 +393,10 @@ class UserController extends AbstractActionController
      * Set changeEmailForm.
      *
      * @param FormInterface $changeEmailForm
-     * @return $this
      */
     public function setChangeEmailForm(FormInterface $changeEmailForm)
     {
         $this->changeEmailForm = $changeEmailForm;
-        return $this;
     }
 
     /**
