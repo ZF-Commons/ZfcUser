@@ -194,9 +194,9 @@ class UserController extends AbstractActionController
             return $prg;
         } elseif ($prg === false) {
             return array(
-                'registerForm' => $form,
-                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
-                'redirect' => $redirect,
+                'registrationForm'      => $form,
+                'enableRegistration'    => $this->getOptions()->getEnableRegistration(),
+                'redirect'              => $redirect,
             );
         }
 
@@ -207,9 +207,9 @@ class UserController extends AbstractActionController
 
         if (!$user) {
             return array(
-                'registerForm' => $form,
-                'enableRegistration' => $this->getOptions()->getEnableRegistration(),
-                'redirect' => $redirect,
+                'registrationForm'      => $form,
+                'enableRegistration'    => $this->getOptions()->getEnableRegistration(),
+                'redirect'              => $redirect,
             );
         }
 
