@@ -1,80 +1,83 @@
 <?php
-
-namespace ZfcUser\Form;
+namespace ZfcUser\InputFilter;
 
 use Zend\InputFilter\InputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
+/**
+ * Class ChangePasswordFilter
+ * @package ZfcUser\InputFilter
+ */
 class ChangePasswordFilter extends InputFilter
 {
-    public function __construct(AuthenticationOptionsInterface $options)
+    /**
+     * @var AuthenticationOptionsInterface
+     */
+    protected $authenticationOptions;
+
+    /**
+     * @param AuthenticationOptionsInterface $authenticationOptions
+     */
+    public function __construct(AuthenticationOptionsInterface $authenticationOptions)
     {
-        $identityParams = array(
-            'name'       => 'identity',
-            'required'   => true,
-            'validators' => array()
-        );
+        $this->authenticationOptions = $authenticationOptions;
+    }
 
-        $identityFields = $options->getAuthIdentityFields();
-        if ($identityFields == array('email')) {
-            $validators = array('name' => 'EmailAddress');
-            array_push($identityParams['validators'], $validators);
-        }
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        $this->add([
+            'name'      => 'credential',
+            'required'  => true,
+            'filters'   => [
+                [
+                    'name' => 'StringTrim'
+                ],
+            ],
+            'validators' => [
+                [
+                    'name' => 'ZfcUser\Validator\VerifyPasswordValidator',
+                ],
+            ],
+        ]);
 
-        $this->add($identityParams);
-
-        $this->add(array(
-            'name'       => 'credential',
-            'required'   => true,
-            'validators' => array(
-                array(
-                    'name'    => 'StringLength',
-                    'options' => array(
+        $this->add([
+            'name'      => 'newCredential',
+            'required'  => true,
+            'filters'   => [
+                [
+                    'name' => 'StringTrim',
+                ],
+            ],
+            'validators' => [
+                [
+                    'name' => 'StringLength',
+                    // TODO: Make min configurable
+                    'options' => [
                         'min' => 6,
-                    ),
-                ),
-            ),
-            'filters'   => array(
-                array('name' => 'StringTrim'),
-            ),
-        ));
+                    ],
+                ],
+            ],
+        ]);
 
-        $this->add(array(
-            'name'       => 'newCredential',
-            'required'   => true,
-            'validators' => array(
-                array(
-                    'name'    => 'StringLength',
-                    'options' => array(
-                        'min' => 6,
-                    ),
-                ),
-            ),
-            'filters'   => array(
-                array('name' => 'StringTrim'),
-            ),
-        ));
-
-        $this->add(array(
-            'name'       => 'newCredentialVerify',
-            'required'   => true,
-            'validators' => array(
-                array(
-                    'name'    => 'StringLength',
-                    'options' => array(
-                        'min' => 6,
-                    ),
-                ),
-                array(
+        $this->add([
+            'name'      => 'newCredentialVerify',
+            'required'  => true,
+            'filters'   => [
+                [
+                    'name' => 'StringTrim',
+                ],
+            ],
+            'validators' => [
+                [
                     'name' => 'identical',
-                    'options' => array(
-                        'token' => 'newCredential'
-                    )
-                ),
-            ),
-            'filters'   => array(
-                array('name' => 'StringTrim'),
-            ),
-        ));
+                    'options' => [
+                        'token' => 'newCredential',
+                    ],
+                ],
+            ],
+        ]);
     }
 }

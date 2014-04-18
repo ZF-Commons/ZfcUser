@@ -1,44 +1,37 @@
 <?php
+namespace ZfcUser\InputFilter;
 
-namespace ZfcUser\Form;
+use Zend\InputFilter\InputFilter;
 
-use ZfcBase\InputFilter\ProvidesEventsInputFilter;
-use ZfcUser\Options\AuthenticationOptionsInterface;
-
-class LoginFilter extends ProvidesEventsInputFilter
+/**
+ * Class LoginFilter
+ * @package ZfcUser\InputFilter
+ */
+class LoginFilter extends InputFilter
 {
-    public function __construct(AuthenticationOptionsInterface $options)
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
     {
-        $identityParams = array(
-            'name'       => 'identity',
-            'required'   => true,
-            'validators' => array()
-        );
+        $this->add([
+            'name' => 'identity',
+            'required' => true,
+            'filters' => [
+                [
+                    'name' => 'StringTrim',
+                ],
+            ],
+        ]);
 
-        $identityFields = $options->getAuthIdentityFields();
-        if ($identityFields == array('email')) {
-            $validators = array('name' => 'EmailAddress');
-            array_push($identityParams['validators'], $validators);
-        }
-
-        $this->add($identityParams);
-
-        $this->add(array(
-            'name'       => 'credential',
-            'required'   => true,
-            'validators' => array(
-                array(
-                    'name'    => 'StringLength',
-                    'options' => array(
-                        'min' => 6,
-                    ),
-                ),
-            ),
-            'filters'   => array(
-                array('name' => 'StringTrim'),
-            ),
-        ));
-
-        $this->getEventManager()->trigger('init', $this);
+        $this->add([
+            'name' => 'credential',
+            'required' => true,
+            'filters' => [
+                [
+                    'name' => 'StringTrim',
+                ],
+            ],
+        ]);
     }
 }
