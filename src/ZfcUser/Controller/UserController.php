@@ -11,6 +11,11 @@ use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
 
+/**
+ * Class UserController
+ * @package ZfcUser\Controller
+ * @method Plugin\ZfcUserAuthentication zfcUserAuthentication()
+ */
 class UserController extends AbstractActionController
 {
     const ROUTE_CHANGEPASSWD = 'zfcuser/changepassword';
@@ -290,8 +295,6 @@ class UserController extends AbstractActionController
         }
 
         $form = $this->getChangeEmailForm();
-        $request = $this->getRequest();
-        //$request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
 
         $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
         if (isset($fm[0])) {
@@ -352,24 +355,51 @@ class UserController extends AbstractActionController
     }
 
     /**
+     * Get changeEmailForm.
+     *
      * @return FormInterface
      */
-    public function getRegistrationForm()
+    public function getChangeEmailForm()
     {
-        if (!$this->registrationForm) {
+        if (!$this->changeEmailForm) {
             $fem = $this->getServiceLocator()->get(('FormElementManager'));
-            $this->setRegistrationForm($fem->get('ZfcUser\Form\RegistrationForm'));
+            $this->setChangeEmailForm($fem->get('ZfcUser\Form\ChangeEmailForm'));
         }
-        return $this->registrationForm;
+        return $this->changeEmailForm;
     }
 
     /**
-     * @param FormInterface $registrationForm
+     * Set changeEmailForm.
+     *
+     * @param FormInterface $changeEmailForm
+     * @return $this
      */
-    public function setRegistrationForm(FormInterface $registrationForm)
+    public function setChangeEmailForm(FormInterface $changeEmailForm)
     {
-        $this->registrationForm = $registrationForm;
+        $this->changeEmailForm = $changeEmailForm;
+        return $this;
     }
+
+    /**
+     * @return FormInterface
+     */
+    public function getChangePasswordForm()
+    {
+        if (!$this->changePasswordForm) {
+            $fem = $this->getServiceLocator()->get(('FormElementManager'));
+            $this->setChangePasswordForm($fem->get('ZfcUser\Form\ChangePasswordForm'));
+        }
+        return $this->changePasswordForm;
+    }
+
+    /**
+     * @param FormInterface $changePasswordForm
+     */
+    public function setChangePasswordForm(FormInterface $changePasswordForm)
+    {
+        $this->changePasswordForm = $changePasswordForm;
+    }
+
 
     /**
      * @return FormInterface
@@ -394,21 +424,21 @@ class UserController extends AbstractActionController
     /**
      * @return FormInterface
      */
-    public function getChangePasswordForm()
+    public function getRegistrationForm()
     {
-        if (!$this->changePasswordForm) {
+        if (!$this->registrationForm) {
             $fem = $this->getServiceLocator()->get(('FormElementManager'));
-            $this->setChangePasswordForm($fem->get('ZfcUser\Form\ChangePasswordForm'));
+            $this->setRegistrationForm($fem->get('ZfcUser\Form\RegistrationForm'));
         }
-        return $this->changePasswordForm;
+        return $this->registrationForm;
     }
 
     /**
-     * @param FormInterface $changePasswordForm
+     * @param FormInterface $registrationForm
      */
-    public function setChangePasswordForm(FormInterface $changePasswordForm)
+    public function setRegistrationForm(FormInterface $registrationForm)
     {
-        $this->changePasswordForm = $changePasswordForm;
+        $this->registrationForm = $registrationForm;
     }
 
     /**
@@ -434,30 +464,5 @@ class UserController extends AbstractActionController
             $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
         }
         return $this->options;
-    }
-
-    /**
-     * Get changeEmailForm.
-     *
-     * @return FormInterface
-     */
-    public function getChangeEmailForm()
-    {
-        if (!$this->changeEmailForm) {
-            $this->setChangeEmailForm($this->getServiceLocator()->get('zfcuser_change_email_form'));
-        }
-        return $this->changeEmailForm;
-    }
-
-    /**
-     * Set changeEmailForm.
-     *
-     * @param FormInterface $changeEmailForm
-     * @return $this
-     */
-    public function setChangeEmailForm(FormInterface $changeEmailForm)
-    {
-        $this->changeEmailForm = $changeEmailForm;
-        return $this;
     }
 }

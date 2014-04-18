@@ -36,7 +36,7 @@ class RegistrationForm extends Form
     public function init()
     {
         /**
-         * This is needed as ZF2 runs init() on every call for a shared form
+         * This is needed as ZF2 runs init() on every call for a shared form (prior to 2.3.1)
          * See: https://github.com/zendframework/zf2/pull/6132
          */
         if ($this->initialized) {

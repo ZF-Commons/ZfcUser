@@ -1,65 +1,71 @@
 <?php
-
-namespace ZfcUser\Form;
+namespace ZfcUser\InputFilter;
 
 use Zend\InputFilter\InputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
+/**
+ * Class ChangeEmailFilter
+ * @package ZfcUser\InputFilter
+ */
 class ChangeEmailFilter extends InputFilter
 {
-    protected $emailValidator;
+    /**
+     * @var AuthenticationOptionsInterface
+     */
+    protected $authenticationOptions;
 
-    public function __construct(AuthenticationOptionsInterface $options, $emailValidator)
+    /**
+     * @param AuthenticationOptionsInterface $authenticationOptions
+     */
+    public function __construct(AuthenticationOptionsInterface $authenticationOptions)
     {
-        $this->emailValidator = $emailValidator;
+        $this->authenticationOptions = $authenticationOptions;
+    }
 
-        $identityParams = array(
-            'name'       => 'identity',
-            'required'   => true,
-            'validators' => array()
-        );
-
-        $identityFields = $options->getAuthIdentityFields();
-        if ($identityFields == array('email')) {
-            $validators = array('name' => 'EmailAddress');
-            array_push($validators, $identityParams['validators']);
-        }
-
-        $this->add($identityParams);
-
-        $this->add(array(
+    /**
+     * {@inheritdoc}
+     */
+    public function init()
+    {
+        $this->add([
             'name'       => 'newIdentity',
             'required'   => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'EmailAddress'
-                ),
-                $this->emailValidator
-            ),
-        ));
+                ],
+                [
+                    'name' => 'ZfcUser\Validator\NoRecordExists',
+                    'options' => [
+                        'key' => 'email',
+                    ],
+                ],
+            ],
+        ]);
 
-        $this->add(array(
+        $this->add([
             'name'       => 'newIdentityVerify',
             'required'   => true,
-            'validators' => array(
-                array(
+            'validators' => [
+                [
                     'name' => 'identical',
-                    'options' => array(
-                        'token' => 'newIdentity'
-                    )
-                ),
-            ),
-        ));
-    }
+                    'options' => [
+                        'token' => 'newIdentity',
+                    ],
+                ],
+            ],
+        ]);
 
-    public function getEmailValidator()
-    {
-        return $this->emailValidator;
-    }
-
-    public function setEmailValidator($emailValidator)
-    {
-        $this->emailValidator = $emailValidator;
-        return $this;
+        $this->add([
+            // TODO: Check if password is correct
+            'name'       => 'credential',
+            'required'   => true,
+            'filters' => [
+                [
+                    'name' => 'StringTrim'
+                ],
+            ],
+        ]);
     }
 }

@@ -113,26 +113,6 @@ class Module implements
 
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
 
-                'zfcuser_change_password_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
-                    $form->setInputFilter(new Form\ChangePasswordFilter($options));
-                    return $form;
-                },
-
-                'zfcuser_change_email_form' => function($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangeEmail(null, $options);
-                    $form->setInputFilter(new Form\ChangeEmailFilter(
-                        $options,
-                        new Validator\NoRecordExists(
-                            array('key' => 'email'),
-                            $sm->get('zfcuser_user_mapper')
-                        )
-                    ));
-                    return $form;
-                },
-
                 'zfcuser_user_mapper' => function ($sm) {
                     $options = $sm->get('zfcuser_module_options');
                     $mapper = new Mapper\User();
