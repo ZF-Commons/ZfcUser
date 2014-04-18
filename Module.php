@@ -2,11 +2,11 @@
 
 namespace ZfcUser;
 
-use Zend\ModuleManager\ModuleManager;
+use Zend\Authentication;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
-use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Stdlib\Hydrator;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -97,7 +97,7 @@ class Module implements
                 // Zend\Authentication\AuthenticationService. We don't want to
                 // hog the FQCN service alias for a Zend\* class.
                 'zfcuser_auth_service' => function ($sm) {
-                    return new \Zend\Authentication\AuthenticationService(
+                    return new Authentication\AuthenticationService(
                         $sm->get('ZfcUser\Authentication\Storage\Db'),
                         $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
                     );
@@ -151,7 +151,7 @@ class Module implements
                 },
 
                 'zfcuser_user_hydrator' => function ($sm) {
-                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
+                    $hydrator = new Hydrator\ClassMethods();
                     return $hydrator;
                 },
 
