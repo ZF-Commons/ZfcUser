@@ -35,7 +35,7 @@ class ModuleOptionsFactoryTest extends \PHPUnit_Framework_TestCase
         return array(
             array(array()), // config without zfcuser
             array(array('zfcuser'=>array(
-                'loginRedirectRoute'=>'user'
+                'loginRedirectRoute'=>'user',
             )))
         );
     }

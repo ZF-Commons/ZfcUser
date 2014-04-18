@@ -21,7 +21,7 @@ class ChangeEmailFormFactory implements FactoryInterface
             $options,
             new NoRecordExists(array(
                 'mapper' => $serviceLocator->get('zfcuser_user_mapper'),
-                'key'    => 'email'
+                'key'    => 'email',
             ))
         ));
 

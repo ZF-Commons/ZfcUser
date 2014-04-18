@@ -21,11 +21,11 @@ class RegisterFormFactory implements FactoryInterface
         $form->setInputFilter(new RegisterFilter(
             new NoRecordExists(array(
                 'mapper' => $serviceLocator->get('zfcuser_user_mapper'),
-                'key'    => 'email'
+                'key'    => 'email',
             )),
             new NoRecordExists(array(
                 'mapper' => $serviceLocator->get('zfcuser_user_mapper'),
-                'key'    => 'username'
+                'key'    => 'username',
             )),
             $options
         ));
