@@ -23,7 +23,7 @@ class ZfcUserLoginWidget extends AbstractHelper
      * RegistrationOptions
      * @var registrationOptions
      */
-    protected $registrationOptions;
+    protected $enableRegistration;
     
     /**
      * RegistrationOptions
