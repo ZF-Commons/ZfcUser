@@ -20,10 +20,10 @@ class ZfcUserLoginWidget extends AbstractHelper
     protected $viewTemplate;
     
     /**
-     * ModuleOptions
-     * @var module_options
+     * RegistrationOptions
+     * @var registrationOptions
      */
-    protected $module_options;
+    protected $registrationOptions;
     
     /**
      * __invoke
@@ -48,8 +48,7 @@ class ZfcUserLoginWidget extends AbstractHelper
         $vm = new ViewModel(array(
             'loginForm' => $this->getLoginForm(),
             'redirect'  => $redirect,
-            'options'   => $this->module_options,
-            'enableRegistration' => $this->module_options->getEnableRegistration()
+            'enableRegistration' => $this->registrationOptions->getEnableRegistration()
         ));
         $vm->setTemplate($this->viewTemplate);
         if ($render) {
@@ -94,19 +93,19 @@ class ZfcUserLoginWidget extends AbstractHelper
      * @param $options
      * @return ZfcUserLoginWidget
      */
-    public function getModuleOptions()
+    public function getRegistrationOptions()
     {
-        return $this->module_options;
+        return $this->registrationOptions;
     }
 
     /**
      * Inject module options
-     * @param ModuleOptions $options
+     * @param RegistrationOptions $options
      * @return ZfcUserLoginWidget
      */
-    public function setModuleOptions(ModuleOptions $options)
+    public function setRegistrationOptions($options)
     {
-        $this->module_options = $options;
+        $this->registrationOptions = $options;
         return $this;
     }
 
