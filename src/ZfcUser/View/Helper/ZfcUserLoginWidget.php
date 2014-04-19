@@ -23,7 +23,7 @@ class ZfcUserLoginWidget extends AbstractHelper
      * RegistrationOptions
      * @var registrationOptions
      */
-    protected $registrationOptions;
+    protected $enableRegistration;
     
     /**
      * __invoke
@@ -95,17 +95,17 @@ class ZfcUserLoginWidget extends AbstractHelper
      */
     public function getRegistrationOptions()
     {
-        return $this->registrationOptions;
+        return $this->enableRegistration;
     }
 
     /**
      * Inject module options
-     * @param RegistrationOptions $options
+     * @param bool $registrationOption
      * @return ZfcUserLoginWidget
      */
-    public function setRegistrationOptions($options)
+    public function setRegistrationOptions( $registrationOption)
     {
-        $this->registrationOptions = $options;
+        $this->enableRegistration = $registrationOption;
         return $this;
     }
 
