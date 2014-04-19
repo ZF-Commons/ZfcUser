@@ -50,21 +50,6 @@ interface UserInterface
     public function setEmail($email);
 
     /**
-     * Get displayName.
-     *
-     * @return string
-     */
-    public function getDisplayName();
-
-    /**
-     * Set displayName.
-     *
-     * @param string $displayName
-     * @return UserInterface
-     */
-    public function setDisplayName($displayName);
-
-    /**
      * Get password.
      *
      * @return string password

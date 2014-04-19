@@ -91,11 +91,6 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var bool
      */
-    protected $enableDisplayName = false;
-
-    /**
-     * @var bool
-     */
     protected $useRegistrationFormCaptcha = false;
 
     /**
@@ -427,28 +422,6 @@ class ModuleOptions extends AbstractOptions implements
     public function getEnableUsername()
     {
         return $this->enableUsername;
-    }
-
-    /**
-     * set enable display name
-     *
-     * @param bool $flag
-     * @return ModuleOptions
-     */
-    public function setEnableDisplayName($flag)
-    {
-        $this->enableDisplayName = (bool) $flag;
-        return $this;
-    }
-
-    /**
-     * get enable display name
-     *
-     * @return bool
-     */
-    public function getEnableDisplayName()
-    {
-        return $this->enableDisplayName;
     }
 
     /**

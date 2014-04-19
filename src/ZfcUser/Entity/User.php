@@ -22,11 +22,6 @@ class User implements UserInterface
     /**
      * @var string
      */
-    protected $displayName;
-
-    /**
-     * @var string
-     */
     protected $password;
 
     /**
@@ -97,28 +92,6 @@ class User implements UserInterface
     public function setEmail($email)
     {
         $this->email = $email;
-        return $this;
-    }
-
-    /**
-     * Get displayName.
-     *
-     * @return string
-     */
-    public function getDisplayName()
-    {
-        return $this->displayName;
-    }
-
-    /**
-     * Set displayName.
-     *
-     * @param string $displayName
-     * @return UserInterface
-     */
-    public function setDisplayName($displayName)
-    {
-        $this->displayName = $displayName;
         return $this;
     }
 

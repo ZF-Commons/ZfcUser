@@ -10,6 +10,49 @@ return array(
             'zfcuser' => 'ZfcUser\Controller\UserController',
         ),
     ),
+
+    'form_elements' => [
+        'factories' => [
+            'ZFcUser\Form\Element\IdentityElement'  => 'ZfcUser\Factory\Form\Element\IdentityElementFactory',
+
+            'ZfcUser\Form\ChangeEmailForm'          => 'ZfcUser\Factory\Form\ChangeEmailFormFactory',
+            'ZfcUser\Form\ChangePasswordForm'       => 'ZfcUser\Factory\Form\ChangePasswordFormFactory',
+            'ZfcUser\Form\LoginForm'                => 'ZfcUser\Factory\Form\LoginFormFactory',
+            'ZfcUser\Form\RegistrationForm'         => 'ZfcUser\Factory\Form\RegistrationFormFactory',
+        ],
+        'shared' => [
+            'ZfcUser\Form\ChangeEmailForm'      => true,
+            'ZfcUser\Form\ChangePasswordForm'   => true,
+            'ZfcUser\Form\LoginForm'            => true,
+            'ZfcUser\Form\RegistrationForm'     => true,
+        ],
+    ],
+
+    'hydrators' => [
+        'invokables' => [
+            'ZfcUser\Hydrator\RegistrationHydrator' => 'Zend\Stdlib\Hydrator\ClassMethods',
+        ],
+    ],
+
+    'input_filters' => [
+        'factories' => [
+            'ZfcUser\InputFilter\ChangeEmailFilter'     => 'ZfcUser\Factory\InputFilter\ChangeEmailFilterFactory',
+            'ZfcUser\InputFilter\ChangePasswordFilter'  => 'ZfcUser\Factory\InputFilter\ChangePasswordFilterFactory',
+            'ZfcUser\InputFilter\RegistrationFilter'    => 'ZfcUser\Factory\InputFilter\RegistrationFilterFactory',
+        ],
+        'invokables' => [
+            'ZfcUser\InputFilter\LoginFilter' => 'ZfcUser\InputFilter\LoginFilter',
+        ],
+    ],
+
+    'validators' => [
+        'factories' => [
+            'ZfcUser\Validator\NoRecordExistsValidator' => 'ZfcUser\Factory\Validator\NoRecordExistsValidatorFactory',
+            'ZfcUser\Validator\RecordExistsValidator'   => 'ZfcUser\Factory\Validator\RecordExistsValidatorFactory',
+            'ZfcUser\Validator\VerifyPasswordValidator' => 'ZfcUser\Factory\Validator\VerifyPasswordValidatorFactory',
+        ],
+    ],
+
     'service_manager' => array(
         'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
