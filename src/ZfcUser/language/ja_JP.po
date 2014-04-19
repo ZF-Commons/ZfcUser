@@ -1,0 +1,129 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZfcUser\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2013-02-26 13:38+0100\n"
+"PO-Revision-Date: 2013-11-11 01:19+0900\n"
+"Last-Translator: sasezaki <sasezaki@gmail.com>\n"
+"Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
+"Language: ja_JP\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: /var/www/ZfcUser\n"
+"X-Generator: Poedit 1.5.4\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: src/ZfcUser/language/msgIds.php:6
+msgid "Username"
+msgstr "ユーザー名"
+
+#: src/ZfcUser/language/msgIds.php:7
+msgid "Email"
+msgstr "メールアドレス"
+
+#: src/ZfcUser/language/msgIds.php:8
+msgid "New Email"
+msgstr "新しいメールアドレス"
+
+#: src/ZfcUser/language/msgIds.php:9
+msgid "Verify New Email"
+msgstr "新しいメールアドレス (確認)"
+
+#: src/ZfcUser/language/msgIds.php:10
+msgid "Display Name"
+msgstr "表示する名前"
+
+#: src/ZfcUser/language/msgIds.php:11
+msgid "Password"
+msgstr "パスワード"
+
+#: src/ZfcUser/language/msgIds.php:12
+msgid "Password Verify"
+msgstr "パスワード (確認用)"
+
+#: src/ZfcUser/language/msgIds.php:13
+msgid "Current Password"
+msgstr "現在のパスワード"
+
+#: src/ZfcUser/language/msgIds.php:14
+msgid "Verify New Password"
+msgstr "新しいパスワード (確認用)"
+
+#: src/ZfcUser/language/msgIds.php:15
+msgid "New Password"
+msgstr "新しいパスワード"
+
+#: src/ZfcUser/language/msgIds.php:16
+msgid "Please type the following text"
+msgstr "次の文章を入力してください"
+
+#: src/ZfcUser/language/msgIds.php:17
+msgid "Submit"
+msgstr "送信"
+
+#: src/ZfcUser/language/msgIds.php:18
+#: view/zfc-user/user/login.phtml:1
+msgid "Sign In"
+msgstr "ログイン"
+
+#: src/ZfcUser/language/msgIds.php:19
+#: view/zfc-user/user/register.phtml:1
+msgid "Register"
+msgstr "登録する"
+
+#: src/ZfcUser/language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "入力にマッチしたレコードが見つかりませんでした"
+
+#: src/ZfcUser/language/msgIds.php:21
+msgid "A record matching the input was found"
+msgstr "入力にマッチしたレコードが見つかりました"
+
+#: src/ZfcUser/language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr "認証に失敗しました。再度お試しください。"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Not registered?"
+msgstr "登録は済んでいますか？"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Sign up!"
+msgstr "ユーザー登録！"
+
+#: view/zfc-user/user/changeemail.phtml:1
+#, php-format
+msgid "Change Email for %s"
+msgstr "%s のメールアドレスを変更します"
+
+#: view/zfc-user/user/changeemail.phtml:3
+msgid "Email address changed successfully."
+msgstr "メールアドレスの変更に成功しました。"
+
+#: view/zfc-user/user/changeemail.phtml:5
+msgid "Unable to update your email address. Please try again."
+msgstr "メールアドレスを更新できません。再度お試しください。"
+
+#: view/zfc-user/user/changepassword.phtml:1
+#, php-format
+msgid "Change Password for %s"
+msgstr "%s のパスワードを変更します"
+
+#: view/zfc-user/user/changepassword.phtml:3
+msgid "Password changed successfully."
+msgstr "パスワードの変更に成功しました。"
+
+#: view/zfc-user/user/changepassword.phtml:5
+msgid "Unable to update your password. Please try again."
+msgstr "パスワードを更新できません。再度お試しください。"
+
+#: view/zfc-user/user/index.phtml:2
+msgid "Hello"
+msgstr "こんにちは"
+
+#: view/zfc-user/user/index.phtml:3
+msgid "Sign Out"
+msgstr "ログアウト"
+

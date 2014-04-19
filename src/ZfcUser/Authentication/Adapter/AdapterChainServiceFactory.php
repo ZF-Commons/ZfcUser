@@ -22,14 +22,14 @@ class AdapterChainServiceFactory implements FactoryInterface
         $options = $this->getOptions($serviceLocator);
 
         //iterate and attach multiple adapters and events if offered
-        foreach($options->getAuthAdapters() as $priority => $adapterName) {
+        foreach ($options->getAuthAdapters() as $priority => $adapterName) {
             $adapter = $serviceLocator->get($adapterName);
 
-            if(is_callable(array($adapter, 'authenticate'))) {
+            if (is_callable(array($adapter, 'authenticate'))) {
                 $chain->getEventManager()->attach('authenticate', array($adapter, 'authenticate'), $priority);
             }
 
-            if(is_callable(array($adapter, 'logout'))) {
+            if (is_callable(array($adapter, 'logout'))) {
                 $chain->getEventManager()->attach('logout', array($adapter, 'logout'), $priority);
             }
         }
@@ -72,5 +72,4 @@ class AdapterChainServiceFactory implements FactoryInterface
 
         return $this->options;
     }
-
 }

@@ -102,11 +102,11 @@ class ModuleOptions extends AbstractOptions implements
      * @var int
      */
     protected $passwordCost = 14;
-    
+
     /**
      * @var string
      */
-    
+
     protected $tableName = 'user';
 
     /**
@@ -344,7 +344,7 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * get list of states to allow user login
      *
-     * @return int
+     * @return array
      */
     public function getAllowedLoginStates()
     {
@@ -516,22 +516,24 @@ class ModuleOptions extends AbstractOptions implements
     {
         return $this->passwordCost;
     }
-    
+
     /**
      * set user table name
-     * 
+     *
      * @param string $tableName
      */
-    public function setTableName($tableName){
+    public function setTableName($tableName)
+    {
         $this->tableName=$tableName;
     }
-    
+
     /**
      * get user table name
-     * 
+     *
      * @return string
      */
-    public function getTableName(){
+    public function getTableName()
+    {
         return $this->tableName;
     }
 

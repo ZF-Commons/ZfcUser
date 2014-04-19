@@ -71,7 +71,7 @@ class UserController extends AbstractActionController
      */
     public function loginAction()
     {
-        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
@@ -96,7 +96,7 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='.$redirect : ''));
+            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
         }
 
         // clear adapters
@@ -129,7 +129,7 @@ class UserController extends AbstractActionController
      */
     public function authenticateAction()
     {
-        if ($this->zfcUserAuthentication()->getAuthService()->hasIdentity()) {
+        if ($this->zfcUserAuthentication()->hasIdentity()) {
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
@@ -148,15 +148,23 @@ class UserController extends AbstractActionController
         if (!$auth->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN)
-                . ($redirect ? '?redirect='.$redirect : ''));
+            return $this->redirect()->toUrl(
+                $this->url()->fromRoute(static::ROUTE_LOGIN) .
+                ($redirect ? '?redirect='. rawurlencode($redirect) : '')
+            );
         }
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
             return $this->redirect()->toUrl($redirect);
         }
 
-        return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        $route = $this->getOptions()->getLoginRedirectRoute();
+
+        if (is_callable($route)) {
+            $route = $route($this->zfcUserAuthentication()->getIdentity());
+        }
+
+        return $this->redirect()->toRoute($route);
     }
 
     /**
@@ -173,7 +181,7 @@ class UserController extends AbstractActionController
         if (!$this->getOptions()->getEnableRegistration()) {
             return array('enableRegistration' => false);
         }
-        
+
         $request = $this->getRequest();
         $service = $this->getUserService();
         $form = $this->getRegisterForm();
@@ -185,7 +193,7 @@ class UserController extends AbstractActionController
         }
 
         $redirectUrl = $this->url()->fromRoute(static::ROUTE_REGISTER)
-            . ($redirect ? '?redirect=' . $redirect : '');
+            . ($redirect ? '?redirect=' . rawurlencode($redirect) : '');
         $prg = $this->prg($redirectUrl, true);
 
         if ($prg instanceof Response) {
@@ -224,7 +232,7 @@ class UserController extends AbstractActionController
         }
 
         // TODO: Add the redirect parameter here...
-        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect='.$redirect : ''));
+        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect='. rawurlencode($redirect) : ''));
     }
 
     /**

@@ -12,7 +12,6 @@ use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
 
-
 class User extends EventProvider implements ServiceManagerAwareInterface
 {
 
