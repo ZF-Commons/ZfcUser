@@ -48,7 +48,7 @@ class ZfcUserLoginWidget extends AbstractHelper
         $vm = new ViewModel(array(
             'loginForm' => $this->getLoginForm(),
             'redirect'  => $redirect,
-            'enableRegistration' => $this->registrationOptions->getEnableRegistration()
+            'enableRegistration' => $this->enableRegistration,
         ));
         $vm->setTemplate($this->viewTemplate);
         if ($render) {
