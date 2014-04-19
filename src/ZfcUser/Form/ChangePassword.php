@@ -31,40 +31,34 @@ class ChangePassword extends ProvidesEventsForm
         ));
 
         $this->add(array(
+            'type' => 'password',
             'name' => 'credential',
             'options' => array(
                 'label' => 'Current Password',
             ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
         ));
 
         $this->add(array(
+            'type' => 'password',
             'name' => 'newCredential',
             'options' => array(
                 'label' => 'New Password',
             ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
         ));
 
         $this->add(array(
+            'type' => 'password',
             'name' => 'newCredentialVerify',
             'options' => array(
                 'label' => 'Verify New Password',
             ),
-            'attributes' => array(
-                'type' => 'password',
-            ),
         ));
 
         $this->add(array(
+            'type' => 'submit',
             'name' => 'submit',
             'attributes' => array(
                 'value' => 'Submit',
-                'type'  => 'submit'
             ),
         ));
 
