@@ -16,7 +16,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     /** @var \Zend\Db\Adapter\Adapter */
     protected $mockedDbAdapter;
 
-    /** @var \Zend\Db\Adapter\Adapter */
+    /** @var \Zend\Db\Adapter\Adapter[] */
     protected $realAdapter = array();
 
     /** @var \Zend\Db\Sql\Select */
