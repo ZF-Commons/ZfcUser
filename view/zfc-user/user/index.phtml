@@ -1,4 +1,10 @@
-<div style="float:left; padding-right:16px;"><?php echo $this->gravatar($this->zfcUserIdentity()->getEmail()) ?></div>
-<h3><?php echo $this->translate('Hello'); ?>, <?php echo $this->zfcUserIdentity()->getEmail() ?>!</h3>
-<a href="<?php echo $this->url('zfcuser/logout') ?>">[<?php echo $this->translate('Sign Out'); ?>]</a>
-<div style="clear:both;"></div>
+<?php
+/** @var \ZfcUser\View\Helper\IdentityHelper $identityHelper */
+$identityHelper = $this->plugin('ZfcUser\View\Helper\IdentityHelper');
+?>
+
+<div style="float:left; padding-right:16px;">
+    <?= $this->gravatar($identityHelper()->getEmail()) ?>
+</div>
+<h3><?= $this->translate('Hello'); ?>, <?= $identityHelper()->getEmail() ?>!</h3>
+<a href="<?= $this->url('zfcuser/logout') ?>">[<?= $this->translate('Sign Out') ?>]</a>

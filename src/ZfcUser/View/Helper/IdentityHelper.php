@@ -1,51 +1,37 @@
 <?php
-
 namespace ZfcUser\View\Helper;
 
+use Zend\Authentication\AuthenticationServiceInterface;
 use Zend\View\Helper\AbstractHelper;
-use Zend\Authentication\AuthenticationService;
 
-class ZfcUserIdentity extends AbstractHelper
+/**
+ * Class IdentityHelper
+ * @package ZfcUser\View\Helper
+ */
+class IdentityHelper extends AbstractHelper
 {
     /**
-     * @var AuthenticationService
+     * @var AuthenticationServiceInterface
      */
-    protected $authService;
+    protected $authenticationService;
 
     /**
-     * __invoke
-     *
-     * @access public
-     * @return \ZfcUser\Entity\UserInterface
+     * @param AuthenticationServiceInterface $authenticationService
+     */
+    public function __construct(AuthenticationServiceInterface $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
+
+    /**
+     * @return bool|\ZfcUser\Entity\UserInterface
      */
     public function __invoke()
     {
-        if ($this->getAuthService()->hasIdentity()) {
-            return $this->getAuthService()->getIdentity();
-        } else {
-            return false;
+        if ($this->authenticationService->hasIdentity()) {
+            return $this->authenticationService->getIdentity();
         }
-    }
 
-    /**
-     * Get authService.
-     *
-     * @return AuthenticationService
-     */
-    public function getAuthService()
-    {
-        return $this->authService;
-    }
-
-    /**
-     * Set authService.
-     *
-     * @param AuthenticationService $authService
-     * @return \ZfcUser\View\Helper\ZfcUserIdentity
-     */
-    public function setAuthService(AuthenticationService $authService)
-    {
-        $this->authService = $authService;
-        return $this;
+        return false;
     }
 }

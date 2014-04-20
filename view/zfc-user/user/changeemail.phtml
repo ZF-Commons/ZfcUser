@@ -1,4 +1,12 @@
-<h3><?= sprintf($this->translate('Change Email for %s'), $this->zfcUserIdentity()->getEmail()) ?></h3>
+<?php
+/**
+ * @var bool $status
+ * @var \ZfcUser\View\Helper\IdentityHelper $identityHelper
+ */
+$identityHelper = $this->plugin('ZfcUser\View\Helper\IdentityHelper');
+?>
+
+<h3><?= sprintf($this->translate('Change Email for %s'), $identityHelper()->getEmail()) ?></h3>
 <?php if ($status === true) : ?>
     <div class="alert alert-success"><?= $this->translate('Email address changed successfully.') ?></div>
 <?php elseif ($status === false) : ?>

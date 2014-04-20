@@ -53,6 +53,17 @@ return array(
         ],
     ],
 
+    'view_helpers' => [
+        'aliases' => [
+            'zfcUserIdentity'   => 'ZfcUser\View\Helper\IdentityHelper',
+            'zfcUserLoginForm'  => 'ZfcUser\View\Helper\LoginFormHelper',
+        ],
+        'factories' => [
+            'ZfcUser\View\Helper\IdentityHelper'    => 'ZfcUser\Factory\View\Helper\IdentityHelperFactory',
+            'ZfcUser\View\Helper\LoginFormHelper'   => 'ZfcUser\Factory\View\Helper\LoginFormHelperFactory',
+        ],
+    ],
+
     'service_manager' => array(
         'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
