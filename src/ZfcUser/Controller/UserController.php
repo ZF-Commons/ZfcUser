@@ -259,16 +259,7 @@ class UserController extends AbstractActionController
             );
         }
 
-        $form->setData($prg);
-
-        if (!$form->isValid()) {
-            return array(
-                'status' => false,
-                'changePasswordForm' => $form,
-            );
-        }
-
-        if (!$this->getUserService()->changePassword($form->getData())) {
+        if (!$this->getUserService()->changePassword($prg)) {
             return array(
                 'status' => false,
                 'changePasswordForm' => $form,
