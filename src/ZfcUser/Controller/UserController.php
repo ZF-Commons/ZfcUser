@@ -279,8 +279,6 @@ class UserController extends AbstractActionController
         }
 
         $form = $this->getChangeEmailForm();
-        $request = $this->getRequest();
-        $request->getPost()->set('identity', $this->getUserService()->getAuthService()->getIdentity()->getEmail());
 
         $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
         if (isset($fm[0])) {
@@ -299,18 +297,7 @@ class UserController extends AbstractActionController
             );
         }
 
-        $form->setData($prg);
-
-        if (!$form->isValid()) {
-            return array(
-                'status' => false,
-                'changeEmailForm' => $form,
-            );
-        }
-
-        $change = $this->getUserService()->changeEmail($prg);
-
-        if (!$change) {
+        if (!$this->getUserService()->changeEmail($prg)) {
             $this->flashMessenger()->setNamespace('change-email')->addMessage(false);
             return array(
                 'status' => false,

@@ -27,6 +27,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * @var FormInterface
      */
+    protected $changeEmailForm;
+
+    /**
+     * @var FormInterface
+     */
     protected $changePasswordForm;
 
     /**
@@ -69,6 +74,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
 
         // If user state is enabled, set the default state value
         if ($this->getOptions()->getEnableUserState() && $this->getOptions()->getDefaultUserState()) {
+            // TODO: Possibly move to hydration
             $user->setState($this->getOptions()->getDefaultUserState());
         }
 
@@ -95,9 +101,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
         }
 
         // TODO: Move to form filter
-        /* @var \ZfcUser\Entity\UserInterface $user */
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->getOptions()->getPasswordCost());
+
+        /* @var \ZfcUser\Entity\UserInterface $user */
+        // TODO: Possibly move to hydration
         $user = $this->getAuthService()->getIdentity();
         $user->setPassword($bcrypt->create($data['newCredential']));
 
@@ -110,20 +118,21 @@ class User extends EventProvider implements ServiceManagerAwareInterface
 
     public function changeEmail(array $data)
     {
-        $currentUser = $this->getAuthService()->getIdentity();
+        $form = $this->getChangeEmailForm();
+        $form->setData($data);
 
-        $bcrypt = new Bcrypt;
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-
-        if (!$bcrypt->verify($data['credential'], $currentUser->getPassword())) {
+        if (!$form->isValid()) {
             return false;
         }
 
-        $currentUser->setEmail($data['newIdentity']);
+        /* @var \ZfcUser\Entity\UserInterface $user */
+        // TODO: Possibly move to hydration
+        $user = $this->getAuthService()->getIdentity();
+        $user->setEmail($data['newIdentity']);
 
-        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
-        $this->getUserMapper()->update($currentUser);
-        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser));
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user));
+        $this->getUserMapper()->update($user);
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $user));
 
         return true;
     }
@@ -181,6 +190,27 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     /**
      * @return FormInterface
      */
+    public function getChangeEmailForm()
+    {
+        if (null === $this->changeEmailForm) {
+            $fem = $this->getServiceManager()->get('FormElementManager');
+            $this->setChangeEmailForm($fem->get('ZfcUser\Form\ChangeEmailForm'));
+        }
+
+        return $this->changeEmailForm;
+    }
+
+    /**
+     * @param FormInterface $form
+     */
+    public function setChangeEmailForm(FormInterface $form)
+    {
+        $this->changeEmailForm = $form;
+    }
+
+    /**
+     * @return FormInterface
+     */
     public function getChangePasswordForm()
     {
         if (null === $this->changePasswordForm) {
@@ -192,11 +222,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * @param FormInterface $registrationForm
+     * @param FormInterface $form
      */
-    public function setChangePasswordForm(FormInterface $registrationForm)
+    public function setChangePasswordForm(FormInterface $form)
     {
-        $this->changePasswordForm = $registrationForm;
+        $this->changePasswordForm = $form;
     }
 
     /**
@@ -213,11 +243,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * @param FormInterface $registrationForm
+     * @param FormInterface $form
      */
-    public function setRegistrationForm(FormInterface $registrationForm)
+    public function setRegistrationForm(FormInterface $form)
     {
-        $this->registrationForm = $registrationForm;
+        $this->registrationForm = $form;
     }
 
     /**
