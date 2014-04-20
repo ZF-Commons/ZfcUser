@@ -103,10 +103,9 @@ class ZfcUserLoginWidget extends AbstractHelper
      * @param bool $registrationOption
      * @return ZfcUserLoginWidget
      */
-    public function setRegistrationOptions( $registrationOption)
+    public function setRegistrationOptions($registrationOption)
     {
         $this->enableRegistration = $registrationOption;
         return $this;
     }
-
 }
