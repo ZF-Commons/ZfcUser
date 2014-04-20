@@ -240,15 +240,15 @@ class UserController extends AbstractActionController
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
-        $form = $this->getChangePasswordForm();
-        $prg = $this->prg(static::ROUTE_CHANGEPASSWD);
-
         $fm = $this->flashMessenger()->setNamespace('change-password')->getMessages();
         if (isset($fm[0])) {
             $status = $fm[0];
         } else {
             $status = null;
         }
+
+        $form = $this->getChangePasswordForm();
+        $prg = $this->prg(static::ROUTE_CHANGEPASSWD);
 
         if ($prg instanceof Response) {
             return $prg;
@@ -278,8 +278,6 @@ class UserController extends AbstractActionController
             return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
         }
 
-        $form = $this->getChangeEmailForm();
-
         $fm = $this->flashMessenger()->setNamespace('change-email')->getMessages();
         if (isset($fm[0])) {
             $status = $fm[0];
@@ -287,7 +285,9 @@ class UserController extends AbstractActionController
             $status = null;
         }
 
+        $form = $this->getChangeEmailForm();
         $prg = $this->prg(static::ROUTE_CHANGEEMAIL);
+
         if ($prg instanceof Response) {
             return $prg;
         } elseif ($prg === false) {
