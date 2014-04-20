@@ -11,11 +11,6 @@ use ZfcUser\Options\RegistrationOptionsInterface;
 class RegistrationForm extends Form
 {
     /**
-     * @var bool
-     */
-    protected $initialized = false;
-
-    /**
      * @var RegistrationOptionsInterface
      */
     protected $registrationOptions;
@@ -35,16 +30,6 @@ class RegistrationForm extends Form
      */
     public function init()
     {
-        /**
-         * This is needed as ZF2 runs init() on every call for a shared form (prior to 2.3.1)
-         * See: https://github.com/zendframework/zf2/pull/6132
-         */
-        if ($this->initialized) {
-            return;
-        }
-
-        $this->initialized = true;
-
         if ($this->registrationOptions->getEnableUsername()) {
             $this->add([
                 'name' => 'username',
