@@ -16,31 +16,25 @@ class ChangeEmailForm extends Form
     {
         $this->add([
             'name' => 'newIdentity',
+            'type' => 'Email',
             'options' => [
                 'label' => 'New Email',
-            ],
-            'attributes' => [
-                'type' => 'text',
             ],
         ]);
 
         $this->add([
             'name' => 'newIdentityVerify',
+            'type' => 'Email',
             'options' => [
                 'label' => 'Verify New Email',
-            ],
-            'attributes' => [
-                'type' => 'text',
             ],
         ]);
 
         $this->add([
             'name' => 'credential',
+            'type' => 'Password',
             'options' => [
                 'label' => 'Password',
-            ],
-            'attributes' => [
-                'type' => 'password',
             ],
         ]);
 
