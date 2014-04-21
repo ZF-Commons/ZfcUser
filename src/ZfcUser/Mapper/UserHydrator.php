@@ -52,9 +52,6 @@ class UserHydrator extends ClassMethods
         if (isset($data['password'])) {
             $data['password'] = $this->crypto->create($data['password']);
         }
-        if (isset($data['state'])) {
-            $data['state'] = (int) $data['state'];
-        }
         return parent::hydrate($data, $object);
     }
 

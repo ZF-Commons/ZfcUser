@@ -74,7 +74,7 @@ class User implements UserInterface
      */
     public function setUsername($username)
     {
-        $this->username = $username;
+        $this->username = trim($username);
         return $this;
     }
 
@@ -96,7 +96,7 @@ class User implements UserInterface
      */
     public function setEmail($email)
     {
-        $this->email = $email;
+        $this->email = trim($email);
         return $this;
     }
 
@@ -118,7 +118,7 @@ class User implements UserInterface
      */
     public function setDisplayName($displayName)
     {
-        $this->displayName = $displayName;
+        $this->displayName = trim($displayName);
         return $this;
     }
 
@@ -140,7 +140,7 @@ class User implements UserInterface
      */
     public function setPassword($password)
     {
-        $this->password = $password;
+        $this->password = trim($password);
         return $this;
     }
 
@@ -162,7 +162,7 @@ class User implements UserInterface
      */
     public function setState($state)
     {
-        $this->state = $state;
+        $this->state = (int) $state;
         return $this;
     }
 }
