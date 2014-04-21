@@ -7,6 +7,7 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use Zend\Crypt\Password\Bcrypt;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -82,7 +83,6 @@ class Module implements
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
-                'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
 
@@ -148,8 +148,10 @@ class Module implements
                 },
 
                 'zfcuser_user_hydrator' => function ($sm) {
-                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
-                    return $hydrator;
+                    $options = $sm->get('zfcuser_module_options');
+                    $crypto  = new Bcrypt();
+                    $crypto->setCost($options->getPasswordCost());
+                    return new Mapper\UserHydrator($crypto);
                 },
 
                 'zfcuser_user_mapper' => function ($sm) {
@@ -158,10 +160,14 @@ class Module implements
                     $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
                     $entityClass = $options->getUserEntityClass();
                     $mapper->setEntityPrototype(new $entityClass);
-                    $mapper->setHydrator(new Mapper\UserHydrator());
+                    $mapper->setHydrator($sm->get('zfcuser_user_hydrator'));
                     $mapper->setTableName($options->getTableName());
                     return $mapper;
                 },
+            ),
+
+            'aliases' => array(
+                'zfcuser_register_form_hydrator' => 'zfcuser_user_hydrator'
             ),
         );
     }

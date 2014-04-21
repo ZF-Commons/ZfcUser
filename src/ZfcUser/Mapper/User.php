@@ -52,8 +52,9 @@ class User extends AbstractDbMapper implements UserInterface
 
     public function insert($entity, $tableName = null, HydratorInterface $hydrator = null)
     {
+        $hydrator = $hydrator ?: $this->getHydrator();
         $result = parent::insert($entity, $tableName, $hydrator);
-        $entity->setId($result->getGeneratedValue());
+        $hydrator->hydrate(['user_id' => $result->getGeneratedValue()], $entity);
         return $result;
     }
 
