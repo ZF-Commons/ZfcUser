@@ -36,7 +36,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserAuthentication' => 'ZfcUser\Factory\Controller\Plugin\ZfcUserAuthenticationFactory'
+                'zfcUserAuthentication' => 'ZfcUser\Factory\Controller\Plugin\ZfcUserAuthenticationFactory',
             ),
         );
     }
@@ -50,7 +50,6 @@ class Module implements
                 'zfcUserLoginWidget'    => 'ZfcUser\Factory\View\Helper\LoginWidgetFactory',
             ),
         );
-
     }
 
     public function getServiceConfig()
@@ -68,7 +67,7 @@ class Module implements
                 'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
                 'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
                 'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
-                'zfcuser_login_form'                            => 'ZfcUser\Factor\Form\LoginFormFactory',
+                'zfcuser_login_form'                            => 'ZfcUser\Factory\Form\LoginFormFactory',
                 'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
                 'zfcuser_change_password_form'                  => 'ZfcUser\Factory\Form\ChangePasswordFormFactory',
                 'zfcuser_change_email_form'                     => 'ZfcUser\Factory\Form\ChangeEmailFormFactory',

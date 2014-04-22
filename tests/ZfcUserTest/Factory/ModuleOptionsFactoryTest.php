@@ -14,10 +14,12 @@ class ModuleOptionsFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $serviceManager = new ServiceManager;
         $serviceManager->setService('Config', $config);
+
         $factory = new ModuleOptionsFactory;
         $defaultOption = new ModuleOptions(array());
 
         $object = $factory->createService($serviceManager);
+
         $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $object);
 
         if (isset($config['zfcuser'])) {
@@ -33,7 +35,7 @@ class ModuleOptionsFactoryTest extends \PHPUnit_Framework_TestCase
         return array(
             array(array()), // config without zfcuser
             array(array('zfcuser'=>array(
-                'loginRedirectRoute'=>'user'
+                'loginRedirectRoute'=>'user',
             )))
         );
     }

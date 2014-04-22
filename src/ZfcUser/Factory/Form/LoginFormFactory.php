@@ -1,21 +1,26 @@
 <?php
 namespace ZfcUser\Factory\Form;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Form\Login;
 use ZfcUser\Form\LoginFilter;
+use ZfcUser\Options;
 
 class LoginFormFactory implements FactoryInterface
 {
     /**
      * {@inheritDoc}
      */
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function createService(ServiceLocatorInterface $serviceManager)
     {
-        $options = $serviceLocator->get('zfcuser_module_options');
+        /* @var $options Options\ModuleOptions */
+        $options = $serviceManager->get('zfcuser_module_options');
+
+        $inputFilter = new LoginFilter($options);
+
         $form = new Login(null, $options);
-        $form->setInputFilter(new LoginFilter($options));
+        $form->setInputFilter($inputFilter);
 
         return $form;
     }

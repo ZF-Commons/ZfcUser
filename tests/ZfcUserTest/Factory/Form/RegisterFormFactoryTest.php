@@ -13,7 +13,9 @@ class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager = new ServiceManager;
         $serviceManager->setService('zfcuser_module_options', new ModuleOptions);
         $serviceManager->setService('zfcuser_user_mapper', new UserMapper);
+
         $factory = new RegisterFormFactory;
+
         $this->assertInstanceOf('ZfcUser\Form\Register', $factory->createService($serviceManager));
     }
 }

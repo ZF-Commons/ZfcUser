@@ -11,7 +11,9 @@ class ChangePasswordFormFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $serviceManager = new ServiceManager;
         $serviceManager->setService('zfcuser_module_options', new ModuleOptions);
+
         $factory = new ChangePasswordFormFactory;
+
         $this->assertInstanceOf('ZfcUser\Form\ChangePassword', $factory->createService($serviceManager));
     }
 }

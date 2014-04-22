@@ -1,9 +1,12 @@
 <?php
 namespace ZfcUser\Factory;
 
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Db;
 use Zend\ServiceManager\FactoryInterface;
-use ZfcUser\Mapper\User as UserMapper;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use Zend\Stdlib\Hydrator;
+use ZfcUser\Mapper;
+use ZfcUser\Options;
 
 class UserMapperFactory implements FactoryInterface
 {
@@ -12,13 +15,26 @@ class UserMapperFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        /* @var $options Options\ModuleOptions */
         $options = $serviceLocator->get('zfcuser_module_options');
-        $mapper = new UserMapper();
-        $mapper->setDbAdapter($serviceLocator->get('zfcuser_zend_db_adapter'));
+
+        /* @var $dbAdapter Db\Adapter\Adapter */
+        $dbAdapter = $serviceLocator->get('zfcuser_zend_db_adapter');
+
+        $mapper = new Mapper\User();
+        $mapper->setDbAdapter($dbAdapter);
+
         $entityClass = $options->getUserEntityClass();
-        $mapper->setEntityPrototype(new $entityClass);
-        $mapper->setHydrator($serviceLocator->get('zfcuser_user_hydrator'));
-        $mapper->setTableName($options->getTableName());
+
+        /* @var $hydrator Hydrator\HydratorInterface */
+        $hydrator = $serviceLocator->get('zfcuser_user_hydrator');
+
+        $mapper
+            ->setEntityPrototype(new $entityClass)
+            ->setHydrator($hydrator)
+            ->setTableName($options->getTableName())
+        ;
+
         return $mapper;
     }
 }
