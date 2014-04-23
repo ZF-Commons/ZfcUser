@@ -149,7 +149,7 @@ class Module implements
 
                 'zfcuser_user_hydrator' => function ($sm) {
                     $options = $sm->get('zfcuser_module_options');
-                    $crypto  = new Bcrypt();
+                    $crypto  = new Bcrypt;
                     $crypto->setCost($options->getPasswordCost());
                     return new Mapper\UserHydrator($crypto);
                 },

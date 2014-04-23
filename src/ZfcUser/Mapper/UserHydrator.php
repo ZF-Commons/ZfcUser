@@ -2,25 +2,27 @@
 
 namespace ZfcUser\Mapper;
 
-use Zend\Crypt\Password\PasswordInterface as CryptoInterface;
+use Zend\Crypt\Password\PasswordInterface as ZendCryptPassword;
 use Zend\Stdlib\Hydrator\ClassMethods;
-use ZfcUser\Entity\UserInterface as UserEntityInterface;
+use ZfcUser\Entity\UserInterface as UserEntity;
 
-class UserHydrator extends ClassMethods
+class UserHydrator extends ClassMethods implements HydratorInterface
 {
     /**
-     * @var CryptoInterface
+     * @var ZendCryptPassword
      */
-    private $crypto;
+    private $cryptoService;
 
     /**
-     * @param CryptoInterface $crypto
-     * @param bool|array      $underscoreSeparatedKeys
+     * @param ZendCryptPassword $cryptoService
+     * @param bool|array        $underscoreSeparatedKeys
      */
-    public function __construct(CryptoInterface $crypto, $underscoreSeparatedKeys = true)
-    {
+    public function __construct(
+        ZendCryptPassword $cryptoService,
+        $underscoreSeparatedKeys = true
+    ) {
         parent::__construct($underscoreSeparatedKeys);
-        $this->crypto = $crypto;
+        $this->cryptoService = $cryptoService;
     }
 
     /**
@@ -50,17 +52,17 @@ class UserHydrator extends ClassMethods
         $this->guardUserObject($object);
         $data = $this->mapField('user_id', 'id', $data);
         if (isset($data['password'])) {
-            $data['password'] = $this->crypto->create($data['password']);
+            $data['password'] = $this->cryptoService->create($data['password']);
         }
         return parent::hydrate($data, $object);
     }
 
     /**
-     * @return CryptoInterface
+     * @return ZendCryptPassword
      */
-    public function getCrypto()
+    public function getCryptoService()
     {
-        return $this->crypto;
+        return $this->cryptoService;
     }
 
     /**
@@ -88,7 +90,7 @@ class UserHydrator extends ClassMethods
      */
     protected function guardUserObject($object)
     {
-        if (!$object instanceof UserEntityInterface) {
+        if (!$object instanceof UserEntity) {
             throw new Exception\InvalidArgumentException(
                 '$object must be an instance of ZfcUser\Entity\UserInterface'
             );

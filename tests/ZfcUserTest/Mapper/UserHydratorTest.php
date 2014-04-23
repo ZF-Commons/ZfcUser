@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Mapper;
 
+use ZfcUser\Entity\User as UserEntity;
 use ZfcUser\Mapper\UserHydrator as Hydrator;
 
 class UserHydratorTest extends \PHPUnit_Framework_TestCase
@@ -17,13 +18,13 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Mapper\UserHydrator::getCrypto
+     * @covers ZfcUser\Mapper\UserHydrator::getCryptoService
      */
-    public function testGetCryptoReturnsPasswordInterface()
+    public function testGetCryptoServiceReturnsPasswordInterface()
     {
         $this->assertInstanceOf(
             'Zend\Crypt\Password\PasswordInterface',
-            $this->hydrator->getCrypto()
+            $this->hydrator->getCryptoService()
         );
     }
 
@@ -120,13 +121,13 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
 
     private function buildUser(array $data)
     {
-        $user = new \ZfcUser\Entity\User;
+        $user = new UserEntity;
         foreach ($data as $key => $value) {
             if ($key == 'user_id') {
-                $key='id';
+                $key = 'id';
             }
-            $methode = 'set' . str_replace(" ", "", ucwords(str_replace("_", " ", $key)));
-            call_user_func(array($user,$methode), $value);
+            $method = 'set' . str_replace(" ", "", ucwords(str_replace("_", " ", $key)));
+            call_user_func(array($user, $method), $value);
         }
         return $user;
     }
