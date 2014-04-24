@@ -65,18 +65,8 @@ class User extends EventProvider implements ServiceManagerAwareInterface
             return false;
         }
 
-        // TODO: Move to hydrator
         /* @var \ZfcUser\Entity\UserInterface $user */
-        $bcrypt = new Bcrypt();
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
         $user = $form->getData();
-        $user->setPassword($bcrypt->create($user->getPassword()));
-
-        // If user state is enabled, set the default state value
-        if ($this->getOptions()->getEnableUserState() && $this->getOptions()->getDefaultUserState()) {
-            // TODO: Possibly move to hydration
-            $user->setState($this->getOptions()->getDefaultUserState());
-        }
 
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user));
         $this->getUserMapper()->insert($user);

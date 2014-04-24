@@ -30,6 +30,11 @@ class RegistrationForm extends Form
      */
     public function init()
     {
+        $this->add([
+            'name' => 'state',
+            'type' => 'Hidden',
+        ]);
+
         if ($this->registrationOptions->getEnableUsername()) {
             $this->add([
                 'name' => 'username',

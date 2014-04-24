@@ -29,8 +29,8 @@ return array(
     ],
 
     'hydrators' => [
-        'invokables' => [
-            'ZfcUser\Hydrator\RegistrationHydrator' => 'Zend\Stdlib\Hydrator\ClassMethods',
+        'factories' => [
+            'ZfcUser\Hydrator\RegistrationHydrator' => 'ZfcUser\Factory\Hydrator\RegistrationHydratorFactory',
         ],
     ],
 
