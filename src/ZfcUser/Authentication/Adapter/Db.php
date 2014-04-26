@@ -3,24 +3,32 @@
 namespace ZfcUser\Authentication\Adapter;
 
 use DateTime;
+use InvalidArgumentException;
 use Zend\Authentication\Result as AuthenticationResult;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\ServiceManager\ServiceManager;
+use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\Session\Container as SessionContainer;
-use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
-use ZfcUser\Mapper\User as UserMapperInterface;
-use ZfcUser\Options\AuthenticationOptionsInterface;
+use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthenticationEvent;
+use ZfcUser\Entity\UserInterface as UserEntity;
+use ZfcUser\Mapper\HydratorInterface as Hydrator;
+use ZfcUser\Mapper\UserInterface as UserMapper;
+use ZfcUser\Options\AuthenticationOptionsInterface as AuthenticationOptions;
 
 class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 {
     /**
-     * @var UserMapperInterface
+     * @var UserMapper
      */
     protected $mapper;
 
     /**
-     * @var closure / invokable object
+     * @var Hydrator
+     */
+    protected $hydrator;
+
+    /**
+     * @var callable
      */
     protected $credentialPreprocessor;
 
@@ -30,32 +38,30 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     protected $serviceManager;
 
     /**
-     * @var AuthenticationOptionsInterface
+     * @var AuthenticationOptions
      */
     protected $options;
 
     /**
      * Called when user id logged out
-     * @param  AuthEvent $e event passed
      */
-    public function logout(AuthEvent $e)
+    public function logout()
     {
-        $session = new SessionContainer($this->getStorage()->getNameSpace());
-        $session->getManager()->destroy();
+        $this->getStorage()->clear();
     }
 
-    public function authenticate(AuthEvent $e)
+    public function authenticate(AuthenticationEvent $event)
     {
         if ($this->isSatisfied()) {
             $storage = $this->getStorage()->read();
-            $e->setIdentity($storage['identity'])
-              ->setCode(AuthenticationResult::SUCCESS)
-              ->setMessages(array('Authentication successful.'));
+            $event->setIdentity($storage['identity'])
+                  ->setCode(AuthenticationResult::SUCCESS)
+                  ->setMessages(array('Authentication successful.'));
             return;
         }
 
-        $identity   = $e->getRequest()->getPost()->get('identity');
-        $credential = $e->getRequest()->getPost()->get('credential');
+        $identity   = $event->getRequest()->getPost()->get('identity');
+        $credential = $event->getRequest()->getPost()->get('credential');
         $credential = $this->preProcessCredential($credential);
         $userObject = null;
 
@@ -74,8 +80,8 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         }
 
         if (!$userObject) {
-            $e->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND)
-              ->setMessages(array('A record with the supplied identity could not be found.'));
+            $event->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND)
+                  ->setMessages(array('A record with the supplied identity could not be found.'));
             $this->setSatisfied(false);
             return false;
         }
@@ -83,55 +89,53 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         if ($this->getOptions()->getEnableUserState()) {
             // Don't allow user to login if state is not in allowed list
             if (!in_array($userObject->getState(), $this->getOptions()->getAllowedLoginStates())) {
-                $e->setCode(AuthenticationResult::FAILURE_UNCATEGORIZED)
-                  ->setMessages(array('A record with the supplied identity is not active.'));
+                $event->setCode(AuthenticationResult::FAILURE_UNCATEGORIZED)
+                      ->setMessages(array('A record with the supplied identity is not active.'));
                 $this->setSatisfied(false);
                 return false;
             }
         }
 
-        $bcrypt = new Bcrypt();
-        $bcrypt->setCost($this->getOptions()->getPasswordCost());
-        if (!$bcrypt->verify($credential, $userObject->getPassword())) {
+        $cryptoService = $this->getHydrator()->getCryptoService();
+        if (!$cryptoService->verify($credential, $userObject->getPassword())) {
             // Password does not match
-            $e->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
-              ->setMessages(array('Supplied credential is invalid.'));
+            $event->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
+                  ->setMessages(array('Supplied credential is invalid.'));
             $this->setSatisfied(false);
             return false;
+        } elseif ($cryptoService instanceof Bcrypt) {
+            // Update user's password hash if the cost parameter has changed
+            $this->updateUserPasswordHash($userObject, $credential, $cryptoService);
         }
 
         // regen the id
-        $session = new SessionContainer($this->getStorage()->getNameSpace());
-        $session->getManager()->regenerateId();
+        SessionContainer::getDefaultManager()->regenerateId();
 
         // Success!
-        $e->setIdentity($userObject->getId());
-        // Update user's password hash if the cost parameter has changed
-        $this->updateUserPasswordHash($userObject, $credential, $bcrypt);
+        $event->setIdentity($userObject->getId());
+
         $this->setSatisfied(true);
         $storage = $this->getStorage()->read();
-        $storage['identity'] = $e->getIdentity();
+        $storage['identity'] = $event->getIdentity();
         $this->getStorage()->write($storage);
-        $e->setCode(AuthenticationResult::SUCCESS)
-          ->setMessages(array('Authentication successful.'));
+        $event->setCode(AuthenticationResult::SUCCESS)
+              ->setMessages(array('Authentication successful.'));
     }
 
-    protected function updateUserPasswordHash($userObject, $password, $bcrypt)
+    protected function updateUserPasswordHash(UserEntity $user, $password, Bcrypt $bcrypt)
     {
-        $hash = explode('$', $userObject->getPassword());
+        $hash = explode('$', $user->getPassword());
         if ($hash[2] === $bcrypt->getCost()) {
             return;
         }
-        $userObject->setPassword($bcrypt->create($password));
-        $this->getMapper()->update($userObject);
-        return $this;
+        $user = $this->getHydrator()->hydrate(compact('password'), $user);
+        $this->getMapper()->update($user);
     }
 
     public function preprocessCredential($credential)
     {
-        $processor = $this->getCredentialPreprocessor();
-        if (is_callable($processor)) {
-            return $processor($credential);
+        if (is_callable($this->credentialPreprocessor)) {
+            return call_user_func($this->credentialPreprocessor, $credential);
         }
         return $credential;
     }
@@ -139,12 +143,12 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     /**
      * getMapper
      *
-     * @return UserMapperInterface
+     * @return UserMapper
      */
     public function getMapper()
     {
-        if (null === $this->mapper) {
-            $this->mapper = $this->getServiceManager()->get('zfcuser_user_mapper');
+        if (!$this->mapper instanceof UserMapper) {
+            $this->setMapper($this->serviceManager->get('zfcuser_user_mapper'));
         }
         return $this->mapper;
     }
@@ -152,19 +156,42 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     /**
      * setMapper
      *
-     * @param UserMapperInterface $mapper
+     * @param UserMapper $mapper
      * @return Db
      */
-    public function setMapper(UserMapperInterface $mapper)
+    public function setMapper(UserMapper $mapper)
     {
         $this->mapper = $mapper;
         return $this;
     }
 
     /**
+     * Lazy-loads a hydrator from the service manager
+     *
+     * @return Hydrator
+     */
+    public function getHydrator()
+    {
+        if (!$this->hydrator instanceof Hydrator) {
+            $this->setHydrator($this->serviceManager->get('zfcuser_user_hydrator'));
+        }
+        return $this->hydrator;
+    }
+
+    /**
+     * Set the hydrator
+     *
+     * @param Hydrator $hydrator
+     */
+    public function setHydrator(Hydrator $hydrator)
+    {
+        $this->hydrator = $hydrator;
+    }
+
+    /**
      * Get credentialPreprocessor.
      *
-     * @return \callable
+     * @return callable
      */
     public function getCredentialPreprocessor()
     {
@@ -174,12 +201,19 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     /**
      * Set credentialPreprocessor.
      *
-     * @param $credentialPreprocessor the value to be set
+     * @param  callable $credentialPreprocessor the value to be set
+     * @throws InvalidArgumentException when argument is not callable
      */
     public function setCredentialPreprocessor($credentialPreprocessor)
     {
+        if (!is_callable($credentialPreprocessor)) {
+            $message = sprintf(
+                "Credential Preprocessor must be callable, [%s] given",
+                gettype($credentialPreprocessor)
+            );
+            throw new InvalidArgumentException($message);
+        }
         $this->credentialPreprocessor = $credentialPreprocessor;
-        return $this;
     }
 
     /**
@@ -204,20 +238,20 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     }
 
     /**
-     * @param AuthenticationOptionsInterface $options
+     * @param AuthenticationOptions $options
      */
-    public function setOptions(AuthenticationOptionsInterface $options)
+    public function setOptions(AuthenticationOptions $options)
     {
         $this->options = $options;
     }
 
     /**
-     * @return AuthenticationOptionsInterface
+     * @return AuthenticationOptions
      */
     public function getOptions()
     {
-        if (!$this->options instanceof AuthenticationOptionsInterface) {
-            $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
+        if (!$this->options instanceof AuthenticationOptions) {
+            $this->setOptions($this->serviceManager->get('zfcuser_module_options'));
         }
         return $this->options;
     }
