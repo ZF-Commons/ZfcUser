@@ -6,7 +6,6 @@ use ZfcUser\Mapper\User as Mapper;
 use ZfcUser\Entity\User as Entity;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Adapter\Adapter;
-//use ZfcUser\Mapper\UserHydrator;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {

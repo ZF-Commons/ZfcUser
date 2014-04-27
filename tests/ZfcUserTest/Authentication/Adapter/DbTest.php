@@ -398,7 +398,9 @@ class DbTest extends TestCase
      */
     public function testSetValidPreprocessCredential()
     {
-        $callable = function() {};
+        $callable = function () {
+            // no-op
+        };
         $this->db->setCredentialPreprocessor($callable);
         $this->assertSame($callable, $this->db->getCredentialPreprocessor());
     }
