@@ -137,11 +137,11 @@ $settings = array(
     //'use_redirect_parameter_if_present' => true,
 
     /**
-	 * Sets the view template for the user login widget
-	 *
-	 * Default value: 'zfc-user/user/login.phtml'
+     * Sets the view template for the user login widget
+     *
+     * Default value: 'zfc-user/user/login.phtml'
      * Accepted values: string path to a view script
-	 */
+     */
     //'user_login_widget_view_template' => 'zfc-user/user/login.phtml',
 
     /**
@@ -150,7 +150,8 @@ $settings = array(
      * Upon successful login the user will be redirected to the entered route
      *
      * Default value: 'zfcuser'
-     * Accepted values: A valid route name within your application
+     * Accepted values: A valid route name within your application or a callback.
+     *                  If callback used, it will receive the identity as the param
      *
      */
     //'login_redirect_route' => 'zfcuser',
