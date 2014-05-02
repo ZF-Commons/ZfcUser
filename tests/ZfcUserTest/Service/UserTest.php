@@ -44,9 +44,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $this->mapper = $this->getMockForAbstractClass('ZfcUser\Mapper\UserInterface');
 
-        $this->authService = $this->getMockBuilder('Zend\Authentication\AuthenticationService')
-                                  ->disableOriginalConstructor()
-                                  ->getMock();
+        $this->authService = $this->getMockForAbstractClass(
+            'Zend\Authentication\AuthenticationServiceInterface'
+        );
 
         $this->service->setOptions($this->options);
         $this->service->setServiceManager($this->serviceManager);
@@ -291,7 +291,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $service = new Service;
         $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('Zend\Authentication\AuthenticationService', $service->getAuthService());
+        $this->assertInstanceOf(
+            'Zend\Authentication\AuthenticationServiceInterface',
+            $service->getAuthService()
+        );
     }
 
     /**
