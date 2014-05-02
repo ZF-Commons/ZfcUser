@@ -6,4 +6,4 @@ CREATE TABLE user
     display_name  VARCHAR(50) DEFAULT NULL,
     password      VARCHAR(128) NOT NULL,
     state         SMALLINT
-);
+)
