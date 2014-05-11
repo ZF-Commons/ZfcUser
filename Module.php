@@ -57,7 +57,6 @@ class Module implements
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
-                'zfcuser_user_hydrator'             => 'ZfcUser\Mapper\UserHydrator',
             ),
             'factories' => array(
                 'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
@@ -68,6 +67,7 @@ class Module implements
                 'zfcuser_change_password_form'                  => 'ZfcUser\Factory\Form\ChangePasswordFormFactory',
                 'zfcuser_change_email_form'                     => 'ZfcUser\Factory\Form\ChangeEmailFormFactory',
                 'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
+                'zfcuser_user_hydrator'                         => 'ZfcUser\Factory\Mapper\UserHydratorFactory',
             ),
             'aliases' => array(
                 'zfcuser_register_form_hydrator' => 'zfcuser_user_hydrator'

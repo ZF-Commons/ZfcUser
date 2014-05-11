@@ -1,8 +1,10 @@
 <?php
-namespace ZfcUser\Factory;
+namespace ZfcUser\Factory\Mapper;
 
-use ZfcUser\Mapper;
 use Zend\Crypt\Password\Bcrypt;
+use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcUser\Mapper;
 
 class UserHydratorFactory implements FactoryInterface
 {
