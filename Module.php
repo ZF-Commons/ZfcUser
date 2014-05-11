@@ -70,6 +70,9 @@ class Module implements
                 'zfcuser_change_email_form'                     => 'ZfcUser\Factory\Form\ChangeEmailFormFactory',
                 'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
             ),
+            'aliases' => array(
+                'zfcuser_register_form_hydrator' => 'zfcuser_user_hydrator'
+            ),
         );
     }
 }
