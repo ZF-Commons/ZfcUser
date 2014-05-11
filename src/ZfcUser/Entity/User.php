@@ -74,7 +74,7 @@ class User implements UserInterface
      */
     public function setUsername($username)
     {
-        $this->username = trim($username);
+        $this->username = $username;
         return $this;
     }
 
@@ -96,7 +96,7 @@ class User implements UserInterface
      */
     public function setEmail($email)
     {
-        $this->email = trim($email);
+        $this->email = $email;
         return $this;
     }
 
@@ -118,7 +118,7 @@ class User implements UserInterface
      */
     public function setDisplayName($displayName)
     {
-        $this->displayName = trim($displayName);
+        $this->displayName = $displayName;
         return $this;
     }
 
