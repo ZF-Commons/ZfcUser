@@ -140,7 +140,7 @@ class User implements UserInterface
      */
     public function setPassword($password)
     {
-        $this->password = trim($password);
+        $this->password = $password;
         return $this;
     }
 
