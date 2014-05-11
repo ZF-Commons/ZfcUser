@@ -14,7 +14,7 @@ use ZfcUser\Entity\User as UserIdentity;
 class UserControllerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \ZfcUser\Controller\UserController $controller
+     * @var Controller $controller
      */
     protected $controller;
 
@@ -114,7 +114,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $result = call_user_func(array($controller, $methodeName));
 
-        $this->assertInstanceOf('\Zend\Http\Response', $result);
+        $this->assertInstanceOf('Zend\Http\Response', $result);
         $this->assertSame($response, $result);
     }
 
@@ -266,7 +266,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         if ($isValid) {
             $this->assertSame($expectedResult, $result);
         } else {
-            $this->assertInstanceOf('\Zend\Http\Response', $result);
+            $this->assertInstanceOf('Zend\Http\Response', $result);
             $this->assertEquals($response, $result);
             $this->assertEquals($route_url . $redirectQuery, $result->getHeaders()->get('Location')->getFieldValue());
         }
@@ -324,7 +324,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('redirect', $result);
         $this->assertArrayHasKey('enableRegistration', $result);
 
-        $this->assertInstanceOf('\ZfcUser\Form\Login', $result['loginForm']);
+        $this->assertInstanceOf('ZfcUser\Form\Login', $result['loginForm']);
         $this->assertSame($form, $result['loginForm']);
 
         if ($redirect) {
@@ -362,7 +362,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         ));
 
 
-        $params = $this->getMock('\Zend\Mvc\Controller\Plugin\Params');
+        $params = $this->getMock('Zend\Mvc\Controller\Plugin\Params');
         $params->expects($this->any())
                ->method('__invoke')
                ->will($this->returnSelf());
@@ -409,7 +409,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $result = $controller->logoutAction();
 
-        $this->assertInstanceOf('\Zend\Http\Response', $result);
+        $this->assertInstanceOf('Zend\Http\Response', $result);
         $this->assertSame($response, $result);
     }
 
@@ -423,7 +423,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
         $hasRedirect = !(is_null($query) && is_null($post));
 
-        $params = $this->getMock('\Zend\Mvc\Controller\Plugin\Params');
+        $params = $this->getMock('Zend\Mvc\Controller\Plugin\Params');
         $params->expects($this->any())
                ->method('__invoke')
                ->will($this->returnSelf());
@@ -461,7 +461,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         if (is_bool($prepareResult)) {
 
-            $authResult = $this->getMockBuilder('\Zend\Authentication\Result')
+            $authResult = $this->getMockBuilder('Zend\Authentication\Result')
                                ->disableOriginalConstructor()
                                ->getMock();
             $authResult->expects($this->once())
@@ -583,10 +583,10 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $request = $this->getMock('Zend\Http\Request');
         $this->helperMakePropertyAccessable($controller, 'request', $request);
 
-        $userService = $this->getMock('\ZfcUser\Service\User');
+        $userService = $this->getMock('ZfcUser\Service\User');
         $controller->setUserService($userService);
 
-        $form = $this->getMockBuilder('\Zend\Form\Form')
+        $form = $this->getMockBuilder('Zend\Form\Form')
                      ->disableOriginalConstructor()
                      ->getMock();
 
@@ -614,7 +614,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->pluginManagerPlugins['url']= $url;
 
-        $prg = $this->getMock('\Zend\Mvc\Controller\Plugin\PostRedirectGet');
+        $prg = $this->getMock('Zend\Mvc\Controller\Plugin\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
         $redirectQuery = $wantRedirect ? '?redirect=' . rawurlencode($redirectUrl) : '';
@@ -725,7 +725,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('redirect', $result);
             $this->assertEquals($expectedResult, $result);
         } else {
-            $this->assertInstanceOf('\Zend\Http\Response', $result);
+            $this->assertInstanceOf('Zend\Http\Response', $result);
             $this->assertSame($response, $result);
         }
     }
@@ -744,7 +744,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             'hasIdentity'=>true
         ));
 
-        $form = $this->getMockBuilder('\Zend\Form\Form')
+        $form = $this->getMockBuilder('Zend\Form\Form')
                      ->disableOriginalConstructor()
                      ->getMock();
 
@@ -767,7 +767,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                        ->will($this->returnValue($status ? array('test') : array()));
 
 
-        $prg = $this->getMock('\Zend\Mvc\Controller\Plugin\PostRedirectGet');
+        $prg = $this->getMock('Zend\Mvc\Controller\Plugin\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
 
@@ -787,7 +787,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                  ->will($this->returnValue((bool) $isValid));
 
             if ($isValid) {
-                $userService = $this->getMock('\ZfcUser\Service\User');
+                $userService = $this->getMock('ZfcUser\Service\User');
 
                 $controller->setUserService($userService);
 
@@ -823,7 +823,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $exceptedReturn = null;
 
         if ($postRedirectGetReturn instanceof Response) {
-            $this->assertInstanceOf('\Zend\Http\Response', $result);
+            $this->assertInstanceOf('Zend\Http\Response', $result);
             $this->assertSame($postRedirectGetReturn, $result);
 
         } else {
@@ -844,7 +844,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 $this->assertArrayHasKey('changePasswordForm', $result);
                 $this->assertEquals($exceptedReturn, $result);
             } else {
-                $this->assertInstanceOf('\Zend\Http\Response', $result);
+                $this->assertInstanceOf('Zend\Http\Response', $result);
                 $this->assertSame($response, $result);
             }
         }
@@ -859,8 +859,8 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
     {
         $controller = $this->controller;
         $response = new Response();
-        $userService = $this->getMock('\ZfcUser\Service\User');
-        $authService = $this->getMock('\Zend\Authentication\AuthenticationService');
+        $userService = $this->getMock('ZfcUser\Service\User');
+        $authService = $this->getMock('Zend\Authentication\AuthenticationService');
         $identity = new UserIdentity();
 
         $controller->setUserService($userService);
@@ -869,7 +869,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             'hasIdentity'=>true
         ));
 
-        $form = $this->getMockBuilder('\Zend\Form\Form')
+        $form = $this->getMockBuilder('Zend\Form\Form')
                      ->disableOriginalConstructor()
                      ->getMock();
 
@@ -885,12 +885,12 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $identity->setEmail('user@example.com');
 
 
-        $requestParams = $this->getMock('\Zend\Stdlib\Parameters');
+        $requestParams = $this->getMock('Zend\Stdlib\Parameters');
         $requestParams->expects($this->once())
                       ->method('set')
                       ->with('identity', $identity->getEmail());
 
-        $request = $this->getMock('\Zend\Http\Request');
+        $request = $this->getMock('Zend\Http\Request');
         $request->expects($this->once())
                 ->method('getPost')
                 ->will($this->returnValue($requestParams));
@@ -913,7 +913,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                        ->will($this->returnValue($status ? array('test') : array()));
 
 
-        $prg = $this->getMock('\Zend\Mvc\Controller\Plugin\PostRedirectGet');
+        $prg = $this->getMock('Zend\Mvc\Controller\Plugin\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
 
@@ -966,7 +966,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $exceptedReturn = null;
 
         if ($postRedirectGetReturn instanceof Response) {
-            $this->assertInstanceOf('\Zend\Http\Response', $result);
+            $this->assertInstanceOf('Zend\Http\Response', $result);
             $this->assertSame($postRedirectGetReturn, $result);
 
         } else {
@@ -988,7 +988,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 $this->assertArrayHasKey('changeEmailForm', $result);
                 $this->assertEquals($exceptedReturn, $result);
             } else {
-                $this->assertInstanceOf('\Zend\Http\Response', $result);
+                $this->assertInstanceOf('Zend\Http\Response', $result);
                 $this->assertSame($response, $result);
             }
         }
@@ -1018,7 +1018,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
         if ($useServiceLocator) {
-            $serviceLocator = $this->getMock('\Zend\ServiceManager\ServiceLocatorInterface');
+            $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
             $serviceLocator->expects($this->once())
                            ->method('get')
                            ->with($serviceName)

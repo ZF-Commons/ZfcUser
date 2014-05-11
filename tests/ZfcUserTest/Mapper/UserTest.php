@@ -6,10 +6,11 @@ use ZfcUser\Mapper\User as Mapper;
 use ZfcUser\Entity\User as Entity;
 use Zend\Db\ResultSet\HydratingResultSet;
 use Zend\Db\Adapter\Adapter;
-use ZfcUser\Mapper\UserHydrator;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
+    const ENCRYPTED_PASSWORD = 'c4zyP455w0rd!';
+
     /** @var \ZfcUser\Mapper\User */
     protected $mapper;
 
@@ -38,7 +39,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
     {
         $mapper = new Mapper;
         $mapper->setEntityPrototype(new Entity());
-        $mapper->setHydrator(new UserHydrator());
+        $mapper->setHydrator($this->buildHydrator());
         $this->mapper = $mapper;
 
 
@@ -264,7 +265,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $baseEntity = new Entity();
         $baseEntity->setEmail('zfc-user-foo@zend-framework.org');
         $baseEntity->setUsername('zfc-user-foo');
-        $baseEntity->setPassword('zfc-user-foo');
+        $baseEntity->setPassword(static::ENCRYPTED_PASSWORD);
 
         /* @var $entityEqual Entity */
         /* @var $dbAdapter Adapter */
@@ -323,7 +324,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user->setDisplayName('Zfc-User');
         $user->setId('1');
         $user->setState(1);
-        $user->setPassword('zfc-user');
+        $user->setPassword(static::ENCRYPTED_PASSWORD);
 
         return array(
             array(
@@ -363,5 +364,28 @@ class UserTest extends \PHPUnit_Framework_TestCase
                 $user
             ),
         );
+    }
+
+    private function buildHydrator()
+    {
+        $hydrator = $this->getMock(
+            'ZfcUser\Mapper\UserHydrator',
+            null,
+            array($this->buildCrypto())
+        );
+        return $hydrator;
+    }
+
+    private function buildCrypto()
+    {
+        $crypto = $this->getMockForAbstractClass(
+            'Zend\Crypt\Password\PasswordInterface'
+        );
+        $crypto
+            ->expects($this->any())
+            ->method('create')
+            ->will($this->returnValue(static::ENCRYPTED_PASSWORD));
+
+        return $crypto;
     }
 }

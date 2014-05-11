@@ -2,12 +2,13 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\Authentication\Storage;
+use Zend\Authentication\Storage\StorageInterface;
+use Zend\Authentication\Storage\Session as SessionStorage;
 
 abstract class AbstractAdapter implements ChainableAdapter
 {
     /**
-     * @var Storage\StorageInterface
+     * @var StorageInterface
      */
     protected $storage;
 
@@ -16,12 +17,12 @@ abstract class AbstractAdapter implements ChainableAdapter
      *
      * Session storage is used by default unless a different storage adapter has been set.
      *
-     * @return Storage\StorageInterface
+     * @return StorageInterface
      */
     public function getStorage()
     {
         if (null === $this->storage) {
-            $this->setStorage(new Storage\Session(get_class($this)));
+            $this->setStorage(new SessionStorage(get_class($this)));
         }
 
         return $this->storage;
@@ -30,10 +31,10 @@ abstract class AbstractAdapter implements ChainableAdapter
     /**
      * Sets the persistent storage handler
      *
-     * @param  Storage\StorageInterface $storage
+     * @param  StorageInterface $storage
      * @return AbstractAdapter Provides a fluent interface
      */
-    public function setStorage(Storage\StorageInterface $storage)
+    public function setStorage(StorageInterface $storage)
     {
         $this->storage = $storage;
         return $this;
@@ -58,9 +59,12 @@ abstract class AbstractAdapter implements ChainableAdapter
      */
     public function setSatisfied($bool = true)
     {
-        $storage = $this->getStorage()->read() ?: array();
-        $storage['is_satisfied'] = $bool;
-        $this->getStorage()->write($storage);
+        $storage = $this->getStorage();
+        $data    = $storage->read() ?: array();
+
+        $data['is_satisfied'] = (bool) $bool;
+        $storage->write($data);
+
         return $this;
     }
 }

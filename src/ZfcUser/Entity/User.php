@@ -162,7 +162,7 @@ class User implements UserInterface
      */
     public function setState($state)
     {
-        $this->state = $state;
+        $this->state = (int) $state;
         return $this;
     }
 }
