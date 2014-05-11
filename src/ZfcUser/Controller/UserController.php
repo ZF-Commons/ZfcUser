@@ -77,9 +77,10 @@ class UserController extends AbstractActionController
 
         $request = $this->getRequest();
         $form    = $this->getLoginForm();
+        $post    = $request->getPost();
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent()) {
-            $redirect = $request->getQuery()->get('redirect', $request->getPost()->get('redirect', false));
+            $redirect = $request->getQuery()->get('redirect', (!empty($post['redirect'])) ? $post['redirect'] : false);
         } else {
             $redirect = false;
         }
@@ -92,7 +93,7 @@ class UserController extends AbstractActionController
             );
         }
 
-        $form->setData($request->getPost());
+        $form->setData($post);
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
