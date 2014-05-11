@@ -96,10 +96,8 @@ class User extends EventProvider implements ServiceManagerAwareInterface
             return false;
         }
 
-        $user = $this->getFormHydrator()->hydrate(
-            array('password' => trim($data['newCredential'])),
-            $user
-        );
+        $user->setPassword($this->getFormHydrator()->getCryptoService()->create($data['newCredential']));
+
         $events = $this->getEventManager();
 
         $events->trigger(__FUNCTION__, $this, compact('user'));
