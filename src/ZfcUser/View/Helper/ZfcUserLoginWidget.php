@@ -26,12 +26,6 @@ class ZfcUserLoginWidget extends AbstractHelper
     protected $enableRegistration;
     
     /**
-     * RegistrationOptions
-     * @var registrationOptions
-     */
-    protected $enableRegistration;
-    
-    /**
      * __invoke
      *
      * @access public
