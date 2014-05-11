@@ -73,6 +73,8 @@ class User extends EventProvider implements ServiceManagerAwareInterface
             $user   = $form->getData();
             $events = $this->getEventManager();
 
+            $user->setPassword($this->getFormHydrator()->getCryptoService()->create($user->getPassword()));
+
             $events->trigger(__FUNCTION__, $this, compact('user', 'form'));
             $this->getUserMapper()->insert($user);
             $events->trigger(__FUNCTION__.'.post', $this, compact('user', 'form'));

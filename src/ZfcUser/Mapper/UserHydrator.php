@@ -51,9 +51,6 @@ class UserHydrator extends ClassMethods implements HydratorInterface
     {
         $this->guardUserObject($object);
         $data = $this->mapField('user_id', 'id', $data);
-        if (isset($data['password'])) {
-            $data['password'] = $this->cryptoService->create($data['password']);
-        }
         return parent::hydrate($data, $object);
     }
 
