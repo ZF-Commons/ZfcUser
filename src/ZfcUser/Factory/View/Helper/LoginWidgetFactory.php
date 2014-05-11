@@ -29,7 +29,7 @@ class LoginWidgetFactory implements FactoryInterface
         $viewHelper
             ->setViewTemplate($viewTemplate)
             ->setLoginForm($loginForm)
-            ->setRegistrationOptions($options->enableRegistration)
+            ->setEnableRegistration($options->enableRegistration)
         ;
 
         return $viewHelper;
