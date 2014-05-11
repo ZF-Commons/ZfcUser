@@ -7,7 +7,7 @@ use ZfcUser\Mapper\UserHydrator as Hydrator;
 
 class UserHydratorTest extends \PHPUnit_Framework_TestCase
 {
-    const ENCRYPTED_PASSWORD = 'encrypted password';
+    const ENCRYPTED_PASSWORD = 'c4zyP455w0rd!';
 
     protected $hydrator;
 

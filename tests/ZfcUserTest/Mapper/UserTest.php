@@ -9,7 +9,7 @@ use Zend\Db\Adapter\Adapter;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
-    const ENCRYPTED_PASSWORD = 'encrypted password';
+    const ENCRYPTED_PASSWORD = 'c4zyP455w0rd!';
 
     /** @var \ZfcUser\Mapper\User */
     protected $mapper;
