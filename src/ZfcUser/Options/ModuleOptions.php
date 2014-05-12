@@ -26,6 +26,11 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var string
      */
+    protected  $registerRedirectRoute= 'zfcuser/login';
+
+    /**
+     * @var string
+     */
     protected $logoutRedirectRoute = 'zfcuser/login';
 
     /**
@@ -557,5 +562,27 @@ class ModuleOptions extends AbstractOptions implements
     public function getFormCaptchaOptions()
     {
         return $this->formCaptchaOptions;
+    }
+    
+    /**
+     * set register redirect route
+     *
+     * @param string $registerRedirectRoute
+     * @return ModuleOptions
+     */
+    public function setRegisterRedirectRoute($registerRedirectRoute)
+    {
+        $this->registerRedirectRoute = $registerRedirectRoute;
+        return $this;
+    }
+
+    /**
+     * get register redirect route
+     *
+     * @return string
+     */
+    public function getRegisterRedirectRoute()
+    {
+        return $this->registerRedirectRoute;
     }
 }
