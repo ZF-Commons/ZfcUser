@@ -21,6 +21,6 @@ class UserMapperFactoryTest extends \PHPUnit_Framework_TestCase
 
         $factory = new UserMapperFactory;
 
-        $this->assertInstanceOf('ZfcUser\Mapper\User', $factory->createService($serviceManager));
+        $this->assertInstanceOf($options->getUserMapperClass(), $factory->createService($serviceManager));
     }
 }
