@@ -106,8 +106,12 @@ class ModuleOptions extends AbstractOptions implements
     /**
      * @var string
      */
-
     protected $tableName = 'user';
+
+    /**
+     * @var string
+     */
+    protected $userMapperClass = 'ZfcUser\Mapper\User';
 
     /**
      * @var array
@@ -557,5 +561,27 @@ class ModuleOptions extends AbstractOptions implements
     public function getFormCaptchaOptions()
     {
         return $this->formCaptchaOptions;
+    }
+
+    /**
+     * Sets user mapper class
+     *
+     * @param string $userMapperClass
+     * @return self
+     */
+    public function setUserMapperClass($userMapperClass)
+    {
+        $this->userMapperClass = $userMapperClass;
+        return $this;
+    }
+
+    /**
+     * Gets user mapper class
+     *
+     * @return string
+     */
+    public function getUserMapperClass()
+    {
+        return $this->userMapperClass;
     }
 }

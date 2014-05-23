@@ -390,4 +390,22 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($expected, $this->options->getFormCaptchaOptions());
     }
+
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::setUserMapperClass
+     * @covers ZfcUser\Options\ModuleOptions::getUserMapperClass
+     */
+    public function testSetUserMapperClass()
+    {
+        $this->options->setUserMapperClass('Application\Mapper\User');
+        $this->assertEquals('Application\Mapper\User', $this->options->getUserMapperClass());
+    }
+
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getUserMapperClass
+     */
+    public function testGetUserMapperClass()
+    {
+        $this->assertEquals('ZfcUser\Mapper\User', $this->options->getUserMapperClass());
+    }
 }

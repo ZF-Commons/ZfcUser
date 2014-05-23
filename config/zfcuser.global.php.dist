@@ -217,6 +217,11 @@ $settings = array(
      * User table name
      */
     //'table_name' => 'user',
+
+    /**
+     * User mapper class
+     */
+    //'user_mapper_class' => 'ZfcUser\Mapper\User',
     
     /**
      * End of ZfcUser configuration
