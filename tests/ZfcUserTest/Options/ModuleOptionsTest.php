@@ -393,6 +393,14 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     
     /**
      * @covers ZfcUser\Options\ModuleOptions::getRegisterRedirectRoute
+     */
+    public function testRegisterRedirectRouteDefaultValue()
+    {
+        $this->assertEquals('zfcuser/login', $this->options->getRegisterRedirectRoute());
+    }
+    
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getRegisterRedirectRoute
      * @covers ZfcUser\Options\ModuleOptions::setRegisterRedirectRoute
      */
     public function testSetRegisterRedirectRoute()
