@@ -390,4 +390,14 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
         );
         $this->assertEquals($expected, $this->options->getFormCaptchaOptions());
     }
+    
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getRegisterRedirectRoute
+     * @covers ZfcUser\Options\ModuleOptions::setRegisterRedirectRoute
+     */
+    public function testSetRegisterRedirectRoute()
+    {
+        $this->options->setRegisterRedirectRoute('zfcuser/login');
+        $this->assertEquals('zfcuser/login', $this->options->getRegisterRedirectRoute());
+    }
 }
