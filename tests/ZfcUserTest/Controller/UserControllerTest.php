@@ -570,6 +570,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $controller = $this->controller;
         $redirectUrl = 'http://localhost/redirect1';
         $route_url = '/user/register';
+        $registerRedirectRoute = 'zfcuser/login';
         $expectedResult = null;
 
         $this->setUpZfcUserAuthenticationPlugin(array(
@@ -660,6 +661,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             } else {
                 $response = new Response();
                 $route_url = '/user/login';
+                $this->options->expects($this->once())
+                              ->method('getRegisterRedirectRoute')
+                              ->will($this->returnValue($registerRedirectRoute));
 
                 $redirectUrl = isset($postRedirectGetReturn['redirect'])
                     ? $postRedirectGetReturn['redirect']
@@ -678,7 +682,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
                 $url->expects($this->at(1))
                     ->method('fromRoute')
-                    ->with($controller::ROUTE_LOGIN)
+                    ->with($registerRedirectRoute)
                     ->will($this->returnValue($route_url));
             }
         }
