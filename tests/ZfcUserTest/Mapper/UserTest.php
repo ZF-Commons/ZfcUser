@@ -269,7 +269,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         /* @var $entityEqual Entity */
         /* @var $dbAdapter Adapter */
-        foreach ($this->realAdapter as $diver => $dbAdapter) {
+        foreach ($this->realAdapter as $driver => $dbAdapter) {
             if ($dbAdapter === false) {
                 continue;
             }
@@ -287,7 +287,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
             $this->assertEquals($entity, $entityEqual);
 
             // update
-            $entity->setUsername($entity->getUsername() . '-' . $diver);
+            $entity->setUsername($entity->getUsername() . '-' . $driver);
             $entity->setEmail($entity->getUsername() . '@github.com');
 
             $result = $this->mapper->update($entity);
