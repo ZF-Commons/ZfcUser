@@ -141,7 +141,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
     public function testLoginActionValidFormRedirectFalse($isValid, $wantRedirect)
     {
         $controller = $this->controller;
-        $redirectUrl = 'http://localhost/redirect1';
+        $redirectUrl = 'localhost/redirect1';
 
         $plugin = $this->setUpZfcUserAuthenticationPlugin(array(
             'hasIdentity'=>false
@@ -391,7 +391,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                           ->method('getUseRedirectParameterIfPresent')
                           ->will($this->returnValue((bool) $withRedirect));
             $redirect->expects($this->any())
-                     ->method('toUrl')
+                     ->method('toRoute')
                      ->with($expectedLocation)
                      ->will($this->returnValue($response));
         } else {
@@ -411,6 +411,11 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('Zend\Http\Response', $result);
         $this->assertSame($response, $result);
+    }
+
+    public function testLoginRedirectFailsWithUrl()
+    {
+
     }
 
     /**
@@ -510,7 +515,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
             } elseif ($wantRedirect && $hasRedirect) {
                 $redirect->expects($this->once())
-                         ->method('toUrl')
+                         ->method('toRoute')
                          ->with(($post ?: $query ?: false))
                          ->will($this->returnValue($response));
             } else {
@@ -568,7 +573,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterAction($wantRedirect, $postRedirectGetReturn, $registerSuccess, $loginAfterSuccessWith)
     {
         $controller = $this->controller;
-        $redirectUrl = 'http://localhost/redirect1';
+        $redirectUrl = 'localhost/redirect1';
         $route_url = '/user/register';
         $expectedResult = null;
 
