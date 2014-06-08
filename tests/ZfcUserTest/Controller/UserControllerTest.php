@@ -391,7 +391,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                           ->method('getUseRedirectParameterIfPresent')
                           ->will($this->returnValue((bool) $withRedirect));
             $redirect->expects($this->any())
-                     ->method('toUrl')
+                     ->method('toRoute')
                      ->with($expectedLocation)
                      ->will($this->returnValue($response));
         } else {
@@ -510,7 +510,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
             } elseif ($wantRedirect && $hasRedirect) {
                 $redirect->expects($this->once())
-                         ->method('toUrl')
+                         ->method('toRoute')
                          ->with(($post ?: $query ?: false))
                          ->will($this->returnValue($response));
             } else {
