@@ -9,6 +9,7 @@ use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
+use Zend\Http\Request;
 
 class UserController extends AbstractActionController
 {
@@ -119,7 +120,24 @@ class UserController extends AbstractActionController
         $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
+            /**
+             * Test whether $redirect represents a route with parameters using RouteMatch.
+             **/
+            $router = $this->getServiceLocator()->get('router');
+            $redirectRequest = new Request();
+            $redirectRequest->setMethod(Request::METHOD_POST);
+            $redirectRequest->setUri($redirect);
+            $routeMatch = $router->match($redirectRequest);
+            if (null !== $routeMatch) {
+            	// Matched a route with parameters
+            	return $this->redirect()->toRoute(
+            		$routeMatch->getMatchedRouteName(),
+            		$routeMatch->getParams()
+            	);
+            } else {
+            	// Failed to match a route, assume that $redirect is just a named route without parameters
+            	return $this->redirect()->toRoute($redirect);
+            }
         }
 
         return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
@@ -156,7 +174,24 @@ class UserController extends AbstractActionController
         }
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
+            /**
+             * Test whether $redirect represents a route with parameters using RouteMatch.
+             **/
+            $router = $this->getServiceLocator()->get('router');
+            $redirectRequest = new Request();
+            $redirectRequest->setMethod(Request::METHOD_POST);
+            $redirectRequest->setUri($redirect);
+            $routeMatch = $router->match($redirectRequest);
+            if (null !== $routeMatch) {
+            	// Matched a route with parameters
+            	return $this->redirect()->toRoute(
+            		$routeMatch->getMatchedRouteName(),
+            		$routeMatch->getParams()
+            	);
+            } else {
+            	// Failed to match a route, assume that $redirect is just a named route without parameters
+            	return $this->redirect()->toRoute($redirect);
+            }
         }
 
         $route = $this->getOptions()->getLoginRedirectRoute();
