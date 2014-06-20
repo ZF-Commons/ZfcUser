@@ -140,7 +140,7 @@ class UserController extends AbstractActionController
          **/
         $router = $this->getServiceLocator()->get('router');
         $redirectRequest = new Request();
-        $redirectRequest->setMethod(Request::METHOD_POST);
+        $redirectRequest->setMethod(Request::METHOD_GET);
         $redirectRequest->setUri($redirect);
         $routeMatch = $router->match($redirectRequest);
         if (null !== $routeMatch) {
