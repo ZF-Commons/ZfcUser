@@ -144,11 +144,8 @@ class UserController extends AbstractActionController
         $redirectRequest->setUri($redirect);
         $routeMatch = $router->match($redirectRequest);
         if (null !== $routeMatch) {
-        	// Matched a route with parameters
-        	return $this->redirect()->toRoute(
-        		$routeMatch->getMatchedRouteName(),
-        		$routeMatch->getParams()
-        	);
+        	// Matched a route with parameters so we know it is safe to pass as a URL (not from an external site)
+        	return $this->redirect()->toUrl($redirect);
         } else {
         	// Failed to match a route, assume that $redirect is just a named route without parameters
         	return $this->redirect()->toRoute($redirect);
