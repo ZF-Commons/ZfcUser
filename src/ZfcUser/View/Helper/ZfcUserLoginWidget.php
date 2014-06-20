@@ -18,6 +18,13 @@ class ZfcUserLoginWidget extends AbstractHelper
      * $var string template used for view
      */
     protected $viewTemplate;
+    
+    /**
+     * Enable Registration option
+     * @var registrationOptions
+     */
+    protected $enableRegistration;
+    
     /**
      * __invoke
      *
@@ -41,6 +48,7 @@ class ZfcUserLoginWidget extends AbstractHelper
         $vm = new ViewModel(array(
             'loginForm' => $this->getLoginForm(),
             'redirect'  => $redirect,
+            'enableRegistration' => $this->enableRegistration,
         ));
         $vm->setTemplate($this->viewTemplate);
         if ($render) {
@@ -77,6 +85,26 @@ class ZfcUserLoginWidget extends AbstractHelper
     public function setViewTemplate($viewTemplate)
     {
         $this->viewTemplate = $viewTemplate;
+        return $this;
+    }
+
+    /**
+     * Retrieve module option for registration
+     * @return ZfcUserLoginWidget
+     */
+    public function getEnableRegistration()
+    {
+        return $this->enableRegistration;
+    }
+
+    /**
+     * Inject module option for registration
+     * @param bool $enableRegistration
+     * @return ZfcUserLoginWidget
+     */
+    public function setEnableRegistration($enableRegistration)
+    {
+        $this->enableRegistration = $enableRegistration;
         return $this;
     }
 }
