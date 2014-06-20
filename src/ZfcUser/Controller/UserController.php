@@ -9,6 +9,7 @@ use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
+use Zend\Http\Request;
 
 class UserController extends AbstractActionController
 {
@@ -119,10 +120,36 @@ class UserController extends AbstractActionController
         $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
+            return $this->redirectToRoute($redirect);
         }
 
         return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
+    }
+    
+    /**
+     * Parse a string that represents a route, optionally with route parameters, and redirect to that route.
+     * e.g. $redirect = "zfcuser" Route name
+     * e.g. $redirect = "zfcuser/logout" Route name with a parameter
+     * 
+     * @var string $redirect The route name or route and parameters to redirect to
+     * @return void
+     **/
+    public function redirectToRoute($redirect) {
+        /**
+         * Test whether $redirect represents a route with parameters using RouteMatch.
+         **/
+        $router = $this->getServiceLocator()->get('router');
+        $redirectRequest = new Request();
+        $redirectRequest->setMethod(Request::METHOD_GET);
+        $redirectRequest->setUri($redirect);
+        $routeMatch = $router->match($redirectRequest);
+        if (null !== $routeMatch) {
+        	// Matched a route with parameters so we know it is safe to pass as a URL (not from an external site)
+        	return $this->redirect()->toUrl($redirect);
+        } else {
+        	// Failed to match a route, assume that $redirect is just a named route without parameters
+        	return $this->redirect()->toRoute($redirect);
+        }
     }
 
     /**
@@ -156,7 +183,7 @@ class UserController extends AbstractActionController
         }
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
+            return $this->redirectToRoute($redirect);
         }
 
         $route = $this->getOptions()->getLoginRedirectRoute();
