@@ -26,9 +26,15 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
     protected $options;
 
+    protected $redirectCallback;
+
     public function setUp()
     {
-        $controller = new Controller;
+        $this->redirectCallback = $this->getMockBuilder('ZfcUser\Controller\RedirectCallback')
+                                 ->disableOriginalConstructor()
+                                 ->getMock();
+
+        $controller = new Controller($this->redirectCallback);
         $this->controller = $controller;
 
         $this->zfcUserAuthenticationPlugin = $this->getMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
@@ -362,50 +368,11 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         ));
 
 
-        $params = $this->getMock('Zend\Mvc\Controller\Plugin\Params');
-        $params->expects($this->any())
-               ->method('__invoke')
-               ->will($this->returnSelf());
-        $params->expects($this->once())
-               ->method('fromPost')
-               ->will($this->returnCallback(function ($key, $default) use ($post) {
-                   return $post ?: $default;
-               }));
-        $params->expects($this->once())
-               ->method('fromQuery')
-               ->will($this->returnCallback(function ($key, $default) use ($query) {
-                   return $query ?: $default;
-               }));
-        $this->pluginManagerPlugins['params'] = $params;
-
         $response = new Response();
 
-        $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
-        $redirect->expects($this->any())
-                 ->method('toRoute')
-                 ->will($this->returnValue($response));
-
-        if ($withRedirect) {
-            $expectedLocation = $post ?: $query ?: false;
-            $this->options->expects($this->once())
-                          ->method('getUseRedirectParameterIfPresent')
-                          ->will($this->returnValue((bool) $withRedirect));
-            $redirect->expects($this->any())
-                     ->method('toRoute')
-                     ->with($expectedLocation)
-                     ->will($this->returnValue($response));
-        } else {
-            $expectedLocation = "/user/logout";
-            $this->options->expects($this->once())
-                          ->method('getLogoutRedirectRoute')
-                          ->will($this->returnValue($expectedLocation));
-            $redirect->expects($this->any())
-                     ->method('toRoute')
-                     ->with($expectedLocation)
-                     ->will($this->returnValue($response));
-        }
-
-        $this->pluginManagerPlugins['redirect']= $redirect;
+        $this->redirectCallback->expects($this->once())
+            ->method('__invoke')
+            ->will($this->returnValue($response));
 
         $result = $controller->logoutAction();
 
@@ -513,21 +480,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue('user/login'));
                 $this->pluginManagerPlugins['url'] = $url;
 
-            } elseif ($wantRedirect && $hasRedirect) {
-                $redirect->expects($this->once())
-                         ->method('toRoute')
-                         ->with(($post ?: $query ?: false))
-                         ->will($this->returnValue($response));
             } else {
-
-                $redirect->expects($this->once())
-                         ->method('toRoute')
-                         ->with('zfcuser')
-                         ->will($this->returnValue($response));
-
-                $this->options->expects($this->once())
-                              ->method('getLoginRedirectRoute')
-                              ->will($this->returnValue('zfcuser'));
+                $this->redirectCallback->expects($this->once())
+                    ->method('__invoke');
             }
 
             $this->options->expects($this->any())
@@ -1010,7 +965,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $serviceName,
         $callback = null
     ) {
-        $controller = new Controller;
+        $controller = new Controller($this->redirectCallback);
 
         $controller->setPluginManager($this->pluginManager);
 

@@ -2,8 +2,8 @@
 
 namespace ZfcUser\Controller;
 
-use Zend\Mvc\Controller\Plugin\Redirect;
 use Zend\Mvc\Router\RouteInterface;
+use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\Exception;
 use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
@@ -11,7 +11,10 @@ use ZfcUser\Options\ModuleOptions;
 
 class RedirectCallback
 {
-    /** @var RouteInterface */
+    /** @var RouteMatch */
+    protected $routeMatch;
+
+    /** @var RouteInterface  */
     protected $router;
 
     /** @var Response */
@@ -24,13 +27,14 @@ class RedirectCallback
     protected $options;
 
     /**
-     * @param RouteInterface $router
+     * @param RouteMatch $router
      * @param Response $response
      * @param Request $request
      * @param ModuleOptions $options
      */
-    public function __construct(RouteInterface $router, Response $response, Request $request, ModuleOptions $options)
+    public function __construct(RouteMatch $routeMatch, RouteInterface $router, Response $response, Request $request, ModuleOptions $options)
     {
+        $this->routeMatch = $routeMatch;
         $this->router = $router;
         $this->request = $request;
         $this->response = $response;
@@ -43,10 +47,34 @@ class RedirectCallback
     public function __invoke()
     {
         $routeMatch = $this->router->match($this->request);
+
+        $redirect = $this->getRedirect($routeMatch->getMatchedRouteName(), $this->getRedirectRouteFromRequest());
+
         $response = $this->response;
-        $response->getHeaders()->addHeaderLine('Location', $this->getRedirect($routeMatch->getMatchedRouteName(), $routeMatch->getParam('redirect', false)));
+        $response->getHeaders()->addHeaderLine('Location', $redirect);
         $response->setStatusCode(302);
         return $response;
+    }
+
+    /**
+     * Return the redirect from param.
+     * First checks GET then POST
+     * @return string
+     */
+    protected function getRedirectRouteFromRequest()
+    {
+        $request  = $this->request;
+        $redirect = $request->getQuery('redirect');
+        if ($redirect && $this->routeExists($redirect)) {
+            return $redirect;
+        }
+
+        $redirect = $request->getPost('redirect');
+        if ($redirect && $this->routeExists($redirect)) {
+            return $redirect;
+        }
+
+        return false;
     }
 
     /**
@@ -55,7 +83,7 @@ class RedirectCallback
      */
     protected function routeExists($route)
     {
-        try{
+        try {
             $this->router->assemble($route);
         } catch (Exception\RuntimeException $e) {
             return false;
@@ -73,7 +101,9 @@ class RedirectCallback
      */
     protected function getRedirect($currentRoute, $redirect = false)
     {
-        if (!$this->options->getUseRedirectParameterIfPresent() || ($redirect && !$this->routeExists($redirect))) {
+        $useRedirect = $this->options->getUseRedirectParameterIfPresent();
+        $routeExists = ($redirect && $this->routeExists($redirect));
+        if (!$useRedirect || !$routeExists) {
             $redirect = false;
         }
 
@@ -90,5 +120,4 @@ class RedirectCallback
                 return $this->router->assemble([], ['name' => 'zfcuser']);
         }
     }
-
 }

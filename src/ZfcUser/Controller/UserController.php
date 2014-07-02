@@ -160,14 +160,11 @@ class UserController extends AbstractActionController
             );
         }
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
-        }
-
         $route = $this->getOptions()->getLoginRedirectRoute();
 
         if (is_callable($route)) {
             $route = $route($this->zfcUserAuthentication()->getIdentity());
+            return $this->redirect()->toRoute($route);
         }
 
         $redirect = $this->redirectCallback;
