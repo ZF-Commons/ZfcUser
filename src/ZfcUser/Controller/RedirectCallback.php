@@ -27,7 +27,8 @@ class RedirectCallback
     protected $options;
 
     /**
-     * @param RouteMatch $router
+     * @param RouteMatch $routeMatch
+     * @param RouteInterface $router
      * @param Response $response
      * @param Request $request
      * @param ModuleOptions $options
@@ -46,9 +47,7 @@ class RedirectCallback
      */
     public function __invoke()
     {
-        $routeMatch = $this->router->match($this->request);
-
-        $redirect = $this->getRedirect($routeMatch->getMatchedRouteName(), $this->getRedirectRouteFromRequest());
+        $redirect = $this->getRedirect($this->routeMatch->getMatchedRouteName(), $this->getRedirectRouteFromRequest());
 
         $response = $this->response;
         $response->getHeaders()->addHeaderLine('Location', $redirect);
