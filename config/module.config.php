@@ -16,14 +16,17 @@ return array(
         ),
     ),
     'controllers' => array(
-        'invokables' => array(
-            'zfcuser' => 'ZfcUser\Controller\UserController',
+        'factories' => array(
+            'zfcuser' => 'ZfcUser\Factory\Controller\UserControllerFactory',
         ),
     ),
     'service_manager' => array(
         'aliases' => array(
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
         ),
+        'factories' => array(
+            'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory'
+        )
     ),
     'router' => array(
         'routes' => array(
