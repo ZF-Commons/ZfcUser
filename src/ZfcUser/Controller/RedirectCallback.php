@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Controller;
 
+use Zend\Mvc\Application;
 use Zend\Mvc\Router\RouteInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\Exception;
@@ -27,18 +28,16 @@ class RedirectCallback
     protected $options;
 
     /**
-     * @param RouteMatch $routeMatch
+     * @param Application $application
      * @param RouteInterface $router
-     * @param Response $response
-     * @param Request $request
      * @param ModuleOptions $options
      */
-    public function __construct(RouteMatch $routeMatch, RouteInterface $router, Response $response, Request $request, ModuleOptions $options)
+    public function __construct(Application $application, RouteInterface $router, ModuleOptions $options)
     {
-        $this->routeMatch = $routeMatch;
+        $this->routeMatch = $application->getMvcEvent()->getRouteMatch();
         $this->router = $router;
-        $this->request = $request;
-        $this->response = $response;
+        $this->request = $application->getRequest();
+        $this->response = $application->getResponse();
         $this->options = $options;
     }
 

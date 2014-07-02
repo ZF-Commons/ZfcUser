@@ -13,14 +13,9 @@ class RedirectCallbackFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $router = $serviceLocator->get('Router');
-        $response = $serviceLocator->get('Response');
-        $request = $serviceLocator->get('Request');
+        $application = $serviceLocator->get('Application');
         $options = $serviceLocator->get('zfcuser_module_options');
 
-        /** @var MvcEvent $mvcEvent */
-        $mvcEvent   = $serviceLocator->get('Application')->getMvcEvent();
-        $routeMatch = $mvcEvent->getRouteMatch();
-
-        return new RedirectCallback($routeMatch, $router, $response, $request, $options);
+        return new RedirectCallback($application, $router, $options);
     }
 }
