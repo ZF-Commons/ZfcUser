@@ -56,10 +56,14 @@ class UserController extends AbstractActionController
     protected $options;
 
     /**
-     * @var Callable $redirectCallback
+     * @var callable $redirectCallback
      */
     protected $redirectCallback;
 
+
+    /**
+     * @param callable $redirectCallback
+     */
     public function __construct($redirectCallback)
     {
         $this->redirectCallback = $redirectCallback;
