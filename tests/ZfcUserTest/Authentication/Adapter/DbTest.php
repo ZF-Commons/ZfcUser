@@ -425,7 +425,24 @@ class DbTest extends TestCase
         $this->db->setCredentialPreprocessor(function ($credential) use ($expected) {
             return $expected;
         });
-        $this->assertSame($expected, $this->db->preprocessCredential('ZfcUser'));
+        $this->assertSame($expected, $this->db->preprocessCredential('ZfcUser', $this->user));
+    }
+
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::preprocessCredential
+     * @covers ZfcUser\Authentication\Adapter\Db::setCredentialPreprocessor
+     */
+    public function testPreprocessCredentialWithCallableAndAdditionalUserParam()
+    {
+        $expected = 3;
+        $this->user->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue($expected));
+
+        $this->db->setCredentialPreprocessor(function ($credential, $user) {
+            return $user->getId();
+        });
+        $this->assertSame($expected, $this->db->preprocessCredential('ZfcUser', $this->user));
     }
 
     /**
@@ -433,7 +450,7 @@ class DbTest extends TestCase
      */
     public function testPreprocessCredentialWithoutCallable()
     {
-        $this->assertSame('zfcUser', $this->db->preprocessCredential('zfcUser'));
+        $this->assertSame('zfcUser', $this->db->preprocessCredential('zfcUser', $this->user));
     }
 
     /**

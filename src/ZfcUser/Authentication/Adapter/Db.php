@@ -62,7 +62,6 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
 
         $identity   = $event->getRequest()->getPost()->get('identity');
         $credential = $event->getRequest()->getPost()->get('credential');
-        $credential = $this->preProcessCredential($credential);
         $userObject = null;
 
         // Cycle through the configured identity sources and test each
@@ -95,6 +94,8 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
                 return false;
             }
         }
+
+        $credential = $this->preProcessCredential($credential, $userObject);
 
         $cryptoService = $this->getHydrator()->getCryptoService();
         if (!$cryptoService->verify($credential, $userObject->getPassword())) {
@@ -132,10 +133,10 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
         $this->getMapper()->update($user);
     }
 
-    public function preprocessCredential($credential)
+    public function preprocessCredential($credential, UserEntity $user)
     {
         if (is_callable($this->credentialPreprocessor)) {
-            return call_user_func($this->credentialPreprocessor, $credential);
+            return call_user_func($this->credentialPreprocessor, $credential, $user);
         }
         return $credential;
     }
