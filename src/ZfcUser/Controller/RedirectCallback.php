@@ -10,6 +10,10 @@ use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
 use ZfcUser\Options\ModuleOptions;
 
+/**
+ * Class RedirectCallback
+ * @package ZfcUser\Controller
+ */
 class RedirectCallback
 {
     /** @var RouteMatch */
@@ -24,6 +28,9 @@ class RedirectCallback
     /** @var Request */
     protected $request;
 
+    /** @var Application */
+    protected $application;
+
     /** @var ModuleOptions */
     protected $options;
 
@@ -36,8 +43,7 @@ class RedirectCallback
     {
         $this->routeMatch = $application->getMvcEvent()->getRouteMatch();
         $this->router = $router;
-        $this->request = $application->getRequest();
-        $this->response = $application->getResponse();
+        $this->application = $application;
         $this->options = $options;
     }
 
@@ -48,7 +54,7 @@ class RedirectCallback
     {
         $redirect = $this->getRedirect($this->routeMatch->getMatchedRouteName(), $this->getRedirectRouteFromRequest());
 
-        $response = $this->response;
+        $response = $this->application->getResponse();
         $response->getHeaders()->addHeaderLine('Location', $redirect);
         $response->setStatusCode(302);
         return $response;
@@ -61,7 +67,7 @@ class RedirectCallback
      */
     protected function getRedirectRouteFromRequest()
     {
-        $request  = $this->request;
+        $request  = $this->application->getRequest();
         $redirect = $request->getQuery('redirect');
         if ($redirect && $this->routeExists($redirect)) {
             return $redirect;

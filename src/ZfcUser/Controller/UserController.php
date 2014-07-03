@@ -60,12 +60,14 @@ class UserController extends AbstractActionController
      */
     protected $redirectCallback;
 
-
     /**
      * @param callable $redirectCallback
      */
     public function __construct($redirectCallback)
     {
+        if (!is_callable($redirectCallback)) {
+            throw new \InvalidArgumentException('You must supply a callable redirectCallback');
+        }
         $this->redirectCallback = $redirectCallback;
     }
 
@@ -131,6 +133,7 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
         $redirect = $this->redirectCallback;
+
         return $redirect();
     }
 
@@ -172,6 +175,7 @@ class UserController extends AbstractActionController
         }
 
         $redirect = $this->redirectCallback;
+
         return $redirect();
     }
 

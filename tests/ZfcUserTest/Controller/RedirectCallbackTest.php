@@ -2,7 +2,14 @@
 
 namespace ZfcUserTest\Controller;
 
+use Zend\Http\PhpEnvironment\Request;
+use Zend\Http\PhpEnvironment\Response;
+use Zend\Mvc\Application;
+use Zend\Mvc\MvcEvent;
+use Zend\Mvc\Router\RouteInterface;
+use Zend\Mvc\Router\RouteMatch;
 use ZfcUser\Controller\RedirectCallback;
+use ZfcUser\Options\ModuleOptions;
 
 class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
 {
@@ -10,25 +17,25 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
     /** @var RedirectCallback */
     protected $redirectCallback;
 
-    /** @var PHPUnit_Framework_MockObject_MockObject */
+    /** @var \PHPUnit_Framework_MockObject_MockObject|ModuleOptions */
     protected $moduleOptions;
 
-    /** @var  PHPUnit_Framework_MockObject_MockObject */
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|RouteInterface */
     protected $router;
 
-    /** @var  PHPUnit_Framework_MockObject_MockObject */
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|Application */
     protected $application;
 
-    /** @var  PHPUnit_Framework_MockObject_MockObject */
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|Request */
     protected $request;
 
-    /** @var  PHPUnit_Framework_MockObject_MockObject */
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|Response */
     protected $response;
 
-    /** @var  PHPUnit_Framework_MockObject_MockObject */
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|MvcEvent */
     protected $mvcEvent;
 
-    /** @var  PHPUnit_Framework_MockObject_MockObject */
+    /** @var  \PHPUnit_Framework_MockObject_MockObject|RouteMatch */
     protected $routeMatch;
 
     public function setUp()
@@ -297,7 +304,6 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-
         $this->routeMatch = $this->getMockBuilder('Zend\Mvc\Router\RouteMatch')
             ->disableOriginalConstructor()
             ->getMock();
@@ -313,10 +319,10 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
         $this->application->expects($this->once())
             ->method('getMvcEvent')
             ->will($this->returnValue($this->mvcEvent));
-        $this->application->expects($this->once())
+        $this->application->expects($this->any())
             ->method('getRequest')
             ->will($this->returnValue($this->request));
-        $this->application->expects($this->once())
+        $this->application->expects($this->any())
             ->method('getResponse')
             ->will($this->returnValue($this->response));
     }

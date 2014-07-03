@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Controller;
 
+use ZfcUser\Controller\RedirectCallback;
 use ZfcUser\Controller\UserController as Controller;
 use Zend\Http\Response;
 use Zend\Stdlib\Parameters;
@@ -26,6 +27,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
     protected $options;
 
+    /**
+     * @var \PHPUnit_Framework_MockObject_MockObject|RedirectCallback
+     */
     protected $redirectCallback;
 
     public function setUp()
