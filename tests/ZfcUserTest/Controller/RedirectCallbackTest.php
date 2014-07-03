@@ -326,5 +326,4 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
             ->method('getResponse')
             ->will($this->returnValue($this->response));
     }
-
 }
