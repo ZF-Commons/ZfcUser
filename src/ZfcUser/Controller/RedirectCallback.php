@@ -9,7 +9,7 @@ use Zend\Http\PhpEnvironment\Response;
 use ZfcUser\Options\ModuleOptions;
 
 /**
- * Returns a redirect response based on the current routing and parameters
+ * Builds a redirect response based on the current routing and parameters
  */
 class RedirectCallback
 {
@@ -54,7 +54,7 @@ class RedirectCallback
      * First checks GET then POST
      * @return string
      */
-    protected function getRedirectRouteFromRequest()
+    private function getRedirectRouteFromRequest()
     {
         $request  = $this->application->getRequest();
         $redirect = $request->getQuery('redirect');
@@ -74,7 +74,7 @@ class RedirectCallback
      * @param $route
      * @return bool
      */
-    protected function routeExists($route)
+    private function routeExists($route)
     {
         try {
             $this->router->assemble(array(), array('name' => $route));
@@ -92,7 +92,7 @@ class RedirectCallback
      * @param bool $redirect
      * @return mixed
      */
-    protected function getRedirect($currentRoute, $redirect = false)
+    private function getRedirect($currentRoute, $redirect = false)
     {
         $useRedirect = $this->options->getUseRedirectParameterIfPresent();
         $routeExists = ($redirect && $this->routeExists($redirect));
