@@ -7,6 +7,7 @@ use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 use Zend\Stdlib\Hydrator\ClassMethods;
+use ZfcUser\Controller\RedirectCallback;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -88,7 +89,18 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'zfcuser_redirect_callback' => function ($sm) {
+                        /* @var RouteInterface $router */
+                        $router = $sm->get('Router');
 
+                        /* @var Application $application */
+                        $application = $sm->get('Application');
+
+                        /* @var ModuleOptions $options */
+                        $options = $sm->get('zfcuser_module_options');
+
+                        return new RedirectCallback($application, $router, $options);
+                    },
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
                     return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
