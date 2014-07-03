@@ -6,7 +6,6 @@ use Zend\Mvc\Application;
 use Zend\Mvc\Router\RouteInterface;
 use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\Exception;
-use Zend\Http\PhpEnvironment\Request;
 use Zend\Http\PhpEnvironment\Response;
 use ZfcUser\Options\ModuleOptions;
 
@@ -17,22 +16,16 @@ use ZfcUser\Options\ModuleOptions;
 class RedirectCallback
 {
     /** @var RouteMatch */
-    protected $routeMatch;
+    private $routeMatch;
 
     /** @var RouteInterface  */
-    protected $router;
-
-    /** @var Response */
-    protected $response;
-
-    /** @var Request */
-    protected $request;
+    private $router;
 
     /** @var Application */
-    protected $application;
+    private $application;
 
     /** @var ModuleOptions */
-    protected $options;
+    private $options;
 
     /**
      * @param Application $application
