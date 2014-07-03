@@ -10,18 +10,18 @@ return array(
     'controllers' => array(
 
         'factories' => array(
-            'zfcuser' => function($controllerManager){
-                    /* @var ControllerManager $controllerManager*/
-                    $serviceManager = $controllerManager->getServiceLocator();
+            'zfcuser' => function($controllerManager) {
+                /* @var ControllerManager $controllerManager*/
+                $serviceManager = $controllerManager->getServiceLocator();
 
-                    /* @var RedirectCallback $redirectCallback */
-                    $redirectCallback = $serviceManager->get('zfcuser_redirect_callback');
+                /* @var RedirectCallback $redirectCallback */
+                $redirectCallback = $serviceManager->get('zfcuser_redirect_callback');
 
-                    /* @var UserController $controller */
-                    $controller = new UserController($redirectCallback);
+                /* @var UserController $controller */
+                $controller = new UserController($redirectCallback);
 
-                    return $controller;
-                },
+                return $controller;
+            },
         ),
     ),
     'service_manager' => array(
