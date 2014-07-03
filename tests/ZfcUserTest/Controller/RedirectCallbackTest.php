@@ -311,12 +311,12 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
         $this->mvcEvent = $this->getMockBuilder('Zend\Mvc\MvcEvent')
             ->disableOriginalConstructor()
             ->getMock();
-        $this->mvcEvent->expects($this->once())
+        $this->mvcEvent->expects($this->any())
             ->method('getRouteMatch')
             ->will($this->returnValue($this->routeMatch));
 
 
-        $this->application->expects($this->once())
+        $this->application->expects($this->any())
             ->method('getMvcEvent')
             ->will($this->returnValue($this->mvcEvent));
         $this->application->expects($this->any())

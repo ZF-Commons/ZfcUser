@@ -11,12 +11,9 @@ use ZfcUser\Options\ModuleOptions;
 
 /**
  * Class RedirectCallback
- * @package ZfcUser\Controller
  */
 class RedirectCallback
 {
-    /** @var RouteMatch */
-    private $routeMatch;
 
     /** @var RouteInterface  */
     private $router;
@@ -34,7 +31,6 @@ class RedirectCallback
      */
     public function __construct(Application $application, RouteInterface $router, ModuleOptions $options)
     {
-        $this->routeMatch = $application->getMvcEvent()->getRouteMatch();
         $this->router = $router;
         $this->application = $application;
         $this->options = $options;
@@ -45,7 +41,8 @@ class RedirectCallback
      */
     public function __invoke()
     {
-        $redirect = $this->getRedirect($this->routeMatch->getMatchedRouteName(), $this->getRedirectRouteFromRequest());
+        $routeMatch = $this->application->getMvcEvent()->getRouteMatch();
+        $redirect = $this->getRedirect($routeMatch->getMatchedRouteName(), $this->getRedirectRouteFromRequest());
 
         $response = $this->application->getResponse();
         $response->getHeaders()->addHeaderLine('Location', $redirect);
