@@ -10,7 +10,7 @@ use Zend\Http\PhpEnvironment\Response;
 use ZfcUser\Options\ModuleOptions;
 
 /**
- * Class RedirectCallback
+ * Returns a redirect response based on the current routing and parameters
  */
 class RedirectCallback
 {
