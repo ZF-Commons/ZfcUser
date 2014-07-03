@@ -82,7 +82,7 @@ class RedirectCallback
     protected function routeExists($route)
     {
         try {
-            $this->router->assemble($route);
+            $this->router->assemble([], ['name' => $route]);
         } catch (Exception\RuntimeException $e) {
             return false;
         }
