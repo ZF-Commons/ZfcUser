@@ -4,7 +4,6 @@ namespace ZfcUser\Controller;
 
 use Zend\Mvc\Application;
 use Zend\Mvc\Router\RouteInterface;
-use Zend\Mvc\Router\RouteMatch;
 use Zend\Mvc\Router\Exception;
 use Zend\Http\PhpEnvironment\Response;
 use ZfcUser\Options\ModuleOptions;
