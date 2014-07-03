@@ -1,4 +1,6 @@
 <?php
+use ZfcUser\Controller\UserController;
+
 return array(
     'view_manager' => array(
         'template_path_stack' => array(
@@ -6,8 +8,20 @@ return array(
         ),
     ),
     'controllers' => array(
-        'invokables' => array(
-            'zfcuser' => 'ZfcUser\Controller\UserController',
+
+        'factories' => array(
+            'zfcuser' => function($controllerManager){
+                    /* @var ControllerManager $controllerManager*/
+                    $serviceManager = $controllerManager->getServiceLocator();
+
+                    /* @var RedirectCallback $redirectCallback */
+                    $redirectCallback = $serviceManager->get('zfcuser_redirect_callback');
+
+                    /* @var UserController $controller */
+                    $controller = new UserController($redirectCallback);
+
+                    return $controller;
+                },
         ),
     ),
     'service_manager' => array(
