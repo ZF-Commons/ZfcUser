@@ -75,7 +75,7 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
 
         $this->router->expects($this->any())
             ->method('assemble')
-            ->with([], ['name' => 'zfcuser'])
+            ->with(array(), array('name' => 'zfcuser'))
             ->will($this->returnValue($url));
 
         $this->response->expects($this->once())
@@ -105,7 +105,7 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
         if ($get) {
             $this->router->expects($this->any())
                 ->method('assemble')
-                ->with([], ['name' => $get])
+                ->with(array(), array('name' => $get))
                 ->will($getRouteExists);
 
             if ($getRouteExists == $this->returnValue(true)) {
@@ -121,7 +121,7 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
             if ($post) {
                 $this->router->expects($this->any())
                     ->method('assemble')
-                    ->with([], ['name' => $post])
+                    ->with(array(), array('name' => $post))
                     ->will($postRouteExists);
 
                 if ($postRouteExists == $this->returnValue(true)) {
@@ -160,7 +160,7 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
 
         $this->router->expects($this->once())
             ->method('assemble')
-            ->with([], ['name' => $route]);
+            ->with(array(), array('name' => $route));
 
         $method = new \ReflectionMethod(
             'ZfcUser\Controller\RedirectCallback',
@@ -178,7 +178,7 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
 
         $this->router->expects($this->once())
             ->method('assemble')
-            ->with([], ['name' => $route])
+            ->with(array(), array('name' => $route))
             ->will($this->throwException(new \Zend\Mvc\Router\Exception\RuntimeException));
 
         $method = new \ReflectionMethod(
@@ -204,7 +204,7 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
             ->method('assemble');
         $this->router->expects($this->at(1))
             ->method('assemble')
-            ->with([], ['name' => $optionsReturn])
+            ->with(array(), array('name' => $optionsReturn))
             ->will($this->returnValue($expectedResult));
 
         if ($optionsMethod) {
@@ -247,7 +247,7 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
 
         $this->router->expects($this->once())
             ->method('assemble')
-            ->with([], ['name' => $route])
+            ->with(array(), array('name' => $route))
             ->will($this->returnValue($expectedResult));
 
         $method = new \ReflectionMethod(
@@ -272,12 +272,12 @@ class RedirectCallbackTest extends \PHPUnit_Framework_TestCase
 
         $this->router->expects($this->at(0))
             ->method('assemble')
-            ->with([], ['name' => $redirect])
+            ->with(array(), array('name' => $redirect))
             ->will($this->throwException(new \Zend\Mvc\Router\Exception\RuntimeException));
 
         $this->router->expects($this->at(1))
             ->method('assemble')
-            ->with([], ['name' => $route])
+            ->with(array(), array('name' => $route))
             ->will($this->returnValue($expectedResult));
 
         $this->moduleOptions->expects($this->once())
