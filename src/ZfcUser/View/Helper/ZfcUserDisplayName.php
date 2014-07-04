@@ -2,8 +2,8 @@
 
 namespace ZfcUser\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
 use Zend\Authentication\AuthenticationService;
+use Zend\View\Helper\AbstractHelper;
 use ZfcUser\Entity\UserInterface;
 use ZfcUser\Exception;
 
