@@ -64,7 +64,7 @@ class ZfcUserDisplayName extends AbstractHelper
      * Set authService.
      *
      * @param AuthenticationService $authService
-     * @return \ZfcUser\View\Helper\ZfcUserDisplayName
+     * @return self
      */
     public function setAuthService(AuthenticationService $authService)
     {
