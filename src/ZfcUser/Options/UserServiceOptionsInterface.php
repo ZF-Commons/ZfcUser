@@ -2,8 +2,6 @@
 
 namespace ZfcUser\Options;
 
-use ZfcUser\Options\RegistrationOptionsInterface;
-
 interface UserServiceOptionsInterface extends
  RegistrationOptionsInterface,
  AuthenticationOptionsInterface
