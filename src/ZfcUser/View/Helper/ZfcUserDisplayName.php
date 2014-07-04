@@ -20,7 +20,7 @@ class ZfcUserDisplayName extends AbstractHelper
      * @access public
      * @param UserInterface $user
      * @throws Exception\DomainException
-     * @return String
+     * @return string
      */
     public function __invoke(UserInterface $user = null)
     {
