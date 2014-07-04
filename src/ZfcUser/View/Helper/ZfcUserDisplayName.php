@@ -4,7 +4,7 @@ namespace ZfcUser\View\Helper;
 
 use Zend\View\Helper\AbstractHelper;
 use Zend\Authentication\AuthenticationService;
-use ZfcUser\Entity\UserInterface as User;
+use ZfcUser\Entity\UserInterface;
 use ZfcUser\Exception;
 
 class ZfcUserDisplayName extends AbstractHelper
@@ -18,16 +18,16 @@ class ZfcUserDisplayName extends AbstractHelper
      * __invoke
      *
      * @access public
-     * @param \ZfcUser\Entity\UserInterface $user
+     * @param UserInterface $user
      * @throws Exception\DomainException
      * @return String
      */
-    public function __invoke(User $user = null)
+    public function __invoke(UserInterface $user = null)
     {
         if (null === $user) {
             if ($this->getAuthService()->hasIdentity()) {
                 $user = $this->getAuthService()->getIdentity();
-                if (!$user instanceof User) {
+                if (!$user instanceof UserInterface) {
                     throw new Exception\DomainException(
                         '$user is not an instance of User',
                         500
