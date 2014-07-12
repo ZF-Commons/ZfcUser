@@ -4,9 +4,7 @@ namespace ZfcUser\Options;
 
 use Zend\Stdlib\AbstractOptions;
 
-class ModuleOptions extends AbstractOptions implements
-    UserControllerOptionsInterface,
-    UserServiceOptionsInterface
+class ModuleOptions extends AbstractOptions implements UserControllerOptionsInterface, UserServiceOptionsInterface
 {
     /**
      * Turn off strict options mode
