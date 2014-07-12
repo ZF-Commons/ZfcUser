@@ -4,9 +4,7 @@ namespace ZfcUser\Options;
 
 use ZfcUser\Options\RegistrationOptionsInterface;
 
-interface UserServiceOptionsInterface extends
- RegistrationOptionsInterface,
- AuthenticationOptionsInterface
+interface UserServiceOptionsInterface extends AuthenticationOptionsInterface, RegistrationOptionsInterface
 {
     /**
      * set user entity class name
