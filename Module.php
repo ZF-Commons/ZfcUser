@@ -2,12 +2,11 @@
 
 namespace ZfcUser;
 
-use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
-use Zend\Stdlib\Hydrator\ClassMethods;
 use ZfcUser\Controller\RedirectCallback;
+use ZfcUser\Controller\UserController;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -46,6 +45,26 @@ class Module implements
                     $controllerPlugin->setAuthAdapter($authAdapter);
                     return $controllerPlugin;
                 },
+            ),
+        );
+    }
+
+    public function getControllerConfig()
+    {
+        return array(
+            'factories' => array(
+                'zfcuser' => function($controllerManager) {
+                        /* @var ControllerManager $controllerManager*/
+                        $serviceManager = $controllerManager->getServiceLocator();
+
+                        /* @var RedirectCallback $redirectCallback */
+                        $redirectCallback = $serviceManager->get('zfcuser_redirect_callback');
+
+                        /* @var UserController $controller */
+                        $controller = new UserController($redirectCallback);
+
+                        return $controller;
+                    },
             ),
         );
     }
