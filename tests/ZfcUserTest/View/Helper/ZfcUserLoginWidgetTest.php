@@ -101,6 +101,20 @@ class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ZfcUser\View\Helper\ZfcUserLoginWidget::__invoke
+     */
+    public function testInvokeWithEnableRegistration()
+    {
+        $result = $this->helper->__invoke(array(
+            'render' => false,
+            'enableRegistration' => true,
+        ));
+
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
+        $this->assertTrue($result->enableRegistration);
+    }
+
+    /**
      * @covers ZfcUser\View\Helper\ZfcUserLoginWidget::setLoginForm
      * @covers ZfcUser\View\Helper\ZfcUserLoginWidget::getLoginForm
      */
