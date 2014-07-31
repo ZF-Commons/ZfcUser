@@ -156,7 +156,7 @@ class UserController extends AbstractActionController
         }
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
+            return $this->redirect()->toUrl($redirect);
         }
 
         $route = $this->getOptions()->getLoginRedirectRoute();
