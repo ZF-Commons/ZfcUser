@@ -92,7 +92,7 @@ class RedirectCallback
      * @param bool $redirect
      * @return mixed
      */
-    private function getRedirect($currentRoute, $redirect = false)
+    protected function getRedirect($currentRoute, $redirect = false)
     {
         $useRedirect = $this->options->getUseRedirectParameterIfPresent();
         $routeExists = ($redirect && $this->routeExists($redirect));
