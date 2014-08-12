@@ -28,7 +28,7 @@ class UserHydrator extends ClassMethods implements HydratorInterface
     /**
      * Extract values from an object
      *
-     * @param  UserEntityInterface $object
+     * @param  UserEntity $object
      * @return array
      * @throws Exception\InvalidArgumentException
      */
@@ -43,8 +43,8 @@ class UserHydrator extends ClassMethods implements HydratorInterface
      * Hydrate $object with the provided $data.
      *
      * @param  array               $data
-     * @param  UserEntityInterface $object
-     * @return UserEntityInterface
+     * @param  UserEntity $object
+     * @return UserEntity
      * @throws Exception\InvalidArgumentException
      */
     public function hydrate(array $data, $object)
@@ -80,7 +80,7 @@ class UserHydrator extends ClassMethods implements HydratorInterface
     }
 
     /**
-     * Ensure $object is an UserEntityInterface
+     * Ensure $object is an UserEntity
      *
      * @param  mixed $object
      * @throws Exception\InvalidArgumentException

@@ -44,11 +44,6 @@ Features / Goals
 * Out-of-the-box support for Doctrine2 _and_ Zend\Db [COMPLETE]
 * Registration form protected with CAPTCHA [IN PROGRESS] \(Needs more options\)
 * Robust event system to allow for extending [IN PROGRESS]
-* Support for additional authentication mechanisms via plugins (Google,
-  Facebook, LDAP, etc) [INCOMPLETE]
-* Optional E-mail address verification [INCOMPLETE]
-* Forgot Password [INCOMPLETE]
-* Provide ActionController plugin and view helper [INCOMPLETE]
 
 Installation
 ------------

@@ -3,11 +3,15 @@
 namespace ZfcUser\Form;
 
 use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\RegistrationOptionsInterface;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class ChangeEmail extends ProvidesEventsForm
 {
+    /**
+     * @var AuthenticationOptionsInterface
+     */
+    private $authOptions;
+
     public function __construct($name, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);

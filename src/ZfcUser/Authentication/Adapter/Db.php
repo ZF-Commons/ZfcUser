@@ -2,7 +2,6 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use DateTime;
 use InvalidArgumentException;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\Crypt\Password\Bcrypt;

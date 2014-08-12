@@ -3,7 +3,6 @@ namespace ZfcUser\Authentication\Adapter;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use ZfcUser\Authentication\Adapter\AdapterChain;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Authentication\Adapter\Exception\OptionsNotFoundException;
 

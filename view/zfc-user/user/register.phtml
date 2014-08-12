@@ -2,7 +2,7 @@
 
 <?php
 if (!$this->enableRegistration) {
-    print "Registration is disabled";
+    echo $this->translate('Registration is disabled');
     return;
 }
 $form = $this->registerForm;

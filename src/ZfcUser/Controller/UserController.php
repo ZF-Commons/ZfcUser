@@ -119,7 +119,7 @@ class UserController extends AbstractActionController
         $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toUrl($redirect);
+            return $this->redirect()->toRoute($redirect);
         }
 
         return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
@@ -156,7 +156,7 @@ class UserController extends AbstractActionController
         }
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toUrl($redirect);
+            return $this->redirect()->toRoute($redirect);
         }
 
         $route = $this->getOptions()->getLoginRedirectRoute();
