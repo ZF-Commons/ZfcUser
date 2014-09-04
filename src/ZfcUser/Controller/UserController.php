@@ -478,7 +478,7 @@ class UserController extends AbstractActionController
 
     /**
      * @param null|TranslatorInterface $translator
-     * @return $this
+     * @return UserController
      */
     public function setTranslator($translator)
     {
