@@ -343,7 +343,7 @@ class UserController extends AbstractActionController
      */
     protected function getFailedLoginMessage()
     {
-        $message =' Authentication failed. Please try again.';
+        $message = 'Authentication failed. Please try again.';
         if ($this->getTranslator()) {
             $message = $this->getTranslator()->translate($message);
         }
