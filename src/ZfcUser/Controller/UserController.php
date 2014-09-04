@@ -56,6 +56,13 @@ class UserController extends AbstractActionController
     protected $translator;
 
     /**
+      * @todo Make this dynamic / translation-friendly
+      * @var string
+      * @var UserControllerOptionsInterface
+     */
+    protected $failedLoginMessage = 'Authentication failed. Please try again.';
+
+    /**
      * User page
      */
     public function indexAction()
@@ -343,7 +350,7 @@ class UserController extends AbstractActionController
      */
     protected function getFailedLoginMessage()
     {
-        $message = 'Authentication failed. Please try again.';
+        $message = $this->failedLoginMessage;
         if ($this->getTranslator()) {
             $message = $this->getTranslator()->translate($message);
         }
