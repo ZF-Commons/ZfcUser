@@ -56,6 +56,22 @@ class UserController extends AbstractActionController
     protected $options;
 
     /**
+     * @var callable $redirectCallback
+     */
+    protected $redirectCallback;
+
+    /**
+     * @param callable $redirectCallback
+     */
+    public function __construct($redirectCallback)
+    {
+        if (!is_callable($redirectCallback)) {
+            throw new \InvalidArgumentException('You must supply a callable redirectCallback');
+        }
+        $this->redirectCallback = $redirectCallback;
+    }
+
+    /**
      * User page
      */
     public function indexAction()
@@ -116,13 +132,9 @@ class UserController extends AbstractActionController
         $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
-        $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
+        $redirect = $this->redirectCallback;
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
-        }
-
-        return $this->redirect()->toRoute($this->getOptions()->getLogoutRedirectRoute());
+        return $redirect();
     }
 
     /**
@@ -155,17 +167,16 @@ class UserController extends AbstractActionController
             );
         }
 
-        if ($this->getOptions()->getUseRedirectParameterIfPresent() && $redirect) {
-            return $this->redirect()->toRoute($redirect);
-        }
-
         $route = $this->getOptions()->getLoginRedirectRoute();
 
         if (is_callable($route)) {
             $route = $route($this->zfcUserAuthentication()->getIdentity());
+            return $this->redirect()->toRoute($route);
         }
 
-        return $this->redirect()->toRoute($route);
+        $redirect = $this->redirectCallback;
+
+        return $redirect();
     }
 
     /**
