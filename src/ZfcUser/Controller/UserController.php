@@ -477,7 +477,7 @@ class UserController extends AbstractActionController
     public function getTranslator()
     {
         if (!$this->translator && $this->getServiceLocator()) {
-            $this->setTranslator($this->getServiceLocator()->get('translator'));
+            $this->setTranslator($this->getServiceLocator()->get('MvcTranslator'));
         }
 
         return $this->translator;
