@@ -323,7 +323,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $user->setUsername('zfc-user');
         $user->setDisplayName('Zfc-User');
         $user->setId('1');
-        $user->setState(1);
         $user->setPassword(static::ENCRYPTED_PASSWORD);
 
         return array(

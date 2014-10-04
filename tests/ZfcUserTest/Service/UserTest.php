@@ -87,51 +87,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Service\User::register
-     */
-    public function testRegisterWithUsernameAndDisplayNameUserStateDisabled()
-    {
-        $expectArray = array('username' => 'ZfcUser', 'display_name' => 'Zfc User');
-
-        $user = $this->getMock('ZfcUser\Entity\User');
-
-        $this->options->expects($this->once())
-                      ->method('getUserEntityClass')
-                      ->will($this->returnValue('ZfcUser\Entity\User'));
-
-        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')
-                             ->disableOriginalConstructor()
-                             ->getMock();
-        $registerForm->expects($this->once())
-                     ->method('setHydrator');
-        $registerForm->expects($this->once())
-                     ->method('bind');
-        $registerForm->expects($this->once())
-                     ->method('setData')
-                     ->with($expectArray);
-        $registerForm->expects($this->once())
-                     ->method('getData')
-                     ->will($this->returnValue($user));
-        $registerForm->expects($this->once())
-                     ->method('isValid')
-                     ->will($this->returnValue(true));
-
-        $this->eventManager->expects($this->exactly(2))
-                           ->method('trigger');
-
-        $this->mapper->expects($this->once())
-                     ->method('insert')
-                     ->with($user)
-                     ->will($this->returnValue($user));
-
-        $this->service->setRegisterForm($registerForm);
-
-        $result = $this->service->register($expectArray);
-
-        $this->assertSame($user, $result);
-    }
-
-    /**
      * @covers ZfcUser\Service\User::changePassword
      */
     public function testChangePasswordWithWrongOldPassword()
