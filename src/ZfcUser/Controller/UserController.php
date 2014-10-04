@@ -251,7 +251,6 @@ class UserController extends AbstractActionController
             return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
         }
 
-        // TODO: Add the redirect parameter here...
-        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+        return $this->redirect()->toUrl($this->url()->fromRoute($this->getOptions()->getRegisterRedirectRoute()) . ($redirect ? '?redirect='. rawurlencode($redirect) : ''));
     }
 }
