@@ -34,11 +34,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     protected $registerForm;
 
     /**
-     * @var Form
-     */
-    protected $changePasswordForm;
-
-    /**
      * @var ServiceManager
      */
     protected $serviceManager;
@@ -81,67 +76,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
 
             return $user;
         }
-        return false;
-    }
-
-    /**
-     * change the current users password
-     *
-     * @param array $data
-     * @return boolean
-     */
-    public function changePassword(array $data)
-    {
-        if (!$user = $this->guardValidCredential($data['credential'])) {
-            return false;
-        }
-
-        $user->setPassword($this->getFormHydrator()->getCryptoService()->create($data['newCredential']));
-
-        $events = $this->getEventManager();
-
-        $events->trigger(__FUNCTION__, $this, compact('user'));
-        $this->getUserMapper()->update($user);
-        $events->trigger(__FUNCTION__.'.post', $this, compact('user'));
-
-        return true;
-    }
-
-    public function changeEmail(array $data)
-    {
-        if (!$user = $this->guardValidCredential($data['credential'])) {
-            return false;
-        }
-
-        $user = $this->getFormHydrator()->hydrate(
-            array('email' => trim($data['newIdentity'])),
-            $user
-        );
-        $events = $this->getEventManager();
-
-        $events->trigger(__FUNCTION__, $this, compact('user'));
-        $this->getUserMapper()->update($user);
-        $events->trigger(__FUNCTION__.'.post', $this, compact('user'));
-
-        return true;
-    }
-
-    /**
-     * Verify the credential
-     *
-     * @param  string $credential
-     * @return bool|\ZfcUser\Entity\UserInterface
-     */
-    private function guardValidCredential($credential)
-    {
-        /* @var $currentUser \ZfcUser\Entity\UserInterface */
-        if ($currentUser = $this->getAuthService()->getIdentity()) {
-            $cryptoService = $this->getFormHydrator()->getCryptoService();
-            if ($cryptoService->verify($credential, $currentUser->getPassword())) {
-                return $currentUser;
-            }
-        }
-
         return false;
     }
 
@@ -213,29 +147,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function setRegisterForm(Form $registerForm)
     {
         $this->registerForm = $registerForm;
-        return $this;
-    }
-
-    /**
-     * @return Form
-     */
-    public function getChangePasswordForm()
-    {
-        if (null === $this->changePasswordForm) {
-            $this->setChangePasswordForm(
-                $this->serviceManager->get('zfcuser_change_password_form')
-            );
-        }
-        return $this->changePasswordForm;
-    }
-
-    /**
-     * @param Form $changePasswordForm
-     * @return User
-     */
-    public function setChangePasswordForm(Form $changePasswordForm)
-    {
-        $this->changePasswordForm = $changePasswordForm;
         return $this;
     }
 
