@@ -38,11 +38,4 @@ interface UserInterface
      * @return string password
      */
     public function getPassword();
-
-    /**
-     * Get state.
-     *
-     * @return int
-     */
-    public function getState();
 }

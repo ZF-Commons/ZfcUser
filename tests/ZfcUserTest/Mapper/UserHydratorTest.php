@@ -73,7 +73,6 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
             'email' => 'Zfc User',
             'display_name' => 'ZfcUser',
             'password' => 'c4zyP455w0rd!',
-            'state' => '1',
             'user_id' => 1
         );
 
@@ -83,7 +82,6 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectArray['email'], $result->getEmail());
         $this->assertEquals($expectArray['display_name'], $result->getDisplayName());
         $this->assertEquals(static::ENCRYPTED_PASSWORD, $result->getPassword());
-        $this->assertEquals((int) $expectArray['state'], $result->getState());
         $this->assertEquals($expectArray['user_id'], $result->getId());
     }
 
@@ -97,7 +95,6 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
             'email' => 'Zfc User',
             'display_name' => 'ZfcUser',
             'password' => 'ZfcUserPassword',
-            'state' => 1,
             'user_id' => 1
         );
 
@@ -110,8 +107,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
             'username' => 'zfcuser',
             'email' => 'Zfc User',
             'display_name' => 'ZfcUser',
-            'password' => 'ZfcUserPassword',
-            'state' => 1
+            'password' => 'ZfcUserPassword'
         );
 
         $return[]=array($this->buildUser($buffer), $buffer);

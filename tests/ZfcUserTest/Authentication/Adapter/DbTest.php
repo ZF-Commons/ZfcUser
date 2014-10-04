@@ -178,48 +178,10 @@ class DbTest extends TestCase
     /**
      * @covers ZfcUser\Authentication\Adapter\Db::Authenticate
      */
-    public function testAuthenticationUserStateEnabledUserButUserStateNotInArray()
-    {
-        $this->setAuthenticationCredentials();
-        $this->setAuthenticationUser();
-
-        $this->options->expects($this->once())
-            ->method('getEnableUserState')
-            ->will($this->returnValue(true));
-        $this->options->expects($this->once())
-            ->method('getAllowedLoginStates')
-            ->will($this->returnValue(array(2, 3)));
-
-        $this->authEvent->expects($this->once())
-            ->method('setCode')
-            ->with(\Zend\Authentication\Result::FAILURE_UNCATEGORIZED)
-            ->will($this->returnValue($this->authEvent));
-        $this->authEvent->expects($this->once())
-            ->method('setMessages')
-            ->with(array('A record with the supplied identity is not active.'))
-            ->will($this->returnValue($this->authEvent));
-
-        $this->user->expects($this->once())
-            ->method('getState')
-            ->will($this->returnValue(1));
-
-        $result = $this->db->authenticate($this->authEvent);
-
-        $this->assertFalse($result);
-        $this->assertFalse($this->db->isSatisfied());
-    }
-
-    /**
-     * @covers ZfcUser\Authentication\Adapter\Db::Authenticate
-     */
     public function testAuthenticateWithWrongPassword()
     {
         $this->setAuthenticationCredentials();
         $this->setAuthenticationUser();
-
-        $this->options->expects($this->once())
-            ->method('getEnableUserState')
-            ->will($this->returnValue(false));
 
         $this->bcrypt->expects($this->once())
             ->method('verify')
@@ -246,10 +208,6 @@ class DbTest extends TestCase
     {
         $this->setAuthenticationCredentials('zfc-user@zf-commons.io');
         $this->setAuthenticationEmail();
-
-        $this->options->expects($this->once())
-            ->method('getEnableUserState')
-            ->will($this->returnValue(false));
 
         $this->bcrypt->expects($this->once())
             ->method('verify')
@@ -293,14 +251,6 @@ class DbTest extends TestCase
         $this->setAuthenticationCredentials();
         $this->setAuthenticationUser();
 
-        $this->options->expects($this->once())
-             ->method('getEnableUserState')
-             ->will($this->returnValue(true));
-
-        $this->options->expects($this->once())
-             ->method('getAllowedLoginStates')
-             ->will($this->returnValue(array(1, 2, 3)));
-
         $this->bcrypt->expects($this->once())
             ->method('verify')
             ->will($this->returnValue(true));
@@ -313,9 +263,6 @@ class DbTest extends TestCase
                    ->will($this->returnValue('$2a$04$5kq1mnYWbww8X.rIj7eOVOHXtvGw/peefjIcm0lDGxRTEjm9LnOae'));
         $this->user->expects($this->once())
                    ->method('getId')
-                   ->will($this->returnValue(1));
-        $this->user->expects($this->once())
-                   ->method('getState')
                    ->will($this->returnValue(1));
 
         $this->storage->expects($this->any())

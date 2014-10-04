@@ -162,60 +162,6 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Options\ModuleOptions::getEnableUserState
-     * @covers ZfcUser\Options\ModuleOptions::setEnableUserState
-     */
-    public function testSetGetEnableUserState()
-    {
-        $this->options->setEnableUserState(true);
-        $this->assertTrue($this->options->getEnableUserState());
-    }
-
-    /**
-     * @covers ZfcUser\Options\ModuleOptions::getEnableUserState
-     */
-    public function testGetEnableUserState()
-    {
-        $this->assertFalse($this->options->getEnableUserState());
-    }
-
-    /**
-     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserState
-     */
-    public function testGetDefaultUserState()
-    {
-        $this->assertEquals(1, $this->options->getDefaultUserState());
-    }
-
-    /**
-     * @covers ZfcUser\Options\ModuleOptions::getDefaultUserState
-     * @covers ZfcUser\Options\ModuleOptions::setDefaultUserState
-     */
-    public function testSetGetDefaultUserState()
-    {
-        $this->options->setDefaultUserState(3);
-        $this->assertEquals(3, $this->options->getDefaultUserState());
-    }
-
-    /**
-     * @covers ZfcUser\Options\ModuleOptions::getAllowedLoginStates
-     */
-    public function testGetAllowedLoginStates()
-    {
-        $this->assertEquals(array(null, 1), $this->options->getAllowedLoginStates());
-    }
-
-    /**
-     * @covers ZfcUser\Options\ModuleOptions::getAllowedLoginStates
-     * @covers ZfcUser\Options\ModuleOptions::setAllowedLoginStates
-     */
-    public function testSetGetAllowedLoginStates()
-    {
-        $this->options->setAllowedLoginStates(array(2, 5, null));
-        $this->assertEquals(array(2, 5, null), $this->options->getAllowedLoginStates());
-    }
-
-    /**
      * @covers ZfcUser\Options\ModuleOptions::getAuthAdapters
      */
     public function testGetAuthAdapters()

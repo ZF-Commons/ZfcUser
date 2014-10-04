@@ -85,16 +85,6 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
             return false;
         }
 
-        if ($this->getOptions()->getEnableUserState()) {
-            // Don't allow user to login if state is not in allowed list
-            if (!in_array($userObject->getState(), $this->getOptions()->getAllowedLoginStates())) {
-                $event->setCode(AuthenticationResult::FAILURE_UNCATEGORIZED)
-                      ->setMessages(array('A record with the supplied identity is not active.'));
-                $this->setSatisfied(false);
-                return false;
-            }
-        }
-
         $cryptoService = $this->getHydrator()->getCryptoService();
         if (!$cryptoService->verify($credential, $userObject->getPassword())) {
             // Password does not match

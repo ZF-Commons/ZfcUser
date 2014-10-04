@@ -5,7 +5,6 @@ CREATE TABLE public.user
 	email		character varying(255) DEFAULT NULL UNIQUE,
 	display_name	character varying(50) DEFAULT NULL,
 	password	character varying(128) NOT NULL,
-	state		smallint,
 
 CONSTRAINT user_pkey 		PRIMARY KEY (user_id),
 CONSTRAINT user_username_key 	UNIQUE (username),

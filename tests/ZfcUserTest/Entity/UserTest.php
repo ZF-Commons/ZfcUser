@@ -63,14 +63,4 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->user->setPassword('zfcUser');
         $this->assertEquals('zfcUser', $this->user->getPassword());
     }
-
-    /**
-     * @covers ZfcUser\Entity\User::setState
-     * @covers ZfcUser\Entity\User::getState
-     */
-    public function testSetGetState()
-    {
-        $this->user->setState(1);
-        $this->assertEquals(1, $this->user->getState());
-    }
 }
