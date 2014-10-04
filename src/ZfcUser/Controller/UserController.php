@@ -6,6 +6,7 @@ use Zend\Form\Form;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\Stdlib\Parameters;
+use Zend\Validator\Translator\TranslatorInterface;
 use Zend\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
@@ -45,15 +46,21 @@ class UserController extends AbstractActionController
     protected $changeEmailForm;
 
     /**
-     * @todo Make this dynamic / translation-friendly
-     * @var string
-     */
-    protected $failedLoginMessage = 'Authentication failed. Please try again.';
-
-    /**
      * @var UserControllerOptionsInterface
      */
     protected $options;
+
+    /**
+     * @var TranslatorInterface|null
+     */
+    protected $translator;
+
+    /**
+      * @todo Make this dynamic / translation-friendly
+      * @var string
+      * @var UserControllerOptionsInterface
+     */
+    protected $failedLoginMessage = 'Authentication failed. Please try again.';
 
     /**
      * User page
@@ -96,7 +103,7 @@ class UserController extends AbstractActionController
         $form->setData($post);
 
         if (!$form->isValid()) {
-            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->getFailedLoginMessage());
             return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
         }
 
@@ -147,7 +154,7 @@ class UserController extends AbstractActionController
         $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
 
         if (!$auth->isValid()) {
-            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->getFailedLoginMessage());
             $adapter->resetAdapters();
             return $this->redirect()->toUrl(
                 $this->url()->fromRoute(static::ROUTE_LOGIN) .
@@ -339,6 +346,18 @@ class UserController extends AbstractActionController
     }
 
     /**
+     * @return string
+     */
+    protected function getFailedLoginMessage()
+    {
+        $message = $this->failedLoginMessage;
+        if ($this->getTranslator()) {
+            $message = $this->getTranslator()->translate($message);
+        }
+        return $message;
+    }
+
+    /**
      * Getters/setters for DI stuff
      */
 
@@ -449,6 +468,28 @@ class UserController extends AbstractActionController
     public function setChangeEmailForm($changeEmailForm)
     {
         $this->changeEmailForm = $changeEmailForm;
+        return $this;
+    }
+
+    /**
+     * @return null|TranslatorInterface
+     */
+    public function getTranslator()
+    {
+        if (!$this->translator && $this->getServiceLocator()) {
+            $this->setTranslator($this->getServiceLocator()->get('MvcTranslator'));
+        }
+
+        return $this->translator;
+    }
+
+    /**
+     * @param null|TranslatorInterface $translator
+     * @return UserController
+     */
+    public function setTranslator($translator)
+    {
+        $this->translator = $translator;
         return $this;
     }
 }
