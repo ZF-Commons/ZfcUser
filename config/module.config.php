@@ -33,8 +33,8 @@ return array(
         ),
     ),
     'controllers' => array(
-        'invokables' => array(
-            'zfcuser' => 'ZfcUser\Controller\UserController',
+        'factories' => array(
+            'zfcuser' => 'ZfcUser\Factory\Controller\UserControllerFactory',
         ),
     ),
     'service_manager' => array(
@@ -123,26 +123,6 @@ return array(
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'register',
-                            ),
-                        ),
-                    ),
-                    'changepassword' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/change-password',
-                            'defaults' => array(
-                                'controller' => 'zfcuser',
-                                'action'     => 'changepassword',
-                            ),
-                        ),
-                    ),
-                    'changeemail' => array(
-                        'type' => 'Literal',
-                        'options' => array(
-                            'route' => '/change-email',
-                            'defaults' => array(
-                                'controller' => 'zfcuser',
-                                'action' => 'changeemail',
                             ),
                         ),
                     ),
