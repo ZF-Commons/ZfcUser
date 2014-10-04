@@ -1,10 +1,11 @@
 {
     "name": "zf-commons/zfc-user",
-    "description": "A generic user registration and authentication module for ZF2. Supports Zend\\Db and Doctrine2.",
+    "description": "A generic user registration and authentication module for ZF2. Supports multiple adapters with built-in support for Zend\\Db.",
     "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
-        "zf2"
+        "zf2",
+        "authentication"
     ],
     "homepage": "https://github.com/ZF-Commons/ZfcUser",
     "authors": [
@@ -48,11 +49,7 @@
     },
     "require-dev" : {
         "phpunit/phpunit" : ">=3.7,<4",
-        "squizlabs/php_codesniffer" : "1.4.*",
-        "zendframework/zend-captcha" : "~2.1"
-    },
-    "suggest": {
-        "zendframework/zend-captcha" : "Zend\\Captcha if you want to use the captcha component"
+        "squizlabs/php_codesniffer" : "1.4.*"
     },
     "autoload": {
         "psr-0": {
