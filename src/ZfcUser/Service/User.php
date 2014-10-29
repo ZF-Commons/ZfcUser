@@ -90,9 +90,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
 
         // If user state is enabled, set the default state value
         if ($this->getOptions()->getEnableUserState()) {
-            if ($this->getOptions()->getDefaultUserState()) {
-                $user->setState($this->getOptions()->getDefaultUserState());
-            }
+            $user->setState($this->getOptions()->getDefaultUserState());
         }
         $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $user, 'form' => $form));
         $this->getUserMapper()->insert($user);
