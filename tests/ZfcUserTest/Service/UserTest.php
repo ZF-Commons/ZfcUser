@@ -119,7 +119,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->options->expects($this->once())
                       ->method('getEnableUserState')
                       ->will($this->returnValue(true));
-        $this->options->expects($this->exactly(2))
+        $this->options->expects($this->once())
                       ->method('getDefaultUserState')
                       ->will($this->returnValue(1));
 
@@ -153,6 +153,148 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($user, $result);
     }
 
+    /**
+     * @covers ZfcUser\Service\User::register
+     */
+    public function testRegisterWithDefaultUserStateOfZero()
+    {
+        $expectArray = array('username' => 'ZfcUser', 'display_name' => 'Zfc User');
+
+        $user = $this->getMock('ZfcUser\Entity\User');
+        $user->expects($this->once())
+             ->method('setPassword');
+        $user->expects($this->once())
+             ->method('getPassword');
+        $user->expects($this->once())
+             ->method('setUsername')
+             ->with('ZfcUser');
+        $user->expects($this->once())
+             ->method('setDisplayName')
+             ->with('Zfc User');
+        $user->expects($this->once())
+             ->method('setState')
+             ->with(0);
+
+        $this->options->expects($this->once())
+                      ->method('getUserEntityClass')
+                      ->will($this->returnValue('ZfcUser\Entity\User'));
+        $this->options->expects($this->once())
+                      ->method('getPasswordCost')
+                      ->will($this->returnValue(4));
+        $this->options->expects($this->once())
+                      ->method('getEnableUsername')
+                      ->will($this->returnValue(true));
+        $this->options->expects($this->once())
+                      ->method('getEnableDisplayName')
+                      ->will($this->returnValue(true));
+        $this->options->expects($this->once())
+                      ->method('getEnableUserState')
+                      ->will($this->returnValue(true));
+        $this->options->expects($this->once())
+                      ->method('getDefaultUserState')
+                      ->will($this->returnValue(0));
+
+        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+        $registerForm->expects($this->once())
+                     ->method('setHydrator');
+        $registerForm->expects($this->once())
+                     ->method('bind');
+        $registerForm->expects($this->once())
+                     ->method('setData')
+                     ->with($expectArray);
+        $registerForm->expects($this->once())
+                     ->method('getData')
+                     ->will($this->returnValue($user));
+        $registerForm->expects($this->once())
+                     ->method('isValid')
+                     ->will($this->returnValue(true));
+
+        $this->eventManager->expects($this->exactly(2))
+                           ->method('trigger');
+
+        $this->mapper->expects($this->once())
+                     ->method('insert')
+                     ->with($user)
+                     ->will($this->returnValue($user));
+
+        $this->service->setRegisterForm($registerForm);
+
+        $result = $this->service->register($expectArray);
+
+        $this->assertSame($user, $result);
+        $this->assertEquals(0, $user->getState());
+    }
+
+    /**
+     * @covers ZfcUser\Service\User::register
+     */
+    public function testRegisterWithUserStateDisabled()
+    {
+        $expectArray = array('username' => 'ZfcUser', 'display_name' => 'Zfc User');
+
+        $user = $this->getMock('ZfcUser\Entity\User');
+        $user->expects($this->once())
+             ->method('setPassword');
+        $user->expects($this->once())
+             ->method('getPassword');
+        $user->expects($this->once())
+             ->method('setUsername')
+             ->with('ZfcUser');
+        $user->expects($this->once())
+             ->method('setDisplayName')
+             ->with('Zfc User');
+        $user->expects($this->never())
+             ->method('setState');
+
+        $this->options->expects($this->once())
+                      ->method('getUserEntityClass')
+                      ->will($this->returnValue('ZfcUser\Entity\User'));
+        $this->options->expects($this->once())
+                      ->method('getPasswordCost')
+                      ->will($this->returnValue(4));
+        $this->options->expects($this->once())
+                      ->method('getEnableUsername')
+                      ->will($this->returnValue(true));
+        $this->options->expects($this->once())
+                      ->method('getEnableDisplayName')
+                      ->will($this->returnValue(true));
+        $this->options->expects($this->once())
+                      ->method('getEnableUserState')
+                      ->will($this->returnValue(false));
+        $this->options->expects($this->never())
+                      ->method('getDefaultUserState');
+
+        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+        $registerForm->expects($this->once())
+                     ->method('setHydrator');
+        $registerForm->expects($this->once())
+                     ->method('bind');
+        $registerForm->expects($this->once())
+                     ->method('setData')
+                     ->with($expectArray);
+        $registerForm->expects($this->once())
+                     ->method('getData')
+                     ->will($this->returnValue($user));
+        $registerForm->expects($this->once())
+                     ->method('isValid')
+                     ->will($this->returnValue(true));
+
+        $this->eventManager->expects($this->exactly(2))
+                           ->method('trigger');
+
+        $this->mapper->expects($this->once())
+                     ->method('insert')
+                     ->with($user)
+                     ->will($this->returnValue($user));
+
+        $this->service->setRegisterForm($registerForm);
+
+        $result = $this->service->register($expectArray);
+
+        $this->assertSame($user, $result);
+        $this->assertEquals(0, $user->getState());
+    }
+    
     /**
      * @covers ZfcUser\Service\User::changePassword
      */
