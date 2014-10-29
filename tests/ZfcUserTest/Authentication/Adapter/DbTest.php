@@ -78,8 +78,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     public function testLogout()
     {
         $this->storage->expects($this->once())
-                      ->method('getNameSpace')
-                      ->will($this->returnValue('test'));
+                      ->method('clear');
 
          $this->db->logout($this->authEvent);
     }
