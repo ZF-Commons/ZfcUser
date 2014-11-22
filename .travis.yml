@@ -14,8 +14,8 @@ before_script:
   - mysql -e "create database IF NOT EXISTS zfc_user;" -uroot
 
 script:
+  - ./vendor/bin/phpcs --standard=./phpcs.xml -np . --report=summary
   - ./vendor/bin/phpunit --bootstrap=tests/bootstrap.php
-  - ./vendor/bin/phpcs --standard=./phpcs.xml -np .
 
 after_script:
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
