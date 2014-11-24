@@ -46,7 +46,7 @@ class User extends AbstractDbMapper implements UserInterface
 
     public function setTableName($tableName)
     {
-        $this->tableName=$tableName;
+        $this->tableName = $tableName;
     }
 
     public function insert($entity, $tableName = null, Hydrator $hydrator = null)
