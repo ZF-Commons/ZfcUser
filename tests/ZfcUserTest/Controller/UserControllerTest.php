@@ -143,6 +143,30 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
     }
 
+    /**
+     * @depend testActionControllHasIdentity
+     */
+    public function testProfileActionLoggedIn()
+    {
+        $controller = $this->controller;
+        $this->setUpZfcUserAuthenticationPlugin(array(
+            'hasIdentity'=>true
+        ));
+
+        $response = new Response();
+
+        $this->options->expects($this->any())
+            ->method('getEnableUserProfile')
+            ->will($this->returnValue(true));
+
+        $result = $this->controller->profileAction();
+
+        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
+        $this->assertEquals(
+            $this->options->getEnableUserProfile(),
+            $result->getVariable('enableUserProfile')
+        );
+    }
 
     /**
      * @dataProvider providerTrueOrFalseX2

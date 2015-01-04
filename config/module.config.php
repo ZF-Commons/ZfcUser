@@ -126,6 +126,16 @@ return array(
                             ),
                         ),
                     ),
+                    'profile' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/profile',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'profile',
+                            ),
+                        ),
+                    ),
                 ),
             ),
         ),
