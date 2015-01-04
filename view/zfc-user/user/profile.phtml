@@ -1,0 +1,19 @@
+<h1><?php echo $this->translate('User Profile'); ?></h1>
+
+<?php
+if (!$this->enableUserProfile) {
+    echo $this->translate('User profile is disabled');
+    return;
+} else {
+?>
+    <div style="float:left; padding-right:16px;">
+        Gravatar: <?php echo $this->gravatar($this->zfcUserIdentity()->getEmail()) ?>
+    </div>
+    <div style="float:left; padding-right:16px;">
+        Email Address: <?php echo $this->zfcUserIdentity()->getEmail() ?>
+    </div>
+    <div style="float:left; padding-right:16px;">
+        Display Name: <?php echo $this->zfcUserDisplayName() ?>!
+    </div>
+    <div style="clear:both;"></div>
+<?php } ?>

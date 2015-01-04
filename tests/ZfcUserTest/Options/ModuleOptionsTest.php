@@ -90,6 +90,24 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableUserProfile
+     * @covers ZfcUser\Options\ModuleOptions::setEnableUserProfile
+     */
+    public function testSetGetEnableUserProfile()
+    {
+        $this->options->setEnableUserProfile(false);
+        $this->assertFalse($this->options->getEnableUserProfile());
+    }
+
+    /**
+     * @covers ZfcUser\Options\ModuleOptions::getEnableUserProfile
+     */
+    public function testGetEnableUserProfile()
+    {
+        $this->assertTrue($this->options->getEnableUserProfile());
+    }
+
+    /**
      * @covers ZfcUser\Options\ModuleOptions::getEnableRegistration
      * @covers ZfcUser\Options\ModuleOptions::setEnableRegistration
      */
