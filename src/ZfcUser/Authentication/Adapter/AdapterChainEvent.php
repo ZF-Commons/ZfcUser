@@ -27,6 +27,7 @@ class AdapterChainEvent extends Event
     {
         if (null === $identity) {
             // Setting the identity to null resets the code and messages.
+            $this->setCredential();
             $this->setCode();
             $this->setMessages();
         }
@@ -39,7 +40,7 @@ class AdapterChainEvent extends Event
         return $this->getParam('credential');
     }
     
-    public function setCredential($credential)
+    public function setCredential($credential = null)
     {
         $this->setParam('credential', $credential);
         return $this;
