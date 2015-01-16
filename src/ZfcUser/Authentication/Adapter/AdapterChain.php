@@ -44,10 +44,11 @@ class AdapterChain extends EventProvider implements AdapterInterface
      * @return Response|bool
      * @throws Exception\AuthenticationEventException
      */
-    public function prepareForAuthentication(Request $request)
+    public function prepareForAuthentication($identity, $credential)
     {
         $e = $this->getEvent();
-        $e->setRequest($request);
+        $e->setIdentity($identity);
+        $e->setCredential($credential);
 
         $this->getEventManager()->trigger('authenticate.pre', $e);
 

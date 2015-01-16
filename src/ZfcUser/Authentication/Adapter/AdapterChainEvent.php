@@ -8,11 +8,6 @@ use Zend\Stdlib\RequestInterface as Request;
 class AdapterChainEvent extends Event
 {
     /**
-     * @var Request
-     */
-    private $request;
-
-    /**
      * getIdentity
      *
      * @return mixed
@@ -36,6 +31,17 @@ class AdapterChainEvent extends Event
             $this->setMessages();
         }
         $this->setParam('identity', $identity);
+        return $this;
+    }
+    
+    public function getCredential()
+    {
+        return $this->getParam('credential');
+    }
+    
+    public function setCredential($credential)
+    {
+        $this->setParam('credential', $credential);
         return $this;
     }
 
@@ -80,29 +86,6 @@ class AdapterChainEvent extends Event
     public function setMessages($messages = array())
     {
         $this->setParam('messages', $messages);
-        return $this;
-    }
-
-    /**
-     * getRequest
-     *
-     * @return Request
-     */
-    public function getRequest()
-    {
-        return $this->getParam('request');
-    }
-
-    /**
-     * setRequest
-     *
-     * @param Request $request
-     * @return AdapterChainEvent
-     */
-    public function setRequest(Request $request)
-    {
-        $this->setParam('request', $request);
-        $this->request = $request;
         return $this;
     }
 }

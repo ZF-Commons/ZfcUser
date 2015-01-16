@@ -161,7 +161,10 @@ class UserController extends AbstractActionController
         $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
         $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
 
-        $result = $adapter->prepareForAuthentication($this->getRequest());
+        $result = $adapter->prepareForAuthentication(
+            $this->params()->fromPost('identity'),
+            $this->params()->fromPost('credential')
+        );
 
         // Return early if an adapter returned a response
         if ($result instanceof Response) {
