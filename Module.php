@@ -64,7 +64,6 @@ class Module implements
         return array(
             'invokables' => array(
                 'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
             ),
