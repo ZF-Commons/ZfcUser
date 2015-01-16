@@ -17,7 +17,8 @@ class MapperUsernameFactory implements FactoryInterface
         return new Mapper(
             $serviceLocator->get('zfcuser_user_mapper'),
             'findByUsername',
-            $serviceLocator->get('zfcuser_authentication_credentialprocessor')
+            $serviceLocator->get('zfcuser_authentication_credentialprocessor'),
+            $serviceLocator->get('zfcuser_authentication_storage')
         );
     }
 }

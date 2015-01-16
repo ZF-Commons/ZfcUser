@@ -7,6 +7,7 @@ use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthenticationEvent;
 use ZfcUser\Entity\UserInterface as UserEntity;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 use Zend\Crypt\Password\PasswordInterface;
+use Zend\Authentication\Storage\StorageInterface;
 
 class Mapper extends AbstractAdapter
 {
@@ -25,11 +26,14 @@ class Mapper extends AbstractAdapter
      */
     protected $credentialProcessor;
     
-    public function __construct(UserMapper $mapper, $mapperMethod, PasswordInterface $validator)
+    public function __construct(UserMapper $mapper, $mapperMethod, PasswordInterface $validator, StorageInterface $storage = null)
     {
         $this->mapper = $mapper;
         $this->mapperMethod = $mapperMethod;
         $this->credentialProcessor = $validator;
+        if (!is_null($storage)) {
+            $this->setStorage($storage);
+        }
     }
 
     /**
