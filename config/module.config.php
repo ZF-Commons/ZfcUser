@@ -39,7 +39,6 @@ return array(
     ),
     'service_manager' => array(
         'invokables' => array(
-            'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
             'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
             'zfcuser_user_service'              => 'ZfcUser\Service\User',
             'zfcuser_authentication_storage_backend_session' => 'Zend\Authentication\Storage\Session',
@@ -48,6 +47,9 @@ return array(
             'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
             'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
             'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
+            'ZfcUser\Authentication\Adapter\MapperUsername' => 'ZfcUser\Factory\Authentication\Adapter\MapperUsernameFactory',
+            'ZfcUser\Authentication\Adapter\MapperEmail'    => 'ZfcUser\Factory\Authentication\Adapter\MapperEmailFactory',
+            'zfcuser_authentication_credentialprocessor_bcrypt' => 'ZfcUser\Factory\Authentication\CredentialProcessor\BcryptFactory',
             'ZfcUser\Authentication\Storage\Mapper'         => 'ZfcUser\Factory\Authentication\Storage\MapperFactory',
             'zfcuser_login_form'                            => 'ZfcUser\Factory\Form\LoginFormFactory',
             'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
@@ -59,6 +61,7 @@ return array(
         'aliases' => array(
             'zfcuser_register_form_hydrator' => 'zfcuser_user_hydrator',
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
+            'zfcuser_authentication_credentialprocessor' => 'zfcuser_authentication_credentialprocessor_bcrypt',
             'zfcuser_authentication_storage' => 'ZfcUser\Authentication\Storage\Mapper',
             'zfcuser_authentication_storage_backend' => 'zfcuser_authentication_storage_backend_session',
         ),
