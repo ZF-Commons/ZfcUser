@@ -21,7 +21,7 @@ class MapperUsernameFactoryTest extends \PHPUnit_Framework_TestCase
             $this->getMock('Zend\Crypt\Password\PasswordInterface')
         );
         
-        $factory = new MapperUsernameFactory();        
+        $factory = new MapperUsernameFactory();
         $mapper = $factory->createService($serviceLocator);
         $this->assertInstanceOf('ZfcUser\Authentication\Adapter\Mapper', $mapper);
     }

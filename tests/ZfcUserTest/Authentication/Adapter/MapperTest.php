@@ -9,9 +9,6 @@ use Zend\Authentication\Result;
 
 class MapperTest extends TestCase
 {
-    const PASSWORD_COST_04 = '04';
-    const PASSWORD_COST_10 = '10';
-
     /**
      * The object to be tested.
      *

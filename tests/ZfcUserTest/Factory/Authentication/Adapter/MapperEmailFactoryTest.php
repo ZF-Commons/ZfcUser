@@ -21,7 +21,7 @@ class MapperEmailFactoryTest extends \PHPUnit_Framework_TestCase
             $this->getMock('Zend\Crypt\Password\PasswordInterface')
         );
         
-        $factory = new MapperEmailFactory();        
+        $factory = new MapperEmailFactory();
         $mapper = $factory->createService($serviceLocator);
         $this->assertInstanceOf('ZfcUser\Authentication\Adapter\Mapper', $mapper);
     }

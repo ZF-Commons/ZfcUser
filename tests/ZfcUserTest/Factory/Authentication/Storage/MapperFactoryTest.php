@@ -21,7 +21,7 @@ class MapperFactoryTest extends \PHPUnit_Framework_TestCase
             $this->getMock('Zend\Authentication\Storage\StorageInterface')
         );
         
-        $factory = new MapperFactory();        
+        $factory = new MapperFactory();
         $mapper = $factory->createService($serviceLocator);
         $this->assertInstanceOf('ZfcUser\Authentication\Storage\Mapper', $mapper);
     }

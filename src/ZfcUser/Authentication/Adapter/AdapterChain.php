@@ -13,7 +13,7 @@ class AdapterChain extends AbstractAdapter
      */
     protected $adapters;
     
-    public function __construct() 
+    public function __construct()
     {
         $this->adapters = new PriorityList();
         $this->adapters->isLIFO(false);
@@ -32,19 +32,19 @@ class AdapterChain extends AbstractAdapter
      */
     public function authenticate()
     {
-        foreach ( $this->adapters as $adapter ) {
+        foreach ($this->adapters as $adapter) {
             $adapter->setIdentity($this->getIdentity());
             $adapter->setCredential($this->getCredential());
             
             $result = $adapter->authenticate();
-            if ( $result->isValid() ) {
+            if ($result->isValid()) {
                 return $result;
             }
         }
         
         //@TODO throw an exception if no result? (no adapters tried)
         
-        return ( isset($result) && $result instanceof Result )
+        return (isset($result) && $result instanceof Result)
             ? $result
             : new Result(Result::FAILURE_UNCATEGORIZED, null);
     }

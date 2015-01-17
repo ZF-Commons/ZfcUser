@@ -199,5 +199,4 @@ class MapperTest extends \PHPUnit_Framework_TestCase
 
         $this->assertNull($reflectionProperty->getValue($this->adapter));
     }
-
 }
