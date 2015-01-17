@@ -16,6 +16,7 @@ class AdapterChain extends AbstractAdapter
     public function __construct() 
     {
         $this->adapters = new PriorityList();
+        $this->adapters->isLIFO(false);
     }
 
     public function attach($name, AbstractAdapter $adapter, $priority = 1)
