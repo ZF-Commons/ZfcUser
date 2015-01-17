@@ -1,15 +1,15 @@
 <?php
 
-namespace ZfcUserTest\Authentication\Adapter;
+namespace ZfcUserTest\Factory\Authentication\Adapter;
 
-use ZfcUser\Authentication\Adapter\AdapterChainServiceFactory;
+use ZfcUser\Factory\Authentication\Adapter\AdapterChainFactory;
 
-class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
+class AdapterChainFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * The object to be tested.
      *
-     * @var AdapterChainServiceFactory
+     * @var AdapterChainFactory
      */
     protected $factory;
 
@@ -23,112 +23,38 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected $options;
 
-    /**
-     * @var \Zend\EventManager\EventManagerInterface
-     */
-    protected $eventManager;
-
-
-    protected $serviceLocatorArray;
-
-    public function helperServiceLocator ($index)
-    {
-        return $this->serviceLocatorArray[$index];
-    }
-
-    /**
-     * Prepare the object to be tested.
-     */
-    protected function setUp()
-    {
-        $this->serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
-
-        $this->options = $this->getMockBuilder('ZfcUser\Options\ModuleOptions')
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->serviceLocatorArray = array (
-            'zfcuser_module_options'=>$this->options
-        );
-
-        $this->serviceLocator->expects($this->any())
-            ->method('get')
-            ->will($this->returnCallback(array($this,'helperServiceLocator')));
-
-        $this->eventManager = $this->getMock('Zend\EventManager\EventManager');
-
-        $this->factory = new AdapterChainServiceFactory();
-    }
-
-    /**
-     * @covers \ZfcUser\Authentication\Adapter\AdapterChainServiceFactory::createService
-     */
     public function testCreateService()
     {
-        $adapter = array(
-            'adapter1'=> $this->getMock(
-                'ZfcUser\Authentication\Adapter\AbstractAdapter',
-                array('authenticate', 'logout')
-            ),
-            'adapter2'=> $this->getMock(
-                'ZfcUser\Authentication\Adapter\AbstractAdapter',
-                array('authenticate', 'logout')
-            )
+        $this->serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+        
+        $this->options = $this->getMockBuilder('ZfcUser\Options\ModuleOptions')
+             ->disableOriginalConstructor()
+             ->getMock();
+
+        $adapters = array(
+            9999 => 'adapter1',
+            20   => 'adapter2',
         );
-        $adapterNames = array(100=>'adapter1', 200=>'adapter2');
+        $adapter1 = $this->getMock('Zend\Authentication\Adapter\AbstractAdapter');
+        $adapter2 = $this->getMock('Zend\Authentication\Adapter\AbstractAdapter');
+        
+        $this->options->expects($this->atLeastOnce())
+             ->method('getAuthAdapters')
+             ->will($this->returnValue($adapters));
 
-        $this->serviceLocatorArray = array_merge($this->serviceLocatorArray, $adapter);
+        $locatorMap = array(
+            array('zfcuser_module_options', $this->options),
+            array('adapter1', $adapter1),
+            array('adapter2', $adapter2),
+        );
+        
+        $this->serviceLocator->expects($this->atLeastOnce())
+            ->method('get')
+            ->will($this->returnValueMap($locatorMap));
 
-        $this->options->expects($this->once())
-                      ->method('getAuthAdapters')
-                      ->will($this->returnValue($adapterNames));
-
+        $this->factory = new AdapterChainFactory();
+        
         $adapterChain = $this->factory->createService($this->serviceLocator);
-
         $this->assertInstanceOf('ZfcUser\Authentication\Adapter\AdapterChain', $adapterChain);
-        $this->assertEquals(array('authenticate', 'logout'), $adapterChain->getEventManager()->getEvents());
-    }
-
-    /**
-     * @covers \ZfcUser\Authentication\Adapter\AdapterChainServiceFactory::setOptions
-     * @covers \ZfcUser\Authentication\Adapter\AdapterChainServiceFactory::getOptions
-     */
-    public function testGetOptionWithSetter()
-    {
-        $this->factory->setOptions($this->options);
-
-        $options = $this->factory->getOptions();
-
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $options);
-        $this->assertSame($this->options, $options);
-
-
-        $options2 = clone $this->options;
-        $this->factory->setOptions($options2);
-        $options = $this->factory->getOptions();
-
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $options);
-        $this->assertNotSame($this->options, $options);
-        $this->assertSame($options2, $options);
-    }
-
-    /**
-     * @covers \ZfcUser\Authentication\Adapter\AdapterChainServiceFactory::getOptions
-     */
-    public function testGetOptionWithLocator()
-    {
-        $options = $this->factory->getOptions($this->serviceLocator);
-
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $options);
-        $this->assertSame($this->options, $options);
-    }
-
-    /**
-     * @covers \ZfcUser\Authentication\Adapter\AdapterChainServiceFactory::getOptions
-     * @expectedException \ZfcUser\Authentication\Adapter\Exception\OptionsNotFoundException
-     */
-    public function testGetOptionFailing()
-    {
-        $options = $this->factory->getOptions();
     }
 }

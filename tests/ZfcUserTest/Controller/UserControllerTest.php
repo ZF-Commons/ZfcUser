@@ -207,8 +207,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         if ($isValid) {
             $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChain');
-            $adapter->expects($this->once())
-                    ->method('resetAdapters');
 
             $service = $this->getMock('Zend\Authentication\AuthenticationService');
             $service->expects($this->once())
@@ -349,11 +347,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $controller = $this->controller;
 
         $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChain');
-        $adapter->expects($this->once())
-                ->method('resetAdapters');
 
-        $adapter->expects($this->once())
-                ->method('logoutAdapters');
 
         $service = $this->getMock('Zend\Authentication\AuthenticationService');
         $service->expects($this->once())
@@ -418,14 +412,14 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
     public function testLoginRedirectFailsWithUrl()
     {
-
+        $this->markTestIncomplete();
     }
 
     /**
      * @dataProvider providerTestAuthenticateAction
      * @depend testActionControllHasIdentity
      */
-    public function testAuthenticateAction($wantRedirect, $post, $query, $prepareResult = false, $authValid = false)
+    public function testAuthenticateAction($wantRedirect, $post, $query, $authValid = false)
     {
         $controller = $this->controller;
         $response = new Response();
@@ -435,12 +429,12 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $params->expects($this->any())
                ->method('__invoke')
                ->will($this->returnSelf());
-        $params->expects($this->once())
+        $params->expects($this->any())
                ->method('fromPost')
                ->will($this->returnCallback(function ($key, $default) use ($post) {
                    return $post ?: $default;
                }));
-        $params->expects($this->once())
+        $params->expects($this->any())
                ->method('fromQuery')
                ->will($this->returnCallback(function ($key, $default) use ($query) {
                    return $query ?: $default;
@@ -454,9 +448,11 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChain');
         $adapter->expects($this->once())
-                ->method('prepareForAuthentication')
-                ->with($request)
-                ->will($this->returnValue($prepareResult));
+                ->method('setIdentity')
+                ->will($this->returnSelf());
+        $adapter->expects($this->once())
+                ->method('setCredential')
+                ->will($this->returnSelf());
 
         $service = $this->getMock('Zend\Authentication\AuthenticationService');
 
@@ -467,80 +463,72 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             'getAuthService'=>$service
         ));
 
-        if (is_bool($prepareResult)) {
+        $authResult = $this->getMockBuilder('Zend\Authentication\Result')
+                           ->disableOriginalConstructor()
+                           ->getMock();
+        $authResult->expects($this->once())
+                   ->method('isValid')
+                   ->will($this->returnValue($authValid));
 
-            $authResult = $this->getMockBuilder('Zend\Authentication\Result')
-                               ->disableOriginalConstructor()
-                               ->getMock();
-            $authResult->expects($this->once())
-                       ->method('isValid')
-                       ->will($this->returnValue($authValid));
+        $service->expects($this->once())
+                ->method('authenticate')
+                ->with($adapter)
+                ->will($this->returnValue($authResult));
 
-            $service->expects($this->once())
-                    ->method('authenticate')
-                    ->with($adapter)
-                    ->will($this->returnValue($authResult));
+        $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
+        $this->pluginManagerPlugins['redirect'] = $redirect;
 
-            $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
-            $this->pluginManagerPlugins['redirect'] = $redirect;
+        if (!$authValid) {
+            $flashMessenger = $this->getMock(
+                'Zend\Mvc\Controller\Plugin\FlashMessenger'
+            );
+            $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
-            if (!$authValid) {
-                $flashMessenger = $this->getMock(
-                    'Zend\Mvc\Controller\Plugin\FlashMessenger'
-                );
-                $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
+            $flashMessenger->expects($this->once())
+                           ->method('setNamespace')
+                           ->with('zfcuser-login-form')
+                           ->will($this->returnSelf());
 
-                $flashMessenger->expects($this->once())
-                               ->method('setNamespace')
-                               ->with('zfcuser-login-form')
-                               ->will($this->returnSelf());
+            $flashMessenger->expects($this->once())
+                           ->method('addMessage');
 
-                $flashMessenger->expects($this->once())
-                               ->method('addMessage');
+            $redirectQuery = ($post ?: $query ?: false);
+            $redirectQuery = $redirectQuery ? '?redirect=' . rawurlencode($redirectQuery) : '';
 
-                $adapter->expects($this->once())
-                        ->method('resetAdapters');
+            $redirect->expects($this->once())
+                     ->method('toUrl')
+                     ->with('user/login' . $redirectQuery)
+                     ->will($this->returnValue($response));
 
-                $redirectQuery = ($post ?: $query ?: false);
-                $redirectQuery = $redirectQuery ? '?redirect=' . rawurlencode($redirectQuery) : '';
+            $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url');
+            $url->expects($this->once())
+                ->method('fromRoute')
+                ->with($controller::ROUTE_LOGIN)
+                ->will($this->returnValue('user/login'));
+            $this->pluginManagerPlugins['url'] = $url;
 
-                $redirect->expects($this->once())
-                         ->method('toUrl')
-                         ->with('user/login' . $redirectQuery)
-                         ->will($this->returnValue($response));
+        } elseif ($wantRedirect && $hasRedirect) {
+            $redirect->expects($this->once())
+                     ->method('toRoute')
+                     ->with(($post ?: $query ?: false))
+                     ->will($this->returnValue($response));
+        } else {
 
-                $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url');
-                $url->expects($this->once())
-                    ->method('fromRoute')
-                    ->with($controller::ROUTE_LOGIN)
-                    ->will($this->returnValue('user/login'));
-                $this->pluginManagerPlugins['url'] = $url;
+            $redirect->expects($this->once())
+                     ->method('toRoute')
+                     ->with('zfcuser')
+                     ->will($this->returnValue($response));
 
-            } elseif ($wantRedirect && $hasRedirect) {
-                $redirect->expects($this->once())
-                         ->method('toRoute')
-                         ->with(($post ?: $query ?: false))
-                         ->will($this->returnValue($response));
-            } else {
-
-                $redirect->expects($this->once())
-                         ->method('toRoute')
-                         ->with('zfcuser')
-                         ->will($this->returnValue($response));
-
-                $this->options->expects($this->once())
-                              ->method('getLoginRedirectRoute')
-                              ->will($this->returnValue('zfcuser'));
-            }
-
-            $this->options->expects($this->any())
-                          ->method('getUseRedirectParameterIfPresent')
-                          ->will($this->returnValue((bool) $wantRedirect));
-
+            $this->options->expects($this->once())
+                          ->method('getLoginRedirectRoute')
+                          ->will($this->returnValue('zfcuser'));
         }
 
-        $result = $controller->authenticateAction();
+        $this->options->expects($this->any())
+                      ->method('getUseRedirectParameterIfPresent')
+                      ->will($this->returnValue((bool) $wantRedirect));
 
+        $result = $controller->authenticateAction();
 
     }
 
@@ -751,24 +739,24 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
     {
         // $redirect, $post, $query, $prepareResult = false, $authValid = false
         return array(
-            array(false, null,              null,              new Response(), false),
-            array(false, null,              null,              false,          false),
-            array(false, null,              null,              false,          true),
-            array(false, 'localhost/test1', null,              false,          false),
-            array(false, 'localhost/test1', null,              false,          true),
-            array(false, 'localhost/test1', 'localhost/test2', false,          false),
-            array(false, 'localhost/test1', 'localhost/test2', false,          true),
-            array(false, null,              'localhost/test2', false,          false),
-            array(false, null,              'localhost/test2', false,          true),
+            array(false, null,              null,              false),
+            array(false, null,              null,              false),
+            array(false, null,              null,              true),
+            array(false, 'localhost/test1', null,              false),
+            array(false, 'localhost/test1', null,              true),
+            array(false, 'localhost/test1', 'localhost/test2', false),
+            array(false, 'localhost/test1', 'localhost/test2', true),
+            array(false, null,              'localhost/test2', false),
+            array(false, null,              'localhost/test2', true),
 
-            array(true,  null,              null,              false,          false),
-            array(true,  null,              null,              false,          true),
-            array(true,  'localhost/test1', null,              false,          false),
-            array(true,  'localhost/test1', null,              false,          true),
-            array(true,  'localhost/test1', 'localhost/test2', false,          false),
-            array(true,  'localhost/test1', 'localhost/test2', false,          true),
-            array(true,  null,              'localhost/test2', false,          false),
-            array(true,  null,              'localhost/test2', false,          true),
+            array(true,  null,              null,              false),
+            array(true,  null,              null,              true),
+            array(true,  'localhost/test1', null,              false),
+            array(true,  'localhost/test1', null,              true),
+            array(true,  'localhost/test1', 'localhost/test2', false),
+            array(true,  'localhost/test1', 'localhost/test2', true),
+            array(true,  null,              'localhost/test2', false),
+            array(true,  null,              'localhost/test2', true),
         );
     }
 
