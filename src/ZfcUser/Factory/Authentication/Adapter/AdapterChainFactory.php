@@ -7,11 +7,6 @@ use ZfcUser\Authentication\Adapter\AdapterChain;
 
 class AdapterChainFactory implements FactoryInterface
 {
-    /**
-     * @var ModuleOptions
-     */
-    protected $options;
-
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
         $options = $serviceLocator->get('zfcuser_module_options');

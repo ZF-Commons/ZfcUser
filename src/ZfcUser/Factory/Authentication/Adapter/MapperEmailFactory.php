@@ -12,8 +12,6 @@ class MapperEmailFactory implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $options = $serviceLocator->get('zfcuser_module_options');
-        
         return new Mapper(
             $serviceLocator->get('zfcuser_user_mapper'),
             'findByEmail',
