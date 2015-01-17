@@ -44,7 +44,7 @@ class AdapterChain extends AbstractAdapter
         
         //@TODO throw an exception if no result? (no adapters tried)
         
-        return $result instanceof Result
+        return ( isset($result) && $result instanceof Result )
             ? $result
             : new Result(Result::FAILURE_UNCATEGORIZED, null);
     }
