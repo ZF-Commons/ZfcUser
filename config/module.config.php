@@ -46,7 +46,7 @@ return array(
         'factories' => array(
             'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
             'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
-            'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
+            'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Factory\Authentication\Adapter\AdapterChainFactory',
             'ZfcUser\Authentication\Adapter\MapperUsername' => 'ZfcUser\Factory\Authentication\Adapter\MapperUsernameFactory',
             'ZfcUser\Authentication\Adapter\MapperEmail'    => 'ZfcUser\Factory\Authentication\Adapter\MapperEmailFactory',
             'zfcuser_authentication_credentialprocessor_bcrypt' => 'ZfcUser\Factory\Authentication\CredentialProcessor\BcryptFactory',

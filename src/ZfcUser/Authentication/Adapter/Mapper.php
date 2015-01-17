@@ -2,12 +2,11 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\Authentication\Result as AuthenticationResult;
-use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthenticationEvent;
+use Zend\Authentication\Adapter\AbstractAdapter;
 use ZfcUser\Entity\UserInterface as UserEntity;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 use Zend\Crypt\Password\PasswordInterface;
-use Zend\Authentication\Storage\StorageInterface;
+use Zend\Authentication\Result;
 
 class Mapper extends AbstractAdapter
 {
@@ -26,59 +25,38 @@ class Mapper extends AbstractAdapter
      */
     protected $credentialProcessor;
     
-    public function __construct(UserMapper $mapper, $mapperMethod, PasswordInterface $validator, StorageInterface $storage = null)
+    public function __construct(UserMapper $mapper, $mapperMethod, PasswordInterface $validator)
     {
         $this->mapper = $mapper;
         $this->mapperMethod = $mapperMethod;
         $this->credentialProcessor = $validator;
-        if (!is_null($storage)) {
-            $this->setStorage($storage);
-        }
     }
 
-    /**
-     * Called when user id logged out
-     */
-    public function logout()
+    public function authenticate()
     {
-        $this->getStorage()->clear();
-    }
-
-    public function authenticate(AuthenticationEvent $event)
-    {
-        if ($this->isSatisfied()) {
-            $storage = $this->getStorage()->read();
-            $event->setIdentity($storage['identity'])
-                  ->setCode(AuthenticationResult::SUCCESS)
-                  ->setMessages(array('Authentication successful.'));
-            return;
-        }
-
-        $userObject = call_user_func(array($this->mapper, $this->mapperMethod), $event->getIdentity());
+        $userObject = call_user_func(array($this->mapper, $this->mapperMethod), $this->getIdentity());
 
         if (!$userObject instanceof UserEntity) {
-            $event->setCode(AuthenticationResult::FAILURE_IDENTITY_NOT_FOUND)
-                  ->setMessages(array('A record with the supplied identity could not be found.'));
-            $this->setSatisfied(false);
-            return false;
+            return new Result(
+                Result::FAILURE_IDENTITY_NOT_FOUND,
+                null,
+                array('A record with the supplied identity could not be found.')
+            );
         }
 
-        if (!$this->credentialProcessor->verify($event->getCredential(), $userObject->getPassword())) {
+        if (!$this->credentialProcessor->verify($this->getCredential(), $userObject->getPassword())) {
             // Password does not match
-            $event->setCode(AuthenticationResult::FAILURE_CREDENTIAL_INVALID)
-                  ->setMessages(array('Supplied credential is invalid.'));
-            $this->setSatisfied(false);
-            return false;
+            return new Result(
+                Result::FAILURE_CREDENTIAL_INVALID,
+                null,
+                array('Supplied credential is invalid.')
+            );
         }
 
-        // Success!
-        $event->setIdentity($userObject->getId());
-
-        $this->setSatisfied(true);
-        $storage = $this->getStorage()->read();
-        $storage['identity'] = $event->getIdentity();
-        $this->getStorage()->write($storage);
-        $event->setCode(AuthenticationResult::SUCCESS)
-              ->setMessages(array('Authentication successful.'));
+        return new Result(
+            Result::SUCCESS,
+            $userObject,
+            array('Authentication successful.')
+        );
     }
 }

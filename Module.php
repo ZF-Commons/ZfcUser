@@ -69,7 +69,6 @@ class Module implements
             'factories' => array(
                 'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
                 'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
-                'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
                 'zfcuser_login_form'                            => 'ZfcUser\Factory\Form\LoginFormFactory',
                 'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
                 'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',

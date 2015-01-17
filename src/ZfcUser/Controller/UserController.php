@@ -124,8 +124,6 @@ class UserController extends AbstractActionController
             return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
         }
 
-        // clear adapters
-        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
         return $this->forward()->dispatch(static::CONTROLLER_NAME, array('action' => 'authenticate'));
@@ -136,8 +134,6 @@ class UserController extends AbstractActionController
      */
     public function logoutAction()
     {
-        $this->zfcUserAuthentication()->getAuthAdapter()->resetAdapters();
-        $this->zfcUserAuthentication()->getAuthAdapter()->logoutAdapters();
         $this->zfcUserAuthentication()->getAuthService()->clearIdentity();
 
         $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
@@ -158,24 +154,15 @@ class UserController extends AbstractActionController
             return $this->redirect()->toRoute($this->options->getLoginRedirectRoute());
         }
 
-        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
         $redirect = $this->params()->fromPost('redirect', $this->params()->fromQuery('redirect', false));
-
-        $result = $adapter->prepareForAuthentication(
-            $this->params()->fromPost('identity'),
-            $this->params()->fromPost('credential')
-        );
-
-        // Return early if an adapter returned a response
-        if ($result instanceof Response) {
-            return $result;
-        }
+        
+        $adapter = $this->zfcUserAuthentication()->getAuthAdapter();
+        $adapter->setIdentity($this->params()->fromPost('identity'));
+        $adapter->setCredential($this->params()->fromPost('credential'));
 
         $auth = $this->zfcUserAuthentication()->getAuthService()->authenticate($adapter);
-
         if (!$auth->isValid()) {
             $this->flashMessenger()->setNamespace($this->loginNamespace)->addMessage($this->failedLoginMessage);
-            $adapter->resetAdapters();
             return $this->redirect()->toUrl(
                 $this->url()->fromRoute(static::ROUTE_LOGIN) .
                 ($redirect ? '?redirect='. rawurlencode($redirect) : '')

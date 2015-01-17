@@ -17,8 +17,7 @@ class MapperEmailFactory implements FactoryInterface
         return new Mapper(
             $serviceLocator->get('zfcuser_user_mapper'),
             'findByEmail',
-            $serviceLocator->get('zfcuser_authentication_credentialprocessor'),
-            $serviceLocator->get('zfcuser_authentication_storage')
+            $serviceLocator->get('zfcuser_authentication_credentialprocessor')
         );
     }
 }
