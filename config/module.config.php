@@ -58,6 +58,11 @@ return array(
             'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
             'zfcuser_user_hydrator'                         => 'ZfcUser\Factory\Mapper\UserHydratorFactory',
         ),
+        'delegators' => array(
+            'zfcuser_authentication_storage_backend_session' => array(
+                'ZfcUser\Factory\Authentication\Listener\RegenerateSessionIdentifierFactory'
+            ),
+        ),
         'aliases' => array(
             'zfcuser_register_form_hydrator' => 'zfcuser_user_hydrator',
             'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
