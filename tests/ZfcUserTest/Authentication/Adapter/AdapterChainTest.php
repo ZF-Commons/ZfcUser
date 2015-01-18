@@ -16,7 +16,6 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Prepare the objects to be tested.
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::__construct
      */
     protected function setUp()
     {
@@ -25,9 +24,26 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->adapterChain->setCredential('credential');
     }
 
-    /**
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::authenticate
-     */
+    public function testAttachTriggersEvent()
+    {
+        $adapter1 = $this->getMockForAbstractClass('Zend\Authentication\Adapter\AbstractAdapter');
+        
+        $triggerCount = 0;
+        $this->adapterChain->getEventManager()->attach('attach', function ($e) use ($adapter1, &$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('name', $e->getParams());
+            $this->assertEquals('adapter1', $e->getParam('name'));
+            $this->assertArrayHasKey('adapter', $e->getParams());
+            $this->assertSame($adapter1, $e->getParam('adapter'));
+            $this->assertArrayHasKey('priority', $e->getParams());
+            $this->assertEquals(29, $e->getParam('priority'));
+            $triggerCount++;
+        });
+
+        $this->adapterChain->attach('adapter1', $adapter1, 29);
+        $this->assertEquals(1, $triggerCount);
+    }
+
     public function testAuthenticateWithNoAdaptersReturnsUncategorizedFailure()
     {
         $result = $this->adapterChain->authenticate();
@@ -38,10 +54,6 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result->getMessages(), array());
     }
 
-    /**
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::authenticate
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::attach
-     */
     public function testAuthenticateWithZeroAdapterMatchesReturnsLastAdapterResult()
     {
         $result1 = new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null);
@@ -62,11 +74,40 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($result->getMessages(), array());
     }
     
+    public function testAuthenticateTriggersEventsOnFailure()
+    {
+        $em = $this->adapterChain->getEventManager();
+        
+        $triggerCount['pre'] = 0;
+        $em->attach('authenticate.pre', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertEmpty($e->getParams());
+            $triggerCount['pre']++;
+        });
+        
+        $triggerCount['success'] = 0;
+        $em->attach('authenticate.success', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('adapter', $e->getParams());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['success']++;
+        });
+                
+        $triggerCount['failure'] = 0;
+        $em->attach('authenticate.failure', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['failure']++;
+        });
+        
+        $this->testAuthenticateWithZeroAdapterMatchesReturnsLastAdapterResult();
+        $this->assertEquals(1, $triggerCount['pre']);
+        $this->assertEquals(0, $triggerCount['success']);
+        $this->assertEquals(1, $triggerCount['failure']);
+    }
+    
     /**
      * Also enforces FIFO behavior of AdapterChain (If LIFO, adapter2 would execute first)
-     * 
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::authenticate
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::attach
      */
     public function testAuthenticateWithAdapterMatchReturnsSuccessfulAdapterResult()
     {
@@ -85,5 +126,55 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(Result::SUCCESS, $result->getCode());
         $this->assertEquals($result->getIdentity(), $this->adapterChain->getIdentity());
         $this->assertEquals($result->getMessages(), array());
+    }
+
+    public function testAuthenticateTriggersEventsOnSuccess()
+    {
+        $em = $this->adapterChain->getEventManager();
+        
+        $triggerCount['pre'] = 0;
+        $em->attach('authenticate.pre', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertEmpty($e->getParams());
+            $triggerCount['pre']++;
+        });
+        
+        $triggerCount['success'] = 0;
+        $em->attach('authenticate.success', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('adapter', $e->getParams());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['success']++;
+        });
+                
+        $triggerCount['failure'] = 0;
+        $em->attach('authenticate.failure', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['failure']++;
+        });
+        
+        $this->testAuthenticateWithAdapterMatchReturnsSuccessfulAdapterResult();
+        $this->assertEquals(1, $triggerCount['pre']);
+        $this->assertEquals(1, $triggerCount['success']);
+        $this->assertEquals(0, $triggerCount['failure']);
+    }
+    
+    public function testGetSetCredential()
+    {
+        $this->adapterChain->setCredential('foo');
+        $this->assertEquals('foo', $this->adapterChain->getCredential());
+        
+        $this->adapterChain->setCredential(null);
+        $this->assertNull($this->adapterChain->getCredential());
+    }
+
+    public function testGetSetIdentity()
+    {
+        $this->adapterChain->setIdentity('baz');
+        $this->assertEquals('baz', $this->adapterChain->getIdentity());
+        
+        $this->adapterChain->setIdentity(null);
+        $this->assertNull($this->adapterChain->getIdentity());
     }
 }
