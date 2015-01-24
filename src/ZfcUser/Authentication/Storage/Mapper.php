@@ -6,6 +6,10 @@ use Zend\Authentication\Storage\StorageInterface;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 use ZfcUser\Entity\UserInterface as UserEntity;
 
+/**
+ * Zend\Authentication Storage decorator which converts user identifier
+ * stored in the session container to a User entity on read
+ */
 class Mapper implements StorageInterface
 {
     /**
@@ -19,10 +23,14 @@ class Mapper implements StorageInterface
     protected $mapper;
 
     /**
-     * @var mixed
+     * @var UserEntity|null
      */
     protected $resolvedIdentity;
 
+    /**
+     * @param UserMapper $mapper Mapper to load user entity from
+     * @param StorageInterface $storage Decorated storage object
+     */
     public function __construct(UserMapper $mapper, StorageInterface $storage)
     {
         $this->mapper = $mapper;
@@ -51,12 +59,11 @@ class Mapper implements StorageInterface
     }
 
     /**
-     * Returns the contents of storage
-     *
-     * Behavior is undefined when storage is empty.
+     * Returns the contents of storage as a User entity or null if the
+     * identifier in storage does not map to an existing user account. 
      *
      * @throws \Zend\Authentication\Exception\InvalidArgumentException If reading contents from storage is impossible
-     * @return mixed
+     * @return UserEntity|null
      */
     public function read()
     {

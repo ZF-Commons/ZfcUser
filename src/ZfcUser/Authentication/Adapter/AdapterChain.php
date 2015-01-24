@@ -7,6 +7,12 @@ use Zend\Stdlib\PriorityList;
 use Zend\Authentication\Result;
 use Zend\EventManager\EventManagerAwareTrait;
 
+/**
+ * Chainable authentication adapter for Zend\Authentication
+ * 
+ * Allows multiple authentication adapters to be tried in succession, 
+ * breaking the chain on the first adapter to return a successful result
+ */
 class AdapterChain extends AbstractAdapter
 {
     use EventManagerAwareTrait;
@@ -22,6 +28,14 @@ class AdapterChain extends AbstractAdapter
         $this->adapters->isLIFO(false);
     }
 
+    /**
+     * Attach an authentication adapter to the chain at the specified priority
+     * 
+     * @param type $name
+     * @param AbstractAdapter $adapter
+     * @param type $priority
+     * @return \ZfcUser\Authentication\Adapter\AdapterChain
+     */
     public function attach($name, AbstractAdapter $adapter, $priority = 1)
     {
         $argv = compact('name', 'adapter', 'priority');
@@ -32,9 +46,12 @@ class AdapterChain extends AbstractAdapter
     }
     
     /**
-     * Returns the authentication result
+     * Cycles through the attached adapters, short-circuiting when a 
+     * successful authentication result is returned.  Adapters are executed
+     * in descending priority order, with adapters at the same priority level
+     * executed in order of registration (FIFO)
      *
-     * @return AuthenticationResult
+     * @return Result
      */
     public function authenticate()
     {

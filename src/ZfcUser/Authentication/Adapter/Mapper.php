@@ -8,6 +8,10 @@ use ZfcUser\Mapper\UserInterface as UserMapper;
 use Zend\Crypt\Password\PasswordInterface;
 use Zend\Authentication\Result;
 
+/**
+ * Authentication adatper which queries the standard ZfcUser mapper for
+ * an account matching the provided identity and verifies credential match
+ */
 class Mapper extends AbstractAdapter
 {
     /**
@@ -25,6 +29,11 @@ class Mapper extends AbstractAdapter
      */
     protected $credentialProcessor;
     
+    /**
+     * @param UserMapper $mapper ZfcUser mapper instance
+     * @param type $mapperMethod Name of mapper method to pass identity into
+     * @param PasswordInterface $validator Credential validator instance
+     */
     public function __construct(UserMapper $mapper, $mapperMethod, PasswordInterface $validator)
     {
         $this->mapper = $mapper;
@@ -32,6 +41,9 @@ class Mapper extends AbstractAdapter
         $this->credentialProcessor = $validator;
     }
 
+    /**
+     * @return Result
+     */
     public function authenticate()
     {
         $userObject = call_user_func(array($this->mapper, $this->mapperMethod), $this->getIdentity());
