@@ -159,22 +159,4 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(1, $triggerCount['success']);
         $this->assertEquals(0, $triggerCount['failure']);
     }
-    
-    public function testGetSetCredential()
-    {
-        $this->adapterChain->setCredential('foo');
-        $this->assertEquals('foo', $this->adapterChain->getCredential());
-        
-        $this->adapterChain->setCredential(null);
-        $this->assertNull($this->adapterChain->getCredential());
-    }
-
-    public function testGetSetIdentity()
-    {
-        $this->adapterChain->setIdentity('baz');
-        $this->assertEquals('baz', $this->adapterChain->getIdentity());
-        
-        $this->adapterChain->setIdentity(null);
-        $this->assertNull($this->adapterChain->getIdentity());
-    }
 }
