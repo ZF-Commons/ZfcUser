@@ -44,6 +44,7 @@ class Base extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'password',
+            'type' => 'password',
             'options' => array(
                 'label' => 'Password',
             ),
@@ -54,6 +55,7 @@ class Base extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'passwordVerify',
+            'type' => 'password',
             'options' => array(
                 'label' => 'Password Verify',
             ),
