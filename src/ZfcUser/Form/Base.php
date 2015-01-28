@@ -48,7 +48,7 @@ class Base extends ProvidesEventsForm
                 'label' => 'Password',
             ),
             'attributes' => array(
-                'type' => 'password',
+                'type' => 'password'
             ),
         ));
 
@@ -59,7 +59,7 @@ class Base extends ProvidesEventsForm
                 'label' => 'Password Verify',
             ),
             'attributes' => array(
-                'type' => 'password',
+                'type' => 'password'
             ),
         ));
 
