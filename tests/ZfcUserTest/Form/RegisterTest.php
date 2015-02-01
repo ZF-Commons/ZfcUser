@@ -6,6 +6,9 @@ use ZfcUser\Form\Register as Form;
 
 class RegisterTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @dataProvider providerTestConstruct
+     */
     public function testConstruct($useCaptcha = false)
     {
         $options = $this->getMock('ZfcUser\Options\RegistrationOptionsInterface');

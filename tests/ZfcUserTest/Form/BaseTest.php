@@ -6,9 +6,6 @@ use ZfcUserTest\Form\TestAsset\BaseExtension as Form;
 
 class BaseTest extends \PHPUnit_Framework_TestCase
 {
-    /**
-     * @dataProvider providerTestConstruct
-     */
     public function testConstruct()
     {
         $form = new Form();
