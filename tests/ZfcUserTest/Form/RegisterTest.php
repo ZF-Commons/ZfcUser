@@ -6,7 +6,7 @@ use ZfcUser\Form\Register as Form;
 
 class RegisterTest extends \PHPUnit_Framework_TestCase
 {
-    public function testConstruct()
+    public function testConstruct($useCaptcha = false)
     {
         $options = $this->getMock('ZfcUser\Options\RegistrationOptionsInterface');
         $options->expects($this->once())
@@ -18,6 +18,14 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $options->expects($this->any())
                 ->method('getUseRegistrationFormCaptcha')
                 ->will($this->returnValue(false));
+        if ($useCaptcha && class_exists('\Zend\Captcha\AbstractAdapter')) {
+            $captcha = $this->getMockForAbstractClass('\Zend\Captcha\AbstractAdapter');
+
+            $options->expects($this->once())
+                ->method('getFormCaptchaOptions')
+                ->will($this->returnValue($captcha));
+        }
+
         $form = new Form(null, $options);
 
         $elements = $form->getElements();
@@ -28,6 +36,14 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('email', $elements);
         $this->assertArrayHasKey('password', $elements);
         $this->assertArrayHasKey('passwordVerify', $elements);
+    }
+
+    public function providerTestConstruct()
+    {
+        return array(
+            array(true),
+            array(false)
+        );
     }
 
     public function testSetGetRegistrationOptions()
