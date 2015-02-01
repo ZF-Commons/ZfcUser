@@ -38,6 +38,7 @@ class Login extends ProvidesEventsForm
         //
         $this->add(array(
             'name' => 'credential',
+            'type' => 'password',
             'options' => array(
                 'label' => 'Password',
             ),
