@@ -20,7 +20,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue(false));
         $options->expects($this->any())
                 ->method('getUseRegistrationFormCaptcha')
-                ->will($this->returnValue(false));
+                ->will($this->returnValue($useCaptcha));
         if ($useCaptcha && class_exists('\Zend\Captcha\AbstractAdapter')) {
             $captcha = $this->getMockForAbstractClass('\Zend\Captcha\AbstractAdapter');
 
