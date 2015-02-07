@@ -22,6 +22,11 @@ class Register extends Base
     {
         $this->setRegistrationOptions($options);
         parent::__construct($name);
+    }
+
+    public function init()
+    {
+        parent::init();
 
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {
             $this->add(array(
@@ -45,7 +50,6 @@ class Register extends Base
             $this->add($this->captchaElement, array('name'=>'captcha'));
         }
         $this->get('submit')->setLabel('Register');
-        $this->getEventManager()->trigger('init', $this);
     }
 
     public function setCaptchaElement(Captcha $captchaElement)

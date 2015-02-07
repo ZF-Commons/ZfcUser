@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Controller;
 
+use Zend\Form\FormElementManager;
 use ZfcUser\Controller\RedirectCallback;
 use ZfcUser\Controller\UserController as Controller;
 use Zend\Http\Response;
@@ -964,7 +965,8 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetterGetterServices(
         $methode,
-        $useServiceLocator,
+        $serviceLocator,
+        $usesFormElementManager,
         $servicePrototype,
         $serviceName,
         $callback = null
@@ -981,12 +983,29 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         }
 
 
-        if ($useServiceLocator) {
+        if ($serviceLocator) {
             $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
-            $serviceLocator->expects($this->once())
-                ->method('get')
-                ->with($serviceName)
-                ->will($this->returnValue($servicePrototype));
+
+            if ($usesFormElementManager) {
+                $formElementManager = $this->getMock('Zend\Form\FormElementManager');
+
+                // This call is part of a temporary fix. Have to Mock the response, but don't want to require it.
+                $serviceLocator->expects($this->any())
+                    ->method('get')
+                    ->with('FormElementManager')
+                    ->will($this->returnValue($formElementManager));
+
+                $formElementManager->expects($this->once())
+                    ->method('get')
+                    ->with($serviceName)
+                    ->will($this->returnValue($servicePrototype));
+
+            } else {
+                $serviceLocator->expects($this->once())
+                    ->method('get')
+                    ->with($serviceName)
+                    ->will($this->returnValue($servicePrototype));
+            }
 
             $controller->setServiceLocator($serviceLocator);
         } else {
@@ -1092,23 +1111,22 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         };
 
 
-
         return array(
             // $methode, $useServiceLocator, $servicePrototype, $serviceName, $loginFormCallback
-            array('UserService', true, new UserService(), 'zfcuser_user_service' ),
-            array('UserService', false, new UserService(), null ),
-            array('RegisterForm', true, new Form(), 'zfcuser_register_form' ),
-            array('RegisterForm', false, new Form(), null ),
-            array('ChangePasswordForm', true, new Form(), 'zfcuser_change_password_form' ),
-            array('ChangePasswordForm', false, new Form(), null ),
-            array('ChangeEmailForm', true, new Form(), 'zfcuser_change_email_form' ),
-            array('ChangeEmailForm', false, new Form(), null ),
-            array('LoginForm', true, new Form(), 'zfcuser_login_form', $loginFormCallback[0] ),
-            array('LoginForm', true, new Form(), 'zfcuser_login_form', $loginFormCallback[1] ),
-            array('LoginForm', false, new Form(), null, $loginFormCallback[0] ),
-            array('LoginForm', false, new Form(), null, $loginFormCallback[1] ),
-            array('Options', true, new ModuleOptions(), 'zfcuser_module_options' ),
-            array('Options', false, new ModuleOptions(), null ),
+            array('UserService',        true,   false,  new UserService(), 'zfcuser_user_service' ),
+            array('UserService',        false,  false,  new UserService(), null ),
+            array('RegisterForm',       true,   true,   new Form(), 'zfcuser_register_form' ),
+            array('RegisterForm',       false,  true,   new Form(), null ),
+            array('ChangePasswordForm', true,   true,   new Form(), 'zfcuser_change_password_form' ),
+            array('ChangePasswordForm', false,  true,   new Form(), null ),
+            array('ChangeEmailForm',    true,   true,   new Form(), 'zfcuser_change_email_form' ),
+            array('ChangeEmailForm',    false,  true,   new Form(), null ),
+            array('LoginForm',          true,   true,   new Form(), 'zfcuser_login_form', $loginFormCallback[0] ),
+            array('LoginForm',          true,   true,   new Form(), 'zfcuser_login_form', $loginFormCallback[1] ),
+            array('LoginForm',          false,  true,   new Form(), null, $loginFormCallback[0] ),
+            array('LoginForm',          false,  true,   new Form(), null, $loginFormCallback[1] ),
+            array('Options',            true,   false,  new ModuleOptions(), 'zfcuser_module_options' ),
+            array('Options',            false,  false,  new ModuleOptions(), null ),
         );
     }
 

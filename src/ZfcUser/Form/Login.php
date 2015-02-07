@@ -2,11 +2,9 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Form;
 use Zend\Form\Element;
 use ZfcBase\Form\ProvidesEventsForm;
 use ZfcUser\Options\AuthenticationOptionsInterface;
-use ZfcUser\Module as ZfcUser;
 
 class Login extends ProvidesEventsForm
 {
@@ -19,7 +17,10 @@ class Login extends ProvidesEventsForm
     {
         $this->setAuthenticationOptions($options);
         parent::__construct($name);
+    }
 
+    public function init()
+    {
         $this->add(array(
             'name' => 'identity',
             'options' => array(

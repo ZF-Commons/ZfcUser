@@ -2,11 +2,8 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Form;
-use Zend\Form\Element\Csrf;
 use ZfcBase\Form\ProvidesEventsForm;
 use ZfcUser\Options\AuthenticationOptionsInterface;
-use ZfcUser\Module as ZfcUser;
 
 class ChangePassword extends ProvidesEventsForm
 {
@@ -19,6 +16,11 @@ class ChangePassword extends ProvidesEventsForm
     {
         $this->setAuthenticationOptions($options);
         parent::__construct($name);
+    }
+
+    public function init()
+    {
+        parent::init();
 
         $this->add(array(
             'name' => 'identity',

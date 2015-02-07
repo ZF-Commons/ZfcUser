@@ -30,6 +30,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         }
 
         $form = new Form(null, $options);
+        $form->init();
 
         $elements = $form->getElements();
 
@@ -62,6 +63,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
                 ->method('getUseRegistrationFormCaptcha')
                 ->will($this->returnValue(false));
         $form = new Form(null, $options);
+        $form->init();
 
         $this->assertSame($options, $form->getRegistrationOptions());
 
@@ -85,6 +87,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
 
         $captcha = $this->getMock('\Zend\Form\Element\Captcha');
         $form = new Form(null, $options);
+        $form->init();
 
         $form->setCaptchaElement($captcha);
 

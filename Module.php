@@ -100,30 +100,35 @@ class Module implements
     public function getServiceConfig()
     {
         return array(
+            'aliases' => array(
+                'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
+            ),
             'invokables' => array(
                 'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
-                'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
                 'zfcuser_redirect_callback' => function ($sm) {
-                        /* @var RouteInterface $router */
-                        $router = $sm->get('Router');
+                    /* @var RouteInterface $router */
+                    $router = $sm->get('Router');
 
-                        /* @var Application $application */
-                        $application = $sm->get('Application');
+                    /* @var Application $application */
+                    $application = $sm->get('Application');
 
-                        /* @var ModuleOptions $options */
-                        $options = $sm->get('zfcuser_module_options');
+                    /* @var ModuleOptions $options */
+                    $options = $sm->get('zfcuser_module_options');
 
-                        return new RedirectCallback($application, $router, $options);
-                    },
+                    return new RedirectCallback($application, $router, $options);
+                },
+
                 'zfcuser_module_options' => function ($sm) {
                     $config = $sm->get('Config');
                     return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
                 },
+
                 // We alias this one because it's ZfcUser's instance of
                 // Zend\Authentication\AuthenticationService. We don't want to
                 // hog the FQCN service alias for a Zend\* class.
@@ -132,53 +137,6 @@ class Module implements
                         $sm->get('ZfcUser\Authentication\Storage\Db'),
                         $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
                     );
-                },
-
-                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
-
-                'zfcuser_login_form' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Login(null, $options);
-                    $form->setInputFilter(new Form\LoginFilter($options));
-                    return $form;
-                },
-
-                'zfcuser_register_form' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\Register(null, $options);
-                    //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
-                    $form->setInputFilter(new Form\RegisterFilter(
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'email'
-                        )),
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'username'
-                        )),
-                        $options
-                    ));
-                    return $form;
-                },
-
-                'zfcuser_change_password_form' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangePassword(null, $sm->get('zfcuser_module_options'));
-                    $form->setInputFilter(new Form\ChangePasswordFilter($options));
-                    return $form;
-                },
-
-                'zfcuser_change_email_form' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $form = new Form\ChangeEmail(null, $options);
-                    $form->setInputFilter(new Form\ChangeEmailFilter(
-                        $options,
-                        new Validator\NoRecordExists(array(
-                            'mapper' => $sm->get('zfcuser_user_mapper'),
-                            'key'    => 'email'
-                        ))
-                    ));
-                    return $form;
                 },
 
                 'zfcuser_user_hydrator' => function ($sm) {

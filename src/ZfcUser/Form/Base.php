@@ -2,7 +2,6 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Form;
 use Zend\Form\Element;
 use ZfcBase\Form\ProvidesEventsForm;
 
@@ -11,7 +10,10 @@ class Base extends ProvidesEventsForm
     public function __construct()
     {
         parent::__construct();
+    }
 
+    public function init()
+    {
         $this->add(array(
             'name' => 'username',
             'options' => array(
@@ -87,5 +89,7 @@ class Base extends ProvidesEventsForm
         //$csrf = new Element\Csrf('csrf');
         //$csrf->getValidator()->setTimeout($this->getRegistrationOptions()->getUserFormTimeout());
         //$this->add($csrf);
+
+        $this->getEventManager()->trigger('init', $this);
     }
 }

@@ -1,0 +1,13 @@
+<?php echo $this->form()->openTag($form) ?>
+    <dl class="zend_form">
+        <?php foreach ($form as $element): ?>
+            <?php if ($element->getLabel() != null && !$element instanceof Zend\Form\Element\Button): ?>
+                <dt><?php echo $this->formLabel($element) ?></dt>
+            <?php endif ?>
+            <dd><?php echo $this->formElement($element) . $this->formElementErrors($element) ?></dd>
+        <?php endforeach ?>
+    </dl>
+<?php if ($this->redirect): ?>
+    <input type="hidden" name="redirect" value="<?php echo $this->redirect ?>">
+<?php endif ?>
+<?php echo $this->form()->closeTag() ?>
