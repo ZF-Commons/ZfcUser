@@ -74,6 +74,7 @@ class Module implements
                 'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
                 'zfcuser_login_form'                            => 'ZfcUser\Factory\Form\LoginFormFactory',
                 'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
+                'zfcuser_change_password_form'                  => 'ZfcUser\Factory\Form\ChangePasswordFormFactory',
                 'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
                 'zfcuser_user_hydrator'                         => 'ZfcUser\Factory\Mapper\UserHydratorFactory',
             ),

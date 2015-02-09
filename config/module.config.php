@@ -51,7 +51,6 @@ return array(
             'zfcuser_login_form'                            => 'ZfcUser\Factory\Form\LoginFormFactory',
             'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
             'zfcuser_change_password_form'                  => 'ZfcUser\Factory\Form\ChangePasswordFormFactory',
-            'zfcuser_change_email_form'                     => 'ZfcUser\Factory\Form\ChangeEmailFormFactory',
             'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',
             'zfcuser_user_hydrator'                         => 'ZfcUser\Factory\Mapper\UserHydratorFactory',
         ),
@@ -123,6 +122,26 @@ return array(
                             'defaults' => array(
                                 'controller' => 'zfcuser',
                                 'action'     => 'register',
+                            ),
+                        ),
+                    ),
+                    'changepassword' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/change-password',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action'     => 'changepassword',
+                            ),
+                        ),
+                    ),
+                    'changeemail' => array(
+                        'type' => 'Literal',
+                        'options' => array(
+                            'route' => '/change-email',
+                            'defaults' => array(
+                                'controller' => 'zfcuser',
+                                'action' => 'changeemail',
                             ),
                         ),
                     ),
