@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: ZfcUser\n"
-"POT-Creation-Date: 2015-02-09 11:17+0100\n"
-"PO-Revision-Date: 2015-02-09 11:17+0100\n"
+"POT-Creation-Date: 2015-02-09 15:35+0100\n"
+"PO-Revision-Date: 2015-02-09 15:36+0100\n"
 "Last-Translator: Martin Vagovszký <vagovszky@gmail.com>\n"
 "Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
 "Language: cs_CZ\n"
@@ -86,7 +86,7 @@ msgstr "Autentizace selhala. Prosím zkuste to znovu."
 #: view/zfc-user/user/changeemail.phtml:1
 #, php-format
 msgid "Change Email for %s"
-msgstr "Změna hesla pro %s"
+msgstr "Změna emailu pro %s"
 
 #: view/zfc-user/user/changeemail.phtml:3
 msgid "Email address changed successfully."
