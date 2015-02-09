@@ -1,0 +1,104 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZfcUser\n"
+"POT-Creation-Date: 2015-02-09 10:46+0100\n"
+"PO-Revision-Date: 2015-02-09 10:46+0100\n"
+"Last-Translator: Martin Vagovszký <vagovszky@gmail.com>\n"
+"Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
+"Language: cs_CZ\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.7\n"
+"X-Poedit-KeywordsList: translate\n"
+"X-Poedit-Basepath: ../\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: language/msgIds.php:6
+msgid "Username"
+msgstr "Uživatelské jméno"
+
+#: language/msgIds.php:7
+msgid "Email"
+msgstr "Email"
+
+#: language/msgIds.php:8
+msgid "New Email"
+msgstr "Nový email"
+
+#: language/msgIds.php:9
+msgid "Verify New Email"
+msgstr "Ověření nového emailu"
+
+#: language/msgIds.php:10
+msgid "Display Name"
+msgstr "Zobrazované jméno"
+
+#: language/msgIds.php:11
+msgid "Password"
+msgstr "Heslo"
+
+#: language/msgIds.php:12
+msgid "Password Verify"
+msgstr "Ověření hesla"
+
+#: language/msgIds.php:13
+msgid "Current Password"
+msgstr "Současné heslo"
+
+#: language/msgIds.php:14
+msgid "Verify New Password"
+msgstr "Ověření nového hesla"
+
+#: language/msgIds.php:15
+msgid "New Password"
+msgstr "Nové heslo"
+
+#: language/msgIds.php:16
+msgid "Please type the following text"
+msgstr "Prosím opište následující text"
+
+#: language/msgIds.php:17
+msgid "Submit"
+msgstr "Odeslat"
+
+#: language/msgIds.php:18 view/zfc-user/user/login.phtml:1
+msgid "Sign In"
+msgstr "Přihlášení"
+
+#: language/msgIds.php:19 view/zfc-user/user/register.phtml:1
+msgid "Register"
+msgstr "Registrace"
+
+#: language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "Nenalezen žádný záznam odpovídající danému zadání"
+
+#: language/msgIds.php:21
+msgid "A record matching the input was found"
+msgstr "Byl nalezen záznam odpovídající zadání"
+
+#: language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr "Autentizace selhala. Prosím zkuste to znovu."
+
+#: view/zfc-user/user/index.phtml:2
+msgid "Hello"
+msgstr "Dobrý den"
+
+#: view/zfc-user/user/index.phtml:3
+msgid "Sign Out"
+msgstr "Odhlášení"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Not registered?"
+msgstr "Nejste registrován/a?"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Sign up!"
+msgstr "Zaregistrujte se!"
+
+#: view/zfc-user/user/register.phtml:5
+msgid "Registration is disabled"
+msgstr "Registrace je zakázána"
