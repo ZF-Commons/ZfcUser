@@ -199,6 +199,8 @@ The following options are available:
   When user tries to login, is his/her state one of the following? Include null if
   you want user's with no state to login as well.
 
+> Note: **user_login_widget_view_template** is currently not used. To override the view templates the module uses, please see [this](https://github.com/ZF-Commons/ZfcUser/blob/master/docs/override-view-scripts.md) example.
+
 Changing Registration Captcha Element
 -------------------------------------
 
