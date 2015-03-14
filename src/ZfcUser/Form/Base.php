@@ -64,17 +64,6 @@ class Base extends ProvidesEventsForm
             ),
         ));
 
-        if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {
-            $this->add(array(
-                'name' => 'captcha',
-                'type' => 'Zend\Form\Element\Captcha',
-                'options' => array(
-                    'label' => 'Please type the following text',
-                    'captcha' => $this->getRegistrationOptions()->getFormCaptchaOptions(),
-                ),
-            ));
-        }
-
         $submitElement = new Element\Button('submit');
         $submitElement
             ->setLabel('Submit')
