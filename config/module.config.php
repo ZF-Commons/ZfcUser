@@ -8,10 +8,10 @@ return array(
     ),
     'form_elements' => array(
         'factories' => array(
-            'zfcuser_login_form'            => 'ZfcUser\FormElementManagerFactory\Form\Login',
-            'zfcuser_register_form'         => 'ZfcUser\FormElementManagerFactory\Form\Register',
-            'zfcuser_change_password_form'  => 'ZfcUser\FormElementManagerFactory\Form\ChangePassword',
-            'zfcuser_change_email_form'     => 'ZfcUser\FormElementManagerFactory\Form\ChangeEmail',
+            'zfcuser_login_form'            => 'ZfcUser\Factory\Form\Login',
+            'zfcuser_register_form'         => 'ZfcUser\Factory\Form\Register',
+            'zfcuser_change_password_form'  => 'ZfcUser\Factory\Form\ChangePassword',
+            'zfcuser_change_email_form'     => 'ZfcUser\Factory\Form\ChangeEmail',
         )
     ),
 
