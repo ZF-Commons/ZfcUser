@@ -24,13 +24,6 @@ You can also get user's fields (if the user is logged in), like email:
 <?php echo $this->zfcUserIdentity()->getEmail(); ?>
 ```
 
-The view helper may also return the Authentication Service :
-
-```php
-<?php $authService = $this->zfcUserIdentity()->getAuthService(); ?>
-```
-
-
 ### Controller
 
 ZfcUser provides a Controller Plugin ([zfcUserAuthentication](https://github.com/ZF-Commons/ZfcUser/blob/master/src/ZfcUser/Controller/Plugin/ZfcUserAuthentication.php)) which you can use from any controller in your application. You can check if the user is connected and get his data:
@@ -48,6 +41,12 @@ if ($this->zfcUserAuthentication()->hasIdentity()) {
     echo $this->zfcUserAuthentication()->getIdentity()->getDisplayname();
 }
 ?>
+```
+
+The controller may also return the Authentication Service :
+
+```php
+$authService = $this->zfcUserIdentity()->getAuthService();
 ```
 
 ### Service Manager
