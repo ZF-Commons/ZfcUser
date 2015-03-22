@@ -18,7 +18,6 @@ class LoginTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($authIdentityFields));
 
         $form = new Form(null, $options);
-        $form->init();
 
         $elements = $form->getElements();
 
@@ -48,7 +47,6 @@ class LoginTest extends \PHPUnit_Framework_TestCase
                 ->method('getAuthIdentityFields')
                 ->will($this->returnValue(array()));
         $form = new Form(null, $options);
-        $form->init();
 
         $this->assertSame($options, $form->getAuthenticationOptions());
     }

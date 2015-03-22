@@ -14,7 +14,6 @@ class ChangePasswordTest extends \PHPUnit_Framework_TestCase
         $options = $this->getMock('ZfcUser\Options\AuthenticationOptionsInterface');
 
         $form = new Form(null, $options);
-        $form->init();
 
         $elements = $form->getElements();
 
