@@ -12,12 +12,12 @@ use ZfcUser\Options\UserControllerOptionsInterface;
 
 class UserController extends AbstractActionController
 {
-    const ROUTE_CHANGEPASSWD = 'zfcuser/changepassword';
-    const ROUTE_LOGIN        = 'zfcuser/login';
-    const ROUTE_REGISTER     = 'zfcuser/register';
-    const ROUTE_CHANGEEMAIL  = 'zfcuser/changeemail';
 
-    const CONTROLLER_NAME    = 'zfcuser';
+    const ROUTE_CHANGEPASSWD = 'zfcuser/changepassword';
+    const ROUTE_LOGIN = 'zfcuser/login';
+    const ROUTE_REGISTER = 'zfcuser/register';
+    const ROUTE_CHANGEEMAIL = 'zfcuser/changeemail';
+    const CONTROLLER_NAME = 'zfcuser';
 
     /**
      * @var UserService
@@ -92,7 +92,7 @@ class UserController extends AbstractActionController
         }
 
         $request = $this->getRequest();
-        $form    = $this->getLoginForm();
+        $form = $this->getLoginForm();
 
         if ($this->getOptions()->getUseRedirectParameterIfPresent() && $request->getQuery()->get('redirect')) {
             $redirect = $request->getQuery()->get('redirect');
@@ -103,7 +103,7 @@ class UserController extends AbstractActionController
         if (!$request->isPost()) {
             return array(
                 'loginForm' => $form,
-                'redirect'  => $redirect,
+                'redirect' => $redirect,
                 'enableRegistration' => $this->getOptions()->getEnableRegistration(),
             );
         }
@@ -112,7 +112,8 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+            $route = $this->options->getLogoutRedirectRoute();
+            return $this->redirect()->toUrl($this->url()->fromRoute($route) . ($redirect ? '?redirect=' . rawurlencode($redirect) : ''));
         }
 
         // clear adapters
@@ -160,9 +161,10 @@ class UserController extends AbstractActionController
         if (!$auth->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
             $adapter->resetAdapters();
+            $route = $this->options->getLogoutRedirectRoute();
             return $this->redirect()->toUrl(
-                $this->url()->fromRoute(static::ROUTE_LOGIN) .
-                ($redirect ? '?redirect='. rawurlencode($redirect) : '')
+                            $this->url()->fromRoute($route) .
+                            ($redirect ? '?redirect=' . rawurlencode($redirect) : '')
             );
         }
 
@@ -197,7 +199,7 @@ class UserController extends AbstractActionController
         }
 
         $redirectUrl = $this->url()->fromRoute(static::ROUTE_REGISTER)
-            . ($redirect ? '?redirect=' . rawurlencode($redirect) : '');
+                . ($redirect ? '?redirect=' . rawurlencode($redirect) : '');
         $prg = $this->prg($redirectUrl, true);
 
         if ($prg instanceof Response) {
@@ -236,7 +238,7 @@ class UserController extends AbstractActionController
         }
 
         // TODO: Add the redirect parameter here...
-        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect=' . rawurlencode($redirect) : ''));
     }
 
     /**
@@ -344,7 +346,6 @@ class UserController extends AbstractActionController
     /**
      * Getters/setters for DI stuff
      */
-
     public function getUserService()
     {
         if (!$this->userService) {
@@ -386,7 +387,7 @@ class UserController extends AbstractActionController
         $fm = $this->flashMessenger()->setNamespace('zfcuser-login-form')->getMessages();
         if (isset($fm[0])) {
             $this->loginForm->setMessages(
-                array('identity' => array($fm[0]))
+                    array('identity' => array($fm[0]))
             );
         }
         return $this;
@@ -454,4 +455,5 @@ class UserController extends AbstractActionController
         $this->changeEmailForm = $changeEmailForm;
         return $this;
     }
+
 }
