@@ -42,7 +42,7 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
         if ($this->getStorage()->isEmpty()) {
             return true;
         }
-        $identity = $this->read();
+        $identity = $this->getStorage()->read();
         if ($identity === null) {
             $this->clear();
             return true;
