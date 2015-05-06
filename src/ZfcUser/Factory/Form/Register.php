@@ -6,8 +6,9 @@
  * Time: 9:34 AM
  */
 
-namespace ZfcUser\FormElementManagerFactory\Form;
+namespace ZfcUser\Factory\Form;
 
+use Zend\Form\FormElementManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Form;
@@ -17,11 +18,21 @@ class Register implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $formElementManager)
     {
-        $sm = $formElementManager->getServiceLocator();
+        if ($formElementManager instanceof FormElementManager) {
+            $sm = $formElementManager->getServiceLocator();
+            $fem = $formElementManager;
+        } else {
+            $sm = $formElementManager;
+            $fem = $sm->get('FormElementManager');
+        }
+
         $options = $sm->get('zfcuser_module_options');
+        $options = clone($options);
+        $options->fem = true;
+
         $form = new Form\Register(null, $options);
         // Inject the FormElementManager to support custom FormElements
-        $form->getFormFactory()->setFormElementManager($formElementManager);
+        $form->getFormFactory()->setFormElementManager($fem);
 
         //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
         $form->setHydrator($sm->get('zfcuser_register_form_hydrator'));
@@ -36,6 +47,10 @@ class Register implements FactoryInterface
             )),
             $options
         ));
+
+        if (!$formElementManager instanceof FormElementManager) {
+            $form->init();
+        }
         return $form;
     }
 }

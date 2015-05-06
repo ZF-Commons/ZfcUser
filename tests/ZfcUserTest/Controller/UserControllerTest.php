@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Controller;
 
+use Zend\Form\FormElementManager;
 use ZfcUser\Controller\RedirectCallback;
 use ZfcUser\Controller\UserController as Controller;
 use Zend\Http\Response;
@@ -983,11 +984,23 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         if ($useServiceLocator) {
             $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
-            $serviceLocator->expects($this->once())
-                ->method('get')
-                ->with($serviceName)
-                ->will($this->returnValue($servicePrototype));
-
+            $formElementManager = $this->getMock('Zend\Form\FormElementManager');
+            # Forms now use the FormElementManager so we need mock accordingly
+            if ($servicePrototype instanceof Form){
+                $serviceLocator->expects($this->once())
+                    ->method('get')
+                    ->with('FormElementManager')
+                    ->will($this->returnValue($formElementManager));
+                $formElementManager->expects($this->once())
+                    ->method('get')
+                    ->with($serviceName)
+                    ->will($this->returnValue($servicePrototype));
+            } else {
+                $serviceLocator->expects($this->once())
+                    ->method('get')
+                    ->with($serviceName)
+                    ->will($this->returnValue($servicePrototype));
+            }
             $controller->setServiceLocator($serviceLocator);
         } else {
             call_user_func(array($controller, 'set' . $methode), $servicePrototype);

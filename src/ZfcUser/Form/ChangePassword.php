@@ -16,6 +16,10 @@ class ChangePassword extends ProvidesEventsForm
     {
         $this->setAuthenticationOptions($options);
         parent::__construct($name);
+
+        if (!property_exists($options, "fem")) {
+            $this->init();
+        }
     }
 
     public function init()

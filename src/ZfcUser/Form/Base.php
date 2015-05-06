@@ -10,10 +10,7 @@ class Base extends ProvidesEventsForm
     public function __construct()
     {
         parent::__construct();
-    }
 
-    public function init()
-    {
         $this->add(array(
             'name' => 'username',
             'options' => array(
@@ -92,4 +89,6 @@ class Base extends ProvidesEventsForm
 
         $this->getEventManager()->trigger('init', $this);
     }
+
+    public function init() {}
 }

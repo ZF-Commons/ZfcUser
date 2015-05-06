@@ -3,7 +3,7 @@ namespace ZfcUserTest\Factory\Form;
 
 use Zend\Form\FormElementManager;
 use Zend\ServiceManager\ServiceManager;
-use ZfcUser\FormElementManagerFactory\Form\ChangePassword as ChangePasswordFactory;
+use ZfcUser\Factory\Form\ChangePassword as ChangePasswordFactory;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Mapper\User as UserMapper;
 

@@ -22,6 +22,10 @@ class Register extends Base
     {
         $this->setRegistrationOptions($options);
         parent::__construct($name);
+
+        if (!property_exists($options, "fem")) {
+            $this->init();
+        }
     }
 
     public function init()

@@ -3,22 +3,26 @@ namespace ZfcUserTest\Factory\Form;
 
 use Zend\Form\FormElementManager;
 use Zend\ServiceManager\ServiceManager;
-use ZfcUser\FormElementManagerFactory\Form\Login as LoginFactory;
+use Zend\Stdlib\Hydrator\ClassMethods;
+use ZfcUser\Factory\Form\Register as RegisterFactory;
 use ZfcUser\Options\ModuleOptions;
+use ZfcUser\Mapper\User as UserMapper;
 
-class LoginFormFactoryTest extends \PHPUnit_Framework_TestCase
+class RegisterFormFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
         $serviceManager = new ServiceManager;
         $serviceManager->setService('zfcuser_module_options', new ModuleOptions);
+        $serviceManager->setService('zfcuser_user_mapper', new UserMapper);
+        $serviceManager->setService('zfcuser_register_form_hydrator', new ClassMethods());
 
         $formElementManager = new FormElementManager();
         $formElementManager->setServiceLocator($serviceManager);
         $serviceManager->setService('FormElementManager', $formElementManager);
 
-        $factory = new LoginFactory();
+        $factory = new RegisterFactory();
 
-        $this->assertInstanceOf('ZfcUser\Form\Login', $factory->createService($formElementManager));
+        $this->assertInstanceOf('ZfcUser\Form\Register', $factory->createService($formElementManager));
     }
 }

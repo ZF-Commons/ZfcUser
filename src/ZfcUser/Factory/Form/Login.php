@@ -6,7 +6,7 @@
  * Time: 9:34 AM
  */
 
-namespace ZfcUser\FormElementManagerFactory\Form;
+namespace ZfcUser\Factory\Form;
 
 use Zend\Form\FormElementManager;
 use Zend\ServiceManager\FactoryInterface;
@@ -17,13 +17,28 @@ class Login implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $formElementManager)
     {
+        if ($formElementManager instanceof FormElementManager) {
+            $sm = $formElementManager->getServiceLocator();
+            $fem = $formElementManager;
+        } else {
+            $sm = $formElementManager;
+            $fem = $sm->get('FormElementManager');
+        }
+
         /** @var FormElementManager $formElementManager */
-        $options = $formElementManager->getServiceLocator()->get('zfcuser_module_options');
+        $options = $sm->get('zfcuser_module_options');
+        $options = clone($options);
+        $options->fem = true;
+
         $form = new Form\Login(null, $options);
         // Inject the FormElementManager to support custom FormElements
-        $form->getFormFactory()->setFormElementManager($formElementManager);
+        $form->getFormFactory()->setFormElementManager($fem);
 
         $form->setInputFilter(new Form\LoginFilter($options));
+
+        if (!$formElementManager instanceof FormElementManager) {
+            $form->init();
+        }
         return $form;
     }
 }
