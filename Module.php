@@ -5,8 +5,6 @@ namespace ZfcUser;
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
-use ZfcUser\Controller\RedirectCallback;
-use ZfcUser\Controller\UserController;
 
 class Module implements
     AutoloaderProviderInterface,
@@ -36,15 +34,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserAuthentication' => function ($sm) {
-                    $serviceLocator = $sm->getServiceLocator();
-                    $authService = $serviceLocator->get('zfcuser_auth_service');
-                    $authAdapter = $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain');
-                    $controllerPlugin = new Controller\Plugin\ZfcUserAuthentication;
-                    $controllerPlugin->setAuthService($authService);
-                    $controllerPlugin->setAuthAdapter($authAdapter);
-                    return $controllerPlugin;
-                },
+                'zfcUserAuthentication' => 'ZfcUser\Factory\Controller\Plugin\ZfcUserAuthentication',
             ),
         );
     }
@@ -53,18 +43,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcuser' => function($controllerManager) {
-                        /* @var ControllerManager $controllerManager*/
-                        $serviceManager = $controllerManager->getServiceLocator();
-
-                        /* @var RedirectCallback $redirectCallback */
-                        $redirectCallback = $serviceManager->get('zfcuser_redirect_callback');
-
-                        /* @var UserController $controller */
-                        $controller = new UserController($redirectCallback);
-
-                        return $controller;
-                    },
+                'zfcuser' => 'ZfcUser\Factory\Controller\UserController',
             ),
         );
     }
@@ -73,25 +52,9 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserDisplayName' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-                    $viewHelper = new View\Helper\ZfcUserDisplayName;
-                    $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
-                    return $viewHelper;
-                },
-                'zfcUserIdentity' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-                    $viewHelper = new View\Helper\ZfcUserIdentity;
-                    $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
-                    return $viewHelper;
-                },
-                'zfcUserLoginWidget' => function ($sm) {
-                    $locator = $sm->getServiceLocator();
-                    $viewHelper = new View\Helper\ZfcUserLoginWidget;
-                    $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
-                    $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
-                    return $viewHelper;
-                },
+                'zfcUserDisplayName' => 'ZfcUser\Factory\View\Helper\ZfcUserDisplayName',
+                'zfcUserIdentity' => 'ZfcUser\Factory\View\Helper\ZfcUserIdentity',
+                'zfcUserLoginWidget' => 'ZfcUser\Factory\View\Helper\ZfcUserLoginWidget',
             ),
         );
 
@@ -110,50 +73,17 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallback',
+                'zfcuser_module_options' => 'ZfcUser\Factory\Options\ModuleOptions',
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
-                'zfcuser_redirect_callback' => function ($sm) {
-                    /* @var RouteInterface $router */
-                    $router = $sm->get('Router');
-
-                    /* @var Application $application */
-                    $application = $sm->get('Application');
-
-                    /* @var ModuleOptions $options */
-                    $options = $sm->get('zfcuser_module_options');
-
-                    return new RedirectCallback($application, $router, $options);
-                },
-
-                'zfcuser_module_options' => function ($sm) {
-                    $config = $sm->get('Config');
-                    return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
-                },
 
                 // We alias this one because it's ZfcUser's instance of
                 // Zend\Authentication\AuthenticationService. We don't want to
                 // hog the FQCN service alias for a Zend\* class.
-                'zfcuser_auth_service' => function ($sm) {
-                    return new \Zend\Authentication\AuthenticationService(
-                        $sm->get('ZfcUser\Authentication\Storage\Db'),
-                        $sm->get('ZfcUser\Authentication\Adapter\AdapterChain')
-                    );
-                },
+                'zfcuser_auth_service' => 'ZfcUser\Factory\AuthenticationService',
 
-                'zfcuser_user_hydrator' => function ($sm) {
-                    $hydrator = new \Zend\Stdlib\Hydrator\ClassMethods();
-                    return $hydrator;
-                },
-
-                'zfcuser_user_mapper' => function ($sm) {
-                    $options = $sm->get('zfcuser_module_options');
-                    $mapper = new Mapper\User();
-                    $mapper->setDbAdapter($sm->get('zfcuser_zend_db_adapter'));
-                    $entityClass = $options->getUserEntityClass();
-                    $mapper->setEntityPrototype(new $entityClass);
-                    $mapper->setHydrator(new Mapper\UserHydrator());
-                    $mapper->setTableName($options->getTableName());
-                    return $mapper;
-                },
+                'zfcuser_user_hydrator' => 'ZfcUser\Factory\UserHydrator',
+                'zfcuser_user_mapper' => 'ZfcUser\Factory\Mapper\User',
             ),
         );
     }
