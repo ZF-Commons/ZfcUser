@@ -26,18 +26,12 @@ class ChangePassword implements FactoryInterface
         }
 
         $options = $sm->get('zfcuser_module_options');
-        $options = clone($options);
-        $options->fem = true;
-
         $form = new Form\ChangePassword(null, $options);
         // Inject the FormElementManager to support custom FormElements
         $form->getFormFactory()->setFormElementManager($fem);
 
         $form->setInputFilter(new Form\ChangePasswordFilter($options));
 
-        if (!$formElementManager instanceof FormElementManager) {
-            $form->init();
-        }
         return $form;
     }
 }

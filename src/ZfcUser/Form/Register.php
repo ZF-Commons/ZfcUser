@@ -23,15 +23,6 @@ class Register extends Base
         $this->setRegistrationOptions($options);
         parent::__construct($name);
 
-        if (!property_exists($options, "fem")) {
-            $this->init();
-        }
-    }
-
-    public function init()
-    {
-        parent::init();
-
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {
             $this->add(array(
                 'name' => 'captcha',

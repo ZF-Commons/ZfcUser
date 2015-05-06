@@ -27,18 +27,12 @@ class Login implements FactoryInterface
 
         /** @var FormElementManager $formElementManager */
         $options = $sm->get('zfcuser_module_options');
-        $options = clone($options);
-        $options->fem = true;
-
         $form = new Form\Login(null, $options);
         // Inject the FormElementManager to support custom FormElements
         $form->getFormFactory()->setFormElementManager($fem);
 
         $form->setInputFilter(new Form\LoginFilter($options));
 
-        if (!$formElementManager instanceof FormElementManager) {
-            $form->init();
-        }
         return $form;
     }
 }

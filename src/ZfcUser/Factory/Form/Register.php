@@ -27,9 +27,6 @@ class Register implements FactoryInterface
         }
 
         $options = $sm->get('zfcuser_module_options');
-        $options = clone($options);
-        $options->fem = true;
-
         $form = new Form\Register(null, $options);
         // Inject the FormElementManager to support custom FormElements
         $form->getFormFactory()->setFormElementManager($fem);
@@ -48,9 +45,6 @@ class Register implements FactoryInterface
             $options
         ));
 
-        if (!$formElementManager instanceof FormElementManager) {
-            $form->init();
-        }
         return $form;
     }
 }

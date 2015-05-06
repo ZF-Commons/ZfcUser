@@ -27,9 +27,6 @@ class ChangeEmail implements FactoryInterface
         }
 
         $options = $sm->get('zfcuser_module_options');
-        $options = clone($options);
-        $options->fem = true;
-
         $form = new Form\ChangeEmail(null, $options);
         // Inject the FormElementManager to support custom FormElements
         $form->getFormFactory()->setFormElementManager($fem);
@@ -42,9 +39,6 @@ class ChangeEmail implements FactoryInterface
             ))
         ));
 
-        if (!$formElementManager instanceof FormElementManager) {
-            $form->init();
-        }
         return $form;
     }
 }
