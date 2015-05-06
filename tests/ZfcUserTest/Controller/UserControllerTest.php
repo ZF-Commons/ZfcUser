@@ -986,7 +986,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
             $formElementManager = $this->getMock('Zend\Form\FormElementManager');
             # Forms now use the FormElementManager so we need mock accordingly
-            if ($servicePrototype instanceof Form){
+            if ($servicePrototype instanceof Form) {
                 $serviceLocator->expects($this->once())
                     ->method('get')
                     ->with('FormElementManager')
