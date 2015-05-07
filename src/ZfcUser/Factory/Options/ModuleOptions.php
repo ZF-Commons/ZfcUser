@@ -13,7 +13,8 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Options;
 
-class ModuleOptions implements FactoryInterface {
+class ModuleOptions implements FactoryInterface
+{
 
     /**
      * Create service
