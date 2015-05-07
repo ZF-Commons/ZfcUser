@@ -11,7 +11,8 @@ namespace ZfcUser\Factory;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserHydrator implements FactoryInterface {
+class UserHydrator implements FactoryInterface
+{
 
     /**
      * Create service

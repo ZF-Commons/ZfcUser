@@ -12,7 +12,8 @@ use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-class UserController implements FactoryInterface {
+class UserController implements FactoryInterface
+{
 
     /**
      * Create service

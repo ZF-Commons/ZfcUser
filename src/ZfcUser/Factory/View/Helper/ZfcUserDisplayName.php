@@ -12,7 +12,8 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\View;
 
-class ZfcUserDisplayName implements FactoryInterface {
+class ZfcUserDisplayName implements FactoryInterface
+{
 
     /**
      * Create service

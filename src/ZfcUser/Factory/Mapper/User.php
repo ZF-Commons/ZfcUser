@@ -12,7 +12,8 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Mapper;
 
-class User implements FactoryInterface {
+class User implements FactoryInterface
+{
 
     /**
      * Create service

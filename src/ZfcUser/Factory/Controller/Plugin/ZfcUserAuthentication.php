@@ -12,7 +12,8 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Controller;
 
-class ZfcUserAuthentication implements FactoryInterface {
+class ZfcUserAuthentication implements FactoryInterface
+{
 
     /**
      * Create service
