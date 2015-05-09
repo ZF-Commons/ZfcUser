@@ -14,7 +14,7 @@ ZfcUser is a user registration and authentication module for Zend Framework 2.
 Out of the box, ZfcUser works with Zend\Db, however alternative storage adapter
 modules are available (see below). ZfcUser provides the foundations for adding
 user authentication and registration to your ZF2 site. It is designed to be very
-simple and easily to extend.
+simple and easy to extend.
 
 More information and examples are available on the [ZfcUser Wiki](https://github.com/ZF-Commons/ZfcUser/wiki)
 
