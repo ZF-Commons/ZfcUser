@@ -1,0 +1,128 @@
+#
+# Mihailov Vasilievic Filho <mihailov.vf@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: ZfcUser\n"
+"Report-Msgid-Bugs-To: zf-devteam@zend.com\n"
+"POT-Creation-Date: 2013-11-08 00:38+0100\n"
+"PO-Revision-Date: 2015-05-21 00:52-0300\n"
+"Last-Translator: Mihailov Vasilievic Filho <mihailov.vf@gmail.com>\n"
+"Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
+"Language: pt_BR\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"X-Generator: Poedit 1.6.10\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/ZfcUser/language/msgIds.php:6
+msgid "Username"
+msgstr "Nome de Usuário"
+
+#: src/ZfcUser/language/msgIds.php:7
+msgid "Email"
+msgstr "Email"
+
+#: src/ZfcUser/language/msgIds.php:8
+msgid "New Email"
+msgstr "Novo email"
+
+#: src/ZfcUser/language/msgIds.php:9
+msgid "Verify New Email"
+msgstr "Verificar novo email"
+
+#: src/ZfcUser/language/msgIds.php:10
+msgid "Display Name"
+msgstr "Nome de exibição"
+
+#: src/ZfcUser/language/msgIds.php:11
+msgid "Password"
+msgstr "Senha"
+
+#: src/ZfcUser/language/msgIds.php:12
+msgid "Password Verify"
+msgstr "Verificação de senha"
+
+#: src/ZfcUser/language/msgIds.php:13
+msgid "Current Password"
+msgstr "Senha atual"
+
+#: src/ZfcUser/language/msgIds.php:14
+msgid "Verify New Password"
+msgstr "Verificar nova senha"
+
+#: src/ZfcUser/language/msgIds.php:15
+msgid "New Password"
+msgstr "Nova senha"
+
+#: src/ZfcUser/language/msgIds.php:16
+msgid "Please type the following text"
+msgstr "Por favor, digite o seguinte texto"
+
+#: src/ZfcUser/language/msgIds.php:17
+msgid "Submit"
+msgstr "Enviar"
+
+#: src/ZfcUser/language/msgIds.php:18 view/zfc-user/user/login.phtml:1
+msgid "Sign In"
+msgstr "Iniciar sessão"
+
+#: src/ZfcUser/language/msgIds.php:19 view/zfc-user/user/register.phtml:1
+msgid "Register"
+msgstr "Registrar"
+
+#: src/ZfcUser/language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "Nenhum registro correspondente a entrada foi encontrado."
+
+#: src/ZfcUser/language/msgIds.php:21
+msgid "A record matching the input was found"
+msgstr "Um registro correspondente a entrada foi encontrado."
+
+#: src/ZfcUser/language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr "A autenticação falhou. Por favor, tente novamente."
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Not registered?"
+msgstr "Não registrado?"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Sign up!"
+msgstr "Inscreva-se!"
+
+#: view/zfc-user/user/changeemail.phtml:1
+#, php-format
+msgid "Change Email for %s"
+msgstr "Alterar email de %s"
+
+#: view/zfc-user/user/changeemail.phtml:3
+msgid "Email address changed successfully."
+msgstr "Endereço de e-mail alterado com sucesso."
+
+#: view/zfc-user/user/changeemail.phtml:5
+msgid "Unable to update your email address. Please try again."
+msgstr ""
+"Não foi possível atualizar o seu endereço de e-mail. Por favor, tente "
+"novamente."
+
+#: view/zfc-user/user/changepassword.phtml:1
+#, php-format
+msgid "Change Password for %s"
+msgstr "Mudar senha de %s"
+
+#: view/zfc-user/user/changepassword.phtml:3
+msgid "Password changed successfully."
+msgstr "Senha alterada com sucesso."
+
+#: view/zfc-user/user/changepassword.phtml:5
+msgid "Unable to update your password. Please try again."
+msgstr "Não foi possível atualizar a senha. Por favor, tente novamente."
+
+#: view/zfc-user/user/index.phtml:2
+msgid "Hello"
+msgstr "Olá"
+
+#: view/zfc-user/user/index.phtml:3
+msgid "Sign Out"
+msgstr "Sair"
