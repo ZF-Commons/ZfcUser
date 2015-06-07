@@ -1,6 +1,6 @@
 CREATE TABLE public.user
 (                                                                                                                                                                                                                                                                              
-    user		serial NOT NULL,
+    id   		serial NOT NULL,
 	username	character varying(255) DEFAULT NULL UNIQUE,
 	email		character varying(255) DEFAULT NULL UNIQUE,
 	display_name	character varying(50) DEFAULT NULL,
