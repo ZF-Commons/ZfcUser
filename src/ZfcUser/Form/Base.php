@@ -75,7 +75,7 @@ class Base extends ProvidesEventsForm
         ));
 
         $this->add(array(
-            'name' => 'userId',
+            'name' => 'id',
             'type' => 'Zend\Form\Element\Hidden',
             'attributes' => array(
                 'type' => 'hidden'
