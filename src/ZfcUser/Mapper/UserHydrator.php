@@ -36,6 +36,9 @@ class UserHydrator extends ClassMethods implements HydratorInterface
     {
         $this->guardUserObject($object);
         $data = parent::extract($object);
+        if ($data['id'] === null) {
+            unset($data['id']);
+        }
         return $data;
     }
 
