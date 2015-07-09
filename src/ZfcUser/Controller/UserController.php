@@ -45,7 +45,6 @@ class UserController extends AbstractActionController
     protected $changeEmailForm;
 
     /**
-     * @todo Make this dynamic / translation-friendly
      * @var string
      */
     protected $failedLoginMessage = 'Authentication failed. Please try again.';
@@ -111,7 +110,14 @@ class UserController extends AbstractActionController
         $form->setData($request->getPost());
 
         if (!$form->isValid()) {
-            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
+            if($this->getServiceLocator()->has('translator')){
+                $translator = $this->getServiceLocator()->get('translator');
+                $failedLoginMessage = $translator->translate($this->failedLoginMessage);
+            }
+            else{
+                $failedLoginMessage = $this->failedLoginMessage;
+            }
+            $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($failedLoginMessage);
             return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
         }
 
