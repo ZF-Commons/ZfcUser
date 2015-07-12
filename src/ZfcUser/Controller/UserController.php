@@ -110,11 +110,10 @@ class UserController extends AbstractActionController
         $form->setData($request->getPost());
 
         if (!$form->isValid()) {
-            if($this->getServiceLocator()->has('translator')){
+            if ($this->getServiceLocator()->has('translator')) {
                 $translator = $this->getServiceLocator()->get('translator');
                 $failedLoginMessage = $translator->translate($this->failedLoginMessage);
-            }
-            else{
+            } else {
                 $failedLoginMessage = $this->failedLoginMessage;
             }
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($failedLoginMessage);
