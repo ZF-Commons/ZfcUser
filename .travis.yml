@@ -21,6 +21,10 @@ script:
 after_script:
   - php ocular.phar code-coverage:upload --format=php-clover build/logs/clover.xml
 
+notifications:
+  email: false
+  irc: "irc.freenode.org#zftalk.dev"
+
 matrix:
   fast_finish: true
   allow_failures:
