@@ -103,6 +103,7 @@ class RedirectCallback
         switch ($currentRoute) {
             case 'zfcuser/register':
             case 'zfcuser/login':
+            case 'zfcuser/authenticate':
                 $route = ($redirect) ?: $this->options->getLoginRedirectRoute();
                 return $this->router->assemble(array(), array('name' => $route));
                 break;
