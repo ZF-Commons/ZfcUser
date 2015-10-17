@@ -7,7 +7,7 @@ $form->setAttribute('action', $this->url('zfcuser/login'));
 $form->setAttribute('method', 'post');
 ?>
 
-<?php include '_form.phtml'; ?>
+<?php echo $this->partial('_form.phtml'); ?>
 
 <?php if ($this->enableRegistration) : ?>
 <?php echo $this->translate('Not registered?'); ?> <a href="<?php echo $this->url('zfcuser/register') . ($this->redirect ? '?redirect='.$this->escapeUrl($this->redirect) : '') ?>"><?php echo $this->translate('Sign up!'); ?></a>
