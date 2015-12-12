@@ -6,11 +6,15 @@ return array(
             'zfcuser' => __DIR__ . '/../view',
         ),
     ),
-    'service_manager' => array(
-        'aliases' => array(
-            'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
-        ),
+    'form_elements' => array(
+        'factories' => array(
+            'zfcuser_login_form'            => 'ZfcUser\Factory\Form\Login',
+            'zfcuser_register_form'         => 'ZfcUser\Factory\Form\Register',
+            'zfcuser_change_password_form'  => 'ZfcUser\Factory\Form\ChangePassword',
+            'zfcuser_change_email_form'     => 'ZfcUser\Factory\Form\ChangeEmail',
+        )
     ),
+
     'router' => array(
         'routes' => array(
             'zfcuser' => array(

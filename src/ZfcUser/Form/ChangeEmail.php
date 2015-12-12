@@ -3,7 +3,6 @@
 namespace ZfcUser\Form;
 
 use ZfcBase\Form\ProvidesEventsForm;
-use ZfcUser\Options\RegistrationOptionsInterface;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class ChangeEmail extends ProvidesEventsForm
@@ -51,6 +50,14 @@ class ChangeEmail extends ProvidesEventsForm
             ),
             'attributes' => array(
                 'type' => 'password',
+            ),
+        ));
+
+        $this->add(array(
+            'name' => 'submit',
+            'attributes' => array(
+                'value' => 'Submit',
+                'type'  => 'submit'
             ),
         ));
 
