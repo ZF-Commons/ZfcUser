@@ -43,7 +43,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcuser' => 'ZfcUser\Factory\Controller\UserController',
+                'zfcuser' => 'ZfcUser\Factory\Controller\UserControllerFactory',
             ),
         );
     }
@@ -73,7 +73,7 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
-                'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallback',
+                'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',
                 'zfcuser_module_options' => 'ZfcUser\Factory\Options\ModuleOptions',
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
 
