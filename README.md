@@ -86,7 +86,6 @@ Installation
     return array(
         'modules' => array(
             // ...
-            'ZfcBase',
             'ZfcUser',
         ),
         // ...
