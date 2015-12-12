@@ -11,8 +11,10 @@ namespace ZfcUser\Factory\Controller;
 use Zend\Mvc\Controller\ControllerManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcUser\Controller\RedirectCallback;
+use ZfcUser\Controller\UserController;
 
-class UserController implements FactoryInterface
+class UserControllerFactory implements FactoryInterface
 {
 
     /**

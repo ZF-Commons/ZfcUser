@@ -9,10 +9,14 @@
 namespace ZfcUser\Factory\Controller;
 
 
+use Zend\Mvc\Application;
+use Zend\Mvc\Router\RouteInterface;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
+use ZfcUser\Controller\RedirectCallback;
+use ZfcUser\Options\ModuleOptions;
 
-class RedirectCallback implements FactoryInterface
+class RedirectCallbackFactory implements FactoryInterface
 {
     /**
      * Create service
