@@ -26,7 +26,7 @@ class ZfcUserLoginWidget implements FactoryInterface
         $locator = $serviceManager->getServiceLocator();
         $viewHelper = new View\Helper\ZfcUserLoginWidget;
         $viewHelper->setViewTemplate($locator->get('zfcuser_module_options')->getUserLoginWidgetViewTemplate());
-        $viewHelper->setLoginForm($locator->get('zfcuser_login_form'));
+        $viewHelper->setLoginForm($locator->get('FormElementManager')->get('zfcuser_login_form'));
         return $viewHelper;
     }
 }
