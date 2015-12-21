@@ -71,6 +71,11 @@ class Module implements
                 'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
+
+                'zfcuser_login_form'            => 'ZfcUser\Factory\Form\Login',
+                'zfcuser_register_form'         => 'ZfcUser\Factory\Form\Register',
+                'zfcuser_change_password_form'  => 'ZfcUser\Factory\Form\ChangePassword',
+                'zfcuser_change_email_form'     => 'ZfcUser\Factory\Form\ChangeEmail',
             ),
             'factories' => array(
                 'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',
