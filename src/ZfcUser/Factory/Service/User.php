@@ -21,9 +21,9 @@ class User implements FactoryInterface
 
         $userMapper = $serviceLocator->get('zfcuser_user_mapper');
         $authService = $serviceLocator->get('zfcuser_auth_service');
-        $registerForm = $this->serviceManager->get('zfcuser_register_form');
-        $options = $this->serviceManager->get('zfcuser_module_options');
-        $formHydrator = $this->serviceManager->get('zfcuser_user_hydrator');
+        $registerForm = $serviceLocator->get('zfcuser_register_form');
+        $options = $serviceLocator->get('zfcuser_module_options');
+        $formHydrator = $serviceLocator->get('zfcuser_user_hydrator');
 
         $userService->setUserMapper($userMapper);
         $userService->setAuthService($authService);
