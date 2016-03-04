@@ -4,14 +4,12 @@ namespace ZfcUser\Service;
 
 use Zend\Authentication\AuthenticationServiceInterface as AuthenticationService;
 use Zend\Form\FormInterface as Form;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\HydratorInterface as Hydrator;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 use ZfcUser\Options\UserServiceOptionsInterface as ServiceOptions;
 
-class User extends EventProvider implements ServiceManagerAwareInterface
+class User extends EventProvider
 {
     /**
      * @var UserMapper
@@ -32,11 +30,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * @var Form
      */
     protected $registerForm;
-
-    /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
 
     /**
      * @var ServiceOptions
@@ -87,7 +80,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getUserMapper()
     {
         if (null === $this->userMapper) {
-            $this->setUserMapper($this->serviceManager->get('zfcuser_user_mapper'));
+            throw new \Exception('User mapper not injected!');
         }
         return $this->userMapper;
     }
@@ -112,7 +105,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getAuthService()
     {
         if (null === $this->authService) {
-            $this->setAuthService($this->serviceManager->get('zfcuser_auth_service'));
+            throw new \Exception('Auth service not injected!');
         }
         return $this->authService;
     }
@@ -135,7 +128,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getRegisterForm()
     {
         if (null === $this->registerForm) {
-            $this->setRegisterForm($this->serviceManager->get('zfcuser_register_form'));
+            throw new \Exception('Register form not injected!');
         }
         return $this->registerForm;
     }
@@ -158,7 +151,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getOptions()
     {
         if (!$this->options instanceof ServiceOptions) {
-            $this->setOptions($this->serviceManager->get('zfcuser_module_options'));
+            throw new \Exception('Module options not injected!');
         }
         return $this->options;
     }
@@ -174,28 +167,6 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $serviceManager
-     * @return User
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-        return $this;
-    }
-
-    /**
      * Return the Form Hydrator
      *
      * @return Hydrator
@@ -203,9 +174,7 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     public function getFormHydrator()
     {
         if (!$this->formHydrator instanceof Hydrator) {
-            $this->setFormHydrator(
-                $this->serviceManager->get('zfcuser_user_hydrator')
-            );
+            throw new \Exception('From hydrator not injected!');
         }
 
         return $this->formHydrator;

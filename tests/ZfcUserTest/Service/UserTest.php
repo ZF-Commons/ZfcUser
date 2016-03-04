@@ -3,7 +3,7 @@
 namespace ZfcUserTest\Service;
 
 use ZfcUser\Service\User as Service;
-use Zend\Crypt\Password\Bcrypt;
+use ZfcUser\Factory\Service\User as Factory;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
@@ -25,8 +25,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->service = new Service;
-
         $this->options = $this->getMock('ZfcUser\Options\ModuleOptions');
 
         $this->serviceManager = $this->getMock('Zend\ServiceManager\ServiceManager');
@@ -48,8 +46,12 @@ class UserTest extends \PHPUnit_Framework_TestCase
             'Zend\Authentication\AuthenticationServiceInterface'
         );
 
+        $factory = new Factory();
+        /** @var Service $service */
+        $service = $factory->createService($this->serviceManager);
+        $this->service = $service;
+
         $this->service->setOptions($this->options);
-        $this->service->setServiceManager($this->serviceManager);
         $this->service->setFormHydrator($this->formHydrator);
         $this->service->setEventManager($this->eventManager);
         $this->service->setUserMapper($this->mapper);
@@ -141,8 +143,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
                              ->with('zfcuser_user_mapper')
                              ->will($this->returnValue($this->mapper));
 
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
+        $factory = new Factory();
+        /** @var Service $service */
+        $service = $factory->createService($this->serviceManager);
+
         $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $service->getUserMapper());
     }
 
@@ -165,8 +169,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_auth_service')
              ->will($this->returnValue($this->authService));
 
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
+        $factory = new Factory();
+        /** @var Service $service */
+        $service = $factory->createService($this->serviceManager);
         $this->assertInstanceOf(
             'Zend\Authentication\AuthenticationServiceInterface',
             $service->getAuthService()
@@ -194,8 +199,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_register_form')
              ->will($this->returnValue($form));
 
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
+        $factory = new Factory();
+        /** @var Service $service */
+        $service = $factory->createService($this->serviceManager);
 
         $result = $service->getRegisterForm();
 
@@ -225,8 +231,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_module_options')
              ->will($this->returnValue($this->options));
 
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
+        $factory = new Factory();
+        /** @var Service $service */
+        $service = $factory->createService($this->serviceManager);
         $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $service->getOptions());
     }
 
@@ -239,15 +246,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Service\User::getServiceManager
-     * @covers ZfcUser\Service\User::setServiceManager
-     */
-    public function testSetGetServiceManager()
-    {
-        $this->assertSame($this->serviceManager, $this->service->getServiceManager());
-    }
-
-    /**
      * @covers ZfcUser\Service\User::getFormHydrator
      */
     public function testGetFormHydrator()
@@ -257,8 +255,11 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_user_hydrator')
              ->will($this->returnValue($this->formHydrator));
 
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
+        $factory = new Factory();
+
+        /** @var Service $service */
+        $service = $factory->createService($this->serviceManager);
+
         $this->assertInstanceOf(
             'ZfcUser\Mapper\HydratorInterface',
             $service->getFormHydrator()
