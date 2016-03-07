@@ -5,8 +5,6 @@ namespace ZfcUser\Authentication\Adapter;
 use InvalidArgumentException;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\Crypt\Password\Bcrypt;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\Session\Container as SessionContainer;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthenticationEvent;
 use ZfcUser\Entity\UserInterface as UserEntity;
