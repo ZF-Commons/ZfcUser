@@ -17,13 +17,8 @@ class Login implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $formElementManager)
     {
-        if ($formElementManager instanceof FormElementManager) {
-            $sm = $formElementManager->getServiceLocator();
-            $fem = $formElementManager;
-        } else {
-            $sm = $formElementManager;
-            $fem = $sm->get('FormElementManager');
-        }
+        $fem = $formElementManager;
+        $sm = $formElementManager->getServiceLocator();
 
         /** @var FormElementManager $formElementManager */
         $options = $sm->get('zfcuser_module_options');

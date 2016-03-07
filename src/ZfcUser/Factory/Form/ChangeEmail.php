@@ -18,13 +18,8 @@ class ChangeEmail implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $formElementManager)
     {
-        if ($formElementManager instanceof FormElementManager) {
-            $sm = $formElementManager->getServiceLocator();
-            $fem = $formElementManager;
-        } else {
-            $sm = $formElementManager;
-            $fem = $sm->get('FormElementManager');
-        }
+        $fem = $formElementManager;
+        $sm = $formElementManager->getServiceLocator();
 
         $options = $sm->get('zfcuser_module_options');
         $form = new Form\ChangeEmail(null, $options);
@@ -35,7 +30,7 @@ class ChangeEmail implements FactoryInterface
             $options,
             new Validator\NoRecordExists(array(
                 'mapper' => $sm->get('zfcuser_user_mapper'),
-                'key'    => 'email'
+                'key' => 'email'
             ))
         ));
 
