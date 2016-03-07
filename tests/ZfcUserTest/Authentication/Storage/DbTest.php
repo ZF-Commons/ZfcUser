@@ -29,7 +29,9 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->mapper = $this->getMock('ZfcUser\Mapper\User');
+        $this->mapper = $this->getMockForAbstractClass(
+            'ZfcUser\Mapper\UserInterface'
+        );
 
         $db = new Db(
             $this->mapper

@@ -4,7 +4,7 @@ namespace ZfcUser\Factory\Authentication\Storage;
 
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\ServiceManager\ServiceManager;
+use ZfcUser\Authentication\Storage\Db as DbStorage;
 
 class Db implements FactoryInterface
 {
@@ -16,13 +16,9 @@ class Db implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        if (!$serviceLocator instanceof ServiceManager) {
-            $serviceLocator = $serviceLocator->getServiceLocator();
-        }
-
         $mapper = $serviceLocator->get('zfcuser_user_mapper');
 
-        return new Db(
+        return new DbStorage(
             $mapper
         );
     }
