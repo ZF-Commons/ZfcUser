@@ -103,8 +103,11 @@ class DbTest extends TestCase
                 array('zfcuser_user_hydrator', true, $this->hydrator),
             )));
 
-        $this->db = new Db;
-        $this->db->setServiceManager($this->services);
+        $this->db = new Db(
+            $this->mapper,
+            $this->hydrator,
+            $this->options
+        );
         $this->db->setStorage($this->storage);
 
         $sessionManager = $this->getMock('Zend\Session\SessionManager');
@@ -437,16 +440,6 @@ class DbTest extends TestCase
     }
 
     /**
-     * @covers ZfcUser\Authentication\Adapter\Db::getServiceManager
-     * @covers ZfcUser\Authentication\Adapter\Db::setServiceManager
-     */
-    public function testGetServiceManager()
-    {
-        $this->assertSame($this->services, $this->db->getServiceManager());
-    }
-
-    /**
-     * @depends testGetServiceManager
      * @covers ZfcUser\Authentication\Adapter\Db::getOptions
      */
     public function testLazyLoadOptions()
@@ -455,22 +448,6 @@ class DbTest extends TestCase
     }
 
     /**
-     * @covers ZfcUser\Authentication\Adapter\Db::setOptions
-     * @covers ZfcUser\Authentication\Adapter\Db::getOptions
-     */
-    public function testSetOptions()
-    {
-        $options = new \ZfcUser\Options\ModuleOptions;
-        $options->setLoginRedirectRoute('zfcUser');
-
-        $this->db->setOptions($options);
-
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $this->db->getOptions());
-        $this->assertSame('zfcUser', $this->db->getOptions()->getLoginRedirectRoute());
-    }
-
-    /**
-     * @depends testGetServiceManager
      * @covers ZfcUser\Authentication\Adapter\Db::getMapper
      */
     public function testLazyLoadMapper()
@@ -479,37 +456,11 @@ class DbTest extends TestCase
     }
 
     /**
-     * @covers ZfcUser\Authentication\Adapter\Db::setMapper
-     * @covers ZfcUser\Authentication\Adapter\Db::getMapper
-     */
-    public function testSetMapper()
-    {
-        $mapper = new \ZfcUser\Mapper\User;
-        $mapper->setTableName('zfcUser');
-
-        $this->db->setMapper($mapper);
-
-        $this->assertInstanceOf('ZfcUser\Mapper\User', $this->db->getMapper());
-        $this->assertSame('zfcUser', $this->db->getMapper()->getTableName());
-    }
-
-    /**
-     * @depends testGetServiceManager
      * @covers ZfcUser\Authentication\Adapter\Db::getHydrator
      */
     public function testLazyLoadHydrator()
     {
         $this->assertEquals($this->hydrator, $this->db->getHydrator());
-    }
-
-    /**
-     * @covers ZfcUser\Authentication\Adapter\Db::setHydrator
-     * @covers ZfcUser\Authentication\Adapter\Db::getHydrator
-     */
-    public function testSetHydrator()
-    {
-        $this->db->setHydrator($this->hydrator);
-        $this->assertSame($this->hydrator, $this->db->getHydrator());
     }
 
     protected function setAuthenticationEmail()

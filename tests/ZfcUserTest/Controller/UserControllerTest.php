@@ -30,7 +30,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->userService = $this->getMock('ZfcUser\Service\User');
+        $this->userService = $this->getMockBuilder('ZfcUser\Service\User')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $this->options = $this->getMock('ZfcUser\Options\ModuleOptions');
 
