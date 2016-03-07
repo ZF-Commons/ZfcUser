@@ -34,7 +34,7 @@ return array(
     ),
     'controllers' => array(
         'factories' => array(
-            'zfcuser' => 'ZfcUser\Factory\Controller\UserControllerFactory',
+            'zfcuser' => 'ZfcUser\Factory\Controller\User',
         ),
     ),
     'service_manager' => array(

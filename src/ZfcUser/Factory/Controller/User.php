@@ -23,7 +23,7 @@ use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Controller\UserController;
 
-class UserControllerFactory implements FactoryInterface
+class User implements FactoryInterface
 {
     /**
      * Create controller
