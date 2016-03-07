@@ -24,11 +24,6 @@ class User extends EventProvider
     /**
      * @var Form
      */
-    protected $loginForm;
-
-    /**
-     * @var Form
-     */
     protected $registerForm;
 
     /**
@@ -41,6 +36,20 @@ class User extends EventProvider
      */
     protected $formHydrator;
 
+    public function __construct(
+        UserMapper $userMapper,
+        AuthenticationService $authService,
+        Form $registerForm,
+        ServiceOptions $options,
+        Hydrator $formHydrator
+    ) {
+        $this->userMapper = $userMapper;
+        $this->authService = $authService;
+        $this->registerForm = $registerForm;
+        $this->options = $options;
+        $this->formHydrator = $formHydrator;
+    }
+
     /**
      * createFromForm
      *
@@ -51,21 +60,21 @@ class User extends EventProvider
     public function register(array $data)
     {
         $entityClass = $this->getOptions()->getUserEntityClass();
-        $form        = $this->getRegisterForm();
+        $form = $this->getRegisterForm();
 
         $form->setHydrator($this->getFormHydrator());
         $form->bind(new $entityClass);
         $form->setData($data);
 
         if ($form->isValid()) {
-            $user   = $form->getData();
+            $user = $form->getData();
             $events = $this->getEventManager();
 
             $user->setPassword($this->getFormHydrator()->getCryptoService()->create($user->getPassword()));
 
             $events->trigger(__FUNCTION__, $this, compact('user', 'form'));
             $this->getUserMapper()->insert($user);
-            $events->trigger(__FUNCTION__.'.post', $this, compact('user', 'form'));
+            $events->trigger(__FUNCTION__ . '.post', $this, compact('user', 'form'));
 
             return $user;
         }
@@ -79,22 +88,7 @@ class User extends EventProvider
      */
     public function getUserMapper()
     {
-        if (null === $this->userMapper) {
-            throw new \Exception('User mapper not injected!');
-        }
         return $this->userMapper;
-    }
-
-    /**
-     * setUserMapper
-     *
-     * @param UserMapperInterface $userMapper
-     * @return User
-     */
-    public function setUserMapper(UserMapper $userMapper)
-    {
-        $this->userMapper = $userMapper;
-        return $this;
     }
 
     /**
@@ -104,22 +98,7 @@ class User extends EventProvider
      */
     public function getAuthService()
     {
-        if (null === $this->authService) {
-            throw new \Exception('Auth service not injected!');
-        }
         return $this->authService;
-    }
-
-    /**
-     * setAuthenticationService
-     *
-     * @param AuthenticationService $authService
-     * @return User
-     */
-    public function setAuthService(AuthenticationService $authService)
-    {
-        $this->authService = $authService;
-        return $this;
     }
 
     /**
@@ -127,20 +106,7 @@ class User extends EventProvider
      */
     public function getRegisterForm()
     {
-        if (null === $this->registerForm) {
-            throw new \Exception('Register form not injected!');
-        }
         return $this->registerForm;
-    }
-
-    /**
-     * @param Form $registerForm
-     * @return User
-     */
-    public function setRegisterForm(Form $registerForm)
-    {
-        $this->registerForm = $registerForm;
-        return $this;
     }
 
     /**
@@ -150,20 +116,7 @@ class User extends EventProvider
      */
     public function getOptions()
     {
-        if (!$this->options instanceof ServiceOptions) {
-            throw new \Exception('Module options not injected!');
-        }
         return $this->options;
-    }
-
-    /**
-     * set service options
-     *
-     * @param ServiceOptions $options
-     */
-    public function setOptions(ServiceOptions $options)
-    {
-        $this->options = $options;
     }
 
     /**
@@ -173,22 +126,6 @@ class User extends EventProvider
      */
     public function getFormHydrator()
     {
-        if (!$this->formHydrator instanceof Hydrator) {
-            throw new \Exception('From hydrator not injected!');
-        }
-
         return $this->formHydrator;
-    }
-
-    /**
-     * Set the Form Hydrator to use
-     *
-     * @param Hydrator $formHydrator
-     * @return User
-     */
-    public function setFormHydrator(Hydrator $formHydrator)
-    {
-        $this->formHydrator = $formHydrator;
-        return $this;
     }
 }
