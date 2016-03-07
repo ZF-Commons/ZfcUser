@@ -54,13 +54,15 @@ class UserTest extends \PHPUnit_Framework_TestCase
         #$factory = new Factory();
         #/** @var Service $service */
         #$service = $factory->createService($this->serviceManager);
-        $this->service = new Service();
+        $this->service = new Service(
+            $this->mapper,
+            $this->authService,
+            $this->registerForm,
+            $this->options,
+            $this->formHydrator
+        );
 
-        $this->service->setOptions($this->options);
-        $this->service->setFormHydrator($this->formHydrator);
         $this->service->setEventManager($this->eventManager);
-        $this->service->setUserMapper($this->mapper);
-        $this->service->setAuthService($this->authService);
     }
 
     /**
@@ -74,7 +76,8 @@ class UserTest extends \PHPUnit_Framework_TestCase
                       ->method('getUserEntityClass')
                       ->will($this->returnValue('ZfcUser\Entity\User'));
 
-        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+//        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+        $registerForm = $this->registerForm;
         $registerForm->expects($this->once())
                      ->method('setHydrator');
         $registerForm->expects($this->once())
@@ -86,7 +89,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                      ->method('isValid')
                      ->will($this->returnValue(false));
 
-        $this->service->setRegisterForm($registerForm);
+//        $this->service->setRegisterForm($registerForm);
 
         $result = $this->service->register($expectArray);
 
@@ -106,9 +109,10 @@ class UserTest extends \PHPUnit_Framework_TestCase
                       ->method('getUserEntityClass')
                       ->will($this->returnValue('ZfcUser\Entity\User'));
 
-        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')
-                             ->disableOriginalConstructor()
-                             ->getMock();
+//        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')
+//                             ->disableOriginalConstructor()
+//                             ->getMock();
+        $registerForm = $this->registerForm;
         $registerForm->expects($this->once())
                      ->method('setHydrator');
         $registerForm->expects($this->once())
@@ -131,7 +135,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                      ->with($user)
                      ->will($this->returnValue($user));
 
-        $this->service->setRegisterForm($registerForm);
+//        $this->service->setRegisterForm($registerForm);
 
         $result = $this->service->register($expectArray);
 
@@ -176,15 +180,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Service\User::getUserMapper
-     * @covers ZfcUser\Service\User::setUserMapper
-     */
-    public function testSetGetUserMapper()
-    {
-        $this->assertSame($this->mapper, $this->service->getUserMapper());
-    }
-
-    /**
      * @covers ZfcUser\Service\User::getAuthService
      */
     public function testGetAuthService()
@@ -221,15 +216,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
             'Zend\Authentication\AuthenticationServiceInterface',
             $service->getAuthService()
         );
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::getAuthService
-     * @covers ZfcUser\Service\User::setAuthService
-     */
-    public function testSetGetAuthService()
-    {
-        $this->assertSame($this->authService, $this->service->getAuthService());
     }
 
     /**
@@ -275,18 +261,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Service\User::getRegisterForm
-     * @covers ZfcUser\Service\User::setRegisterForm
-     */
-    public function testSetGetRegisterForm()
-    {
-        $form = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
-        $this->service->setRegisterForm($form);
-
-        $this->assertSame($form, $this->service->getRegisterForm());
-    }
-
-    /**
      * @covers ZfcUser\Service\User::getOptions
      */
     public function testGetOptions()
@@ -320,14 +294,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
         /** @var Service $service */
         $service = $factory->createService($this->serviceManager);
         $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $service->getOptions());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::setOptions
-     */
-    public function testSetOptions()
-    {
-        $this->assertSame($this->options, $this->service->getOptions());
     }
 
     /**
@@ -369,13 +335,5 @@ class UserTest extends \PHPUnit_Framework_TestCase
             'ZfcUser\Mapper\HydratorInterface',
             $service->getFormHydrator()
         );
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::setFormHydrator
-     */
-    public function testSetFormHydrator()
-    {
-        $this->assertSame($this->formHydrator, $this->service->getFormHydrator());
     }
 }

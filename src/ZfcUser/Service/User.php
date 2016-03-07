@@ -112,7 +112,7 @@ class User extends EventProvider
     /**
      * get service options
      *
-     * @return UserServiceOptionsInterface
+     * @return ServiceOptions
      */
     public function getOptions()
     {
