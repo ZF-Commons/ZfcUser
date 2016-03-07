@@ -73,6 +73,9 @@ class Module implements
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'ZfcUser\Authentication\Adapter\Db'             => 'ZfcUser\Factory\Authentication\Adapter\Db',
+                'ZfcUser\Authentication\Storage\Db'             => 'ZfcUser\Factory\Authentication\Storage\Db',
+                'zfcuser_user_service'                          => 'ZfcUser\Factory\Service\User',
                 'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',
                 'zfcuser_module_options' => 'ZfcUser\Factory\Options\ModuleOptions',
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
