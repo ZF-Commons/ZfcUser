@@ -8,7 +8,7 @@ use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 
-class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
+class Db implements Storage\StorageInterface
 {
     /**
      * @var StorageInterface
@@ -25,10 +25,10 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
      */
     protected $resolvedIdentity;
 
-    /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
+    public function __construct(UserMapper $mapper)
+    {
+        $this->mapper = $mapper;
+    }
 
     /**
      * Returns true if and only if storage is empty
@@ -106,8 +106,6 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
     }
 
     /**
-     * getStorage
-     *
      * @return Storage\StorageInterface
      */
     public function getStorage()
@@ -132,48 +130,10 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
     }
 
     /**
-     * getMapper
-     *
      * @return UserMapper
      */
     public function getMapper()
     {
-        if (null === $this->mapper) {
-            $this->mapper = $this->getServiceManager()->get('zfcuser_user_mapper');
-        }
         return $this->mapper;
-    }
-
-    /**
-     * setMapper
-     *
-     * @param UserMapper $mapper
-     * @return Db
-     */
-    public function setMapper(UserMapper $mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
-    }
-
-    /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
     }
 }

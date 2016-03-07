@@ -39,11 +39,11 @@ return array(
     ),
     'service_manager' => array(
         'invokables' => array(
-            'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-            'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
             'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
         ),
         'factories' => array(
+            'ZfcUser\Authentication\Adapter\Db'             => 'ZfcUser\Factory\Authentication\Adapter\Db',
+            'ZfcUser\Authentication\Storage\Db'             => 'ZfcUser\Factory\Authentication\Storage\Db',
             'zfcuser_user_service'                          => 'ZfcUser\Factory\Service\User',
             'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
             'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
