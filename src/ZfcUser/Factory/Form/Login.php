@@ -12,15 +12,16 @@ use Zend\Form\FormElementManager;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Form;
+use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class Login implements FactoryInterface
 {
     public function createService(ServiceLocatorInterface $formElementManager)
     {
+        /** @var FormElementManager $formElementManager */
         $fem = $formElementManager;
         $sm = $formElementManager->getServiceLocator();
-
-        /** @var FormElementManager $formElementManager */
+        /** @var AuthenticationOptionsInterface $options */
         $options = $sm->get('zfcuser_module_options');
         $form = new Form\Login(null, $options);
         // Inject the FormElementManager to support custom FormElements

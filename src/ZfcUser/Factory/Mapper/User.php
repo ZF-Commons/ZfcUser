@@ -8,9 +8,11 @@
 
 namespace ZfcUser\Factory\Mapper;
 
+use Zend\Db\Adapter\Adapter;
 use Zend\ServiceManager\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Mapper;
+use ZfcUser\Options\ModuleOptions;
 
 class User implements FactoryInterface
 {
@@ -23,9 +25,12 @@ class User implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
+        /** @var ModuleOptions $options */
         $options = $serviceLocator->get('zfcuser_module_options');
         $mapper = new Mapper\User();
-        $mapper->setDbAdapter($serviceLocator->get('zfcuser_zend_db_adapter'));
+        /** @var Adapter $dbAdapter */
+        $dbAdapter = $serviceLocator->get('zfcuser_zend_db_adapter');
+        $mapper->setDbAdapter($dbAdapter);
         $entityClass = $options->getUserEntityClass();
         $mapper->setEntityPrototype(new $entityClass);
         $mapper->setHydrator(new Mapper\UserHydrator());
