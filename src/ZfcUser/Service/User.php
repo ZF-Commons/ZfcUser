@@ -51,7 +51,7 @@ class User extends EventProvider
     protected $options;
 
     /**
-     * @var Hydrator\ClassMethods
+     * @var HydratorInterface
      */
     protected $formHydrator;
 
