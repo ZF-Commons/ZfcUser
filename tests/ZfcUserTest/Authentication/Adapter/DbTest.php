@@ -65,7 +65,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $user = $this->getMock('ZfcUser\Entity\User');
         $this->user = $user;
 
-        $this->db = new Db;
+        $this->db = new Db($this->mapper, $this->options);
         $this->db->setStorage($this->storage);
 
         $sessionManager = $this->getMock('Zend\Session\SessionManager');
@@ -132,8 +132,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->with(array('A record with the supplied identity could not be found.'))
             ->will($this->returnValue($this->authEvent));
 
-        $this->db->setOptions($this->options);
-
         $result = $this->db->authenticate($this->authEvent);
 
         $this->assertFalse($result);
@@ -168,9 +166,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->method('getState')
             ->will($this->returnValue(1));
 
-        $this->db->setMapper($this->mapper);
-        $this->db->setOptions($this->options);
-
         $result = $this->db->authenticate($this->authEvent);
 
         $this->assertFalse($result);
@@ -201,9 +196,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->authEvent->expects($this->once(1))
             ->method('setMessages')
             ->with(array('Supplied credential is invalid.'));
-
-        $this->db->setMapper($this->mapper);
-        $this->db->setOptions($this->options);
 
         $result = $this->db->authenticate($this->authEvent);
 
@@ -250,9 +242,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
                         ->method('setMessages')
                         ->with(array('Authentication successful.'))
                         ->will($this->returnValue($this->authEvent));
-
-        $this->db->setMapper($this->mapper);
-        $this->db->setOptions($this->options);
 
         $result = $this->db->authenticate($this->authEvent);
     }
@@ -304,9 +293,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
                         ->with(array('Authentication successful.'))
                         ->will($this->returnValue($this->authEvent));
 
-        $this->db->setMapper($this->mapper);
-        $this->db->setOptions($this->options);
-
         $result = $this->db->authenticate($this->authEvent);
     }
 
@@ -357,12 +343,9 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->with('ZfcUserNew')
             ->will($this->returnValue('$2a$10$D41KPuDCn6iGoESjnLee/uE/2Xo985sotVySo2HKDz6gAO4hO/Gh6'));
 
-        $mapper = $this->getMock('ZfcUser\Mapper\User');
-        $mapper->expects($this->once())
+        $this->mapper->expects($this->once())
             ->method('update')
             ->with($user);
-
-        $this->db->setMapper($mapper);
 
         $method = new \ReflectionMethod(
             'ZfcUser\Authentication\Adapter\Db',
@@ -406,34 +389,10 @@ class DbTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Authentication\Adapter\Db::setServiceManager
-     * @covers ZfcUser\Authentication\Adapter\Db::getServiceManager
-     */
-    public function testSetGetServicemanager()
-    {
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
-
-        $this->db->setServiceManager($sm);
-
-        $serviceManager = $this->db->getServiceManager();
-
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $serviceManager);
-        $this->assertSame($sm, $serviceManager);
-    }
-
-    /**
      * @covers ZfcUser\Authentication\Adapter\Db::getOptions
      */
     public function testGetOptionsWithNoOptionsSet()
     {
-        $serviceMapper = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $serviceMapper->expects($this->once())
-            ->method('get')
-            ->with('zfcuser_module_options')
-            ->will($this->returnValue($this->options));
-
-        $this->db->setServiceManager($serviceMapper);
-
         $options = $this->db->getOptions();
 
         $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $options);
@@ -441,51 +400,13 @@ class DbTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ZfcUser\Authentication\Adapter\Db::setOptions
-     * @covers ZfcUser\Authentication\Adapter\Db::getOptions
-     */
-    public function testSetGetOptions()
-    {
-        $options = new \ZfcUser\Options\ModuleOptions;
-        $options->setLoginRedirectRoute('zfcUser');
-
-        $this->db->setOptions($options);
-
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $this->db->getOptions());
-        $this->assertSame('zfcUser', $this->db->getOptions()->getLoginRedirectRoute());
-    }
-
-    /**
      * @covers ZfcUser\Authentication\Adapter\Db::getMapper
      */
     public function testGetMapperWithNoMapperSet()
     {
-        $serviceMapper = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $serviceMapper->expects($this->once())
-            ->method('get')
-            ->with('zfcuser_user_mapper')
-            ->will($this->returnValue($this->mapper));
-
-        $this->db->setServiceManager($serviceMapper);
-
         $mapper = $this->db->getMapper();
         $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $mapper);
         $this->assertSame($this->mapper, $mapper);
-    }
-
-    /**
-     * @covers ZfcUser\Authentication\Adapter\Db::setMapper
-     * @covers ZfcUser\Authentication\Adapter\Db::getMapper
-     */
-    public function testSetGetMapper()
-    {
-        $mapper = new \ZfcUser\Mapper\User;
-        $mapper->setTableName('zfcUser');
-
-        $this->db->setMapper($mapper);
-
-        $this->assertInstanceOf('ZfcUser\Mapper\User', $this->db->getMapper());
-        $this->assertSame('zfcUser', $this->db->getMapper()->getTableName());
     }
 
     protected function setAuthenticationEmail()

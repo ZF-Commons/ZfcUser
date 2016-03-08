@@ -2,54 +2,67 @@
 
 namespace ZfcUserTest\Service;
 
+use Zend\Authentication\AuthenticationService;
+use Zend\EventManager\EventManager;
+use Zend\Hydrator\HydratorInterface;
+use Zend\ServiceManager\ServiceManager;
+use ZfcUser\Form\Register;
+use ZfcUser\Mapper\UserInterface;
+use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Service\User as Service;
 use Zend\Crypt\Password\Bcrypt;
+use ZfcUser\Service\User;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
+    /** @var User */
     protected $service;
 
+    /** @var  ModuleOptions */
     protected $options;
 
+    /** @var ServiceManager */
     protected $serviceManager;
 
+    /** @var HydratorInterface */
     protected $formHydrator;
 
+    /** @var EventManager */
     protected $eventManager;
 
+    /** @var UserInterface */
     protected $mapper;
 
+    /** @var AuthenticationService */
     protected $authService;
+
+    /** @var Register */
+    protected $registerForm;
 
     public function setUp()
     {
-        $service = new Service;
+        $this->mapper = $this->getMock('ZfcUser\Mapper\UserInterface');
+
+        $this->authService = $this->getMockBuilder('Zend\Authentication\AuthenticationService')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->registerForm = $this->getMockBuilder('ZfcUser\Form\Register')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->options = $this->getMock('ZfcUser\Options\ModuleOptions');
+
+        $this->serviceManager = $this->getMock('Zend\ServiceManager\ServiceManager');
+
+        $this->eventManager = $this->getMock('Zend\EventManager\EventManager');
+
+        $this->formHydrator = $this->getMock('Zend\Stdlib\Hydrator\HydratorInterface');
+
+        $service = new Service($this->mapper, $this->authService, $this->registerForm, $this->options, $this->formHydrator);
         $this->service = $service;
 
-        $options = $this->getMock('ZfcUser\Options\ModuleOptions');
-        $this->options = $options;
-
-        $serviceManager = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $this->serviceManager = $serviceManager;
-
-        $eventManager = $this->getMock('Zend\EventManager\EventManager');
-        $this->eventManager = $eventManager;
-
-        $formHydrator = $this->getMock('Zend\Stdlib\Hydrator\HydratorInterface');
-        $this->formHydrator = $formHydrator;
-
-        $mapper = $this->getMock('ZfcUser\Mapper\UserInterface');
-        $this->mapper = $mapper;
-
-        $authService = $this->getMockBuilder('Zend\Authentication\AuthenticationService')->disableOriginalConstructor()->getMock();
-        $this->authService = $authService;
-
-        $service->setOptions($options);
-        $service->setServiceManager($serviceManager);
-        $service->setFormHydrator($formHydrator);
-        $service->setEventManager($eventManager);
-        $service->setUserMapper($mapper);
-        $service->setAuthService($authService);
+        $service->setEventManager($this->eventManager);
     }
 
     /**
@@ -60,22 +73,20 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $expectArray = array('username' => 'ZfcUser');
 
         $this->options->expects($this->once())
-                      ->method('getUserEntityClass')
-                      ->will($this->returnValue('ZfcUser\Entity\User'));
+            ->method('getUserEntityClass')
+            ->will($this->returnValue('ZfcUser\Entity\User'));
 
-        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+        $registerForm = $this->registerForm;
         $registerForm->expects($this->once())
-                     ->method('setHydrator');
+            ->method('setHydrator');
         $registerForm->expects($this->once())
-                     ->method('bind');
+            ->method('bind');
         $registerForm->expects($this->once())
-                     ->method('setData')
-                     ->with($expectArray);
+            ->method('setData')
+            ->with($expectArray);
         $registerForm->expects($this->once())
-                     ->method('isValid')
-                     ->will($this->returnValue(false));
-
-        $this->service->setRegisterForm($registerForm);
+            ->method('isValid')
+            ->will($this->returnValue(false));
 
         $result = $this->service->register($expectArray);
 
@@ -91,62 +102,60 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
-             ->method('setPassword');
+            ->method('setPassword');
         $user->expects($this->once())
-             ->method('getPassword');
+            ->method('getPassword');
         $user->expects($this->once())
-             ->method('setUsername')
-             ->with('ZfcUser');
+            ->method('setUsername')
+            ->with('ZfcUser');
         $user->expects($this->once())
-             ->method('setDisplayName')
-             ->with('Zfc User');
+            ->method('setDisplayName')
+            ->with('Zfc User');
         $user->expects($this->once())
-             ->method('setState')
-             ->with(1);
+            ->method('setState')
+            ->with(1);
 
         $this->options->expects($this->once())
-                      ->method('getUserEntityClass')
-                      ->will($this->returnValue('ZfcUser\Entity\User'));
+            ->method('getUserEntityClass')
+            ->will($this->returnValue('ZfcUser\Entity\User'));
         $this->options->expects($this->once())
-                      ->method('getPasswordCost')
-                      ->will($this->returnValue(4));
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
         $this->options->expects($this->once())
-                      ->method('getEnableUsername')
-                      ->will($this->returnValue(true));
+            ->method('getEnableUsername')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getEnableDisplayName')
-                      ->will($this->returnValue(true));
+            ->method('getEnableDisplayName')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getEnableUserState')
-                      ->will($this->returnValue(true));
+            ->method('getEnableUserState')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getDefaultUserState')
-                      ->will($this->returnValue(1));
+            ->method('getDefaultUserState')
+            ->will($this->returnValue(1));
 
-        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+        $registerForm = $this->registerForm;
         $registerForm->expects($this->once())
-                     ->method('setHydrator');
+            ->method('setHydrator');
         $registerForm->expects($this->once())
-                     ->method('bind');
+            ->method('bind');
         $registerForm->expects($this->once())
-                     ->method('setData')
-                     ->with($expectArray);
+            ->method('setData')
+            ->with($expectArray);
         $registerForm->expects($this->once())
-                     ->method('getData')
-                     ->will($this->returnValue($user));
+            ->method('getData')
+            ->will($this->returnValue($user));
         $registerForm->expects($this->once())
-                     ->method('isValid')
-                     ->will($this->returnValue(true));
+            ->method('isValid')
+            ->will($this->returnValue(true));
 
         $this->eventManager->expects($this->exactly(2))
-                           ->method('trigger');
+            ->method('trigger');
 
         $this->mapper->expects($this->once())
-                     ->method('insert')
-                     ->with($user)
-                     ->will($this->returnValue($user));
-
-        $this->service->setRegisterForm($registerForm);
+            ->method('insert')
+            ->with($user)
+            ->will($this->returnValue($user));
 
         $result = $this->service->register($expectArray);
 
@@ -162,62 +171,60 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
-             ->method('setPassword');
+            ->method('setPassword');
         $user->expects($this->once())
-             ->method('getPassword');
+            ->method('getPassword');
         $user->expects($this->once())
-             ->method('setUsername')
-             ->with('ZfcUser');
+            ->method('setUsername')
+            ->with('ZfcUser');
         $user->expects($this->once())
-             ->method('setDisplayName')
-             ->with('Zfc User');
+            ->method('setDisplayName')
+            ->with('Zfc User');
         $user->expects($this->once())
-             ->method('setState')
-             ->with(0);
+            ->method('setState')
+            ->with(0);
 
         $this->options->expects($this->once())
-                      ->method('getUserEntityClass')
-                      ->will($this->returnValue('ZfcUser\Entity\User'));
+            ->method('getUserEntityClass')
+            ->will($this->returnValue('ZfcUser\Entity\User'));
         $this->options->expects($this->once())
-                      ->method('getPasswordCost')
-                      ->will($this->returnValue(4));
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
         $this->options->expects($this->once())
-                      ->method('getEnableUsername')
-                      ->will($this->returnValue(true));
+            ->method('getEnableUsername')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getEnableDisplayName')
-                      ->will($this->returnValue(true));
+            ->method('getEnableDisplayName')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getEnableUserState')
-                      ->will($this->returnValue(true));
+            ->method('getEnableUserState')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getDefaultUserState')
-                      ->will($this->returnValue(0));
+            ->method('getDefaultUserState')
+            ->will($this->returnValue(0));
 
-        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+        $registerForm = $this->registerForm;
         $registerForm->expects($this->once())
-                     ->method('setHydrator');
+            ->method('setHydrator');
         $registerForm->expects($this->once())
-                     ->method('bind');
+            ->method('bind');
         $registerForm->expects($this->once())
-                     ->method('setData')
-                     ->with($expectArray);
+            ->method('setData')
+            ->with($expectArray);
         $registerForm->expects($this->once())
-                     ->method('getData')
-                     ->will($this->returnValue($user));
+            ->method('getData')
+            ->will($this->returnValue($user));
         $registerForm->expects($this->once())
-                     ->method('isValid')
-                     ->will($this->returnValue(true));
+            ->method('isValid')
+            ->will($this->returnValue(true));
 
         $this->eventManager->expects($this->exactly(2))
-                           ->method('trigger');
+            ->method('trigger');
 
         $this->mapper->expects($this->once())
-                     ->method('insert')
-                     ->with($user)
-                     ->will($this->returnValue($user));
-
-        $this->service->setRegisterForm($registerForm);
+            ->method('insert')
+            ->with($user)
+            ->will($this->returnValue($user));
 
         $result = $this->service->register($expectArray);
 
@@ -234,67 +241,65 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->once())
-             ->method('setPassword');
+            ->method('setPassword');
         $user->expects($this->once())
-             ->method('getPassword');
+            ->method('getPassword');
         $user->expects($this->once())
-             ->method('setUsername')
-             ->with('ZfcUser');
+            ->method('setUsername')
+            ->with('ZfcUser');
         $user->expects($this->once())
-             ->method('setDisplayName')
-             ->with('Zfc User');
+            ->method('setDisplayName')
+            ->with('Zfc User');
         $user->expects($this->never())
-             ->method('setState');
+            ->method('setState');
 
         $this->options->expects($this->once())
-                      ->method('getUserEntityClass')
-                      ->will($this->returnValue('ZfcUser\Entity\User'));
+            ->method('getUserEntityClass')
+            ->will($this->returnValue('ZfcUser\Entity\User'));
         $this->options->expects($this->once())
-                      ->method('getPasswordCost')
-                      ->will($this->returnValue(4));
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
         $this->options->expects($this->once())
-                      ->method('getEnableUsername')
-                      ->will($this->returnValue(true));
+            ->method('getEnableUsername')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getEnableDisplayName')
-                      ->will($this->returnValue(true));
+            ->method('getEnableDisplayName')
+            ->will($this->returnValue(true));
         $this->options->expects($this->once())
-                      ->method('getEnableUserState')
-                      ->will($this->returnValue(false));
+            ->method('getEnableUserState')
+            ->will($this->returnValue(false));
         $this->options->expects($this->never())
-                      ->method('getDefaultUserState');
+            ->method('getDefaultUserState');
 
-        $registerForm = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
+        $registerForm = $this->registerForm;
         $registerForm->expects($this->once())
-                     ->method('setHydrator');
+            ->method('setHydrator');
         $registerForm->expects($this->once())
-                     ->method('bind');
+            ->method('bind');
         $registerForm->expects($this->once())
-                     ->method('setData')
-                     ->with($expectArray);
+            ->method('setData')
+            ->with($expectArray);
         $registerForm->expects($this->once())
-                     ->method('getData')
-                     ->will($this->returnValue($user));
+            ->method('getData')
+            ->will($this->returnValue($user));
         $registerForm->expects($this->once())
-                     ->method('isValid')
-                     ->will($this->returnValue(true));
+            ->method('isValid')
+            ->will($this->returnValue(true));
 
         $this->eventManager->expects($this->exactly(2))
-                           ->method('trigger');
+            ->method('trigger');
 
         $this->mapper->expects($this->once())
-                     ->method('insert')
-                     ->with($user)
-                     ->will($this->returnValue($user));
-
-        $this->service->setRegisterForm($registerForm);
+            ->method('insert')
+            ->with($user)
+            ->will($this->returnValue($user));
 
         $result = $this->service->register($expectArray);
 
         $this->assertSame($user, $result);
         $this->assertEquals(0, $user->getState());
     }
-    
+
     /**
      * @covers ZfcUser\Service\User::changePassword
      */
@@ -303,20 +308,20 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $data = array('newCredential' => 'zfcUser', 'credential' => 'zfcUserOld');
 
         $this->options->expects($this->any())
-             ->method('getPasswordCost')
-             ->will($this->returnValue(4));
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
 
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->any())
-             ->method('getPassword')
-             ->will($this->returnValue($bcrypt->create('wrongPassword')));
+            ->method('getPassword')
+            ->will($this->returnValue($bcrypt->create('wrongPassword')));
 
         $this->authService->expects($this->any())
-                          ->method('getIdentity')
-                          ->will($this->returnValue($user));
+            ->method('getIdentity')
+            ->will($this->returnValue($user));
 
         $result = $this->service->changePassword($data);
         $this->assertFalse($result);
@@ -330,29 +335,29 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $data = array('newCredential' => 'zfcUser', 'credential' => 'zfcUserOld');
 
         $this->options->expects($this->any())
-             ->method('getPasswordCost')
-             ->will($this->returnValue(4));
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
 
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->any())
-             ->method('getPassword')
-             ->will($this->returnValue($bcrypt->create($data['credential'])));
+            ->method('getPassword')
+            ->will($this->returnValue($bcrypt->create($data['credential'])));
         $user->expects($this->any())
-             ->method('setPassword');
+            ->method('setPassword');
 
         $this->authService->expects($this->any())
-             ->method('getIdentity')
-             ->will($this->returnValue($user));
+            ->method('getIdentity')
+            ->will($this->returnValue($user));
 
         $this->eventManager->expects($this->exactly(2))
-             ->method('trigger');
+            ->method('trigger');
 
         $this->mapper->expects($this->once())
-             ->method('update')
-             ->with($user);
+            ->method('update')
+            ->with($user);
 
         $result = $this->service->changePassword($data);
         $this->assertTrue($result);
@@ -366,30 +371,30 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $data = array('credential' => 'zfcUser', 'newIdentity' => 'zfcUser@zfcUser.com');
 
         $this->options->expects($this->any())
-             ->method('getPasswordCost')
-             ->will($this->returnValue(4));
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
 
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->any())
-             ->method('getPassword')
-             ->will($this->returnValue($bcrypt->create($data['credential'])));
+            ->method('getPassword')
+            ->will($this->returnValue($bcrypt->create($data['credential'])));
         $user->expects($this->any())
-             ->method('setEmail')
-             ->with('zfcUser@zfcUser.com');
+            ->method('setEmail')
+            ->with('zfcUser@zfcUser.com');
 
         $this->authService->expects($this->any())
-             ->method('getIdentity')
-             ->will($this->returnValue($user));
+            ->method('getIdentity')
+            ->will($this->returnValue($user));
 
         $this->eventManager->expects($this->exactly(2))
-             ->method('trigger');
+            ->method('trigger');
 
         $this->mapper->expects($this->once())
-             ->method('update')
-             ->with($user);
+            ->method('update')
+            ->with($user);
 
         $result = $this->service->changeEmail($data);
         $this->assertTrue($result);
@@ -403,20 +408,20 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $data = array('credential' => 'zfcUserOld');
 
         $this->options->expects($this->any())
-             ->method('getPasswordCost')
-             ->will($this->returnValue(4));
+            ->method('getPasswordCost')
+            ->will($this->returnValue(4));
 
         $bcrypt = new Bcrypt();
         $bcrypt->setCost($this->options->getPasswordCost());
 
         $user = $this->getMock('ZfcUser\Entity\User');
         $user->expects($this->any())
-             ->method('getPassword')
-             ->will($this->returnValue($bcrypt->create('wrongPassword')));
+            ->method('getPassword')
+            ->will($this->returnValue($bcrypt->create('wrongPassword')));
 
         $this->authService->expects($this->any())
-             ->method('getIdentity')
-             ->will($this->returnValue($user));
+            ->method('getIdentity')
+            ->will($this->returnValue($user));
 
         $result = $this->service->changeEmail($data);
         $this->assertFalse($result);
@@ -427,23 +432,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUserMapper()
     {
-        $this->serviceManager->expects($this->once())
-                             ->method('get')
-                             ->with('zfcuser_user_mapper')
-                             ->will($this->returnValue($this->mapper));
-
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $service->getUserMapper());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::getUserMapper
-     * @covers ZfcUser\Service\User::setUserMapper
-     */
-    public function testSetGetUserMapper()
-    {
-        $this->assertSame($this->mapper, $this->service->getUserMapper());
+        $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $this->service->getUserMapper());
     }
 
     /**
@@ -451,23 +440,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAuthService()
     {
-        $this->serviceManager->expects($this->once())
-             ->method('get')
-             ->with('zfcuser_auth_service')
-             ->will($this->returnValue($this->authService));
-
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('Zend\Authentication\AuthenticationService', $service->getAuthService());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::getAuthService
-     * @covers ZfcUser\Service\User::setAuthService
-     */
-    public function testSetGetAuthService()
-    {
-        $this->assertSame($this->authService, $this->service->getAuthService());
+        $this->assertInstanceOf('Zend\Authentication\AuthenticationService', $this->service->getAuthService());
     }
 
     /**
@@ -475,61 +448,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetRegisterForm()
     {
-        $form = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
-
-        $this->serviceManager->expects($this->once())
-             ->method('get')
-             ->with('zfcuser_register_form')
-             ->will($this->returnValue($form));
-
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
-
-        $result = $service->getRegisterForm();
-
-        $this->assertInstanceOf('ZfcUser\Form\Register', $result);
-        $this->assertSame($form, $result);
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::getRegisterForm
-     * @covers ZfcUser\Service\User::setRegisterForm
-     */
-    public function testSetGetRegisterForm()
-    {
-        $form = $this->getMockBuilder('ZfcUser\Form\Register')->disableOriginalConstructor()->getMock();
-        $this->service->setRegisterForm($form);
-
-        $this->assertSame($form, $this->service->getRegisterForm());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::getChangePasswordForm
-     */
-    public function testGetChangePasswordForm()
-    {
-        $form = $this->getMockBuilder('ZfcUser\Form\ChangePassword')->disableOriginalConstructor()->getMock();
-
-        $this->serviceManager->expects($this->once())
-             ->method('get')
-             ->with('zfcuser_change_password_form')
-             ->will($this->returnValue($form));
-
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('ZfcUser\Form\ChangePassword', $service->getChangePasswordForm());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::getChangePasswordForm
-     * @covers ZfcUser\Service\User::setChangePasswordForm
-     */
-    public function testSetGetChangePasswordForm()
-    {
-        $form = $this->getMockBuilder('ZfcUser\Form\ChangePassword')->disableOriginalConstructor()->getMock();
-        $this->service->setChangePasswordForm($form);
-
-        $this->assertSame($form, $this->service->getChangePasswordForm());
+        $this->assertInstanceOf('ZfcUser\Form\Register', $this->service->getRegisterForm());
     }
 
     /**
@@ -537,31 +456,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOptions()
     {
-        $this->serviceManager->expects($this->once())
-             ->method('get')
-             ->with('zfcuser_module_options')
-             ->will($this->returnValue($this->options));
-
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $service->getOptions());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::setOptions
-     */
-    public function testSetOptions()
-    {
-        $this->assertSame($this->options, $this->service->getOptions());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::getServiceManager
-     * @covers ZfcUser\Service\User::setServiceManager
-     */
-    public function testSetGetServiceManager()
-    {
-        $this->assertSame($this->serviceManager, $this->service->getServiceManager());
+        $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $this->service->getOptions());
     }
 
     /**
@@ -569,21 +464,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetFormHydrator()
     {
-        $this->serviceManager->expects($this->once())
-             ->method('get')
-             ->with('zfcuser_register_form_hydrator')
-             ->will($this->returnValue($this->formHydrator));
-
-        $service = new Service;
-        $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('Zend\Stdlib\Hydrator\HydratorInterface', $service->getFormHydrator());
-    }
-
-    /**
-     * @covers ZfcUser\Service\User::setFormHydrator
-     */
-    public function testSetFormHydrator()
-    {
-        $this->assertSame($this->formHydrator, $this->service->getFormHydrator());
+        $this->assertInstanceOf('Zend\Stdlib\Hydrator\HydratorInterface', $this->service->getFormHydrator());
     }
 }

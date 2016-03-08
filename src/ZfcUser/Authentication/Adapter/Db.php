@@ -2,17 +2,14 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use DateTime;
 use Zend\Authentication\Result as AuthenticationResult;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
-use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
 use Zend\Session\Container as SessionContainer;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
-use ZfcUser\Mapper\User as UserMapperInterface;
+use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class Db extends AbstractAdapter implements ServiceManagerAwareInterface
+class Db extends AbstractAdapter
 {
     /**
      * @var UserMapperInterface
@@ -25,14 +22,15 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     protected $credentialPreprocessor;
 
     /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
-
-    /**
      * @var AuthenticationOptionsInterface
      */
     protected $options;
+
+    public function __construct(UserMapperInterface $mapper, AuthenticationOptionsInterface $options)
+    {
+        $this->mapper = $mapper;
+        $this->options = $options;
+    }
 
     /**
      * Called when user id logged out
@@ -142,22 +140,7 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
      */
     public function getMapper()
     {
-        if (null === $this->mapper) {
-            $this->mapper = $this->getServiceManager()->get('zfcuser_user_mapper');
-        }
         return $this->mapper;
-    }
-
-    /**
-     * setMapper
-     *
-     * @param UserMapperInterface $mapper
-     * @return Db
-     */
-    public function setMapper(UserMapperInterface $mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
     }
 
     /**
@@ -182,42 +165,10 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     }
 
     /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-    }
-
-    /**
-     * @param AuthenticationOptionsInterface $options
-     */
-    public function setOptions(AuthenticationOptionsInterface $options)
-    {
-        $this->options = $options;
-    }
-
-    /**
      * @return AuthenticationOptionsInterface
      */
     public function getOptions()
     {
-        if (!$this->options instanceof AuthenticationOptionsInterface) {
-            $this->setOptions($this->getServiceManager()->get('zfcuser_module_options'));
-        }
         return $this->options;
     }
 }

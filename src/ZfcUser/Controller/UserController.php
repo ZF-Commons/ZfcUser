@@ -61,10 +61,30 @@ class UserController extends AbstractActionController
     protected $redirectCallback;
 
     /**
+     * @param UserService $userService
+     * @param FormInterface $loginForm
+     * @param FormInterface $registerForm
+     * @param FormInterface $changePasswordForm
+     * @param FormInterface $changeEmailForm
+     * @param UserControllerOptionsInterface $options
      * @param callable $redirectCallback
      */
-    public function __construct($redirectCallback)
-    {
+    public function __construct(
+        UserService $userService,
+        FormInterface $loginForm,
+        FormInterface $registerForm,
+        FormInterface $changePasswordForm,
+        FormInterface $changeEmailForm,
+        UserControllerOptionsInterface $options,
+        $redirectCallback
+    ) {
+        $this->userService = $userService;
+        $this->loginForm = $loginForm;
+        $this->registerForm = $registerForm;
+        $this->changePasswordForm = $changePasswordForm;
+        $this->changeEmailForm = $changeEmailForm;
+        $this->options = $options;
+
         if (!is_callable($redirectCallback)) {
             throw new \InvalidArgumentException('You must supply a callable redirectCallback');
         }
@@ -112,7 +132,7 @@ class UserController extends AbstractActionController
 
         if (!$form->isValid()) {
             $this->flashMessenger()->setNamespace('zfcuser-login-form')->addMessage($this->failedLoginMessage);
-            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN).($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+            return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect=' . rawurlencode($redirect) : ''));
         }
 
         // clear adapters
@@ -162,7 +182,7 @@ class UserController extends AbstractActionController
             $adapter->resetAdapters();
             return $this->redirect()->toUrl(
                 $this->url()->fromRoute(static::ROUTE_LOGIN) .
-                ($redirect ? '?redirect='. rawurlencode($redirect) : '')
+                ($redirect ? '?redirect=' . rawurlencode($redirect) : '')
             );
         }
 
@@ -236,7 +256,7 @@ class UserController extends AbstractActionController
         }
 
         // TODO: Add the redirect parameter here...
-        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+        return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect=' . rawurlencode($redirect) : ''));
     }
 
     /**
@@ -347,29 +367,12 @@ class UserController extends AbstractActionController
 
     public function getUserService()
     {
-        if (!$this->userService) {
-            $this->userService = $this->getServiceLocator()->get('zfcuser_user_service');
-        }
         return $this->userService;
-    }
-
-    public function setUserService(UserService $userService)
-    {
-        $this->userService = $userService;
-        return $this;
     }
 
     public function getRegisterForm()
     {
-        if (!$this->registerForm) {
-            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
-        }
         return $this->registerForm;
-    }
-
-    public function setRegisterForm(FormInterface$registerForm)
-    {
-        $this->registerForm = $registerForm;
     }
 
     public function getLoginForm()
@@ -394,28 +397,7 @@ class UserController extends AbstractActionController
 
     public function getChangePasswordForm()
     {
-        if (!$this->changePasswordForm) {
-            $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
-        }
         return $this->changePasswordForm;
-    }
-
-    public function setChangePasswordForm(FormInterface $changePasswordForm)
-    {
-        $this->changePasswordForm = $changePasswordForm;
-        return $this;
-    }
-
-    /**
-     * set options
-     *
-     * @param UserControllerOptionsInterface $options
-     * @return UserController
-     */
-    public function setOptions(UserControllerOptionsInterface $options)
-    {
-        $this->options = $options;
-        return $this;
     }
 
     /**
@@ -425,9 +407,6 @@ class UserController extends AbstractActionController
      */
     public function getOptions()
     {
-        if (!$this->options instanceof UserControllerOptionsInterface) {
-            $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
-        }
         return $this->options;
     }
 
@@ -437,21 +416,6 @@ class UserController extends AbstractActionController
      */
     public function getChangeEmailForm()
     {
-        if (!$this->changeEmailForm) {
-            $this->setChangeEmailForm($this->getServiceLocator()->get('zfcuser_change_email_form'));
-        }
         return $this->changeEmailForm;
-    }
-
-    /**
-     * Set changeEmailForm.
-     *
-     * @param $changeEmailForm - the value to set.
-     * @return $this
-     */
-    public function setChangeEmailForm($changeEmailForm)
-    {
-        $this->changeEmailForm = $changeEmailForm;
-        return $this;
     }
 }

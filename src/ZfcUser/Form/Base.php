@@ -89,8 +89,4 @@ class Base extends ProvidesEventsForm
 
         $this->getEventManager()->trigger('init', $this);
     }
-
-    public function init()
-    {
-    }
 }

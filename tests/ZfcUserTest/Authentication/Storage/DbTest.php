@@ -29,11 +29,12 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $db = new Db;
+        $this->mapper = $this->getMock('ZfcUser\Mapper\User');
+
+        $db = new Db($this->mapper);
         $this->db = $db;
 
         $this->storage = $this->getMock('Zend\Authentication\Storage\Session');
-        $this->mapper = $this->getMock('ZfcUser\Mapper\User');
     }
 
     /**
@@ -82,8 +83,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
                      ->with(1)
                      ->will($this->returnValue($user));
 
-        $this->db->setMapper($this->mapper);
-
         $result = $this->db->read();
 
         $this->assertSame($user, $result);
@@ -104,8 +103,6 @@ class DbTest extends \PHPUnit_Framework_TestCase
                      ->method('findById')
                      ->with(1)
                      ->will($this->returnValue(false));
-
-        $this->db->setMapper($this->mapper);
 
         $result = $this->db->read();
 
@@ -175,44 +172,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMapperWithNoMapperSet()
     {
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
-        $sm->expects($this->once())
-           ->method('get')
-           ->with('zfcuser_user_mapper')
-           ->will($this->returnValue($this->mapper));
-
-        $this->db->setServiceManager($sm);
-
         $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $this->db->getMapper());
-    }
-
-    /**
-     * @covers ZfcUser\Authentication\Storage\Db::setMapper
-     * @covers ZfcUser\Authentication\Storage\Db::getMapper
-     */
-    public function testSetGetMapper()
-    {
-        $mapper = new \ZfcUser\Mapper\User;
-        $mapper->setTableName('zfcUser');
-
-        $this->db->setMapper($mapper);
-
-        $this->assertInstanceOf('ZfcUser\Mapper\User', $this->db->getMapper());
-        $this->assertSame('zfcUser', $this->db->getMapper()->getTableName());
-    }
-
-    /**
-     * @covers ZfcUser\Authentication\Storage\Db::setServiceManager
-     * @covers ZfcUser\Authentication\Storage\Db::getServiceManager
-     */
-    public function testSetGetServicemanager()
-    {
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
-
-        $this->db->setServiceManager($sm);
-
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $this->db->getServiceManager());
-        $this->assertSame($sm, $this->db->getServiceManager());
     }
 
     /**

@@ -4,12 +4,18 @@ namespace ZfcUser;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ControllerProviderInterface;
+use Zend\ModuleManager\Feature\FormElementProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
+use Zend\ModuleManager\Feature\ViewHelperProviderInterface;
 
 class Module implements
     AutoloaderProviderInterface,
     ConfigProviderInterface,
-    ServiceProviderInterface
+    ServiceProviderInterface,
+    ViewHelperProviderInterface,
+    FormElementProviderInterface,
+    ControllerProviderInterface
 {
     public function getAutoloaderConfig()
     {
@@ -67,24 +73,37 @@ class Module implements
                 'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
             ),
             'invokables' => array(
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
-                'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
-                'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',
-                'zfcuser_module_options' => 'ZfcUser\Factory\Options\ModuleOptions',
-                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
+                'ZfcUser\Authentication\Adapter\Db'             => 'ZfcUser\Factory\Authentication\Adapter\Db',
+                'ZfcUser\Authentication\Storage\Db'             => 'ZfcUser\Factory\Authentication\Storage\Db',
+                'zfcuser_user_service'                          => 'ZfcUser\Factory\Service\User',
+                'zfcuser_redirect_callback'                     => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',
+                'zfcuser_module_options'                        => 'ZfcUser\Factory\Options\ModuleOptions',
+                'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
 
                 // We alias this one because it's ZfcUser's instance of
                 // Zend\Authentication\AuthenticationService. We don't want to
                 // hog the FQCN service alias for a Zend\* class.
-                'zfcuser_auth_service' => 'ZfcUser\Factory\AuthenticationService',
+                'zfcuser_auth_service'  => 'ZfcUser\Factory\AuthenticationService',
 
                 'zfcuser_user_hydrator' => 'ZfcUser\Factory\UserHydrator',
-                'zfcuser_user_mapper' => 'ZfcUser\Factory\Mapper\User',
+                'zfcuser_user_mapper'   => 'ZfcUser\Factory\Mapper\User',
+            ),
+        );
+    }
 
+    /**
+     * Expected to return \Zend\ServiceManager\Config object or array to
+     * seed such an object.
+     *
+     * @return array|\Zend\ServiceManager\Config
+     */
+    public function getFormElementConfig()
+    {
+        return array(
+            'factories' => array(
                 'zfcuser_login_form'            => 'ZfcUser\Factory\Form\Login',
                 'zfcuser_register_form'         => 'ZfcUser\Factory\Form\Register',
                 'zfcuser_change_password_form'  => 'ZfcUser\Factory\Form\ChangePassword',
