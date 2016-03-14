@@ -176,7 +176,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->method('addMessage')
             ->will($this->returnSelf());
 
-        $postArray = array('some', 'data');
+        $postArray = new Parameters(array('some', 'data'));
         $request = $this->getMock('Zend\Http\Request');
         $request->expects($this->any())
             ->method('isPost')
@@ -264,7 +264,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $url->expects($this->once())
                 ->method('fromRoute')
                 ->with($controller::ROUTE_LOGIN)
-                ->will($this->returnValue($route_url));
+            ->will($this->returnValue($route_url . $redirectQuery));
 
             $this->pluginManagerPlugins['url']= $url;
             $TEST = true;
@@ -301,8 +301,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
+        $isPostTimes = $redirect ? 2 : 1;
         $request = $this->getMock('Zend\Http\Request');
-        $request->expects($this->once())
+        $request->expects($this->exactly($isPostTimes))
             ->method('isPost')
             ->will($this->returnValue(false));
 
