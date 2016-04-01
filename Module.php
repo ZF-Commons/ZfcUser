@@ -67,12 +67,18 @@ class Module implements
                 'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
             ),
             'invokables' => array(
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
-                'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
             'factories' => array(
+                'zfcuser_user_service' => function ($sm) {
+                    return new Service\User($sm);
+                },
+                'ZfcUser\Authentication\Adapter\Db' => function ($sm) {
+                    return new Authentication\Adapter\Db($sm);
+                },
+                'ZfcUser\Authentication\Storage\Db' => function ($sm) {
+                    return new Authentication\Storage\Db($sm);
+                },
                 'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',
                 'zfcuser_module_options' => 'ZfcUser\Factory\Options\ModuleOptions',
                 'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',

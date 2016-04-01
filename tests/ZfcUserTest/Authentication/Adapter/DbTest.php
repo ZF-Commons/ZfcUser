@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Authentication\Adapter;
 
+use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Authentication\Adapter\Db;
 
 class DbTest extends \PHPUnit_Framework_TestCase
@@ -48,6 +49,13 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     protected $user;
 
+    /**
+     * Mock of {@see ServiceManager}
+     *
+     * @var $serviceManager
+     */
+    protected $serviceManager;
+
     protected function setUp()
     {
         $storage = $this->getMock('Zend\Authentication\Storage\Session');
@@ -65,7 +73,10 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $user = $this->getMock('ZfcUser\Entity\User');
         $this->user = $user;
 
-        $this->db = new Db;
+        $serviceManager = $this->getMock(ServiceManager::class);
+        $this->serviceManager = $serviceManager;
+
+        $this->db = new Db($this->serviceManager);
         $this->db->setStorage($this->storage);
 
         $sessionManager = $this->getMock('Zend\Session\SessionManager');

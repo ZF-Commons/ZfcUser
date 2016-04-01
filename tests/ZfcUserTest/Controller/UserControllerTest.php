@@ -2,12 +2,11 @@
 
 namespace ZfcUserTest\Controller;
 
-use Zend\Form\FormElementManager;
+use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Controller\RedirectCallback;
 use ZfcUser\Controller\UserController as Controller;
 use Zend\Http\Response;
 use Zend\Stdlib\Parameters;
-use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Service\User as UserService;
 use Zend\Form\Form;
 use ZfcUser\Options\ModuleOptions;
@@ -21,6 +20,8 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
     protected $controller;
 
     protected $pluginManager;
+
+    protected $serviceManager;
 
     public $pluginManagerPlugins = array();
 
@@ -39,7 +40,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->disableOriginalConstructor()
             ->getMock();
 
-        $controller = new Controller($this->redirectCallback);
+        $this->serviceManager = $this->getMock('Zend\ServiceManager\ServiceManager');
+
+        $controller = new Controller($this->redirectCallback, $this->serviceManager);
         $this->controller = $controller;
 
         $this->zfcUserAuthenticationPlugin = $this->getMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
@@ -548,7 +551,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $request = $this->getMock('Zend\Http\Request');
         $this->helperMakePropertyAccessable($controller, 'request', $request);
 
-        $userService = $this->getMock('ZfcUser\Service\User');
+        $userService = $this->getMock('ZfcUser\Service\User', [], [$this->serviceManager]);
         $controller->setUserService($userService);
 
         $form = $this->getMockBuilder('Zend\Form\Form')
@@ -752,7 +755,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue((bool) $isValid));
 
             if ($isValid) {
-                $userService = $this->getMock('ZfcUser\Service\User');
+                $userService = $this->getMock('ZfcUser\Service\User', [], [$this->serviceManager]);
 
                 $controller->setUserService($userService);
 
@@ -824,7 +827,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
     {
         $controller = $this->controller;
         $response = new Response();
-        $userService = $this->getMock('ZfcUser\Service\User');
+        $userService = $this->getMock('ZfcUser\Service\User', [], [$this->serviceManager]);
         $authService = $this->getMock('Zend\Authentication\AuthenticationService');
         $identity = new UserIdentity();
 
@@ -970,7 +973,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $serviceName,
         $callback = null
     ) {
-        $controller = new Controller($this->redirectCallback);
+        $controller = new Controller($this->redirectCallback, $this->serviceManager);
 
         $controller->setPluginManager($this->pluginManager);
 
@@ -1104,12 +1107,11 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->will($that->returnValue(array("message1","message2")));
         };
 
-
-
+        $sm = $this->getMock(ServiceManager::class);
         return array(
             // $methode, $useServiceLocator, $servicePrototype, $serviceName, $loginFormCallback
-            array('UserService', true, new UserService(), 'zfcuser_user_service' ),
-            array('UserService', false, new UserService(), null ),
+            array('UserService', true, new UserService($sm), 'zfcuser_user_service' ),
+            array('UserService', false, new UserService($sm), null ),
             array('RegisterForm', true, new Form(), 'zfcuser_register_form' ),
             array('RegisterForm', false, new Form(), null ),
             array('ChangePasswordForm', true, new Form(), 'zfcuser_change_password_form' ),
