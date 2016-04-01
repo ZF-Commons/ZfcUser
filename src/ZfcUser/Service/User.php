@@ -12,7 +12,7 @@ use ZfcBase\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
 
-class User extends EventProvider implements ServiceManagerAwareInterface
+class User extends EventProvider
 {
 
     /**
@@ -54,6 +54,11 @@ class User extends EventProvider implements ServiceManagerAwareInterface
      * @var Hydrator\ClassMethods
      */
     protected $formHydrator;
+
+    public function __construct(ServiceManager $sm)
+    {
+        $this->serviceManager = $sm;
+    }
 
     /**
      * createFromForm

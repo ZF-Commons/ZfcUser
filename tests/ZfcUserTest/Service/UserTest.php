@@ -23,9 +23,6 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $service = new Service;
-        $this->service = $service;
-
         $options = $this->getMock('ZfcUser\Options\ModuleOptions');
         $this->options = $options;
 
@@ -43,6 +40,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $authService = $this->getMockBuilder('Zend\Authentication\AuthenticationService')->disableOriginalConstructor()->getMock();
         $this->authService = $authService;
+
+        $service = new Service($this->serviceManager);
+        $this->service = $service;
 
         $service->setOptions($options);
         $service->setServiceManager($serviceManager);
@@ -432,7 +432,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                              ->with('zfcuser_user_mapper')
                              ->will($this->returnValue($this->mapper));
 
-        $service = new Service;
+        $service = new Service($this->serviceManager);
         $service->setServiceManager($this->serviceManager);
         $this->assertInstanceOf('ZfcUser\Mapper\UserInterface', $service->getUserMapper());
     }
@@ -456,7 +456,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_auth_service')
              ->will($this->returnValue($this->authService));
 
-        $service = new Service;
+        $service = new Service($this->serviceManager);
         $service->setServiceManager($this->serviceManager);
         $this->assertInstanceOf('Zend\Authentication\AuthenticationService', $service->getAuthService());
     }
@@ -482,7 +482,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_register_form')
              ->will($this->returnValue($form));
 
-        $service = new Service;
+        $service = new Service($this->serviceManager);
         $service->setServiceManager($this->serviceManager);
 
         $result = $service->getRegisterForm();
@@ -515,7 +515,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_change_password_form')
              ->will($this->returnValue($form));
 
-        $service = new Service;
+        $service = new Service($this->serviceManager);
         $service->setServiceManager($this->serviceManager);
         $this->assertInstanceOf('ZfcUser\Form\ChangePassword', $service->getChangePasswordForm());
     }
@@ -542,7 +542,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_module_options')
              ->will($this->returnValue($this->options));
 
-        $service = new Service;
+        $service = new Service($this->serviceManager);
         $service->setServiceManager($this->serviceManager);
         $this->assertInstanceOf('ZfcUser\Options\ModuleOptions', $service->getOptions());
     }
@@ -574,7 +574,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
              ->with('zfcuser_register_form_hydrator')
              ->will($this->returnValue($this->formHydrator));
 
-        $service = new Service;
+        $service = new Service($this->serviceManager);
         $service->setServiceManager($this->serviceManager);
         $this->assertInstanceOf('Zend\Stdlib\Hydrator\HydratorInterface', $service->getFormHydrator());
     }

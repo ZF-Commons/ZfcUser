@@ -12,7 +12,7 @@ use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthEvent;
 use ZfcUser\Mapper\User as UserMapperInterface;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class Db extends AbstractAdapter implements ServiceManagerAwareInterface
+class Db extends AbstractAdapter
 {
     /**
      * @var UserMapperInterface
@@ -33,6 +33,11 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
      * @var AuthenticationOptionsInterface
      */
     protected $options;
+
+    public function __construct(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
+    }
 
     /**
      * Called when user id logged out

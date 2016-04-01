@@ -32,7 +32,7 @@ class UserControllerFactory implements FactoryInterface
         $redirectCallback = $serviceManager->get('zfcuser_redirect_callback');
 
         /* @var UserController $controller */
-        $controller = new UserController($redirectCallback);
+        $controller = new UserController($redirectCallback, $serviceManager);
 
         return $controller;
     }

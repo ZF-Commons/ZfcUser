@@ -8,7 +8,7 @@ use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 
-class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
+class Db implements Storage\StorageInterface
 {
     /**
      * @var StorageInterface
@@ -29,6 +29,11 @@ class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
      * @var ServiceManager
      */
     protected $serviceManager;
+
+    public function __construct(ServiceManager $serviceManager)
+    {
+        $this->serviceManager = $serviceManager;
+    }
 
     /**
      * Returns true if and only if storage is empty
