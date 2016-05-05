@@ -35,6 +35,13 @@ class UserControllerFactory implements FactoryInterface
         $controller = new UserController($redirectCallback);
         $controller->setServiceLocator($serviceManager);
 
+        $controller->setChangeEmailForm($this->serviceLocator->get('zfcuser_change_email_form'));
+        $controller->setOptions($this->serviceLocator->get('zfcuser_module_options'));
+        $controller->setChangePasswordForm($this->serviceLocator->get('zfcuser_change_password_form'));
+        $controller->setLoginForm($this->serviceLocator->get('zfcuser_login_form'));
+        $controller->setRegisterForm($this->serviceLocator->get('zfcuser_register_form'));
+        $controller->setUserService($this->serviceLocator->get('zfcuser_user_service'));
+
         return $controller;
     }
 }
