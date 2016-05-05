@@ -4,6 +4,7 @@ namespace ZfcUser\Controller;
 
 use Zend\Form\FormInterface;
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Stdlib\ResponseInterface as Response;
 use Zend\Stdlib\Parameters;
 use Zend\View\Model\ViewModel;
@@ -59,6 +60,11 @@ class UserController extends AbstractActionController
      * @var callable $redirectCallback
      */
     protected $redirectCallback;
+
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
 
     /**
      * @param callable $redirectCallback
@@ -348,7 +354,7 @@ class UserController extends AbstractActionController
     public function getUserService()
     {
         if (!$this->userService) {
-            $this->userService = $this->getServiceLocator()->get('zfcuser_user_service');
+            $this->userService = $this->serviceLocator->get('zfcuser_user_service');
         }
         return $this->userService;
     }
@@ -362,7 +368,7 @@ class UserController extends AbstractActionController
     public function getRegisterForm()
     {
         if (!$this->registerForm) {
-            $this->setRegisterForm($this->getServiceLocator()->get('zfcuser_register_form'));
+            $this->setRegisterForm($this->serviceLocator->get('zfcuser_register_form'));
         }
         return $this->registerForm;
     }
@@ -375,7 +381,7 @@ class UserController extends AbstractActionController
     public function getLoginForm()
     {
         if (!$this->loginForm) {
-            $this->setLoginForm($this->getServiceLocator()->get('zfcuser_login_form'));
+            $this->setLoginForm($this->serviceLocator->get('zfcuser_login_form'));
         }
         return $this->loginForm;
     }
@@ -395,7 +401,7 @@ class UserController extends AbstractActionController
     public function getChangePasswordForm()
     {
         if (!$this->changePasswordForm) {
-            $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
+            $this->setChangePasswordForm($this->serviceLocator->get('zfcuser_change_password_form'));
         }
         return $this->changePasswordForm;
     }
@@ -426,7 +432,7 @@ class UserController extends AbstractActionController
     public function getOptions()
     {
         if (!$this->options instanceof UserControllerOptionsInterface) {
-            $this->setOptions($this->getServiceLocator()->get('zfcuser_module_options'));
+            $this->setOptions($this->serviceLocator->get('zfcuser_module_options'));
         }
         return $this->options;
     }
@@ -438,7 +444,7 @@ class UserController extends AbstractActionController
     public function getChangeEmailForm()
     {
         if (!$this->changeEmailForm) {
-            $this->setChangeEmailForm($this->getServiceLocator()->get('zfcuser_change_email_form'));
+            $this->setChangeEmailForm($this->serviceLocator->get('zfcuser_change_email_form'));
         }
         return $this->changeEmailForm;
     }

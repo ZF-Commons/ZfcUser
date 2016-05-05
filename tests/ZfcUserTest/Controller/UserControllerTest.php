@@ -964,7 +964,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
      * @depend testActionControllHasIdentity
      */
     public function testSetterGetterServices(
-        $methode,
+        $method,
         $useServiceLocator,
         $servicePrototype,
         $serviceName,
@@ -984,34 +984,21 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         if ($useServiceLocator) {
             $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
-            $formElementManager = $this->getMock('Zend\Form\FormElementManager');
-            # Forms now use the FormElementManager so we need mock accordingly
-            if ($servicePrototype instanceof Form) {
-                $serviceLocator->expects($this->once())
-                    ->method('get')
-                    ->with('FormElementManager')
-                    ->will($this->returnValue($formElementManager));
-                $formElementManager->expects($this->once())
-                    ->method('get')
-                    ->with($serviceName)
-                    ->will($this->returnValue($servicePrototype));
-            } else {
-                $serviceLocator->expects($this->once())
-                    ->method('get')
-                    ->with($serviceName)
-                    ->will($this->returnValue($servicePrototype));
-            }
+            $serviceLocator->expects($this->once())
+                ->method('get')
+                ->with($serviceName)
+                ->will($this->returnValue($servicePrototype));
             $controller->setServiceLocator($serviceLocator);
         } else {
-            call_user_func(array($controller, 'set' . $methode), $servicePrototype);
+            call_user_func(array($controller, 'set' . $method), $servicePrototype);
         }
 
-        $result = call_user_func(array($controller, 'get' . $methode));
+        $result = call_user_func(array($controller, 'get' . $method));
         $this->assertInstanceOf(get_class($servicePrototype), $result);
         $this->assertSame($servicePrototype, $result);
 
         // we need two check for every case
-        $result = call_user_func(array($controller, 'get' . $methode));
+        $result = call_user_func(array($controller, 'get' . $method));
         $this->assertInstanceOf(get_class($servicePrototype), $result);
         $this->assertSame($servicePrototype, $result);
     }
@@ -1107,7 +1094,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
         return array(
-            // $methode, $useServiceLocator, $servicePrototype, $serviceName, $loginFormCallback
+            // $method, $useServiceLocator, $servicePrototype, $serviceName, $loginFormCallback
             array('UserService', true, new UserService(), 'zfcuser_user_service' ),
             array('UserService', false, new UserService(), null ),
             array('RegisterForm', true, new Form(), 'zfcuser_register_form' ),

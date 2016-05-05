@@ -8,7 +8,7 @@ use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 
-class Db implements Storage\StorageInterface, ServiceManagerAwareInterface
+class Db implements Storage\StorageInterface
 {
     /**
      * @var StorageInterface
