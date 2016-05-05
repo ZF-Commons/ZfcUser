@@ -67,8 +67,6 @@ class Module implements
                 'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
             ),
             'invokables' => array(
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
                 'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
             ),
@@ -89,6 +87,9 @@ class Module implements
                 'zfcuser_register_form'         => 'ZfcUser\Factory\Form\Register',
                 'zfcuser_change_password_form'  => 'ZfcUser\Factory\Form\ChangePassword',
                 'zfcuser_change_email_form'     => 'ZfcUser\Factory\Form\ChangeEmail',
+
+                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Factory\Authentication\Adapter\DbFactory',
+                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Factory\Authentication\Storage\DbFactory',
             ),
         );
     }
