@@ -33,6 +33,7 @@ class UserControllerFactory implements FactoryInterface
 
         /* @var UserController $controller */
         $controller = new UserController($redirectCallback);
+        $controller->setServiceLocator($serviceManager);
 
         return $controller;
     }
