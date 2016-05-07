@@ -4,7 +4,6 @@ namespace ZfcUser\Authentication\Storage;
 
 use Zend\Authentication\Storage;
 use Zend\Authentication\Storage\StorageInterface;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\ServiceManager\ServiceManager;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 
