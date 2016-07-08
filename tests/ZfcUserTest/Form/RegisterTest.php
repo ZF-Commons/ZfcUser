@@ -22,7 +22,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
 
         $elements = $form->getElements();
 
-        $this->assertArrayNotHasKey('userId', $elements);
+        $this->assertArrayNotHasKey('id', $elements);
         $this->assertArrayNotHasKey('username', $elements);
         $this->assertArrayNotHasKey('display_name', $elements);
         $this->assertArrayHasKey('email', $elements);
@@ -58,7 +58,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
      * @param mixed $value = null
      * @return \ReflectionProperty
      */
-    public function helperMakePropertyAccessable ($objectOrClass, $property, $value = null)
+    public function helperMakePropertyAccessable($objectOrClass, $property, $value = null)
     {
         $reflectionProperty = new \ReflectionProperty($objectOrClass, $property);
         $reflectionProperty->setAccessible(true);

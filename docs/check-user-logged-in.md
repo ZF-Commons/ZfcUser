@@ -33,7 +33,7 @@ ZfcUser provides a Controller Plugin ([zfcUserAuthentication](https://github.com
 if ($this->zfcUserAuthentication()->hasIdentity()) {
     //get the email of the user
     echo $this->zfcUserAuthentication()->getIdentity()->getEmail();
-    //get the user_id of the user
+    //get the id of the user
     echo $this->zfcUserAuthentication()->getIdentity()->getId();
     //get the username of the user
     echo $this->zfcUserAuthentication()->getIdentity()->getUsername();

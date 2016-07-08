@@ -74,7 +74,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
             'display_name' => 'ZfcUser',
             'password' => 'c4zyP455w0rd!',
             'state' => '1',
-            'user_id' => 1
+            'id' => 1
         );
 
         $result = $this->hydrator->hydrate($expectArray, $user);
@@ -84,7 +84,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($expectArray['display_name'], $result->getDisplayName());
         $this->assertEquals(static::ENCRYPTED_PASSWORD, $result->getPassword());
         $this->assertEquals((int) $expectArray['state'], $result->getState());
-        $this->assertEquals($expectArray['user_id'], $result->getId());
+        $this->assertEquals($expectArray['id'], $result->getId());
     }
 
     public function provideValidUserObjects()
@@ -98,7 +98,7 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
             'display_name' => 'ZfcUser',
             'password' => 'ZfcUserPassword',
             'state' => 1,
-            'user_id' => 1
+            'id' => 1
         );
 
         $return[]=array($this->buildUser($buffer), $buffer);
@@ -123,9 +123,6 @@ class UserHydratorTest extends \PHPUnit_Framework_TestCase
     {
         $user = new UserEntity;
         foreach ($data as $key => $value) {
-            if ($key == 'user_id') {
-                $key = 'id';
-            }
             $method = 'set' . str_replace(" ", "", ucwords(str_replace("_", " ", $key)));
             call_user_func(array($user, $method), $value);
         }

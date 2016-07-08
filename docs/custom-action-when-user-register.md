@@ -29,7 +29,7 @@ $em->attach('ZfcUser\Service\User', 'register', function($e) {
 ```
 
 ## Retrieving the User Id
-If you need to retrieve the `user_id`, just attach to `register.post` and the user entity should have it.
+If you need to retrieve the `id`, just attach to `register.post` and the user entity should have it.
 
 ## Example
 

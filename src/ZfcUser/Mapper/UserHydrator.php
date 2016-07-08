@@ -36,7 +36,10 @@ class UserHydrator extends ClassMethods implements HydratorInterface
     {
         $this->guardUserObject($object);
         $data = parent::extract($object);
-        return $this->mapField('id', 'user_id', $data);
+        if ($data['id'] === null) {
+            unset($data['id']);
+        }
+        return $data;
     }
 
     /**
@@ -50,7 +53,6 @@ class UserHydrator extends ClassMethods implements HydratorInterface
     public function hydrate(array $data, $object)
     {
         $this->guardUserObject($object);
-        $data = $this->mapField('user_id', 'id', $data);
         return parent::hydrate($data, $object);
     }
 

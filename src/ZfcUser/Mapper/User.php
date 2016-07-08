@@ -32,7 +32,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function findById($id)
     {
         $select = $this->getSelect()
-                       ->where(array('user_id' => $id));
+                       ->where(array('id' => $id));
 
         $entity = $this->select($select)->current();
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
@@ -53,14 +53,14 @@ class User extends AbstractDbMapper implements UserInterface
     {
         $hydrator = $hydrator ?: $this->getHydrator();
         $result = parent::insert($entity, $tableName, $hydrator);
-        $hydrator->hydrate(array('user_id' => $result->getGeneratedValue()), $entity);
+        $entity->setId($result->getGeneratedValue());
         return $result;
     }
 
     public function update($entity, $where = null, $tableName = null, Hydrator $hydrator = null)
     {
         if (!$where) {
-            $where = array('user_id' => $entity->getId());
+            $where = array('id' => $entity->getId());
         }
 
         return parent::update($entity, $where, $tableName, $hydrator);

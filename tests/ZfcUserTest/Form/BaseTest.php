@@ -20,6 +20,6 @@ class BaseTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('password', $elements);
         $this->assertArrayHasKey('passwordVerify', $elements);
         $this->assertArrayHasKey('submit', $elements);
-        $this->assertArrayHasKey('userId', $elements);
+        $this->assertArrayHasKey('id', $elements);
     }
 }

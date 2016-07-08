@@ -356,7 +356,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                 array($user->getId()),
                 array(
                     'whereArgs'=>array(
-                        array('user_id'=>$user->getId()),
+                        array('id'=>$user->getId()),
                         'AND'
                     )
                 ),
