@@ -134,6 +134,7 @@ class RegisterFilter extends ProvidesEventsInputFilter
     public function setOptions(RegistrationOptionsInterface $options)
     {
         $this->options = $options;
+        return $this;
     }
 
     /**
