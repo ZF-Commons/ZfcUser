@@ -13,12 +13,11 @@ class LoginFormFactoryTest extends \PHPUnit_Framework_TestCase
         $serviceManager = new ServiceManager;
         $serviceManager->setService('zfcuser_module_options', new ModuleOptions);
 
-        $formElementManager = new FormElementManager();
-        $formElementManager->setServiceLocator($serviceManager);
+        $formElementManager = new FormElementManager($serviceManager);
         $serviceManager->setService('FormElementManager', $formElementManager);
 
         $factory = new LoginFactory();
 
-        $this->assertInstanceOf('ZfcUser\Form\Login', $factory->createService($formElementManager));
+        $this->assertInstanceOf('ZfcUser\Form\Login', $factory->__invoke($serviceManager, 'ZfcUser\Form\Login'));
     }
 }

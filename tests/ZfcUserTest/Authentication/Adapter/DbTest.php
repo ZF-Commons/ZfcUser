@@ -2,6 +2,7 @@
 
 namespace ZfcUserTest\Authentication\Adapter;
 
+use Zend\EventManager\Event;
 use ZfcUser\Authentication\Adapter\Db;
 
 class DbTest extends \PHPUnit_Framework_TestCase
@@ -108,7 +109,9 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->method('read')
             ->will($this->returnValue(array('identity' => 'ZfcUser')));
 
-        $result = $this->db->authenticate($this->authEvent);
+        $event = new Event(null, $this->authEvent);
+
+        $result = $this->db->authenticate($event);
         $this->assertNull($result);
     }
 
@@ -134,7 +137,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
         $this->db->setOptions($this->options);
 
-        $result = $this->db->authenticate($this->authEvent);
+        $event = new Event(null, $this->authEvent);
+        $result = $this->db->authenticate($event);
 
         $this->assertFalse($result);
         $this->assertFalse($this->db->isSatisfied());
@@ -171,7 +175,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->db->setMapper($this->mapper);
         $this->db->setOptions($this->options);
 
-        $result = $this->db->authenticate($this->authEvent);
+        $event = new Event(null, $this->authEvent);
+        $result = $this->db->authenticate($event);
 
         $this->assertFalse($result);
         $this->assertFalse($this->db->isSatisfied());
@@ -205,7 +210,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->db->setMapper($this->mapper);
         $this->db->setOptions($this->options);
 
-        $result = $this->db->authenticate($this->authEvent);
+        $event = new Event(null, $this->authEvent);
+        $result = $this->db->authenticate($event);
 
         $this->assertFalse($result);
         $this->assertFalse($this->db->isSatisfied());
@@ -254,7 +260,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->db->setMapper($this->mapper);
         $this->db->setOptions($this->options);
 
-        $result = $this->db->authenticate($this->authEvent);
+        $event = new Event(null, $this->authEvent);
+        $result = $this->db->authenticate($event);
     }
 
     /**
@@ -307,7 +314,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->db->setMapper($this->mapper);
         $this->db->setOptions($this->options);
 
-        $result = $this->db->authenticate($this->authEvent);
+        $event = new Event(null, $this->authEvent);
+        $result = $this->db->authenticate($event);
     }
 
     /**

@@ -7,7 +7,7 @@ use ZfcUser\Authentication\Adapter\AdapterChainEvent;
 
 class AbstractAdapterExtension extends AbstractAdapter
 {
-    public function authenticate(AdapterChainEvent $e)
+    public function authenticate(\Zend\EventManager\Event $e)
     {
     }
 }

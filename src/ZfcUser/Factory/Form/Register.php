@@ -20,40 +20,25 @@ use ZfcUser\Validator;
 
 class Register implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $formElementManager, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $serviceManager, $requestedName, array $options = null)
     {
-        if ($formElementManager instanceof FormElementManager) {
-            $sm = $formElementManager->getServiceLocator();
-            $fem = $formElementManager;
-        } else {
-            $sm = $formElementManager;
-            $fem = $sm->get('FormElementManager');
-        }
-
-        $options = $sm->get('zfcuser_module_options');
+        $options = $serviceManager->get('zfcuser_module_options');
         $form = new Form\Register(null, $options);
-        // Inject the FormElementManager to support custom FormElements
-        $form->getFormFactory()->setFormElementManager($fem);
 
         //$form->setCaptchaElement($sm->get('zfcuser_captcha_element'));
-        $form->setHydrator($sm->get('zfcuser_register_form_hydrator'));
+        $form->setHydrator($serviceManager->get('zfcuser_register_form_hydrator'));
         $form->setInputFilter(new Form\RegisterFilter(
             new Validator\NoRecordExists(array(
-                'mapper' => $sm->get('zfcuser_user_mapper'),
+                'mapper' => $serviceManager->get('zfcuser_user_mapper'),
                 'key'    => 'email'
             )),
             new Validator\NoRecordExists(array(
-                'mapper' => $sm->get('zfcuser_user_mapper'),
+                'mapper' => $serviceManager->get('zfcuser_user_mapper'),
                 'key'    => 'username'
             )),
             $options
         ));
 
         return $form;
-    }
-
-    public function createService(ServiceLocatorInterface $formElementManager)
-    {
-        return $this->__invoke($formElementManager, null);
     }
 }

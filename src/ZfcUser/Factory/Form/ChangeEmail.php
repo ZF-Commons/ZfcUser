@@ -20,34 +20,19 @@ use ZfcUser\Validator;
 
 class ChangeEmail implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $formElementManager, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $serviceManager, $requestedName, array $options = null)
     {
-        if ($formElementManager instanceof FormElementManager) {
-            $sm = $formElementManager->getServiceLocator();
-            $fem = $formElementManager;
-        } else {
-            $sm = $formElementManager;
-            $fem = $sm->get('FormElementManager');
-        }
-
-        $options = $sm->get('zfcuser_module_options');
+        $options = $serviceManager->get('zfcuser_module_options');
         $form = new Form\ChangeEmail(null, $options);
-        // Inject the FormElementManager to support custom FormElements
-        $form->getFormFactory()->setFormElementManager($fem);
 
         $form->setInputFilter(new Form\ChangeEmailFilter(
             $options,
             new Validator\NoRecordExists(array(
-                'mapper' => $sm->get('zfcuser_user_mapper'),
+                'mapper' => $serviceManager->get('zfcuser_user_mapper'),
                 'key'    => 'email'
             ))
         ));
 
         return $form;
-    }
-
-    public function createService(ServiceLocatorInterface $formElementManager)
-    {
-        return $this->__invoke($formElementManager, null);
     }
 }

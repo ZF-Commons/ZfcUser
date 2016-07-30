@@ -3,6 +3,8 @@
 namespace ZfcUserTest\Authentication\Adapter;
 
 use Zend\EventManager\EventManagerInterface;
+use Zend\EventManager\SharedEventManager;
+use Zend\EventManager\SharedEventManagerInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent;
 
@@ -21,6 +23,13 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
      * @var EventManagerInterface
      */
     protected $eventManager;
+
+    /**
+     * Mock event manager.
+     *
+     * @var SharedEventManagerInterface
+     */
+    protected $sharedEventManager;
 
     /**
      * For tests where an event is required.
@@ -46,7 +55,11 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
         $this->adapterChain = new AdapterChain();
 
+        $this->sharedEventManager = $this->getMock('Zend\EventManager\SharedEventManagerInterface');
+        $this->sharedEventManager->expects($this->any())->method('getListeners')->will($this->returnValue([]));
         $this->eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
+        $this->eventManager->expects($this->any())->method('getSharedManager')->will($this->returnValue($this->sharedEventManager));
+        $this->eventManager->expects($this->any())->method('setIdentifiers');
         $this->adapterChain->setEventManager($this->eventManager);
     }
 
@@ -66,9 +79,9 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
               ->method('getMessages')
               ->will($this->returnValue(array()));
 
-        $this->eventManager->expects($this->once())
+        $this->sharedEventManager->expects($this->once())
              ->method('getListeners')
-             ->with($this->equalTo('authenticate'))
+             ->with($this->equalTo(['authenticate']), $this->equalTo('authenticate'))
              ->will($this->returnValue(array()));
 
         $this->adapterChain->setEvent($event);
@@ -88,25 +101,32 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
         for ($i=1; $i<=3; $i++) {
             $storage = $this->getMock('ZfcUser\Authentication\Storage\Db');
+            /*
             $storage->expects($this->once())
                     ->method('clear');
+            */
 
-            $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AbstractAdapter');
+            $adapter = $this->getMock('ZfcUser\Authentication\Adapter\ChainableAdapter');
+            /*
             $adapter->expects($this->once())
                     ->method('getStorage')
                     ->will($this->returnValue($storage));
+            */
 
             $callback = $this->getMockBuilder('Zend\Stdlib\CallbackHandler')->disableOriginalConstructor()->getMock();
+
+            /*
             $callback->expects($this->once())
                      ->method('getCallback')
                      ->will($this->returnValue(array($adapter)));
+            */
 
             $listeners[] = $callback;
         }
 
-        $this->eventManager->expects($this->once())
+        $this->sharedEventManager->expects($this->once())
              ->method('getListeners')
-             ->with($this->equalTo('authenticate'))
+             ->with($this->equalTo(['authenticate']), $this->equalTo('authenticate'))
              ->will($this->returnValue($listeners));
 
         $result = $this->adapterChain->resetAdapters();

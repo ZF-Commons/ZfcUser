@@ -44,7 +44,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->zfcUserAuthenticationPlugin = $this->getMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
 
-        $pluginManager = $this->getMock('Zend\Mvc\Controller\PluginManager', array('get'));
+        $pluginManager = $this->getMockBuilder('Zend\Mvc\Controller\PluginManager')
+            ->disableOriginalConstructor()
+            ->getMock();
 
         $pluginManager->expects($this->any())
             ->method('get')
@@ -159,7 +161,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         ));
 
         $flashMessenger = $this->getMock(
-            'Zend\Mvc\Controller\Plugin\FlashMessenger'
+            'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
         );
         $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -167,10 +169,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->method('setNamespace')
             ->with('zfcuser-login-form')
             ->will($this->returnSelf());
-
-        $flashMessenger->expects($this->once())
-            ->method('getMessages')
-            ->will($this->returnValue(array()));
 
         $flashMessenger->expects($this->any())
             ->method('addMessage')
@@ -293,13 +291,9 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             'hasIdentity'=>false
         ));
 
-        $flashMessenger = $this->getMock('Zend\Mvc\Controller\Plugin\FlashMessenger');
-        $flashMessenger->expects($this->once())
-            ->method('setNamespace')
-            ->with('zfcuser-login-form')
-            ->will($this->returnSelf());
+        $flashMessenger = $this->getMock('Zend\Mvc\Plugin\FlashMessenger\FlashMessenger');
 
-        $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
+        $this->pluginManagerPlugins['flashMessenger'] = $flashMessenger;
 
         $request = $this->getMock('Zend\Http\Request');
         $request->expects($this->once())
@@ -311,8 +305,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->getMock();
         $form->expects($this->never())
             ->method('isValid');
-
-
 
         $this->options->expects($this->any())
             ->method('getUseRedirectParameterIfPresent')
@@ -455,7 +447,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
             if (!$authValid) {
                 $flashMessenger = $this->getMock(
-                    'Zend\Mvc\Controller\Plugin\FlashMessenger'
+                    'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
                 );
                 $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -579,7 +571,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->pluginManagerPlugins['url']= $url;
 
-        $prg = $this->getMock('Zend\Mvc\Controller\Plugin\PostRedirectGet');
+        $prg = $this->getMock('Zend\Mvc\Plugin\Prg\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
         $redirectQuery = $wantRedirect ? '?redirect=' . rawurlencode($redirectUrl) : '';
@@ -648,14 +640,10 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             }
         }
 
-
-
-
         /***********************************************
          * run
          */
         $result = $controller->registerAction();
-
 
         /***********************************************
          * assert
@@ -667,7 +655,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $this->assertSame($expectedResult, $result);
             return;
         }
-
 
         if ($postRedirectGetReturn === false) {
             $expectedResult = array(
@@ -718,7 +705,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
         $flashMessenger = $this->getMock(
-            'Zend\Mvc\Controller\Plugin\FlashMessenger'
+            'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
         );
         $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -732,7 +719,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($status ? array('test') : array()));
 
 
-        $prg = $this->getMock('Zend\Mvc\Controller\Plugin\PostRedirectGet');
+        $prg = $this->getMock('Zend\Mvc\Plugin\Prg\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
 
@@ -864,7 +851,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
         $flashMessenger = $this->getMock(
-            'Zend\Mvc\Controller\Plugin\FlashMessenger'
+            'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
         );
         $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -878,7 +865,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($status ? array('test') : array()));
 
 
-        $prg = $this->getMock('Zend\Mvc\Controller\Plugin\PostRedirectGet');
+        $prg = $this->getMock('Zend\Mvc\Plugin\Prg\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
 
@@ -971,16 +958,11 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $callback = null
     ) {
         $controller = new Controller($this->redirectCallback);
-
         $controller->setPluginManager($this->pluginManager);
-
-
-//         $controller = $this->controller;
 
         if (is_callable($callback)) {
             call_user_func($callback, $this, $controller);
         }
-
 
         if ($useServiceLocator) {
             $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
@@ -1062,7 +1044,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $that = $this;
         $loginFormCallback[] = function ($that, $controller) {
             $flashMessenger = $that->getMock(
-                'Zend\Mvc\Controller\Plugin\FlashMessenger'
+                'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
             );
             $that->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -1070,14 +1052,10 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->method('setNamespace')
                 ->with('zfcuser-login-form')
                 ->will($that->returnSelf());
-
-            $flashMessenger->expects($that->once())
-                ->method('getMessages')
-                ->will($that->returnValue(array()));
         };
         $loginFormCallback[] = function ($that, $controller) {
             $flashMessenger = $that->getMock(
-                'Zend\Mvc\Controller\Plugin\FlashMessenger'
+                'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
             );
             $that->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -1085,10 +1063,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->method('setNamespace')
                 ->with('zfcuser-login-form')
                 ->will($that->returnSelf());
-
-            $flashMessenger->expects($that->once())
-                ->method('getMessages')
-                ->will($that->returnValue(array("message1","message2")));
         };
 
 

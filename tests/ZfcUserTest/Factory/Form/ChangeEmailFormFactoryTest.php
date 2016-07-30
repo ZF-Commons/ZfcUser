@@ -11,16 +11,18 @@ class ChangeEmailFormFactoryTest extends \PHPUnit_Framework_TestCase
 {
     public function testFactory()
     {
-        $serviceManager = new ServiceManager;
-        $serviceManager->setService('zfcuser_module_options', new ModuleOptions);
-        $serviceManager->setService('zfcuser_user_mapper', new UserMapper);
+        $serviceManager = new ServiceManager([
+            'services' => [
+                'zfcuser_module_options' => new ModuleOptions,
+                'zfcuser_user_mapper' => new UserMapper
+            ]
+        ]);
 
-        $formElementManager = new FormElementManager();
-        $formElementManager->setServiceLocator($serviceManager);
+        $formElementManager = new FormElementManager($serviceManager);
         $serviceManager->setService('FormElementManager', $formElementManager);
 
         $factory = new ChangeEmailFactory();
 
-        $this->assertInstanceOf('ZfcUser\Form\ChangeEmail', $factory->createService($formElementManager));
+        $this->assertInstanceOf('ZfcUser\Form\ChangeEmail', $factory->__invoke($serviceManager, 'ZfcUser\Form\ChangeEmail'));
     }
 }

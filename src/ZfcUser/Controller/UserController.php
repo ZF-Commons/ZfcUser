@@ -389,11 +389,6 @@ class UserController extends AbstractActionController
     public function setLoginForm(FormInterface $loginForm)
     {
         $this->loginForm = $loginForm;
-        if (isset($fm[0])) {
-            $this->loginForm->setMessages(
-                array('identity' => array($fm[0]))
-            );
-        }
         return $this;
     }
 

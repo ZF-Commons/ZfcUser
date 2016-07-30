@@ -106,14 +106,14 @@ class UserTest extends \PHPUnit_Framework_TestCase
     public function setUpMockedAdapter()
     {
         $this->mockedDbAdapterDriver = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
-        $this->mockedDbAdapterPlatform = $this->getMock('\Zend\Db\Adapter\Platform\PlatformInterface', array());
-        $this->mockedDbAdapterStatement= $this->getMock('\Zend\Db\Adapter\Driver\StatementInterface', array());
+        $this->mockedDbAdapterPlatform = $this->getMock('Zend\Db\Adapter\Platform\PlatformInterface', array());
+        $this->mockedDbAdapterStatement= $this->getMock('Zend\Db\Adapter\Driver\StatementInterface', array());
 
         $this->mockedDbAdapterPlatform->expects($this->any())
                                       ->method('getName')
                                       ->will($this->returnValue('null'));
 
-        $this->mockedDbAdapter = $this->getMockBuilder('\Zend\Db\Adapter\Adapter')
+        $this->mockedDbAdapter = $this->getMockBuilder('Zend\Db\Adapter\Adapter')
                                       ->setConstructorArgs(array(
                                           $this->mockedDbAdapterDriver,
                                           $this->mockedDbAdapterPlatform
@@ -124,7 +124,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                               ->method('getPlatform')
                               ->will($this->returnValue($this->mockedDbAdapterPlatform));
 
-        $this->mockedDbSql = $this->getMockBuilder('\Zend\Db\Sql\Sql')
+        $this->mockedDbSql = $this->getMockBuilder('Zend\Db\Sql\Sql')
                                   ->setConstructorArgs(array($this->mockedDbAdapter))
                                   ->setMethods(array('prepareStatementForSqlObject'))
                                   ->getMock();

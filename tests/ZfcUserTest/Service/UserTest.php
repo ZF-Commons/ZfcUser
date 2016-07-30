@@ -35,7 +35,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $eventManager = $this->getMock('Zend\EventManager\EventManager');
         $this->eventManager = $eventManager;
 
-        $formHydrator = $this->getMock('Zend\Stdlib\Hydrator\HydratorInterface');
+        $formHydrator = $this->getMock('Zend\Hydrator\HydratorInterface');
         $this->formHydrator = $formHydrator;
 
         $mapper = $this->getMock('ZfcUser\Mapper\UserInterface');
@@ -576,7 +576,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $service = new Service;
         $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('Zend\Stdlib\Hydrator\HydratorInterface', $service->getFormHydrator());
+        $this->assertInstanceOf('Zend\Hydrator\HydratorInterface', $service->getFormHydrator());
     }
 
     /**
