@@ -79,7 +79,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
 
     /**
      * resetAdapters
-     *
+     * @TODO: Does this even work?
      * @return AdapterChain
      */
     public function resetAdapters()
