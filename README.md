@@ -18,6 +18,15 @@ simple and easy to extend.
 
 More information and examples are available on the [ZfcUser Wiki](https://github.com/ZF-Commons/ZfcUser/wiki)
 
+Versions
+--------
+Please use below table to figure out what version of ZfcUser you should use.
+
+| ZfcUser version | Supported Zend Framework version |
+|-----------------|----------------------------------|
+| 1.x             | <= 2.5                           |
+| 2.x             | >= 2.6 | 3.x                     |
+
 Storage Adapter Modules
 -----------------------
 
