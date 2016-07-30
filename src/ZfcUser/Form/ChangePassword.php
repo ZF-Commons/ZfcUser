@@ -2,7 +2,6 @@
 
 namespace ZfcUser\Form;
 
-use ZfcBase\Form\ProvidesEventsForm;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class ChangePassword extends ProvidesEventsForm

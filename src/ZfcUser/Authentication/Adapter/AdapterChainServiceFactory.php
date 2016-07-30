@@ -1,7 +1,11 @@
 <?php
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain;
 use ZfcUser\Options\ModuleOptions;
@@ -9,13 +13,7 @@ use ZfcUser\Authentication\Adapter\Exception\OptionsNotFoundException;
 
 class AdapterChainServiceFactory implements FactoryInterface
 {
-
-    /**
-     * @var ModuleOptions
-     */
-    protected $options;
-
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         $chain = new AdapterChain();
 
@@ -35,6 +33,16 @@ class AdapterChainServiceFactory implements FactoryInterface
         }
 
         return $chain;
+    }
+
+    /**
+     * @var ModuleOptions
+     */
+    protected $options;
+
+    public function createService(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->__invoke($serviceLocator, null);
     }
 
 

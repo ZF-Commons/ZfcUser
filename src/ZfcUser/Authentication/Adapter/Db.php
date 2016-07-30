@@ -36,13 +36,14 @@ class Db extends AbstractAdapter
      * Called when user id logged out
      * @param  AuthEvent $e event passed
      */
-    public function logout(AuthEvent $e)
+    public function logout(\Zend\EventManager\Event $e)
     {
         $this->getStorage()->clear();
     }
 
-    public function authenticate(AuthEvent $e)
+    public function authenticate(\Zend\EventManager\Event $e)
     {
+        $e = $e->getTarget();
         if ($this->isSatisfied()) {
             $storage = $this->getStorage()->read();
             $e->setIdentity($storage['identity'])

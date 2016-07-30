@@ -8,13 +8,21 @@
 
 namespace ZfcUser\Factory\Options;
 
-
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Options;
 
 class ModuleOptions implements FactoryInterface
 {
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
+    {
+        $config = $serviceLocator->get('Config');
+        return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
+    }
 
     /**
      * Create service
@@ -24,7 +32,6 @@ class ModuleOptions implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        $config = $serviceLocator->get('Config');
-        return new Options\ModuleOptions(isset($config['zfcuser']) ? $config['zfcuser'] : array());
+        return $this->__invoke($serviceLocator, null);
     }
 }

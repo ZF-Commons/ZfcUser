@@ -3,7 +3,7 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Element;
-use ZfcBase\Form\ProvidesEventsForm;
+use ZfcUser\Form\ProvidesEventsForm;
 
 class Base extends ProvidesEventsForm
 {

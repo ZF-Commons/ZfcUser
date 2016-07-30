@@ -8,15 +8,19 @@
 
 namespace ZfcUser\Factory\Form;
 
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
 use Zend\Form\FormElementManager;
-use Zend\ServiceManager\FactoryInterface;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Form;
 use ZfcUser\Validator;
 
 class ChangeEmail implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $formElementManager)
+    public function __invoke(ContainerInterface $formElementManager, $requestedName, array $options = null)
     {
         if ($formElementManager instanceof FormElementManager) {
             $sm = $formElementManager->getServiceLocator();
@@ -40,5 +44,10 @@ class ChangeEmail implements FactoryInterface
         ));
 
         return $form;
+    }
+
+    public function createService(ServiceLocatorInterface $formElementManager)
+    {
+        return $this->__invoke($formElementManager, null);
     }
 }

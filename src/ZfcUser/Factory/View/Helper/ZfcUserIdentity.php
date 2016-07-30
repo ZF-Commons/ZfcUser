@@ -8,24 +8,20 @@
 
 namespace ZfcUser\Factory\View\Helper;
 
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\View;
 
 class ZfcUserIdentity implements FactoryInterface
 {
-
-    /**
-     * Create service
-     *
-     * @param ServiceLocatorInterface $serviceManager
-     * @return mixed
-     */
-    public function createService(ServiceLocatorInterface $serviceManager)
+    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        $locator = $serviceManager->getServiceLocator();
         $viewHelper = new View\Helper\ZfcUserIdentity;
-        $viewHelper->setAuthService($locator->get('zfcuser_auth_service'));
+        $viewHelper->setAuthService($container->get('zfcuser_auth_service'));
         return $viewHelper;
     }
 }

@@ -8,11 +8,22 @@
 
 namespace ZfcUser\Factory;
 
-use Zend\ServiceManager\FactoryInterface;
+use Interop\Container\ContainerInterface;
+use Interop\Container\Exception\ContainerException;
+use Zend\ServiceManager\Exception\ServiceNotCreatedException;
+use Zend\ServiceManager\Exception\ServiceNotFoundException;
+use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
 class AuthenticationService implements FactoryInterface
 {
+    public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
+    {
+        return new \Zend\Authentication\AuthenticationService(
+            $serviceLocator->get('ZfcUser\Authentication\Storage\Db'),
+            $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain')
+        );
+    }
 
     /**
      * Create service
@@ -22,9 +33,6 @@ class AuthenticationService implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceLocator)
     {
-        return new \Zend\Authentication\AuthenticationService(
-            $serviceLocator->get('ZfcUser\Authentication\Storage\Db'),
-            $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain')
-        );
+        return $this->__invoke($serviceLocator, null);
     }
 }

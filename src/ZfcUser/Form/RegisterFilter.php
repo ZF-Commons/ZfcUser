@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Form;
 
-use ZfcBase\InputFilter\ProvidesEventsInputFilter;
+use ZfcUser\InputFilter\ProvidesEventsInputFilter;
 use ZfcUser\Module as ZfcUser;
 use ZfcUser\Options\RegistrationOptionsInterface;
 

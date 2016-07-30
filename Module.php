@@ -67,7 +67,7 @@ class Module implements
                 'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
             ),
             'invokables' => array(
-                'zfcuser_register_form_hydrator'    => 'Zend\Stdlib\Hydrator\ClassMethods',
+                'zfcuser_register_form_hydrator'    => 'Zend\Hydrator\ClassMethods',
             ),
             'factories' => array(
                 'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',

@@ -6,8 +6,8 @@ use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManager;
 use Zend\Crypt\Password\Bcrypt;
-use Zend\Stdlib\Hydrator;
-use ZfcBase\EventManager\EventProvider;
+use Zend\Hydrator;
+use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
 
@@ -287,7 +287,7 @@ class User extends EventProvider
     /**
      * Return the Form Hydrator
      *
-     * @return \Zend\Stdlib\Hydrator\ClassMethods
+     * @return \Zend\Hydrator\ClassMethods
      */
     public function getFormHydrator()
     {

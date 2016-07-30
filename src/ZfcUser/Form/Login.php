@@ -3,7 +3,6 @@
 namespace ZfcUser\Form;
 
 use Zend\Form\Element;
-use ZfcBase\Form\ProvidesEventsForm;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class Login extends ProvidesEventsForm

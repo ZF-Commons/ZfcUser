@@ -7,7 +7,7 @@ use Zend\Authentication\Result as AuthenticationResult;
 use Zend\EventManager\Event;
 use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface as Response;
-use ZfcBase\EventManager\EventProvider;
+use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Exception;
 
 class AdapterChain extends EventProvider implements AdapterInterface
@@ -84,7 +84,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
      */
     public function resetAdapters()
     {
-        $listeners = $this->getEventManager()->getListeners('authenticate');
+        $listeners = $this->getEventManager()->getSharedManager()->getListeners([], 'authenticate');
         foreach ($listeners as $listener) {
             $listener = $listener->getCallback();
             if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
