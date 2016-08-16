@@ -74,14 +74,34 @@ class RedirectCallback
      * @param $route
      * @return bool
      */
-    private function routeExists($route)
+     private function routeExists($route)
     {
-        try {
-            $this->router->assemble(array(), array('name' => $route));
-        } catch (Exception\RuntimeException $e) {
-            return false;
+        // first check if such rout/name exists
+        // will throw exception if does not exist
+        $namedRouteMatch=0;
+        $urlRouteMatch=0;
+        try{
+             $this->router->assemble(array(), array('name' => $route));
+         }catch (Exception\RuntimeException $e) {
+            // didnt' match with any route name
+            $match=0;
         }
+        
+        // now try to match url with routes
+        try {
+            $request=$this->application->getRequest();
+            $request->setUri($route);
+            $matchedRoute = $this->router->match($request);
+            if($matchedRoute){
+                $urlRouteMatch=1;
+            }
+        } catch (Exception\RuntimeException $e) {
+            $urlRouteMatch=0;
+        }
+        // check if anyof them matched
+       if($namedRouteMatch || $urlRouteMatch){
         return true;
+       }
     }
 
     /**
@@ -104,7 +124,12 @@ class RedirectCallback
             case 'zfcuser/register':
             case 'zfcuser/login':
             case 'zfcuser/authenticate':
-                $route = ($redirect) ?: $this->options->getLoginRedirectRoute();
+                // if redirect is there and matches a route just return it
+                if($redirect){
+                    return $redirect;
+                }
+                // since its route name asseble and return string url
+                $route =$this->options->getLoginRedirectRoute();
                 return $this->router->assemble(array(), array('name' => $route));
                 break;
             case 'zfcuser/logout':
