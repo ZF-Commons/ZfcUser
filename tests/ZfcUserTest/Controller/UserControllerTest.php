@@ -235,7 +235,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($expectedResult));
 
             $this->pluginManagerPlugins['forward']= $forwardPlugin;
-
         } else {
             $response = new Response();
 
@@ -429,7 +428,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         ));
 
         if (is_bool($prepareResult)) {
-
             $authResult = $this->getMockBuilder('Zend\Authentication\Result')
                 ->disableOriginalConstructor()
                 ->getMock();
@@ -476,7 +474,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                     ->with($controller::ROUTE_LOGIN)
                     ->will($this->returnValue('user/login'));
                 $this->pluginManagerPlugins['url'] = $url;
-
             } else {
                 $this->redirectCallback->expects($this->once())
                     ->method('__invoke');
@@ -485,7 +482,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $this->options->expects($this->any())
                 ->method('getUseRedirectParameterIfPresent')
                 ->will($this->returnValue((bool) $wantRedirect));
-
         }
 
         $result = $controller->authenticateAction();
@@ -729,7 +725,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($postRedirectGetReturn));
 
         if ($postRedirectGetReturn !== false && !($postRedirectGetReturn instanceof Response)) {
-
             $form->expects($this->once())
                 ->method('setData')
                 ->with($postRedirectGetReturn);
@@ -777,7 +772,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         if ($postRedirectGetReturn instanceof Response) {
             $this->assertInstanceOf('Zend\Http\Response', $result);
             $this->assertSame($postRedirectGetReturn, $result);
-
         } else {
             if ($postRedirectGetReturn === false) {
                 $exceptedReturn = array(
@@ -875,7 +869,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($postRedirectGetReturn));
 
         if ($postRedirectGetReturn !== false && !($postRedirectGetReturn instanceof Response)) {
-
             $form->expects($this->once())
                 ->method('setData')
                 ->with($postRedirectGetReturn);
@@ -885,7 +878,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue((bool) $isValid));
 
             if ($isValid) {
-
                 $userService->expects($this->once())
                     ->method('changeEmail')
                     ->with($postRedirectGetReturn)
@@ -920,7 +912,6 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         if ($postRedirectGetReturn instanceof Response) {
             $this->assertInstanceOf('Zend\Http\Response', $result);
             $this->assertSame($postRedirectGetReturn, $result);
-
         } else {
             if ($postRedirectGetReturn === false) {
                 $exceptedReturn = array(
@@ -985,7 +976,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($servicePrototype, $result);
     }
 
-    public function providerTrueOrFalse ()
+    public function providerTrueOrFalse()
     {
         return array(
             array(true),
@@ -993,7 +984,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function providerTrueOrFalseX2 ()
+    public function providerTrueOrFalseX2()
     {
         return array(
             array(true,true),
@@ -1003,7 +994,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function providerTestAuthenticateAction ()
+    public function providerTestAuthenticateAction()
     {
         // $redirect, $post, $query, $prepareResult = false, $authValid = false
         return array(
@@ -1028,7 +1019,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function providerRedirectPostQueryMatrix ()
+    public function providerRedirectPostQueryMatrix()
     {
         return array(
             array(false, false, false),
@@ -1039,7 +1030,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function providerTestSetterGetterServices ()
+    public function providerTestSetterGetterServices()
     {
         $that = $this;
         $loginFormCallback[] = function ($that, $controller) {
@@ -1175,7 +1166,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
      * @param mixed $value = null
      * @return \ReflectionProperty
      */
-    public function helperMakePropertyAccessable ($objectOrClass, $property, $value = null)
+    public function helperMakePropertyAccessable($objectOrClass, $property, $value = null)
     {
         $reflectionProperty = new \ReflectionProperty($objectOrClass, $property);
         $reflectionProperty->setAccessible(true);

@@ -1,5 +1,6 @@
 <?php
 namespace ZfcUser\EventManager;
+
 use Traversable;
 use Zend\EventManager\EventManagerAwareInterface;
 use Zend\EventManager\EventManagerInterface;

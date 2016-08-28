@@ -1,5 +1,6 @@
 <?php
 namespace ZfcUser\Db\Adapter;
+
 interface MasterSlaveAdapterInterface
 {
     /**

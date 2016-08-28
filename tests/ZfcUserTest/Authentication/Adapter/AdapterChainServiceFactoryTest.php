@@ -31,7 +31,7 @@ class AdapterChainServiceFactoryTest extends \PHPUnit_Framework_TestCase
 
     protected $serviceLocatorArray;
 
-    public function helperServiceLocator ($index)
+    public function helperServiceLocator($index)
     {
         return $this->serviceLocatorArray[$index];
     }
