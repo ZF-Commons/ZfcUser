@@ -1,8 +1,10 @@
 <?php
 namespace ZfcUser\InputFilter;
+
 use Zend\InputFilter\InputFilter;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
+
 class ProvidesEventsInputFilter extends InputFilter
 {
     /**

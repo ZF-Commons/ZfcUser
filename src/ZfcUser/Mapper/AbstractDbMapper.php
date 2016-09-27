@@ -1,5 +1,6 @@
 <?php
 namespace ZfcUser\Mapper;
+
 use Zend\Db\Adapter\Adapter;
 use Zend\Db\Adapter\Driver\ResultInterface;
 use Zend\Db\ResultSet\HydratingResultSet;
@@ -10,6 +11,7 @@ use Zend\Hydrator\HydratorInterface;
 use Zend\Hydrator\ClassMethods;
 use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Db\Adapter\MasterSlaveAdapterInterface;
+
 abstract class AbstractDbMapper extends EventProvider
 {
     /**
@@ -92,8 +94,10 @@ abstract class AbstractDbMapper extends EventProvider
     {
         $this->initialize();
         $stmt = $this->getSlaveSql()->prepareStatementForSqlObject($select);
-        $resultSet = new HydratingResultSet($hydrator ?: $this->getHydrator(),
-            $entityPrototype ?: $this->getEntityPrototype());
+        $resultSet = new HydratingResultSet(
+            $hydrator ?: $this->getHydrator(),
+            $entityPrototype ?: $this->getEntityPrototype()
+        );
         $resultSet->initialize($stmt->execute());
         return $resultSet;
     }

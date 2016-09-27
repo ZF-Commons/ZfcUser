@@ -1,9 +1,11 @@
 <?php
 namespace ZfcUser\Form;
+
 use Traversable;
 use Zend\Form\Form;
 use Zend\EventManager\EventManagerInterface;
 use Zend\EventManager\EventManager;
+
 class ProvidesEventsForm extends Form
 {
     /**

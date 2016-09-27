@@ -8,7 +8,6 @@
 
 namespace ZfcUser\Factory\Controller;
 
-
 use Interop\Container\ContainerInterface;
 use Interop\Container\Exception\ContainerException;
 use Zend\Mvc\Application;
