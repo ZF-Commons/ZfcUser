@@ -37,7 +37,6 @@ class RegisterFilter extends ProvidesEventsInputFilter
                     array(
                         'name'    => 'StringLength',
                         'options' => array(
-                            'min' => 3,
                             'max' => 255,
                         ),
                     ),
