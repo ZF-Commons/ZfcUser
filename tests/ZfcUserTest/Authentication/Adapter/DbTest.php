@@ -4,6 +4,7 @@ namespace ZfcUserTest\Authentication\Adapter;
 
 use PHPUnit_Framework_MockObject_MockObject as MockObject;
 use PHPUnit_Framework_TestCase as TestCase;
+use Zend\Crypt\Password\Bcrypt;
 use ZfcUser\Authentication\Adapter\Db;
 
 class DbTest extends TestCase
@@ -390,6 +391,60 @@ class DbTest extends TestCase
         );
         $method->setAccessible(true);
         $method->invoke($this->db, $this->user, 'ZfcUserNew', $this->bcrypt);
+    }
+
+    /**
+     * @covers ZfcUser\Authentication\Adapter\Db::Authenticate
+     */
+    public function testUpdatePasswordUsesUnprocessedCredential()
+    {
+        $this->setAuthenticationCredentials('zfc-user@zf-commons.io');
+        $this->setAuthenticationEmail();
+
+        $this->options->expects($this->once())
+            ->method('getEnableUserState')
+            ->will($this->returnValue(false));
+
+        $this->bcrypt->expects($this->once())
+            ->method('verify')
+            ->will($this->returnValue(true));
+        $this->bcrypt->expects($this->any())
+            ->method('getCost')
+            ->will($this->returnValue(static::PASSWORD_COST_10));
+
+        $this->user->expects($this->exactly(2))
+            ->method('getPassword')
+            ->will($this->returnValue('$2a$04$5kq1mnYWbww8X.rIj7eOVOHXtvGw/peefjIcm0lDGxRTEjm9LnOae'));
+        $this->user->expects($this->once())
+            ->method('getId')
+            ->will($this->returnValue(1));
+
+        $this->storage->expects($this->any())
+            ->method('getNameSpace')
+            ->will($this->returnValue('test'));
+
+        $this->authEvent->expects($this->once())
+            ->method('setIdentity')
+            ->with(1)
+            ->will($this->returnValue($this->authEvent));
+        $this->authEvent->expects($this->once())
+            ->method('setCode')
+            ->with(\Zend\Authentication\Result::SUCCESS)
+            ->will($this->returnValue($this->authEvent));
+        $this->authEvent->expects($this->once())
+            ->method('setMessages')
+            ->with(array('Authentication successful.'))
+            ->will($this->returnValue($this->authEvent));
+
+        $this->db->setCredentialPreprocessor(function() {
+            return 'should-not-be-used';
+        });
+        $this->hydrator->expects($this->once())
+            ->method('hydrate')
+            ->with(['password' => 'ZfcUserPassword'], $this->user)
+            ->will($this->returnValue($this->user));
+
+        $this->db->authenticate($this->authEvent);
     }
 
     /**
