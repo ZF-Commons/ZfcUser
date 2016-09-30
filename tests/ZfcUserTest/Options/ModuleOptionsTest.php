@@ -220,7 +220,7 @@ class ModuleOptionsTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetAuthAdapters()
     {
-        $this->assertEquals(array(100 => 'ZfcUser\Authentication\Adapter\Db'), $this->options->getAuthAdapters());
+        $this->assertEquals(array(100 => 'ZfcUser\Authentication\Adapter\Mapper'), $this->options->getAuthAdapters());
     }
 
     /**

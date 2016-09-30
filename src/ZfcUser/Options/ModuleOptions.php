@@ -59,7 +59,7 @@ class ModuleOptions extends AbstractOptions implements UserControllerOptionsInte
     /**
      * @var array
      */
-    protected $authAdapters = array( 100 => 'ZfcUser\Authentication\Adapter\Db' );
+    protected $authAdapters = array( 100 => 'ZfcUser\Authentication\Adapter\Mapper' );
 
     /**
      * @var array

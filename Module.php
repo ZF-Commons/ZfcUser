@@ -63,15 +63,12 @@ class Module implements
     {
         return array(
             'invokables' => array(
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Authentication\Adapter\Db',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Authentication\Storage\Db',
                 'ZfcUser\Form\Login'                => 'ZfcUser\Form\Login',
                 'zfcuser_user_service'              => 'ZfcUser\Service\User',
             ),
             'factories' => array(
                 'zfcuser_module_options'                        => 'ZfcUser\Factory\ModuleOptionsFactory',
                 'zfcuser_auth_service'                          => 'ZfcUser\Factory\AuthenticationServiceFactory',
-                'ZfcUser\Authentication\Adapter\AdapterChain'   => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
                 'zfcuser_login_form'                            => 'ZfcUser\Factory\Form\LoginFormFactory',
                 'zfcuser_register_form'                         => 'ZfcUser\Factory\Form\RegisterFormFactory',
                 'zfcuser_user_mapper'                           => 'ZfcUser\Factory\UserMapperFactory',

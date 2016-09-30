@@ -2,9 +2,8 @@
 
 namespace ZfcUserTest\Authentication\Adapter;
 
-use Zend\EventManager\EventManagerInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain;
-use ZfcUser\Authentication\Adapter\AdapterChainEvent;
+use Zend\Authentication\Result;
 
 class AdapterChainTest extends \PHPUnit_Framework_TestCase
 {
@@ -16,296 +15,148 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
     protected $adapterChain;
 
     /**
-     * Mock event manager.
-     *
-     * @var EventManagerInterface
-     */
-    protected $eventManager;
-
-    /**
-     * For tests where an event is required.
-     *
-     * @var \Zend\EventManager\EventInterface
-     */
-    protected $event;
-
-    /**
-     * Used when testing prepareForAuthentication.
-     *
-     * @var \Zend\Stdlib\RequestInterface
-     */
-    protected $request;
-
-    /**
      * Prepare the objects to be tested.
      */
     protected function setUp()
     {
-        $this->event = null;
-        $this->request = null;
-
         $this->adapterChain = new AdapterChain();
-
-        $this->eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
-        $this->adapterChain->setEventManager($this->eventManager);
+        $this->adapterChain->setIdentity('identity');
+        $this->adapterChain->setCredential('credential');
     }
 
-    /**
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::authenticate
-     */
-    public function testAuthenticate()
+    public function testAttachTriggersEvent()
     {
-        $event = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChainEvent');
-        $event->expects($this->once())
-              ->method('getCode')
-              ->will($this->returnValue(123));
-        $event->expects($this->once())
-              ->method('getIdentity')
-              ->will($this->returnValue('identity'));
-        $event->expects($this->once())
-              ->method('getMessages')
-              ->will($this->returnValue(array()));
+        $adapter1 = $this->getMockForAbstractClass('Zend\Authentication\Adapter\AbstractAdapter');
+        
+        $triggerCount = 0;
+        $this->adapterChain->getEventManager()->attach('attach', function ($e) use ($adapter1, &$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('name', $e->getParams());
+            $this->assertEquals('adapter1', $e->getParam('name'));
+            $this->assertArrayHasKey('adapter', $e->getParams());
+            $this->assertSame($adapter1, $e->getParam('adapter'));
+            $this->assertArrayHasKey('priority', $e->getParams());
+            $this->assertEquals(29, $e->getParam('priority'));
+            $triggerCount++;
+        });
 
-        $this->eventManager->expects($this->once())
-             ->method('getListeners')
-             ->with($this->equalTo('authenticate'))
-             ->will($this->returnValue(array()));
+        $this->adapterChain->attach('adapter1', $adapter1, 29);
+        $this->assertEquals(1, $triggerCount);
+    }
 
-        $this->adapterChain->setEvent($event);
+    public function testAuthenticateWithNoAdaptersReturnsUncategorizedFailure()
+    {
         $result = $this->adapterChain->authenticate();
 
         $this->assertInstanceOf('Zend\Authentication\Result', $result);
-        $this->assertEquals($result->getIdentity(), 'identity');
+        $this->assertEquals(Result::FAILURE_UNCATEGORIZED, $result->getCode());
+        $this->assertEquals($result->getIdentity(), null);
         $this->assertEquals($result->getMessages(), array());
     }
 
-    /**
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::resetAdapters
-     */
-    public function testResetAdapters()
+    public function testAuthenticateWithZeroAdapterMatchesReturnsLastAdapterResult()
     {
-        $listeners = array();
+        $result1 = new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null);
+        $adapter1 = $this->getMockForAbstractClass('Zend\Authentication\Adapter\AbstractAdapter');
+        $adapter1->expects($this->once())->method('authenticate')->will($this->returnValue($result1));
+        $this->adapterChain->attach('adapter1', $adapter1);
 
-        for ($i=1; $i<=3; $i++) {
-            $storage = $this->getMock('ZfcUser\Authentication\Storage\Db');
-            $storage->expects($this->once())
-                    ->method('clear');
+        $result2 = new Result(Result::FAILURE_IDENTITY_NOT_FOUND, null);
+        $adapter2 = $this->getMockForAbstractClass('Zend\Authentication\Adapter\AbstractAdapter');
+        $adapter2->expects($this->once())->method('authenticate')->will($this->returnValue($result2));
+        $this->adapterChain->attach('adapter2', $adapter2);
+        
+        $result = $this->adapterChain->authenticate();
 
-            $adapter = $this->getMock('ZfcUser\Authentication\Adapter\AbstractAdapter');
-            $adapter->expects($this->once())
-                    ->method('getStorage')
-                    ->will($this->returnValue($storage));
+        $this->assertSame($result2, $result);
+        $this->assertEquals(Result::FAILURE_IDENTITY_NOT_FOUND, $result->getCode());
+        $this->assertEquals($result->getIdentity(), null);
+        $this->assertEquals($result->getMessages(), array());
+    }
+    
+    public function testAuthenticateTriggersEventsOnFailure()
+    {
+        $em = $this->adapterChain->getEventManager();
+        
+        $triggerCount['pre'] = 0;
+        $em->attach('authenticate.pre', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertEmpty($e->getParams());
+            $triggerCount['pre']++;
+        });
+        
+        $triggerCount['success'] = 0;
+        $em->attach('authenticate.success', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('adapter', $e->getParams());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['success']++;
+        });
+                
+        $triggerCount['failure'] = 0;
+        $em->attach('authenticate.failure', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['failure']++;
+        });
+        
+        $this->testAuthenticateWithZeroAdapterMatchesReturnsLastAdapterResult();
+        $this->assertEquals(1, $triggerCount['pre']);
+        $this->assertEquals(0, $triggerCount['success']);
+        $this->assertEquals(1, $triggerCount['failure']);
+    }
+    
+    /**
+     * Also enforces FIFO behavior of AdapterChain (If LIFO, adapter2 would execute first)
+     */
+    public function testAuthenticateWithAdapterMatchReturnsSuccessfulAdapterResult()
+    {
+        $result1 = new Result(Result::SUCCESS, $this->adapterChain->getIdentity());
+        $adapter1 = $this->getMockForAbstractClass('Zend\Authentication\Adapter\AbstractAdapter');
+        $adapter1->expects($this->once())->method('authenticate')->will($this->returnValue($result1));
+        $this->adapterChain->attach('adapter1', $adapter1);
 
-            $callback = $this->getMockBuilder('Zend\Stdlib\CallbackHandler')->disableOriginalConstructor()->getMock();
-            $callback->expects($this->once())
-                     ->method('getCallback')
-                     ->will($this->returnValue(array($adapter)));
+        $adapter2 = $this->getMockForAbstractClass('Zend\Authentication\Adapter\AbstractAdapter');
+        $adapter2->expects($this->never())->method('authenticate');
+        $this->adapterChain->attach('adapter2', $adapter2);
+        
+        $result = $this->adapterChain->authenticate();
 
-            $listeners[] = $callback;
-        }
-
-        $this->eventManager->expects($this->once())
-             ->method('getListeners')
-             ->with($this->equalTo('authenticate'))
-             ->will($this->returnValue($listeners));
-
-        $result = $this->adapterChain->resetAdapters();
-
-        $this->assertInstanceOf('ZfcUser\Authentication\Adapter\AdapterChain', $result);
+        $this->assertSame($result1, $result);
+        $this->assertEquals(Result::SUCCESS, $result->getCode());
+        $this->assertEquals($result->getIdentity(), $this->adapterChain->getIdentity());
+        $this->assertEquals($result->getMessages(), array());
     }
 
-    /**
-     * Get through the first part of SetUpPrepareForAuthentication
-     */
-    protected function setUpPrepareForAuthentication()
+    public function testAuthenticateTriggersEventsOnSuccess()
     {
-        $this->request = $this->getMock('Zend\Stdlib\RequestInterface');
-        $this->event = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChainEvent');
-
-        $this->event->expects($this->once())->method('setRequest')->with($this->request);
-
-        $this->eventManager->expects($this->at(0))->method('trigger')->with('authenticate.pre');
-
-        /**
-         * @var $response Zend\EventManager\ResponseCollection
-         */
-        $responses = $this->getMock('Zend\EventManager\ResponseCollection');
-
-        $this->eventManager->expects($this->at(1))
-            ->method('trigger')
-            ->with('authenticate', $this->event)
-            ->will($this->returnCallback(function ($event, $target, $callback) use ($responses) {
-                if (call_user_func($callback, $responses->last())) {
-                    $responses->setStopped(true);
-                }
-                return $responses;
-            }));
-
-        $this->adapterChain->setEvent($this->event);
-
-        return $responses;
-    }
-
-    /**
-     * Provider for testPrepareForAuthentication()
-     *
-     * @return array
-     */
-    public function identityProvider()
-    {
-        return array(
-            array(true, true),
-            array(false, false),
-        );
-    }
-
-    /**
-     * Tests prepareForAuthentication when falls through events.
-     *
-     * @param mixed $identity
-     * @param bool  $expected
-     *
-     * @dataProvider identityProvider
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::prepareForAuthentication
-     */
-    public function testPrepareForAuthentication($identity, $expected)
-    {
-        $result = $this->setUpPrepareForAuthentication();
-
-        $result->expects($this->once())->method('stopped')->will($this->returnValue(false));
-
-        $this->event->expects($this->once())->method('getIdentity')->will($this->returnValue($identity));
-
-        $this->assertEquals(
-            $expected,
-            $this->adapterChain->prepareForAuthentication($this->request),
-            'Asserting prepareForAuthentication() returns true'
-        );
-    }
-
-    /**
-     * Test prepareForAuthentication() when the returned collection contains stopped.
-     *
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::prepareForAuthentication
-     */
-    public function testPrepareForAuthenticationWithStoppedEvent()
-    {
-        $result = $this->setUpPrepareForAuthentication();
-
-        $result->expects($this->once())->method('stopped')->will($this->returnValue(true));
-
-        $lastResponse = $this->getMock('Zend\Stdlib\ResponseInterface');
-        $result->expects($this->atLeastOnce())->method('last')->will($this->returnValue($lastResponse));
-
-        $this->assertEquals(
-            $lastResponse,
-            $this->adapterChain->prepareForAuthentication($this->request),
-            'Asserting the Response returned from the event is returned'
-        );
-    }
-
-    /**
-     * Test prepareForAuthentication() when the returned collection contains stopped.
-     *
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::prepareForAuthentication
-     * @expectedException ZfcUser\Exception\AuthenticationEventException
-     */
-    public function testPrepareForAuthenticationWithBadEventResult()
-    {
-        $result = $this->setUpPrepareForAuthentication();
-
-        $result->expects($this->once())->method('stopped')->will($this->returnValue(true));
-
-        $lastResponse = 'random-value';
-        $result->expects($this->atLeastOnce())->method('last')->will($this->returnValue($lastResponse));
-
-        $this->adapterChain->prepareForAuthentication($this->request);
-    }
-
-    /**
-     * Test getEvent() when no event has previously been set.
-     *
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::getEvent
-     */
-    public function testGetEventWithNoEventSet()
-    {
-        $event = $this->adapterChain->getEvent();
-
-        $this->assertInstanceOf(
-            'ZfcUser\Authentication\Adapter\AdapterChainEvent',
-            $event,
-            'Asserting the adapter in an instance of ZfcUser\Authentication\Adapter\AdapterChainEvent'
-        );
-        $this->assertEquals(
-            $this->adapterChain,
-            $event->getTarget(),
-            'Asserting the Event target is the AdapterChain'
-        );
-    }
-
-    /**
-     * Test getEvent() when an event has previously been set.
-     *
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::setEvent
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::getEvent
-     */
-    public function testGetEventWithEventSet()
-    {
-        $event = new \ZfcUser\Authentication\Adapter\AdapterChainEvent();
-
-        $this->adapterChain->setEvent($event);
-
-        $this->assertEquals(
-            $event,
-            $this->adapterChain->getEvent(),
-            'Asserting the event fetched is the same as the event set'
-        );
-    }
-
-    /**
-     * Tests the mechanism for casting one event type to AdapterChainEvent
-     *
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::setEvent
-     */
-    public function testSetEventWithDifferentEventType()
-    {
-        $testParams = array('testParam' => 'testValue');
-
-        $event = new \Zend\EventManager\Event;
-        $event->setParams($testParams);
-
-        $this->adapterChain->setEvent($event);
-        $returnEvent = $this->adapterChain->getEvent();
-
-        $this->assertInstanceOf(
-            'ZfcUser\Authentication\Adapter\AdapterChainEvent',
-            $returnEvent,
-            'Asserting the adapter in an instance of ZfcUser\Authentication\Adapter\AdapterChainEvent'
-        );
-
-        $this->assertEquals(
-            $testParams,
-            $returnEvent->getParams(),
-            'Asserting event parameters match'
-        );
-    }
-
-    /**
-     * Test the logoutAdapters method.
-     *
-     * @depends testGetEventWithEventSet
-     * @covers ZfcUser\Authentication\Adapter\AdapterChain::logoutAdapters
-     */
-    public function testLogoutAdapters()
-    {
-        $event = new AdapterChainEvent();
-
-        $this->eventManager
-            ->expects($this->once())
-            ->method('trigger')
-            ->with('logout', $event);
-
-        $this->adapterChain->setEvent($event);
-        $this->adapterChain->logoutAdapters();
+        $em = $this->adapterChain->getEventManager();
+        
+        $triggerCount['pre'] = 0;
+        $em->attach('authenticate.pre', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertEmpty($e->getParams());
+            $triggerCount['pre']++;
+        });
+        
+        $triggerCount['success'] = 0;
+        $em->attach('authenticate.success', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('adapter', $e->getParams());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['success']++;
+        });
+                
+        $triggerCount['failure'] = 0;
+        $em->attach('authenticate.failure', function ($e) use (&$triggerCount) {
+            $this->assertSame($this->adapterChain, $e->getTarget());
+            $this->assertArrayHasKey('result', $e->getParams());
+            $triggerCount['failure']++;
+        });
+        
+        $this->testAuthenticateWithAdapterMatchReturnsSuccessfulAdapterResult();
+        $this->assertEquals(1, $triggerCount['pre']);
+        $this->assertEquals(1, $triggerCount['success']);
+        $this->assertEquals(0, $triggerCount['failure']);
     }
 }
