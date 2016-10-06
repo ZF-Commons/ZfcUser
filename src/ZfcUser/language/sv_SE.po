@@ -1,0 +1,124 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: ZfcUser\n"
+"Report-Msgid-Bugs-To: zf-devteam@zend.com\n"
+"POT-Creation-Date: 2013-11-08 00:38+0100\n"
+"PO-Revision-Date: 2016-10-06 15:59+0200\n"
+"Language-Team: ZF Contibutors <zf-devteam@zend.com>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.8.9\n"
+"Last-Translator: Henric Nylund <henric.nylund@gmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: sv_SE\n"
+
+#: src/ZfcUser/language/msgIds.php:6
+msgid "Username"
+msgstr "Användarnamn"
+
+#: src/ZfcUser/language/msgIds.php:7
+msgid "Email"
+msgstr "E-postadress"
+
+#: src/ZfcUser/language/msgIds.php:8
+msgid "New Email"
+msgstr "Ny e-postadress"
+
+#: src/ZfcUser/language/msgIds.php:9
+msgid "Verify New Email"
+msgstr "Bekräfta ny e-postadress"
+
+#: src/ZfcUser/language/msgIds.php:10
+msgid "Display Name"
+msgstr "Visningsnamn"
+
+#: src/ZfcUser/language/msgIds.php:11
+msgid "Password"
+msgstr "Lösenord"
+
+#: src/ZfcUser/language/msgIds.php:12
+msgid "Password Verify"
+msgstr "Bekräfta lösenord"
+
+#: src/ZfcUser/language/msgIds.php:13
+msgid "Current Password"
+msgstr "Nuvarande lösenord"
+
+#: src/ZfcUser/language/msgIds.php:14
+msgid "Verify New Password"
+msgstr "Bekräfta nytt lösenord"
+
+#: src/ZfcUser/language/msgIds.php:15
+msgid "New Password"
+msgstr "Nytt lösenord"
+
+#: src/ZfcUser/language/msgIds.php:16
+msgid "Please type the following text"
+msgstr "Vänligen skriv följande text"
+
+#: src/ZfcUser/language/msgIds.php:17
+msgid "Submit"
+msgstr "Skicka"
+
+#: src/ZfcUser/language/msgIds.php:18 view/zfc-user/user/login.phtml:1
+msgid "Sign In"
+msgstr "Logga in"
+
+#: src/ZfcUser/language/msgIds.php:19 view/zfc-user/user/register.phtml:1
+msgid "Register"
+msgstr "Registrera"
+
+#: src/ZfcUser/language/msgIds.php:20
+msgid "No record matching the input was found"
+msgstr "Ingen post som matchade inmatningen hittades"
+
+#: src/ZfcUser/language/msgIds.php:21
+msgid "A record matching the input was found"
+msgstr "En post som matchade inmatningen hittades"
+
+#: src/ZfcUser/language/msgIds.php:22
+msgid "Authentication failed. Please try again."
+msgstr "Autentiseringen misslyckades. Var god försök igen."
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Not registered?"
+msgstr "Inte registrerad?"
+
+#: view/zfc-user/user/login.phtml:31
+msgid "Sign up!"
+msgstr "Skapa ett konto!"
+
+#: view/zfc-user/user/changeemail.phtml:1
+#, php-format
+msgid "Change Email for %s"
+msgstr "Ändra e-postadress för %s"
+
+#: view/zfc-user/user/changeemail.phtml:3
+msgid "Email address changed successfully."
+msgstr "E-postadressen har ändrats."
+
+#: view/zfc-user/user/changeemail.phtml:5
+msgid "Unable to update your email address. Please try again."
+msgstr "Det gick inte att uppdatera din e-postadress. Var god försök igen."
+
+#: view/zfc-user/user/changepassword.phtml:1
+#, php-format
+msgid "Change Password for %s"
+msgstr "Ändra lösenord för %s"
+
+#: view/zfc-user/user/changepassword.phtml:3
+msgid "Password changed successfully."
+msgstr "Lösenordet har ändrats."
+
+#: view/zfc-user/user/changepassword.phtml:5
+msgid "Unable to update your password. Please try again."
+msgstr "Det gick inte att uppdatera ditt lösenord. Vänligen försök igen."
+
+#: view/zfc-user/user/index.phtml:2
+msgid "Hello"
+msgstr "Hej"
+
+#: view/zfc-user/user/index.phtml:3
+msgid "Sign Out"
+msgstr "Logga ut"
