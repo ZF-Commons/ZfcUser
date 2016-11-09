@@ -5,13 +5,15 @@ namespace ZfcUser\Authentication\Adapter;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\EventManager\Event;
+use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface as Response;
-use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Exception;
 
-class AdapterChain extends EventProvider implements AdapterInterface
+class AdapterChain implements AdapterInterface
 {
+    use EventManagerAwareTrait;
+
     /**
      * @var AdapterChainEvent
      */
@@ -74,24 +76,25 @@ class AdapterChain extends EventProvider implements AdapterInterface
         }
 
         $this->getEventManager()->trigger('authenticate.fail', $e);
+
         return false;
     }
 
     /**
      * resetAdapters
-     * @TODO: Does this even work?
+     *
      * @return AdapterChain
      */
     public function resetAdapters()
     {
         $listeners = $this->getEventManager()->getSharedManager()->getListeners(['authenticate'], 'authenticate');
-        foreach ($listeners as $listener) {
-            $listener = $listener->getCallback();
 
+        foreach ($listeners as $listener) {
             if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
                 $listener[0]->getStorage()->clear();
             }
         }
+
         return $this;
     }
 
@@ -117,6 +120,7 @@ class AdapterChain extends EventProvider implements AdapterInterface
             $this->setEvent(new AdapterChainEvent);
             $this->event->setTarget($this);
         }
+
         return $this->event;
     }
 
@@ -135,7 +139,9 @@ class AdapterChain extends EventProvider implements AdapterInterface
             $e = new AdapterChainEvent();
             $e->setParams($eventParams);
         }
+
         $this->event = $e;
+
         return $this;
     }
 }

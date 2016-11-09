@@ -15,6 +15,7 @@ class Login extends ProvidesEventsForm
     public function __construct($name, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);
+
         parent::__construct($name);
 
         $this->add(array(
@@ -78,6 +79,7 @@ class Login extends ProvidesEventsForm
     public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
     {
         $this->authOptions = $authOptions;
+
         return $this;
     }
 

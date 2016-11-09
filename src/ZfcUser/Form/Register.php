@@ -21,6 +21,7 @@ class Register extends Base
     public function __construct($name, RegistrationOptionsInterface $options)
     {
         $this->setRegistrationOptions($options);
+
         parent::__construct($name);
 
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {

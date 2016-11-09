@@ -9,6 +9,7 @@ use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
 use Zend\Hydrator\HydratorInterface;
 use Zend\Hydrator\ClassMethods;
+use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Db\Adapter\MasterSlaveAdapterInterface;
 
@@ -18,42 +19,52 @@ abstract class AbstractDbMapper extends EventProvider
      * @var Adapter
      */
     protected $dbAdapter;
+
     /**
      * @var Adapter
      */
     protected $dbSlaveAdapter;
+
     /**
      * @var HydratorInterface
      */
     protected $hydrator;
+
     /**
-     * @var object
+     * @var UserEntityInterface
      */
     protected $entityPrototype;
+
     /**
      * @var HydratingResultSet
      */
     protected $resultSetPrototype;
+
     /**
      * @var Select
      */
     protected $selectPrototype;
+
     /**
      * @var Sql
      */
     private $sql;
+
     /**
      * @var Sql
      */
     private $slaveSql;
+
     /**
      * @var string
      */
     protected $tableName;
+
     /**
      * @var boolean
      */
     private $isInitialized = false;
+
     /**
      * Performs some basic initialization setup and checks before running a query
      * @throws \Exception
@@ -73,8 +84,10 @@ abstract class AbstractDbMapper extends EventProvider
         if (!is_object($this->entityPrototype)) {
             throw new \Exception('No entity prototype set');
         }
+
         $this->isInitialized = true;
     }
+
     /**
      * @param string|null $table
      * @return Select
@@ -82,15 +95,17 @@ abstract class AbstractDbMapper extends EventProvider
     protected function getSelect($table = null)
     {
         $this->initialize();
+
         return $this->getSlaveSql()->select($table ?: $this->getTableName());
     }
+
     /**
      * @param Select $select
-     * @param object|null $entityPrototype
+     * @param UserEntityInterface|null $entityPrototype
      * @param HydratorInterface|null $hydrator
      * @return HydratingResultSet
      */
-    protected function select(Select $select, $entityPrototype = null, HydratorInterface $hydrator = null)
+    protected function select(Select $select, UserEntityInterface $entityPrototype = null, HydratorInterface $hydrator = null)
     {
         $this->initialize();
         $stmt = $this->getSlaveSql()->prepareStatementForSqlObject($select);
@@ -101,13 +116,14 @@ abstract class AbstractDbMapper extends EventProvider
         $resultSet->initialize($stmt->execute());
         return $resultSet;
     }
+
     /**
-     * @param object|array $entity
+     * @param UserEntityInterface $entity
      * @param string|TableIdentifier|null $tableName
      * @param HydratorInterface|null $hydrator
      * @return ResultInterface
      */
-    protected function insert($entity, $tableName = null, HydratorInterface $hydrator = null)
+    protected function insert(UserEntityInterface $entity, $tableName = null, HydratorInterface $hydrator = null)
     {
         $this->initialize();
         $tableName = $tableName ?: $this->tableName;
@@ -118,14 +134,15 @@ abstract class AbstractDbMapper extends EventProvider
         $statement = $sql->prepareStatementForSqlObject($insert);
         return $statement->execute();
     }
+
     /**
-     * @param object|array $entity
+     * @param UserEntityInterface $entity
      * @param string|array|\Closure $where
      * @param string|TableIdentifier|null $tableName
      * @param HydratorInterface|null $hydrator
      * @return ResultInterface
      */
-    protected function update($entity, $where, $tableName = null, HydratorInterface $hydrator = null)
+    protected function update(UserEntityInterface $entity, $where, $tableName = null, HydratorInterface $hydrator = null)
     {
         $this->initialize();
         $tableName = $tableName ?: $this->tableName;
@@ -137,6 +154,7 @@ abstract class AbstractDbMapper extends EventProvider
         $statement = $sql->prepareStatementForSqlObject($update);
         return $statement->execute();
     }
+
     /**
      * @param string|array|\Closure $where
      * @param string|TableIdentifier|null $tableName
@@ -151,6 +169,7 @@ abstract class AbstractDbMapper extends EventProvider
         $statement = $sql->prepareStatementForSqlObject($delete);
         return $statement->execute();
     }
+
     /**
      * @return string
      */
@@ -158,23 +177,26 @@ abstract class AbstractDbMapper extends EventProvider
     {
         return $this->tableName;
     }
+
     /**
-     * @return object
+     * @return UserEntityInterface
      */
     public function getEntityPrototype()
     {
         return $this->entityPrototype;
     }
+
     /**
-     * @param object $entityPrototype
+     * @param UserEntityInterface $entityPrototype
      * @return AbstractDbMapper
      */
-    public function setEntityPrototype($entityPrototype)
+    public function setEntityPrototype(UserEntityInterface $entityPrototype)
     {
         $this->entityPrototype = $entityPrototype;
         $this->resultSetPrototype = null;
         return $this;
     }
+
     /**
      * @return Adapter
      */
@@ -182,6 +204,7 @@ abstract class AbstractDbMapper extends EventProvider
     {
         return $this->dbAdapter;
     }
+
     /**
      * @param Adapter $dbAdapter
      * @return AbstractDbMapper
@@ -194,6 +217,7 @@ abstract class AbstractDbMapper extends EventProvider
         }
         return $this;
     }
+
     /**
      * @return Adapter
      */
@@ -201,6 +225,7 @@ abstract class AbstractDbMapper extends EventProvider
     {
         return $this->dbSlaveAdapter ?: $this->dbAdapter;
     }
+
     /**
      * @param Adapter $dbSlaveAdapter
      * @return AbstractDbMapper
@@ -210,6 +235,7 @@ abstract class AbstractDbMapper extends EventProvider
         $this->dbSlaveAdapter = $dbSlaveAdapter;
         return $this;
     }
+
     /**
      * @return HydratorInterface
      */
@@ -220,6 +246,7 @@ abstract class AbstractDbMapper extends EventProvider
         }
         return $this->hydrator;
     }
+
     /**
      * @param HydratorInterface $hydrator
      * @return AbstractDbMapper
@@ -230,6 +257,7 @@ abstract class AbstractDbMapper extends EventProvider
         $this->resultSetPrototype = null;
         return $this;
     }
+
     /**
      * @return Sql
      */
@@ -240,6 +268,7 @@ abstract class AbstractDbMapper extends EventProvider
         }
         return $this->sql;
     }
+
     /**
      * @param Sql $sql
      * @return AbstractDbMapper
@@ -249,6 +278,7 @@ abstract class AbstractDbMapper extends EventProvider
         $this->sql = $sql;
         return $this;
     }
+
     /**
      * @return Sql
      */
@@ -259,6 +289,7 @@ abstract class AbstractDbMapper extends EventProvider
         }
         return $this->slaveSql;
     }
+
     /**
      * @param Sql $sql
      * @return AbstractDbMapper
@@ -268,25 +299,22 @@ abstract class AbstractDbMapper extends EventProvider
         $this->slaveSql = $sql;
         return $this;
     }
+
     /**
      * Uses the hydrator to convert the entity to an array.
      *
      * Use this method to ensure that you're working with an array.
      *
-     * @param object $entity
+     * @param UserEntityInterface $entity
      * @param HydratorInterface|null $hydrator
      * @return array
      */
-    protected function entityToArray($entity, HydratorInterface $hydrator = null)
+    protected function entityToArray(UserEntityInterface $entity, HydratorInterface $hydrator = null)
     {
-        if (is_array($entity)) {
-            return $entity; // cut down on duplicate code
-        } elseif (is_object($entity)) {
-            if (!$hydrator) {
-                $hydrator = $this->getHydrator();
-            }
-            return $hydrator->extract($entity);
+        if (!$hydrator) {
+            $hydrator = $this->getHydrator();
         }
-        throw new Exception\InvalidArgumentException('Entity passed to db mapper should be an array or object.');
+
+        return $hydrator->extract($entity);
     }
 }

@@ -2,29 +2,17 @@
 
 namespace ZfcUser;
 
-use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
 use Zend\ModuleManager\Feature\ConfigProviderInterface;
+use Zend\ModuleManager\Feature\ControllerPluginProviderInterface;
+use Zend\ModuleManager\Feature\ControllerProviderInterface;
 use Zend\ModuleManager\Feature\ServiceProviderInterface;
 
 class Module implements
-    AutoloaderProviderInterface,
+    ControllerProviderInterface,
+    ControllerPluginProviderInterface,
     ConfigProviderInterface,
     ServiceProviderInterface
 {
-    public function getAutoloaderConfig()
-    {
-        return array(
-            'Zend\Loader\ClassMapAutoloader' => array(
-                __DIR__ . '/autoload_classmap.php',
-            ),
-            'Zend\Loader\StandardAutoloader' => array(
-                'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
-                ),
-            ),
-        );
-    }
-
     public function getConfig($env = null)
     {
         return include __DIR__ . '/config/module.config.php';
@@ -34,7 +22,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserAuthentication' => 'ZfcUser\Factory\Controller\Plugin\ZfcUserAuthentication',
+                'zfcUserAuthentication' => \ZfcUser\Factory\Controller\Plugin\ZfcUserAuthentication::class,
             ),
         );
     }
@@ -43,7 +31,7 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcuser' => 'ZfcUser\Factory\Controller\UserControllerFactory',
+                'zfcuser' => \ZfcUser\Factory\Controller\UserControllerFactory::class,
             ),
         );
     }
@@ -52,9 +40,9 @@ class Module implements
     {
         return array(
             'factories' => array(
-                'zfcUserDisplayName' => 'ZfcUser\Factory\View\Helper\ZfcUserDisplayName',
-                'zfcUserIdentity' => 'ZfcUser\Factory\View\Helper\ZfcUserIdentity',
-                'zfcUserLoginWidget' => 'ZfcUser\Factory\View\Helper\ZfcUserLoginWidget',
+                'zfcUserDisplayName' => \ZfcUser\Factory\View\Helper\ZfcUserDisplayName::class,
+                'zfcUserIdentity' => \ZfcUser\Factory\View\Helper\ZfcUserIdentity::class,
+                'zfcUserLoginWidget' => \ZfcUser\Factory\View\Helper\ZfcUserLoginWidget::class,
             ),
         );
 
@@ -64,33 +52,33 @@ class Module implements
     {
         return array(
             'aliases' => array(
-                'zfcuser_zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
+                'zfcuser_zend_db_adapter' => \Zend\Db\Adapter\Adapter::class,
             ),
             'invokables' => array(
-                'zfcuser_register_form_hydrator'    => 'Zend\Hydrator\ClassMethods',
+                'zfcuser_register_form_hydrator' => \Zend\Hydrator\ClassMethods::class,
             ),
             'factories' => array(
-                'zfcuser_redirect_callback' => 'ZfcUser\Factory\Controller\RedirectCallbackFactory',
-                'zfcuser_module_options' => 'ZfcUser\Factory\Options\ModuleOptions',
-                'ZfcUser\Authentication\Adapter\AdapterChain' => 'ZfcUser\Authentication\Adapter\AdapterChainServiceFactory',
+                'zfcuser_redirect_callback' => \ZfcUser\Factory\Controller\RedirectCallbackFactory::class,
+                'zfcuser_module_options' => \ZfcUser\Factory\Options\ModuleOptions::class,
+                'ZfcUser\Authentication\Adapter\AdapterChain' => \ZfcUser\Authentication\Adapter\AdapterChainServiceFactory::class,
 
                 // We alias this one because it's ZfcUser's instance of
                 // Zend\Authentication\AuthenticationService. We don't want to
                 // hog the FQCN service alias for a Zend\* class.
-                'zfcuser_auth_service' => 'ZfcUser\Factory\AuthenticationService',
+                'zfcuser_auth_service' => \ZfcUser\Factory\AuthenticationService::class,
 
-                'zfcuser_user_hydrator' => 'ZfcUser\Factory\UserHydrator',
-                'zfcuser_user_mapper' => 'ZfcUser\Factory\Mapper\User',
+                'zfcuser_user_hydrator' => \ZfcUser\Factory\UserHydrator::class,
+                'zfcuser_user_mapper' => \ZfcUser\Factory\Mapper\User::class,
 
-                'zfcuser_login_form'            => 'ZfcUser\Factory\Form\Login',
-                'zfcuser_register_form'         => 'ZfcUser\Factory\Form\Register',
-                'zfcuser_change_password_form'  => 'ZfcUser\Factory\Form\ChangePassword',
-                'zfcuser_change_email_form'     => 'ZfcUser\Factory\Form\ChangeEmail',
+                'zfcuser_login_form' => \ZfcUser\Factory\Form\Login::class,
+                'zfcuser_register_form' => \ZfcUser\Factory\Form\Register::class,
+                'zfcuser_change_password_form' => \ZfcUser\Factory\Form\ChangePassword::class,
+                'zfcuser_change_email_form' => \ZfcUser\Factory\Form\ChangeEmail::class,
 
-                'ZfcUser\Authentication\Adapter\Db' => 'ZfcUser\Factory\Authentication\Adapter\DbFactory',
-                'ZfcUser\Authentication\Storage\Db' => 'ZfcUser\Factory\Authentication\Storage\DbFactory',
+                'ZfcUser\Authentication\Adapter\Db' => \ZfcUser\Factory\Authentication\Adapter\DbFactory::class,
+                'ZfcUser\Authentication\Storage\Db' => \ZfcUser\Factory\Authentication\Storage\DbFactory::class,
 
-                'zfcuser_user_service'              => 'ZfcUser\Factory\Service\UserFactory',
+                'zfcuser_user_service' => \ZfcUser\Factory\Service\UserFactory::class,
             ),
         );
     }
