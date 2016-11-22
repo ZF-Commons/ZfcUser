@@ -12,6 +12,8 @@ use ZfcUser\Service\User as UserService;
 use Zend\Form\Form;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Entity\User as UserIdentity;
+use Zend\Mvc\I18n\Translator;
+use Zend\Mvc\I18n\DummyTranslator;
 
 class UserControllerTest extends \PHPUnit_Framework_TestCase
 {
@@ -239,6 +241,17 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $this->pluginManagerPlugins['forward']= $forwardPlugin;
 
         } else {
+            $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+            $serviceLocator->expects($this->once())
+                ->method('has')
+                ->with('translator')
+                ->will($this->returnValue(true));
+            $serviceLocator->expects($this->once())
+                ->method('get')
+                ->with('translator')
+                ->will($this->returnValue(new Translator(new DummyTranslator())));
+            
+            $controller->setServiceLocator($serviceLocator);
             $response = new Response();
 
             $redirectQuery = $wantRedirect ? '?redirect='. rawurlencode($redirectUrl) : '';
