@@ -5,8 +5,6 @@ namespace ZfcUser\Authentication\Adapter;
 use InvalidArgumentException;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\Crypt\Password\Bcrypt;
-use Zend\ServiceManager\ServiceManager;
-use Zend\ServiceManager\ServiceManagerAwareInterface;
 use Zend\Session\Container as SessionContainer;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent as AuthenticationEvent;
 use ZfcUser\Entity\UserInterface as UserEntity;
@@ -14,7 +12,7 @@ use ZfcUser\Mapper\HydratorInterface as Hydrator;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 use ZfcUser\Options\AuthenticationOptionsInterface as AuthenticationOptions;
 
-class Db extends AbstractAdapter implements ServiceManagerAwareInterface
+class Db extends AbstractAdapter
 {
     /**
      * @var UserMapper
@@ -32,14 +30,16 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     protected $credentialPreprocessor;
 
     /**
-     * @var ServiceManager
-     */
-    protected $serviceManager;
-
-    /**
      * @var AuthenticationOptions
      */
     protected $options;
+
+    public function __construct(UserMapper $mapper, Hydrator $hydrator, AuthenticationOptions $options)
+    {
+        $this->mapper = $mapper;
+        $this->hydrator = $hydrator;
+        $this->options = $options;
+    }
 
     /**
      * Called when user id logged out
@@ -140,51 +140,19 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     }
 
     /**
-     * getMapper
-     *
      * @return UserMapper
      */
     public function getMapper()
     {
-        if (!$this->mapper instanceof UserMapper) {
-            $this->setMapper($this->serviceManager->get('zfcuser_user_mapper'));
-        }
         return $this->mapper;
     }
 
     /**
-     * setMapper
-     *
-     * @param UserMapper $mapper
-     * @return Db
-     */
-    public function setMapper(UserMapper $mapper)
-    {
-        $this->mapper = $mapper;
-        return $this;
-    }
-
-    /**
-     * Lazy-loads a hydrator from the service manager
-     *
      * @return Hydrator
      */
     public function getHydrator()
     {
-        if (!$this->hydrator instanceof Hydrator) {
-            $this->setHydrator($this->serviceManager->get('zfcuser_user_hydrator'));
-        }
         return $this->hydrator;
-    }
-
-    /**
-     * Set the hydrator
-     *
-     * @param Hydrator $hydrator
-     */
-    public function setHydrator(Hydrator $hydrator)
-    {
-        $this->hydrator = $hydrator;
     }
 
     /**
@@ -216,42 +184,10 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
     }
 
     /**
-     * Retrieve service manager instance
-     *
-     * @return ServiceManager
-     */
-    public function getServiceManager()
-    {
-        return $this->serviceManager;
-    }
-
-    /**
-     * Set service manager instance
-     *
-     * @param ServiceManager $locator
-     * @return void
-     */
-    public function setServiceManager(ServiceManager $serviceManager)
-    {
-        $this->serviceManager = $serviceManager;
-    }
-
-    /**
-     * @param AuthenticationOptions $options
-     */
-    public function setOptions(AuthenticationOptions $options)
-    {
-        $this->options = $options;
-    }
-
-    /**
      * @return AuthenticationOptions
      */
     public function getOptions()
     {
-        if (!$this->options instanceof AuthenticationOptions) {
-            $this->setOptions($this->serviceManager->get('zfcuser_module_options'));
-        }
         return $this->options;
     }
 }

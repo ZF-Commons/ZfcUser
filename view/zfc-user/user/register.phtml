@@ -23,7 +23,10 @@ $form->setAttribute('autocomplete', 'off');
         <?php elseif ($element instanceof Zend\Form\Element\Captcha): ?>
             <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element) ?></dd>
         <?php else: ?>
-            <dd><?php echo $this->formInput($element) . $this->formElementErrors($element) ?></dd>
+            <?php
+            $method = 'form' . ucfirst($element->getAttribute('type'));
+            ?>
+            <dd><?php echo $this->$method($element) . $this->formElementErrors($element) ?></dd>
         <?php endif ?>
     <?php endforeach ?>
     </dl>
