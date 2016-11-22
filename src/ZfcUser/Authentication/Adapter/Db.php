@@ -79,7 +79,9 @@ class Db extends AbstractAdapter
 
         if ($this->getOptions()->getEnableUserState()) {
             // Don't allow user to login if state is not in allowed list
-            if (!in_array($userObject->getState(), $this->getOptions()->getAllowedLoginStates())) {
+            if (!in_array(
+                !is_object($userObject->getState()) ?: $userObject->getState()->getId(), 
+                $this->getOptions()->getAllowedLoginStates())) {
                 $e->setCode(AuthenticationResult::FAILURE_UNCATEGORIZED)
                   ->setMessages(array('A record with the supplied identity is not active.'));
                 $this->setSatisfied(false);
