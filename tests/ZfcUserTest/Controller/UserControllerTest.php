@@ -261,9 +261,10 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
             $response = new Response();
             $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url', array('fromRoute'));
+            $routeLogin = $this->options->getLogoutRedirectRoute();
             $url->expects($this->once())
                 ->method('fromRoute')
-                ->with($controller::ROUTE_LOGIN)
+                ->with($routeLogin)
                 ->will($this->returnValue($route_url));
 
             $this->pluginManagerPlugins['url']= $url;
@@ -479,9 +480,10 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                     ->will($this->returnValue($response));
 
                 $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url');
+                $routeLogin = $this->options->getLogoutRedirectRoute();
                 $url->expects($this->once())
                     ->method('fromRoute')
-                    ->with($controller::ROUTE_LOGIN)
+                    ->with($routeLogin)
                     ->will($this->returnValue('user/login'));
                 $this->pluginManagerPlugins['url'] = $url;
 
