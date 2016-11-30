@@ -22,15 +22,15 @@ msgstr "Gebruikersnaam"
 
 #: language/msgIds.php:7
 msgid "Email"
-msgstr "E-mail adres"
+msgstr "E-mailadres"
 
 #: language/msgIds.php:8
 msgid "New Email"
-msgstr "Nieuw e-mail adres"
+msgstr "Nieuw e-mailadres"
 
 #: language/msgIds.php:9
 msgid "Verify New Email"
-msgstr "Nieuw e-mail adres verificatie"
+msgstr "Nieuw e-mailadres verificatie"
 
 #: language/msgIds.php:10
 msgid "Display Name"
@@ -91,11 +91,11 @@ msgstr "Wijzig het e-mail adres van %s"
 
 #: view/zfc-user/user/changeemail.phtml:3
 msgid "Email address changed successfully."
-msgstr "Het e-mail adres is gewijzigd."
+msgstr "Het e-mailadres is gewijzigd."
 
 #: view/zfc-user/user/changeemail.phtml:5
 msgid "Unable to update your email address. Please try again."
-msgstr "Het is niet gelukt het e-mail adres te wijzigen. Probeer het nog eens."
+msgstr "Het is niet gelukt het e-mailadres te wijzigen. Probeer het opnieuw."
 
 #: view/zfc-user/user/changepassword.phtml:1
 #, php-format
@@ -108,7 +108,7 @@ msgstr "Het wachtwoord is gewijzigd."
 
 #: view/zfc-user/user/changepassword.phtml:5
 msgid "Unable to update your password. Please try again."
-msgstr "Wachtwoord wijzigen mislukt. Probeer het nog eens."
+msgstr "Wachtwoord wijzigen mislukt. Probeer het opnieuw."
 
 #: view/zfc-user/user/index.phtml:2
 msgid "Hello"
