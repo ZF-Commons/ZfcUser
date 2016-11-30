@@ -23,7 +23,7 @@ $form->setAttribute('autocomplete', 'off');
         <?php elseif ($element instanceof Zend\Form\Element\Captcha): ?>
             <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element) ?></dd>
         <?php else: ?>
-            <dd><?php echo $this->formInput($element) . $this->formElementErrors($element) ?></dd>
+            <dd><?php echo $this->formElement($element) . $this->formElementErrors($element) ?></dd>
         <?php endif ?>
     <?php endforeach ?>
     </dl>
