@@ -84,6 +84,11 @@ class ModuleOptions extends AbstractOptions implements UserControllerOptionsInte
     /**
      * @var bool
      */
+    protected $enableUserProfile = true;
+
+    /**
+     * @var bool
+     */
     protected $enableUsername = false;
 
     /**
@@ -211,6 +216,28 @@ class ModuleOptions extends AbstractOptions implements UserControllerOptionsInte
     public function getEnableRegistration()
     {
         return $this->enableRegistration;
+    }
+
+    /**
+     * set enable user profile
+     *
+     * @param bool $enableUserProfile
+     * @return ModuleOptions
+     */
+    public function setEnableUserProfile($enableUserProfile)
+    {
+        $this->enableUserProfile = $enableUserProfile;
+        return $this;
+    }
+
+    /**
+     * get enable user profile
+     *
+     * @return bool
+     */
+    public function getEnableUserProfile()
+    {
+        return $this->enableUserProfile;
     }
 
     /**

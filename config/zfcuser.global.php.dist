@@ -32,6 +32,15 @@ $settings = array(
      */
     //'enable_registration' => true,
 
+   /**
+     * Enable user profile
+     *
+     * Allows users to view a page with their profile details
+     *
+     * Accepted values: boolean true or false
+     */
+    //'enable_user_profile' => true,
+
     /**
      * Enable Username
      *

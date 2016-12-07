@@ -71,7 +71,7 @@ class UserController extends AbstractActionController
         $this->registerForm = $registerForm;
         $this->loginForm = $loginForm;
     }
-    
+
     /**
      * User page
      */
@@ -81,6 +81,19 @@ class UserController extends AbstractActionController
             return $this->redirect()->toRoute(static::ROUTE_LOGIN);
         }
         return new ViewModel();
+    }
+
+    /**
+     * User Profile page
+     */
+    public function profileAction()
+    {
+        if (!$this->zfcUserAuthentication()->hasIdentity()) {
+            return $this->redirect()->toRoute(static::ROUTE_LOGIN);
+        }
+        return new ViewModel(array(
+            'enableUserProfile' => $this->options->getEnableUserProfile()
+        ));
     }
 
     /**
