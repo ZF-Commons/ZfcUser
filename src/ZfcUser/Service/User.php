@@ -80,6 +80,34 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
+     * change the current users password
+     *
+     * @param array $data
+     * @return boolean
+     */
+    public function changePassword(array $data)
+    {
+        $currentUser = $this->getAuthService()->getIdentity();
+
+        $oldPass = $data['credential'];
+        $newPass = $data['newCredential'];
+
+        $crypto = $this->getFormHydrator()->getCryptoService();
+
+        if (!$crypto->verify($oldPass, $currentUser->getPassword())) {
+            return false;
+        }
+
+        $currentUser->setPassword($crypto->create($newPass));
+
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser, 'data' => $data));
+        $this->getUserMapper()->update($currentUser);
+        $this->getEventManager()->trigger(__FUNCTION__.'.post', $this, array('user' => $currentUser, 'data' => $data));
+
+        return true;
+    }
+
+    /**
      * getUserMapper
      *
      * @return UserMapper

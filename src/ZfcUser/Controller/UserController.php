@@ -30,6 +30,7 @@ class UserController extends AbstractActionController
 {
     const ROUTE_LOGIN        = 'zfcuser/login';
     const ROUTE_REGISTER     = 'zfcuser/register';
+    const ROUTE_CHANGEPASSWD = 'zfcuser/changepassword';
 
     const CONTROLLER_NAME    = 'zfcuser';
 
@@ -47,6 +48,11 @@ class UserController extends AbstractActionController
      * @var Form
      */
     protected $registerForm;
+
+    /**
+     * @var Form
+     */
+    protected $changePasswordForm;
 
     /**
      * @todo Make this dynamic / translation-friendly
@@ -71,7 +77,22 @@ class UserController extends AbstractActionController
         $this->registerForm = $registerForm;
         $this->loginForm = $loginForm;
     }
-    
+
+    public function getChangePasswordForm()
+    {
+        if (!$this->changePasswordForm) {
+            $this->setChangePasswordForm($this->getServiceLocator()->get('zfcuser_change_password_form'));
+        }
+
+        return $this->changePasswordForm;
+    }
+
+    public function setChangePasswordForm(Form $changePasswordForm)
+    {
+        $this->changePasswordForm = $changePasswordForm;
+        return $this;
+    }
+
     /**
      * User page
      */
@@ -258,5 +279,52 @@ class UserController extends AbstractActionController
 
         // TODO: Add the redirect parameter here...
         return $this->redirect()->toUrl($this->url()->fromRoute(static::ROUTE_LOGIN) . ($redirect ? '?redirect='. rawurlencode($redirect) : ''));
+    }
+
+    public function changePasswordAction()
+    {
+        // if the user isn't logged in, we can't change password
+        if (!$this->zfcUserAuthentication()->hasIdentity()) {
+            // redirect to the login redirect route
+            return $this->redirect()->toRoute($this->getOptions()->getLoginRedirectRoute());
+        }
+
+        $form = $this->getChangePasswordForm();
+        $prg = $this->prg(static::ROUTE_CHANGEPASSWD);
+
+        $fm = $this->flashMessenger()->setNamespace('change-password')->getMessages();
+        if (isset($fm[0])) {
+            $status = $fm[0];
+        } else {
+            $status = null;
+        }
+
+        if ($prg instanceof Response) {
+            return $prg;
+        } elseif ($prg === false) {
+            return array(
+                'status' => $status,
+                'changePasswordForm' => $form,
+            );
+        }
+
+        $form->setData($prg);
+
+        if (!$form->isValid()) {
+            return array(
+                'status' => false,
+                'changePasswordForm' => $form,
+            );
+        }
+
+        if (!$this->userService->changePassword($form->getData())) {
+            return array(
+                'status' => false,
+                'changePasswordForm' => $form,
+            );
+        }
+
+        $this->flashMessenger()->setNamespace('change-password')->addMessage(true);
+        return $this->redirect()->toRoute(static::ROUTE_CHANGEPASSWD);
     }
 }
