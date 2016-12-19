@@ -90,7 +90,7 @@ Installation
 | 2.x             | 1. Add this project in your composer.json:                                     |
                         ```json                                                                    |
                         "require": {                                                               |
-                            "zf-commons/zfc-user": "dev-master"                                    |
+                            "zf-commons/zfc-user": "~2.0"                                          |
                         }                                                                          |
                         ```                                                                        |
 |-----------------|--------------------------------------------------------------------------------|
