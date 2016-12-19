@@ -80,12 +80,11 @@ Installation
 | ZfcUser version | Supported Zend Framework version                                               |
 |-----------------|--------------------------------------------------------------------------------|
 | 1.x             | 1. Add this project and [ZfcBase](https://github.com/ZF-Commons/ZfcBase) in your composer.json:
-
-    ```json
-    "require": {
-        "zf-commons/zfc-user": "dev-master"
-    }
-    ```                         |
+                         ```json                                                                   |
+                        "require": {                                                               |
+                            "zf-commons/zfc-user": "~1"                                            |
+                        }                                                                          |
+                        ```    
 |-----------------|--------------------------------------------------------------------------------|
 | 2.x             | 1. Add this project in your composer.json:                                     |
                         ```json                                                                    |
