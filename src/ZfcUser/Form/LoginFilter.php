@@ -26,14 +26,6 @@ class LoginFilter extends ProvidesEventsInputFilter
         $this->add(array(
             'name'       => 'credential',
             'required'   => true,
-            'validators' => array(
-                array(
-                    'name'    => 'StringLength',
-                    'options' => array(
-                        'min' => 6,
-                    ),
-                ),
-            ),
             'filters'   => array(
                 array('name' => 'StringTrim'),
             ),
