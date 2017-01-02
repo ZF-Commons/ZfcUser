@@ -12,4 +12,4 @@ $form->setAttribute('method', 'post');
 $form->setAttribute('autocomplete', 'off');
 ?>
 
-<?php echo $this->partial('_form.phtml', ['form' => $form]); ?>
+<?php echo $this->partial('_form.phtml', ['form' => $form, 'redirect' => $this->redirect]); ?>

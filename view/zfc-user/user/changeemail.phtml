@@ -13,4 +13,4 @@ $form->setAttribute('action', $this->url('zfcuser/changeemail'));
 $form->setAttribute('method', 'post');
 ?>
 
-<?php echo $this->partial('_form.phtml', ['form' => $form]); ?>
+<?php echo $this->partial('_form.phtml', ['form' => $form, 'redirect' => $this->redirect]); ?>
