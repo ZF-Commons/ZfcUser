@@ -80,6 +80,30 @@ class User extends EventProvider implements ServiceManagerAwareInterface
     }
 
     /**
+     * Performs the logout action and triggers a logout event.
+     * @return bool
+     */
+    public function logout()
+    {
+        // NEED TO RETRIEVE THE ADAPTER SINCE IT'S NOT ALREADY BEING USED
+        /** @todo Create a singleton for the adapter? */
+        $adapter = $this->getServiceManager()->get('ZfcUser\Authentication\Adapter\AdapterChain');
+
+        $currentUser = $this->getAuthService()->getIdentity();
+
+        $this->getEventManager()->trigger(__FUNCTION__, $this, array('user' => $currentUser));
+
+        // PERFORM THE LOGOUT ACTIONS
+        $adapter->resetAdapters();
+        $adapter->logoutAdapters();
+        $this->getAuthService()->clearIdentity();
+
+        $this->getEventManager()->trigger(__FUNCTION__ . '.post', $this, array('user' => $currentUser));
+
+        return true;
+    }
+
+    /**
      * getUserMapper
      *
      * @return UserMapper
