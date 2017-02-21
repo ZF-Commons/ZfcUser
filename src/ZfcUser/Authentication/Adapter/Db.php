@@ -75,6 +75,8 @@ class Db extends AbstractAdapter implements ServiceManagerAwareInterface
                 case 'email':
                     $userObject = $this->getMapper()->findByEmail($identity);
                     break;
+                default: 
+                    throw new \InvalidArgumentException('Given an unsupported value');
             }
         }
 
