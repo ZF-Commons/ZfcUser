@@ -29,7 +29,7 @@ class Login extends ProvidesEventsForm
         ));
 
         $emailElement = $this->get('identity');
-        $label = $emailElement->getLabel('label');
+        $label = $emailElement->getLabel();
         // @TODO: make translation-friendly
         foreach ($this->getAuthenticationOptions()->getAuthIdentityFields() as $mode) {
             $label = (!empty($label) ? $label . ' or ' : '') . ucfirst($mode);
