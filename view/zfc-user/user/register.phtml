@@ -20,6 +20,8 @@ $form->setAttribute('autocomplete', 'off');
         <?php endif ?>
         <?php if ($element instanceof Zend\Form\Element\Button): ?>
             <dd><?php echo $this->formButton($element) ?></dd>
+        <?php elseif ($element instanceof Zend\Form\Element\Select): ?>
+            <dd><?php echo $this->formSelect($element) . $this->formElementErrors($element) ?></dd>
         <?php elseif ($element instanceof Zend\Form\Element\Captcha): ?>
             <dd><?php echo $this->formCaptcha($element) . $this->formElementErrors($element) ?></dd>
         <?php else: ?>
