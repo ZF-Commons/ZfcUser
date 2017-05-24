@@ -71,9 +71,9 @@ Installation
 1. Add this project and [ZfcBase](https://github.com/ZF-Commons/ZfcBase) in your composer.json:
 
     ```json
-    "require": {
-        "zf-commons/zfc-user": "^3.0"
-    }
+    "require": {  
+        "zf-commons/zfc-user": "^3.0"  
+    }  
     ```
 
 2. Now tell composer to download ZfcUser by running the command:
