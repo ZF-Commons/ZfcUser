@@ -22,10 +22,11 @@ Versions
 --------
 Please use below table to figure out what version of ZfcUser you should use.
 
-| ZfcUser version | Supported Zend Framework version |
-|-----------------|----------------------------------|
-| 1.x             | <= 2.5                           |
-| 2.x             | >= 2.6 or 3.x                    |
+| ZfcUser version | Supported Zend Framework version | Status                                      |
+|-----------------|----------------------------------|---------------------------------------------|
+| 1.x             | <= 2.5                           | Security-fixes only                         |
+| 2.x             | >= 2.6 < 3                       | bug-fixes, security-fixes                   |
+| 3.x             | >= 3                             | New features, bug-fixes, security-fixes     |
 
 Storage Adapter Modules
 -----------------------
