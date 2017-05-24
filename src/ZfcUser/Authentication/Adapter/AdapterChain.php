@@ -87,11 +87,14 @@ class AdapterChain implements AdapterInterface
      */
     public function resetAdapters()
     {
-        $listeners = $this->getEventManager()->getSharedManager()->getListeners(['authenticate'], 'authenticate');
+        $sharedManager = $this->getEventManager()->getSharedManager();
 
-        foreach ($listeners as $listener) {
-            if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
-                $listener[0]->getStorage()->clear();
+        if ($sharedManager) {
+            $listeners = $sharedManager->getListeners(['authenticate'], 'authenticate');
+            foreach ($listeners as $listener) {
+                if (is_array($listener) && $listener[0] instanceof ChainableAdapter) {
+                    $listener[0]->getStorage()->clear();
+                }
             }
         }
 
