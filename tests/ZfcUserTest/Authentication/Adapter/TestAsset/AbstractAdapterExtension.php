@@ -2,12 +2,12 @@
 
 namespace ZfcUserTest\Authentication\Adapter\TestAsset;
 
+use Zend\EventManager\EventInterface;
 use ZfcUser\Authentication\Adapter\AbstractAdapter;
-use ZfcUser\Authentication\Adapter\AdapterChainEvent;
 
 class AbstractAdapterExtension extends AbstractAdapter
 {
-    public function authenticate(\Zend\EventManager\Event $e)
+    public function authenticate(EventInterface $e)
     {
     }
 }

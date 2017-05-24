@@ -6,9 +6,15 @@ use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class ChangeEmail extends ProvidesEventsForm
 {
+    /**
+     * @var AuthenticationOptionsInterface
+     */
+    protected $authOptions;
+
     public function __construct($name, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);
+
         parent::__construct($name);
 
         $this->add(array(
@@ -67,11 +73,12 @@ class ChangeEmail extends ProvidesEventsForm
      * Set Authentication-related Options
      *
      * @param AuthenticationOptionsInterface $authOptions
-     * @return Login
+     * @return ChangeEmail
      */
     public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
     {
         $this->authOptions = $authOptions;
+
         return $this;
     }
 

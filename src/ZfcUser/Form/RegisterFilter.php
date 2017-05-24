@@ -3,7 +3,6 @@
 namespace ZfcUser\Form;
 
 use ZfcUser\InputFilter\ProvidesEventsInputFilter;
-use ZfcUser\Module as ZfcUser;
 use ZfcUser\Options\RegistrationOptionsInterface;
 
 class RegisterFilter extends ProvidesEventsInputFilter

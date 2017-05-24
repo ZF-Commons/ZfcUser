@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Authentication\Storage;
 
+use Interop\Container\ContainerInterface;
 use Zend\Authentication\Storage;
 use Zend\Authentication\Storage\StorageInterface;
 use Zend\ServiceManager\ServiceManager;
@@ -168,10 +169,10 @@ class Db implements Storage\StorageInterface
     /**
      * Set service manager instance
      *
-     * @param ServiceManager $locator
+     * @param ContainerInterface $locator
      * @return void
      */
-    public function setServiceManager(ServiceManager $serviceManager)
+    public function setServiceManager(ContainerInterface $serviceManager)
     {
         $this->serviceManager = $serviceManager;
     }

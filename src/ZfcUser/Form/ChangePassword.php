@@ -14,6 +14,7 @@ class ChangePassword extends ProvidesEventsForm
     public function __construct($name, AuthenticationOptionsInterface $options)
     {
         $this->setAuthenticationOptions($options);
+
         parent::__construct($name);
 
         $this->add(array(
@@ -73,11 +74,12 @@ class ChangePassword extends ProvidesEventsForm
      * Set Authentication-related Options
      *
      * @param AuthenticationOptionsInterface $authOptions
-     * @return Login
+     * @return ChangePassword
      */
     public function setAuthenticationOptions(AuthenticationOptionsInterface $authOptions)
     {
         $this->authOptions = $authOptions;
+
         return $this;
     }
 

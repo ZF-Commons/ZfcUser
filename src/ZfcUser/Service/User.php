@@ -2,6 +2,7 @@
 
 namespace ZfcUser\Service;
 
+use Interop\Container\ContainerInterface;
 use Zend\Authentication\AuthenticationService;
 use Zend\Form\Form;
 use Zend\ServiceManager\ServiceManager;
@@ -275,10 +276,10 @@ class User extends EventProvider
     /**
      * Set service manager instance
      *
-     * @param ServiceManager $serviceManager
+     * @param ContainerInterface $serviceManager
      * @return User
      */
-    public function setServiceManager(ServiceManager $serviceManager)
+    public function setServiceManager(ContainerInterface $serviceManager)
     {
         $this->serviceManager = $serviceManager;
         return $this;

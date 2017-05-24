@@ -3,9 +3,6 @@
 namespace ZfcUser\Factory\Authentication\Storage;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Storage\Db;
@@ -16,6 +13,7 @@ class DbFactory implements FactoryInterface
     {
         $db = new Db();
         $db->setServiceManager($serviceLocator);
+
         return $db;
     }
 

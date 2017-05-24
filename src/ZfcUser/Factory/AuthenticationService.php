@@ -1,17 +1,8 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: Clayton Daley
- * Date: 5/6/2015
- * Time: 6:40 PM
- */
 
 namespace ZfcUser\Factory;
 
 use Interop\Container\ContainerInterface;
-use Interop\Container\Exception\ContainerException;
-use Zend\ServiceManager\Exception\ServiceNotCreatedException;
-use Zend\ServiceManager\Exception\ServiceNotFoundException;
 use Zend\ServiceManager\Factory\FactoryInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
