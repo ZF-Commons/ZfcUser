@@ -2,10 +2,10 @@
 
 namespace ZfcUser\Form;
 
-use Zend\InputFilter\InputFilter;
+use ZfcUser\InputFilter\ProvidesEventsInputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
-class ChangePasswordFilter extends InputFilter
+class ChangePasswordFilter extends ProvidesEventsInputFilter
 {
     public function __construct(AuthenticationOptionsInterface $options)
     {
@@ -76,5 +76,7 @@ class ChangePasswordFilter extends InputFilter
                 array('name' => 'StringTrim'),
             ),
         ));
+        
+        $this->getEventManager()->trigger('init', $this);
     }
 }
