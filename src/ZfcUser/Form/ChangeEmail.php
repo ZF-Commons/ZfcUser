@@ -23,6 +23,7 @@ class ChangeEmail extends ProvidesEventsForm
                 'label' => '',
             ),
             'attributes' => array(
+                'id' => 'identity',
                 'type' => 'hidden',
             ),
         ));
@@ -33,6 +34,7 @@ class ChangeEmail extends ProvidesEventsForm
                 'label' => 'New Email',
             ),
             'attributes' => array(
+                'id' => 'newIdentity',
                 'type' => 'text',
             ),
         ));
@@ -43,6 +45,7 @@ class ChangeEmail extends ProvidesEventsForm
                 'label' => 'Verify New Email',
             ),
             'attributes' => array(
+                'id' => 'newIdentityVerify',
                 'type' => 'text',
             ),
         ));
@@ -54,6 +57,7 @@ class ChangeEmail extends ProvidesEventsForm
                 'label' => 'Password',
             ),
             'attributes' => array(
+                'id' => 'credential',
                 'type' => 'password',
             ),
         ));

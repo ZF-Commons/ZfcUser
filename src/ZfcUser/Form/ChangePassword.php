@@ -23,7 +23,8 @@ class ChangePassword extends ProvidesEventsForm
                 'label' => '',
             ),
             'attributes' => array(
-                'type' => 'hidden'
+                'id' => 'identity',
+                'type' => 'hidden',
             ),
         ));
 
@@ -34,6 +35,7 @@ class ChangePassword extends ProvidesEventsForm
                 'label' => 'Current Password',
             ),
             'attributes' => array(
+                'id' => 'credential',
                 'type' => 'password',
             ),
         ));
@@ -44,6 +46,7 @@ class ChangePassword extends ProvidesEventsForm
                 'label' => 'New Password',
             ),
             'attributes' => array(
+                'id' => 'newCredential',
                 'type' => 'password',
             ),
         ));
@@ -55,6 +58,7 @@ class ChangePassword extends ProvidesEventsForm
                 'label' => 'Verify New Password',
             ),
             'attributes' => array(
+                'id' => 'newCredentialVerify',
                 'type' => 'password',
             ),
         ));

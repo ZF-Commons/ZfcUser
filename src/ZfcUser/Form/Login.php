@@ -24,7 +24,8 @@ class Login extends ProvidesEventsForm
                 'label' => '',
             ),
             'attributes' => array(
-                'type' => 'text'
+                'id' => 'identity',
+                'type' => 'text',
             ),
         ));
 
@@ -43,6 +44,7 @@ class Login extends ProvidesEventsForm
                 'label' => 'Password',
             ),
             'attributes' => array(
+                'id' => 'credential',
                 'type' => 'password',
             ),
         ));

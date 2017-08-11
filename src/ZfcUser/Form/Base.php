@@ -16,7 +16,8 @@ class Base extends ProvidesEventsForm
                 'label' => 'Username',
             ),
             'attributes' => array(
-                'type' => 'text'
+                'id' => 'username',
+                'type' => 'text',
             ),
         ));
 
@@ -26,7 +27,8 @@ class Base extends ProvidesEventsForm
                 'label' => 'Email',
             ),
             'attributes' => array(
-                'type' => 'text'
+                'id' => 'email',
+                'type' => 'text',
             ),
         ));
 
@@ -36,7 +38,8 @@ class Base extends ProvidesEventsForm
                 'label' => 'Display Name',
             ),
             'attributes' => array(
-                'type' => 'text'
+                'id' => 'display_name',
+                'type' => 'text',
             ),
         ));
 
@@ -47,7 +50,8 @@ class Base extends ProvidesEventsForm
                 'label' => 'Password',
             ),
             'attributes' => array(
-                'type' => 'password'
+                'id' => 'password',
+                'type' => 'password',
             ),
         ));
 
@@ -58,7 +62,8 @@ class Base extends ProvidesEventsForm
                 'label' => 'Password Verify',
             ),
             'attributes' => array(
-                'type' => 'password'
+                'id' => 'passwordVerify',
+                'type' => 'password',
             ),
         ));
 
