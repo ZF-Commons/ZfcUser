@@ -40,8 +40,12 @@ take advantage of other methods of persisting users:
 Requirements
 ------------
 
-* [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
-* [ZfcBase](https://github.com/ZF-Commons/ZfcBase) (latest master).
+| ZfcUser version | Dependecies                                                      |
+|-----------------|------------------------------------------------------------------|
+| 1.x             | Framework 2.5                                                    |
+|                 | [ZfcBase](https://github.com/ZF-Commons/ZfcBase) (latest master) |
+| 2.x             | Framework: >= 2.6 or 3.x  @todo: The required modules only       |
+
 
 Features / Goals
 ----------------
@@ -61,19 +65,35 @@ Installation
 
 #### By cloning project
 
-1. Install the [ZfcBase](https://github.com/ZF-Commons/ZfcBase) ZF2 module
-   by cloning it into `./vendor/`.
-2. Clone this project into your `./vendor/` directory.
+| ZfcUser version | Supported Zend Framework version                                               |
+|-----------------|--------------------------------------------------------------------------------|
+| 1.x             | 1. Install the [ZfcBase](https://github.com/ZF-Commons/ZfcBase) ZF2 module     |
+|                 |    by cloning it into `./vendor/`.                                             |
+|                 | 2. Clone this project into your `./vendor/` directory.                         |
+|-----------------|--------------------------------------------------------------------------------|
+| 2.x             | 1. Clone this project into your `./vendor/` directory.                         |
+
+
 
 #### With composer
 
-1. Add this project and [ZfcBase](https://github.com/ZF-Commons/ZfcBase) in your composer.json:
+| ZfcUser version | Supported Zend Framework version                                               |
+|-----------------|--------------------------------------------------------------------------------|
+| 1.x             | 1. Add this project and [ZfcBase](https://github.com/ZF-Commons/ZfcBase) in your composer.json:
+                         ```json                                                                   |
+                        "require": {                                                               |
+                            "zf-commons/zfc-user": "~1"                                            |
+                        }                                                                          |
+                        ```    
+|-----------------|--------------------------------------------------------------------------------|
+| 2.x             | 1. Add this project in your composer.json:                                     |
+                        ```json                                                                    |
+                        "require": {                                                               |
+                            "zf-commons/zfc-user": "~2.0"                                          |
+                        }                                                                          |
+                        ```                                                                        |
+|-----------------|--------------------------------------------------------------------------------|
 
-    ```json
-    "require": {
-        "zf-commons/zfc-user": "dev-master"
-    }
-    ```
 
 2. Now tell composer to download ZfcUser by running the command:
 
