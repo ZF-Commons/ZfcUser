@@ -7,7 +7,7 @@ use Zend\Hydrator\HydratorInterface;
 
 class User extends AbstractDbMapper implements UserInterface
 {
-    protected $tableName  = 'user';
+    protected $tableName  = 'users';
 
     public function findByEmail($email)
     {
@@ -23,7 +23,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function findByUsername($username)
     {
         $select = $this->getSelect()
-                       ->where(array('username' => $username));
+                       ->where(array('user' => $username));
         $entity = $this->select($select)->current();
 
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
@@ -34,7 +34,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function findById($id)
     {
         $select = $this->getSelect()
-                       ->where(array('user_id' => $id));
+                       ->where(array('ID' => $id));
         $entity = $this->select($select)->current();
 
         $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
@@ -64,7 +64,7 @@ class User extends AbstractDbMapper implements UserInterface
     public function update(UserEntityInterface $entity, $where = null, $tableName = null, HydratorInterface $hydrator = null)
     {
         if (!$where) {
-            $where = array('user_id' => $entity->getId());
+            $where = array('ID' => $entity->getId());
         }
 
         return parent::update($entity, $where, $tableName, $hydrator);
