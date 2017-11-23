@@ -47,7 +47,7 @@ abstract class EventProvider implements EventManagerAwareInterface
     public function getEventManager()
     {
         if (!$this->events instanceof EventManagerInterface) {
-            $this->setEventManager(new EventManager(new SharedEventManager()));
+            $this->setEventManager(new EventManager());
         }
         return $this->events;
     }
