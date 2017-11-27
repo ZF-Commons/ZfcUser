@@ -16,6 +16,7 @@ class AdapterChainServiceFactory implements FactoryInterface
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
         $chain = new AdapterChain();
+        $chain->setEventManager($serviceLocator->get('EventManager'));
 
         $options = $this->getOptions($serviceLocator);
 
