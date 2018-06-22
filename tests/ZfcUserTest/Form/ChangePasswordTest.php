@@ -21,6 +21,7 @@ class ChangePasswordTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('credential', $elements);
         $this->assertArrayHasKey('newCredential', $elements);
         $this->assertArrayHasKey('newCredentialVerify', $elements);
+        $this->assertArrayHasKey('security', $elements);
     }
 
     /**

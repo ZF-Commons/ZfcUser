@@ -39,6 +39,8 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('email', $elements);
         $this->assertArrayHasKey('password', $elements);
         $this->assertArrayHasKey('passwordVerify', $elements);
+        $this->assertArrayHasKey('security', $elements);
+
     }
 
     public function providerTestConstruct()
