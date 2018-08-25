@@ -5,6 +5,7 @@ namespace ZfcUser\Authentication\Adapter;
 use Zend\Authentication\Adapter\AdapterInterface;
 use Zend\Authentication\Result as AuthenticationResult;
 use Zend\EventManager\Event;
+use Zend\EventManager\EventInterface;
 use Zend\EventManager\EventManagerAwareTrait;
 use Zend\Stdlib\RequestInterface as Request;
 use Zend\Stdlib\ResponseInterface as Response;
@@ -51,11 +52,13 @@ class AdapterChain implements AdapterInterface
         $e = $this->getEvent();
         $e->setRequest($request);
 
-        $this->getEventManager()->trigger('authenticate.pre', $e);
+        $e->setName('authenticate.pre');
+        $this->getEventManager()->triggerEvent($e);
 
-        $result = $this->getEventManager()->trigger('authenticate', $e, function ($test) {
+        $e->setName('authenticate');
+        $result = $this->getEventManager()->triggerEventUntil(function ($test) {
             return ($test instanceof Response);
-        });
+        }, $e);
 
         if ($result->stopped()) {
             if ($result->last() instanceof Response) {
@@ -71,11 +74,13 @@ class AdapterChain implements AdapterInterface
         }
 
         if ($e->getIdentity()) {
-            $this->getEventManager()->trigger('authenticate.success', $e);
+            $e->setName('authenticate.success');
+            $this->getEventManager()->triggerEvent($e);
             return true;
         }
 
-        $this->getEventManager()->trigger('authenticate.fail', $e);
+        $e->setName('authenticate.fail');
+        $this->getEventManager()->triggerEvent($e);
 
         return false;
     }
@@ -109,7 +114,9 @@ class AdapterChain implements AdapterInterface
     public function logoutAdapters()
     {
         //Adapters might need to perform additional cleanup after logout
-        $this->getEventManager()->trigger('logout', $this->getEvent());
+        $e = $this->getEvent();
+        $e->setName('logout');
+        $this->getEventManager()->triggerEvent($e);
     }
 
     /**
