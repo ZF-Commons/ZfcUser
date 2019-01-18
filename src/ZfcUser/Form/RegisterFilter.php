@@ -99,8 +99,6 @@ class RegisterFilter extends ProvidesEventsInputFilter
                 ),
             ),
         ));
-
-        $this->getEventManager()->trigger('init', $this);
     }
 
     public function getEmailValidator()

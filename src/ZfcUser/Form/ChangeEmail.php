@@ -75,8 +75,6 @@ class ChangeEmail extends ProvidesEventsForm
                 'type'  => 'submit'
             ),
         ));
-
-        $this->getEventManager()->trigger('init', $this);
     }
 
     /**
