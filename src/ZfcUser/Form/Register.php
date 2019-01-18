@@ -24,6 +24,16 @@ class Register extends Base
 
         parent::__construct($name);
 
+        $this->add([
+            'type' => '\Zend\Form\Element\Csrf',
+            'name' => 'security',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => $this->getRegistrationOptions()->getUserFormTimeout()
+                ]
+            ]
+        ]);
+
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {
             $this->add(array(
                 'name' => 'captcha',

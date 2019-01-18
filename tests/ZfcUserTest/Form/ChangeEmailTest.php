@@ -21,6 +21,7 @@ class ChangeEmailTest extends \PHPUnit_Framework_TestCase
         $this->assertArrayHasKey('newIdentity', $elements);
         $this->assertArrayHasKey('newIdentityVerify', $elements);
         $this->assertArrayHasKey('credential', $elements);
+        $this->assertArrayHasKey('security', $elements);
     }
 
     /**

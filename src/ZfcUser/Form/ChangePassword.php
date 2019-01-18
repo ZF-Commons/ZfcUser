@@ -59,6 +59,16 @@ class ChangePassword extends ProvidesEventsForm
             ),
         ));
 
+        $this->add([
+            'type' => '\Zend\Form\Element\Csrf',
+            'name' => 'security',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => $this->getAuthenticationOptions()->getLoginFormTimeout()
+                ]
+            ]
+        ]);
+
         $this->add(array(
             'name' => 'submit',
             'attributes' => array(

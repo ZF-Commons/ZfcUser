@@ -23,6 +23,8 @@ class LoginTest extends \PHPUnit_Framework_TestCase
 
         $this->assertArrayHasKey('identity', $elements);
         $this->assertArrayHasKey('credential', $elements);
+        $this->assertArrayHasKey('security', $elements);
+
 
         $expectedLabel="";
         if (count($authIdentityFields) > 0) {

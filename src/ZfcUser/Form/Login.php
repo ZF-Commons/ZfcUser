@@ -56,6 +56,16 @@ class Login extends ProvidesEventsForm
         //$csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
         //$this->add($csrf);
 
+        $this->add([
+            'type' => '\Zend\Form\Element\Csrf',
+            'name' => 'security',
+            'options' => [
+                'csrf_options' => [
+                    'timeout' => $this->getAuthenticationOptions()->getLoginFormTimeout()
+                ]
+            ]
+        ]);
+
         $submitElement = new Element\Button('submit');
         $submitElement
             ->setLabel('Sign In')
