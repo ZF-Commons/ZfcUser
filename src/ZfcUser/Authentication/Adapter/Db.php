@@ -36,20 +36,19 @@ class Db extends AbstractAdapter
 
     /**
      * Called when user id logged out
-     * @param EventInterface $e
+     * @param AdapterChainEvent $e
      */
-    public function logout(EventInterface $e)
+    public function logout(AdapterChainEvent $e)
     {
         $this->getStorage()->clear();
     }
 
     /**
-     * @param EventInterface $e
+     * @param AdapterChainEvent $e
      * @return bool
      */
-    public function authenticate(EventInterface $e)
+    public function authenticate(AdapterChainEvent $e)
     {
-        $e = $e->getTarget();
         if ($this->isSatisfied()) {
             $storage = $this->getStorage()->read();
             $e->setIdentity($storage['identity'])

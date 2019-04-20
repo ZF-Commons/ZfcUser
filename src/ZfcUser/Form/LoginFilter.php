@@ -41,7 +41,5 @@ class LoginFilter extends ProvidesEventsInputFilter
                 array('name' => 'StringTrim'),
             ),
         ));
-
-        $this->getEventManager()->trigger('init', $this);
     }
 }
