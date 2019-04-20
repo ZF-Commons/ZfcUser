@@ -112,6 +112,14 @@ $settings = array(
     //'use_registration_form_captcha' => false,
 
     /**
+     * Login Form Captcha
+     *
+     * Determines if a captcha should be utilized on the user login form.
+     * Default value is false.
+     */
+    //'use_login_form_captcha' => false,
+
+    /**
      * Form Captcha Options
      *
      * Currently used for the registration form, but re-usable anywhere. Use
