@@ -68,8 +68,6 @@ class Login extends ProvidesEventsForm
         $this->add($submitElement, array(
             'priority' => -100,
         ));
-
-        $this->getEventManager()->trigger('init', $this);
     }
 
     /**

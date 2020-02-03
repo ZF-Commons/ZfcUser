@@ -90,8 +90,6 @@ class Base extends ProvidesEventsForm
         //$csrf = new Element\Csrf('csrf');
         //$csrf->getValidator()->setTimeout($this->getRegistrationOptions()->getUserFormTimeout());
         //$this->add($csrf);
-
-        $this->getEventManager()->trigger('init', $this);
     }
 
     public function init()

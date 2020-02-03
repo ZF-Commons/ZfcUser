@@ -70,8 +70,6 @@ class ChangePassword extends ProvidesEventsForm
                 'type'  => 'submit'
             ),
         ));
-
-        $this->getEventManager()->trigger('init', $this);
     }
 
     /**
