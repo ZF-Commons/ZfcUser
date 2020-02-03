@@ -3,9 +3,9 @@
 namespace ZfcUser\Factory\Controller;
 
 use Interop\Container\ContainerInterface;
-use Zend\Mvc\Controller\ControllerManager;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Mvc\Controller\ControllerManager;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Controller\RedirectCallback;
 use ZfcUser\Controller\UserController;
 

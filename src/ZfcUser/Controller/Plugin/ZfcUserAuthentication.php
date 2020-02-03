@@ -2,9 +2,9 @@
 
 namespace ZfcUser\Controller\Plugin;
 
-use Zend\Mvc\Controller\Plugin\AbstractPlugin;
-use Zend\Authentication\AuthenticationService;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Mvc\Controller\Plugin\AbstractPlugin;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain as AuthAdapter;
 
 class ZfcUserAuthentication extends AbstractPlugin

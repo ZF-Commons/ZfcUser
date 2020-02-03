@@ -2,12 +2,12 @@
 
 namespace ZfcUser\Controller;
 
-use Zend\Form\FormInterface;
-use Zend\Mvc\Controller\AbstractActionController;
-use Zend\ServiceManager\ServiceLocatorInterface;
-use Zend\Stdlib\ResponseInterface as Response;
-use Zend\Stdlib\Parameters;
-use Zend\View\Model\ViewModel;
+use Laminas\Form\FormInterface;
+use Laminas\Mvc\Controller\AbstractActionController;
+use Laminas\ServiceManager\ServiceLocatorInterface;
+use Laminas\Stdlib\ResponseInterface as Response;
+use Laminas\Stdlib\Parameters;
+use Laminas\View\Model\ViewModel;
 use ZfcUser\Service\User as UserService;
 use ZfcUser\Options\UserControllerOptionsInterface;
 

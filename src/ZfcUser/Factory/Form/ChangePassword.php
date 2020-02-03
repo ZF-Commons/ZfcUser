@@ -3,7 +3,7 @@
 namespace ZfcUser\Factory\Form;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 use ZfcUser\Form;
 
 class ChangePassword implements FactoryInterface

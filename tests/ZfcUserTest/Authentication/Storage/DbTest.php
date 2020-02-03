@@ -32,7 +32,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $db = new Db;
         $this->db = $db;
 
-        $this->storage = $this->getMock('Zend\Authentication\Storage\Session');
+        $this->storage = $this->getMock('Laminas\Authentication\Storage\Session');
         $this->mapper = $this->getMock('ZfcUser\Mapper\User');
     }
 
@@ -175,7 +175,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMapperWithNoMapperSet()
     {
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $sm = $this->getMock('Laminas\ServiceManager\ServiceManager');
         $sm->expects($this->once())
            ->method('get')
            ->with('zfcuser_user_mapper')
@@ -207,11 +207,11 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetServicemanager()
     {
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $sm = $this->getMock('Laminas\ServiceManager\ServiceManager');
 
         $this->db->setServiceManager($sm);
 
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $this->db->getServiceManager());
+        $this->assertInstanceOf('Laminas\ServiceManager\ServiceLocatorInterface', $this->db->getServiceManager());
         $this->assertSame($sm, $this->db->getServiceManager());
     }
 
@@ -221,7 +221,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStorageWithoutStorageSet()
     {
-        $this->assertInstanceOf('Zend\Authentication\Storage\Session', $this->db->getStorage());
+        $this->assertInstanceOf('Laminas\Authentication\Storage\Session', $this->db->getStorage());
     }
 
     /**
@@ -230,9 +230,9 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetStorage()
     {
-        $storage = new \Zend\Authentication\Storage\Session('ZfcUserStorage');
+        $storage = new \Laminas\Authentication\Storage\Session('ZfcUserStorage');
         $this->db->setStorage($storage);
 
-        $this->assertInstanceOf('Zend\Authentication\Storage\Session', $this->db->getStorage());
+        $this->assertInstanceOf('Laminas\Authentication\Storage\Session', $this->db->getStorage());
     }
 }

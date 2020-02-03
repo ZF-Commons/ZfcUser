@@ -3,14 +3,14 @@
 namespace ZfcUser\Factory;
 
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\FactoryInterface;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class AuthenticationService implements FactoryInterface
 {
     public function __invoke(ContainerInterface $serviceLocator, $requestedName, array $options = null)
     {
-        return new \Zend\Authentication\AuthenticationService(
+        return new \Laminas\Authentication\AuthenticationService(
             $serviceLocator->get('ZfcUser\Authentication\Storage\Db'),
             $serviceLocator->get('ZfcUser\Authentication\Adapter\AdapterChain')
         );

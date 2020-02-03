@@ -2,10 +2,10 @@
 
 namespace ZfcUser\Controller;
 
-use Zend\Mvc\Application;
-use Zend\Router\RouteInterface;
-use Zend\Router\Exception;
-use Zend\Http\PhpEnvironment\Response;
+use Laminas\Mvc\Application;
+use Laminas\Router\RouteInterface;
+use Laminas\Router\Exception;
+use Laminas\Http\PhpEnvironment\Response;
 use ZfcUser\Options\ModuleOptions;
 
 /**

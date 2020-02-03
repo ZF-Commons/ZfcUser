@@ -23,7 +23,7 @@ class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
 
         $validators = $inputs['identity']->getValidatorChain()->getValidators();
         $this->assertArrayHasKey('instance', $validators[0]);
-        $this->assertInstanceOf('\Zend\Validator\EmailAddress', $validators[0]['instance']);
+        $this->assertInstanceOf('\Laminas\Validator\EmailAddress', $validators[0]['instance']);
     }
 
     /**
@@ -52,7 +52,7 @@ class ChangeEmailFilterTest extends \PHPUnit_Framework_TestCase
             // test email as identity
             $validators = $identity->getValidatorChain()->getValidators();
             $this->assertArrayHasKey('instance', $validators[0]);
-            $this->assertInstanceOf('\Zend\Validator\EmailAddress', $validators[0]['instance']);
+            $this->assertInstanceOf('\Laminas\Validator\EmailAddress', $validators[0]['instance']);
         }
     }
 

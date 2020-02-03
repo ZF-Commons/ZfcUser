@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Element;
+use Laminas\Form\Element;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class Login extends ProvidesEventsForm
