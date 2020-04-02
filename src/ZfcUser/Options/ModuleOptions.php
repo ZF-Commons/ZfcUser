@@ -102,6 +102,11 @@ class ModuleOptions extends AbstractOptions implements
      * @var bool
      */
     protected $useLoginFormCaptcha = false;
+    
+    /**
+     * @var bool
+     */
+    protected $useLoginFormCsrf = true;
 
     /**
      * @var int
@@ -498,6 +503,28 @@ class ModuleOptions extends AbstractOptions implements
     public function getUseLoginFormCaptcha()
     {
         return $this->useLoginFormCaptcha;
+    }
+    
+    /**
+     * set use a csrf in login form
+     *
+     * @param bool $useRegistrationFormCaptcha
+     * @return ModuleOptions
+     */
+    public function setUseLoginFormCsrf($useLoginFormCsrf)
+    {
+        $this->useLoginFormCsrf = $useLoginFormCsrf;
+        return $this;
+    }
+    
+    /**
+     * get use a csrf in login form
+     *
+     * @return bool
+     */
+    public function getUseLoginFormCsrf()
+    {
+        return $this->useLoginFormCsrf;
     }
 
     /**

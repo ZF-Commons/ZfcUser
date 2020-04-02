@@ -47,16 +47,17 @@ class Login extends ProvidesEventsForm
             ),
         ));
 
-        $this->add([
-            'type' => '\Zend\Form\Element\Csrf',
-            'name' => 'security',
-            'options' => [
-                'csrf_options' => [
-                    'timeout' => $this->getAuthenticationOptions()->getLoginFormTimeout()
+        if ($this->getAuthenticationOptions()->getUseLoginFormCsrf()) {
+            $this->add([
+                'type' => '\Zend\Form\Element\Csrf',
+                'name' => 'security',
+                'options' => [
+                    'csrf_options' => [
+                        'timeout' => $this->getAuthenticationOptions()->getLoginFormTimeout()
+                    ]
                 ]
-            ]
-        ]);
-        
+            ]);
+        }
         if ($this->getAuthenticationOptions()->getUseLoginFormCaptcha()) {
             $this->add(array(
                 'name' => 'captcha',

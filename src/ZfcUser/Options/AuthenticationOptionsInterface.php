@@ -50,6 +50,21 @@ interface AuthenticationOptionsInterface extends PasswordOptionsInterface
     public function getUseLoginFormCaptcha();
     
     /**
+     * set use a csrf in login form
+     *
+     * @param bool $useRegistrationFormCaptcha
+     * @return ModuleOptions
+     */
+    public function setUseLoginFormCsrf($useLoginFormCsrf);
+    
+    /**
+     * get use a csrf in login form
+     *
+     * @return bool
+     */
+    public function getUseLoginFormCsrf();
+    
+    /**
      * set form CAPTCHA options
      *
      * @param array $formCaptchaOptions
