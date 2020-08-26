@@ -105,7 +105,7 @@ class Db extends AbstractAdapter
         }
 
         // regen the id
-        $session = new SessionContainer($this->getStorage()->getNameSpace());
+        $session = new SessionContainer('ZfcUser');
         $session->getManager()->regenerateId();
 
         // Success!
