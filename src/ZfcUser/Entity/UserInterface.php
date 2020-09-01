@@ -82,14 +82,14 @@ interface UserInterface
     /**
      * Get state.
      *
-     * @return int
+     * @return boolean
      */
     public function getState();
 
     /**
      * Set state.
      *
-     * @param int $state
+     * @param boolean $state
      * @return UserInterface
      */
     public function setState($state);
