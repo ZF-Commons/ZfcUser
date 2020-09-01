@@ -90,7 +90,6 @@ interface UserInterface
      * Set state.
      *
      * @param boolean $state
-     * @return UserInterface
      */
     public function setState($state);
 }
