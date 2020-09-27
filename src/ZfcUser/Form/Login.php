@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Element;
+use Laminas\Form\Element;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class Login extends ProvidesEventsForm
@@ -49,7 +49,7 @@ class Login extends ProvidesEventsForm
 
         if ($this->getAuthenticationOptions()->getUseLoginFormCsrf()) {
             $this->add([
-                'type' => '\Zend\Form\Element\Csrf',
+                'type' => '\Laminas\Form\Element\Csrf',
                 'name' => 'security',
                 'options' => [
                     'csrf_options' => [
@@ -61,7 +61,7 @@ class Login extends ProvidesEventsForm
         if ($this->getAuthenticationOptions()->getUseLoginFormCaptcha()) {
             $this->add(array(
                 'name' => 'captcha',
-                'type' => 'Zend\Form\Element\Captcha',
+                'type' => 'Laminas\Form\Element\Captcha',
                 'options' => array(
                     'label' => 'Human check',
                     'captcha' => $this->getAuthenticationOptions()->getFormCaptchaOptions(),

@@ -2,7 +2,7 @@
 
 namespace ZfcUserTest\Authentication\Adapter;
 
-use Zend\EventManager\Event;
+use Laminas\EventManager\Event;
 use ZfcUser\Authentication\Adapter\Db;
 
 class DbTest extends \PHPUnit_Framework_TestCase
@@ -24,7 +24,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
     /**
      * Mock of Storage.
      *
-     * @var \Zend\Authentication\Storage\Session|\PHPUnit_Framework_MockObject_MockObject
+     * @var \Laminas\Authentication\Storage\Session|\PHPUnit_Framework_MockObject_MockObject
      */
     protected $storage;
 
@@ -51,7 +51,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
     protected function setUp()
     {
-        $storage = $this->getMock('Zend\Authentication\Storage\Session');
+        $storage = $this->getMock('Laminas\Authentication\Storage\Session');
         $this->storage = $storage;
 
         $authEvent = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChainEvent');
@@ -69,8 +69,8 @@ class DbTest extends \PHPUnit_Framework_TestCase
         $this->db = new Db;
         $this->db->setStorage($this->storage);
 
-        $sessionManager = $this->getMock('Zend\Session\SessionManager');
-        \Zend\Session\AbstractContainer::setDefaultManager($sessionManager);
+        $sessionManager = $this->getMock('Laminas\Session\SessionManager');
+        \Laminas\Session\AbstractContainer::setDefaultManager($sessionManager);
     }
 
     /**
@@ -95,7 +95,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
                         ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
                         ->method('setCode')
-                        ->with(\Zend\Authentication\Result::SUCCESS)
+                        ->with(\Laminas\Authentication\Result::SUCCESS)
                         ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
                         ->method('setMessages')
@@ -128,7 +128,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
         $this->authEvent->expects($this->once())
             ->method('setCode')
-            ->with(\Zend\Authentication\Result::FAILURE_IDENTITY_NOT_FOUND)
+            ->with(\Laminas\Authentication\Result::FAILURE_IDENTITY_NOT_FOUND)
             ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
             ->method('setMessages')
@@ -161,7 +161,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
         $this->authEvent->expects($this->once())
             ->method('setCode')
-            ->with(\Zend\Authentication\Result::FAILURE_UNCATEGORIZED)
+            ->with(\Laminas\Authentication\Result::FAILURE_UNCATEGORIZED)
             ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
             ->method('setMessages')
@@ -201,7 +201,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
 
         $this->authEvent->expects($this->once())
             ->method('setCode')
-            ->with(\Zend\Authentication\Result::FAILURE_CREDENTIAL_INVALID)
+            ->with(\Laminas\Authentication\Result::FAILURE_CREDENTIAL_INVALID)
             ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once(1))
             ->method('setMessages')
@@ -250,7 +250,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
                         ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
                         ->method('setCode')
-                        ->with(\Zend\Authentication\Result::SUCCESS)
+                        ->with(\Laminas\Authentication\Result::SUCCESS)
                         ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
                         ->method('setMessages')
@@ -304,7 +304,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
                         ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
                         ->method('setCode')
-                        ->with(\Zend\Authentication\Result::SUCCESS)
+                        ->with(\Laminas\Authentication\Result::SUCCESS)
                         ->will($this->returnValue($this->authEvent));
         $this->authEvent->expects($this->once())
                         ->method('setMessages')
@@ -328,7 +328,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->method('getPassword')
             ->will($this->returnValue('$2a$10$x05G2P803MrB3jaORBXBn.QHtiYzGQOBjQ7unpEIge.Mrz6c3KiVm'));
 
-        $bcrypt = $this->getMock('Zend\Crypt\Password\Bcrypt');
+        $bcrypt = $this->getMock('Laminas\Crypt\Password\Bcrypt');
         $bcrypt->expects($this->once())
             ->method('getCost')
             ->will($this->returnValue('10'));
@@ -356,7 +356,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->method('setPassword')
             ->with('$2a$10$D41KPuDCn6iGoESjnLee/uE/2Xo985sotVySo2HKDz6gAO4hO/Gh6');
 
-        $bcrypt = $this->getMock('Zend\Crypt\Password\Bcrypt');
+        $bcrypt = $this->getMock('Laminas\Crypt\Password\Bcrypt');
         $bcrypt->expects($this->once())
             ->method('getCost')
             ->will($this->returnValue('5'));
@@ -419,13 +419,13 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetServicemanager()
     {
-        $sm = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $sm = $this->getMock('Laminas\ServiceManager\ServiceManager');
 
         $this->db->setServiceManager($sm);
 
         $serviceManager = $this->db->getServiceManager();
 
-        $this->assertInstanceOf('Zend\ServiceManager\ServiceLocatorInterface', $serviceManager);
+        $this->assertInstanceOf('Laminas\ServiceManager\ServiceLocatorInterface', $serviceManager);
         $this->assertSame($sm, $serviceManager);
     }
 
@@ -434,7 +434,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetOptionsWithNoOptionsSet()
     {
-        $serviceMapper = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $serviceMapper = $this->getMock('Laminas\ServiceManager\ServiceManager');
         $serviceMapper->expects($this->once())
             ->method('get')
             ->with('zfcuser_module_options')
@@ -468,7 +468,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMapperWithNoMapperSet()
     {
-        $serviceMapper = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $serviceMapper = $this->getMock('Laminas\ServiceManager\ServiceManager');
         $serviceMapper->expects($this->once())
             ->method('get')
             ->with('zfcuser_user_mapper')
@@ -526,7 +526,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->method('read')
             ->will($this->returnValue(array('is_satisfied' => false)));
 
-        $post = $this->getMock('Zend\Stdlib\Parameters');
+        $post = $this->getMock('Laminas\Stdlib\Parameters');
         $post->expects($this->at(0))
             ->method('get')
             ->with('identity')
@@ -536,7 +536,7 @@ class DbTest extends \PHPUnit_Framework_TestCase
             ->with('credential')
             ->will($this->returnValue($credential));
 
-        $request = $this->getMock('Zend\Http\Request');
+        $request = $this->getMock('Laminas\Http\Request');
         $request->expects($this->exactly(2))
             ->method('getPost')
             ->will($this->returnValue($post));

@@ -3,11 +3,11 @@
 namespace ZfcUser\Service;
 
 use Interop\Container\ContainerInterface;
-use Zend\Authentication\AuthenticationService;
-use Zend\Form\Form;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Crypt\Password\Bcrypt;
-use Zend\Hydrator;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Form\Form;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Crypt\Password\Bcrypt;
+use Laminas\Hydrator;
 use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\UserServiceOptionsInterface;
@@ -288,7 +288,7 @@ class User extends EventProvider
     /**
      * Return the Form Hydrator
      *
-     * @return \Zend\Hydrator\ClassMethods
+     * @return \Laminas\Hydrator\ClassMethods
      */
     public function getFormHydrator()
     {

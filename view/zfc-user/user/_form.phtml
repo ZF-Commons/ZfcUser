@@ -1,7 +1,7 @@
 <?php echo $this->form()->openTag($form) ?>
     <dl class="zend_form">
         <?php foreach ($form as $element) : ?>
-            <?php if ($element->getLabel() != null && !$element instanceof Zend\Form\Element\Button) : ?>
+            <?php if ($element->getLabel() != null && !$element instanceof Laminas\Form\Element\Button) : ?>
                 <dt><?php echo $this->formLabel($element) ?></dt>
             <?php endif ?>
             <dd><?php echo $this->formElement($element) . $this->formElementErrors($element) ?></dd>

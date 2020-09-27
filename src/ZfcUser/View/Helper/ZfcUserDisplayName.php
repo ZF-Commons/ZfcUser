@@ -2,8 +2,8 @@
 
 namespace ZfcUser\View\Helper;
 
-use Zend\View\Helper\AbstractHelper;
-use Zend\Authentication\AuthenticationService;
+use Laminas\View\Helper\AbstractHelper;
+use Laminas\Authentication\AuthenticationService;
 use ZfcUser\Entity\UserInterface as User;
 
 class ZfcUserDisplayName extends AbstractHelper

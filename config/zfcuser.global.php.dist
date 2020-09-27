@@ -7,12 +7,12 @@
  */
 $settings = array(
     /**
-     * Zend\Db\Adapter\Adapter DI Alias
+     * Laminas\Db\Adapter\Adapter DI Alias
      *
-     * Please specify the DI alias for the configured Zend\Db\Adapter\Adapter
+     * Please specify the DI alias for the configured Laminas\Db\Adapter\Adapter
      * instance that ZfcUser should use.
      */
-    //'zend_db_adapter' => 'Zend\Db\Adapter\Adapter',
+    //'zend_db_adapter' => 'Laminas\Db\Adapter\Adapter',
 
     /**
      * User Model Entity Class
@@ -123,7 +123,7 @@ $settings = array(
      * Form Captcha Options
      *
      * Currently used for the registration form, but re-usable anywhere. Use
-     * this to configure which Zend\Captcha adapter to use, and the options to
+     * this to configure which Laminas\Captcha adapter to use, and the options to
      * pass to it. The default uses the Figlet captcha.
      */
     /*'form_captcha_options' => array(
@@ -237,7 +237,7 @@ return array(
     'zfcuser' => $settings,
     'service_manager' => array(
         'aliases' => array(
-            'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: 'Zend\Db\Adapter\Adapter',
+            'zfcuser_zend_db_adapter' => (isset($settings['zend_db_adapter'])) ? $settings['zend_db_adapter']: 'Laminas\Db\Adapter\Adapter',
         ),
     ),
 );

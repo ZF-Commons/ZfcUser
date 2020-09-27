@@ -3,7 +3,7 @@
 namespace ZfcUserTest\View\Helper;
 
 use ZfcUser\View\Helper\ZfcUserLoginWidget as ViewHelper;
-use Zend\View\Model\ViewModel;
+use Laminas\View\Model\ViewModel;
 
 class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
 {
@@ -15,7 +15,7 @@ class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
     {
         $this->helper = new ViewHelper;
 
-        $view = $this->getMock('Zend\View\Renderer\RendererInterface');
+        $view = $this->getMock('Laminas\View\Renderer\RendererInterface');
         $this->view = $view;
 
         $this->helper->setView($view);
@@ -63,7 +63,7 @@ class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
     public function testInvokeWithRender($option, $expect)
     {
         /**
-         * @var $viewModel \Zend\View\Model\ViewModels
+         * @var $viewModel \Laminas\View\Model\ViewModels
          */
         $viewModel = null;
 
@@ -76,11 +76,11 @@ class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
 
         $result = $this->helper->__invoke($option);
 
-        $this->assertNotInstanceOf('Zend\View\Model\ViewModel', $result);
+        $this->assertNotInstanceOf('Laminas\View\Model\ViewModel', $result);
         $this->assertInternalType('string', $result);
 
 
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $viewModel);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $viewModel);
         foreach ($expect as $name => $value) {
             $this->assertEquals($value, $viewModel->getVariable($name, "testDefault"));
         }
@@ -96,7 +96,7 @@ class ZfcUserLoginWidgetTest extends \PHPUnit_Framework_TestCase
             'redirect' => 'zfcUser'
         ));
 
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $result);
         $this->assertEquals('zfcUser', $result->redirect);
     }
 

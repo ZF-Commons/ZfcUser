@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Form;
 
-use Zend\InputFilter\InputFilter;
+use Laminas\InputFilter\InputFilter;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class ChangeEmailFilter extends InputFilter

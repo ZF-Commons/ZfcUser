@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Element\Captcha as Captcha;
+use Laminas\Form\Element\Captcha as Captcha;
 use ZfcUser\Options\RegistrationOptionsInterface;
 
 class Register extends Base
@@ -27,7 +27,7 @@ class Register extends Base
         if ($this->getRegistrationOptions()->getUseRegistrationFormCaptcha()) {
             $this->add(array(
                 'name' => 'captcha',
-                'type' => 'Zend\Form\Element\Captcha',
+                'type' => 'Laminas\Form\Element\Captcha',
                 'options' => array(
                     'label' => 'Please type the following text',
                     'captcha' => $this->getRegistrationOptions()->getFormCaptchaOptions(),

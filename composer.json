@@ -1,6 +1,6 @@
 {
     "name": "lampi87/zfc-user",
-    "description": "A generic user registration and authentication module for ZF2. Supports Zend\\Db and Doctrine2.",
+    "description": "A generic user registration and authentication module for ZF2. Supports Laminas\\Db and Doctrine2.",
     "type": "library",
     "license": "BSD-3-Clause",
     "keywords": [
@@ -52,7 +52,7 @@
         "laminas/laminas-captcha" : "^2.6"
     },
     "suggest": {
-        "laminas/laminas-captcha" : "Zend\\Captcha if you want to use the captcha component"
+        "laminas/laminas-captcha" : "Laminas\\Captcha if you want to use the captcha component"
     },
     "autoload": {
         "psr-0": {

@@ -2,12 +2,12 @@
 
 namespace ZfcUserTest\Authentication\Adapter;
 
-use Zend\EventManager\EventInterface;
-use Zend\EventManager\EventManagerInterface;
-use Zend\EventManager\SharedEventManagerInterface;
+use Laminas\EventManager\EventInterface;
+use Laminas\EventManager\EventManagerInterface;
+use Laminas\EventManager\SharedEventManagerInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain;
 use ZfcUser\Authentication\Adapter\AdapterChainEvent;
-use Zend\Stdlib\RequestInterface;
+use Laminas\Stdlib\RequestInterface;
 
 class AdapterChainTest extends \PHPUnit_Framework_TestCase
 {
@@ -56,10 +56,10 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
         $this->adapterChain = new AdapterChain();
 
-        $this->sharedEventManager = $this->getMock('Zend\EventManager\SharedEventManagerInterface');
+        $this->sharedEventManager = $this->getMock('Laminas\EventManager\SharedEventManagerInterface');
         //$this->sharedEventManager->expects($this->any())->method('getListeners')->will($this->returnValue([]));
 
-        $this->eventManager = $this->getMock('Zend\EventManager\EventManagerInterface');
+        $this->eventManager = $this->getMock('Laminas\EventManager\EventManagerInterface');
         $this->eventManager->expects($this->any())->method('getSharedManager')->will($this->returnValue($this->sharedEventManager));
         $this->eventManager->expects($this->any())->method('setIdentifiers');
 
@@ -90,7 +90,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->adapterChain->setEvent($event);
         $result = $this->adapterChain->authenticate();
 
-        $this->assertInstanceOf('Zend\Authentication\Result', $result);
+        $this->assertInstanceOf('Laminas\Authentication\Result', $result);
         $this->assertEquals($result->getIdentity(), 'identity');
         $this->assertEquals($result->getMessages(), array());
     }
@@ -131,7 +131,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUpPrepareForAuthentication()
     {
-        $this->request = $this->getMock('Zend\Stdlib\RequestInterface');
+        $this->request = $this->getMock('Laminas\Stdlib\RequestInterface');
         $this->event = $this->getMock('ZfcUser\Authentication\Adapter\AdapterChainEvent');
 
         $this->event->expects($this->once())->method('setRequest')->with($this->request);
@@ -139,9 +139,9 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
         $this->eventManager->expects($this->at(0))->method('trigger')->with('authenticate.pre');
 
         /**
-         * @var $response \Zend\EventManager\ResponseCollection
+         * @var $response \Laminas\EventManager\ResponseCollection
          */
-        $responses = $this->getMock('Zend\EventManager\ResponseCollection');
+        $responses = $this->getMock('Laminas\EventManager\ResponseCollection');
 
         $this->eventManager->expects($this->at(1))
             ->method('trigger')
@@ -206,7 +206,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
 
         $result->expects($this->once())->method('stopped')->will($this->returnValue(true));
 
-        $lastResponse = $this->getMock('Zend\Stdlib\ResponseInterface');
+        $lastResponse = $this->getMock('Laminas\Stdlib\ResponseInterface');
         $result->expects($this->atLeastOnce())->method('last')->will($this->returnValue($lastResponse));
 
         $this->assertEquals(
@@ -283,7 +283,7 @@ class AdapterChainTest extends \PHPUnit_Framework_TestCase
     {
         $testParams = array('testParam' => 'testValue');
 
-        $event = new \Zend\EventManager\Event;
+        $event = new \Laminas\EventManager\Event;
         $event->setParams($testParams);
 
         $this->adapterChain->setEvent($event);

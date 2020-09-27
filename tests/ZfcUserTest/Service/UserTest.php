@@ -3,7 +3,7 @@
 namespace ZfcUserTest\Service;
 
 use ZfcUser\Service\User as Service;
-use Zend\Crypt\Password\Bcrypt;
+use Laminas\Crypt\Password\Bcrypt;
 
 class UserTest extends \PHPUnit_Framework_TestCase
 {
@@ -29,19 +29,19 @@ class UserTest extends \PHPUnit_Framework_TestCase
         $options = $this->getMock('ZfcUser\Options\ModuleOptions');
         $this->options = $options;
 
-        $serviceManager = $this->getMock('Zend\ServiceManager\ServiceManager');
+        $serviceManager = $this->getMock('Laminas\ServiceManager\ServiceManager');
         $this->serviceManager = $serviceManager;
 
-        $eventManager = $this->getMock('Zend\EventManager\EventManager');
+        $eventManager = $this->getMock('Laminas\EventManager\EventManager');
         $this->eventManager = $eventManager;
 
-        $formHydrator = $this->getMock('Zend\Hydrator\HydratorInterface');
+        $formHydrator = $this->getMock('Laminas\Hydrator\HydratorInterface');
         $this->formHydrator = $formHydrator;
 
         $mapper = $this->getMock('ZfcUser\Mapper\UserInterface');
         $this->mapper = $mapper;
 
-        $authService = $this->getMockBuilder('Zend\Authentication\AuthenticationService')->disableOriginalConstructor()->getMock();
+        $authService = $this->getMockBuilder('Laminas\Authentication\AuthenticationService')->disableOriginalConstructor()->getMock();
         $this->authService = $authService;
 
         $service->setOptions($options);
@@ -458,7 +458,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $service = new Service;
         $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('Zend\Authentication\AuthenticationService', $service->getAuthService());
+        $this->assertInstanceOf('Laminas\Authentication\AuthenticationService', $service->getAuthService());
     }
 
     /**
@@ -576,7 +576,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $service = new Service;
         $service->setServiceManager($this->serviceManager);
-        $this->assertInstanceOf('Zend\Hydrator\HydratorInterface', $service->getFormHydrator());
+        $this->assertInstanceOf('Laminas\Hydrator\HydratorInterface', $service->getFormHydrator());
     }
 
     /**

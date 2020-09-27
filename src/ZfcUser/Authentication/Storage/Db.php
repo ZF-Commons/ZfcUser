@@ -3,9 +3,9 @@
 namespace ZfcUser\Authentication\Storage;
 
 use Interop\Container\ContainerInterface;
-use Zend\Authentication\Storage;
-use Zend\Authentication\Storage\StorageInterface;
-use Zend\ServiceManager\ServiceManager;
+use Laminas\Authentication\Storage;
+use Laminas\Authentication\Storage\StorageInterface;
+use Laminas\ServiceManager\ServiceManager;
 use ZfcUser\Mapper\UserInterface as UserMapper;
 
 class Db implements Storage\StorageInterface
@@ -33,7 +33,7 @@ class Db implements Storage\StorageInterface
     /**
      * Returns true if and only if storage is empty
      *
-     * @throws \Zend\Authentication\Exception\InvalidArgumentException If it is impossible to determine whether
+     * @throws \Laminas\Authentication\Exception\InvalidArgumentException If it is impossible to determine whether
      * storage is empty or not
      * @return boolean
      */
@@ -56,7 +56,7 @@ class Db implements Storage\StorageInterface
      *
      * Behavior is undefined when storage is empty.
      *
-     * @throws \Zend\Authentication\Exception\InvalidArgumentException If reading contents from storage is impossible
+     * @throws \Laminas\Authentication\Exception\InvalidArgumentException If reading contents from storage is impossible
      * @return mixed
      */
     public function read()
@@ -84,7 +84,7 @@ class Db implements Storage\StorageInterface
      * Writes $contents to storage
      *
      * @param  mixed $contents
-     * @throws \Zend\Authentication\Exception\InvalidArgumentException If writing $contents to storage is impossible
+     * @throws \Laminas\Authentication\Exception\InvalidArgumentException If writing $contents to storage is impossible
      * @return void
      */
     public function write($contents)
@@ -96,7 +96,7 @@ class Db implements Storage\StorageInterface
     /**
      * Clears contents from storage
      *
-     * @throws \Zend\Authentication\Exception\InvalidArgumentException If clearing contents from storage is impossible
+     * @throws \Laminas\Authentication\Exception\InvalidArgumentException If clearing contents from storage is impossible
      * @return void
      */
     public function clear()

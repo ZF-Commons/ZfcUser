@@ -4,8 +4,8 @@ namespace ZfcUserTest\Mapper;
 
 use ZfcUser\Mapper\User as Mapper;
 use ZfcUser\Entity\User as Entity;
-use Zend\Db\ResultSet\HydratingResultSet;
-use Zend\Db\Adapter\Adapter;
+use Laminas\Db\ResultSet\HydratingResultSet;
+use Laminas\Db\Adapter\Adapter;
 use ZfcUser\Mapper\UserHydrator;
 
 class UserTest extends \PHPUnit_Framework_TestCase
@@ -13,25 +13,25 @@ class UserTest extends \PHPUnit_Framework_TestCase
     /** @var \ZfcUser\Mapper\User */
     protected $mapper;
 
-    /** @var \Zend\Db\Adapter\Adapter */
+    /** @var \Laminas\Db\Adapter\Adapter */
     protected $mockedDbAdapter;
 
-    /** @var \Zend\Db\Adapter\Adapter */
+    /** @var \Laminas\Db\Adapter\Adapter */
     protected $realAdapter = array();
 
-    /** @var \Zend\Db\Sql\Select */
+    /** @var \Laminas\Db\Sql\Select */
     protected $mockedSelect;
 
-    /** @var \Zend\Db\ResultSet\HydratingResultSet */
+    /** @var \Laminas\Db\ResultSet\HydratingResultSet */
     protected $mockedResultSet;
 
-    /** @var \Zend\Db\Sql\Sql */
+    /** @var \Laminas\Db\Sql\Sql */
     protected $mockedDbSql;
 
-    /** @var \Zend\Db\Adapter\Driver\DriverInterface */
+    /** @var \Laminas\Db\Adapter\Driver\DriverInterface */
     protected $mockedDbAdapterDriver;
 
-    /** @var \Zend\Db\Adapter\Platform\PlatformInterface */
+    /** @var \Laminas\Db\Adapter\Platform\PlatformInterface */
     protected $mockedDbAdapterPlatform;
 
     public function setUp()
@@ -44,9 +44,9 @@ class UserTest extends \PHPUnit_Framework_TestCase
 
         $this->setUpMockedAdapter();
 
-        $this->mockedSelect = $this->getMock('\Zend\Db\Sql\Select', array('where'));
+        $this->mockedSelect = $this->getMock('\Laminas\Db\Sql\Select', array('where'));
 
-        $this->mockedResultSet = $this->getMock('\Zend\Db\ResultSet\HydratingResultSet');
+        $this->mockedResultSet = $this->getMock('\Laminas\Db\ResultSet\HydratingResultSet');
 
         $this->setUpAdapter('mysql');
 //         $this->setUpAdapter('pgsql');
@@ -105,15 +105,15 @@ class UserTest extends \PHPUnit_Framework_TestCase
      */
     public function setUpMockedAdapter()
     {
-        $this->mockedDbAdapterDriver = $this->getMock('Zend\Db\Adapter\Driver\DriverInterface');
-        $this->mockedDbAdapterPlatform = $this->getMock('Zend\Db\Adapter\Platform\PlatformInterface', array());
-        $this->mockedDbAdapterStatement= $this->getMock('Zend\Db\Adapter\Driver\StatementInterface', array());
+        $this->mockedDbAdapterDriver = $this->getMock('Laminas\Db\Adapter\Driver\DriverInterface');
+        $this->mockedDbAdapterPlatform = $this->getMock('Laminas\Db\Adapter\Platform\PlatformInterface', array());
+        $this->mockedDbAdapterStatement= $this->getMock('Laminas\Db\Adapter\Driver\StatementInterface', array());
 
         $this->mockedDbAdapterPlatform->expects($this->any())
                                       ->method('getName')
                                       ->will($this->returnValue('null'));
 
-        $this->mockedDbAdapter = $this->getMockBuilder('Zend\Db\Adapter\Adapter')
+        $this->mockedDbAdapter = $this->getMockBuilder('Laminas\Db\Adapter\Adapter')
                                       ->setConstructorArgs(array(
                                           $this->mockedDbAdapterDriver,
                                           $this->mockedDbAdapterPlatform
@@ -124,7 +124,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                               ->method('getPlatform')
                               ->will($this->returnValue($this->mockedDbAdapterPlatform));
 
-        $this->mockedDbSql = $this->getMockBuilder('Zend\Db\Sql\Sql')
+        $this->mockedDbSql = $this->getMockBuilder('Laminas\Db\Sql\Sql')
                                   ->setConstructorArgs(array($this->mockedDbAdapter))
                                   ->setMethods(array('prepareStatementForSqlObject'))
                                   ->getMock();
@@ -132,7 +132,7 @@ class UserTest extends \PHPUnit_Framework_TestCase
                           ->method('prepareStatementForSqlObject')
                           ->will($this->returnValue($this->mockedDbAdapterStatement));
 
-        $this->mockedDbSqlPlatform = $this->getMockBuilder('\Zend\Db\Sql\Platform\Platform')
+        $this->mockedDbSqlPlatform = $this->getMockBuilder('\Laminas\Db\Sql\Platform\Platform')
                                           ->setConstructorArgs(array($this->mockedDbAdapter))
                                           ->getMock();
     }
