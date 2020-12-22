@@ -67,14 +67,14 @@ interface UserInterface
     /**
      * Get password.
      *
-     * @return string password
+     * @return string|null password
      */
     public function getPassword();
 
     /**
      * Set password.
      *
-     * @param string $password
+     * @param string|null $password
      * @return UserInterface
      */
     public function setPassword($password);
