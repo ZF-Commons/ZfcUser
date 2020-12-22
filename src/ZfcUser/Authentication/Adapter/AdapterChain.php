@@ -2,13 +2,13 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\Authentication\Adapter\AdapterInterface;
-use Zend\Authentication\Result as AuthenticationResult;
-use Zend\EventManager\Event;
-use Zend\EventManager\EventInterface;
-use Zend\EventManager\EventManagerAwareTrait;
-use Zend\Stdlib\RequestInterface as Request;
-use Zend\Stdlib\ResponseInterface as Response;
+use Laminas\Authentication\Adapter\AdapterInterface;
+use Laminas\Authentication\Result as AuthenticationResult;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\EventInterface;
+use Laminas\EventManager\EventManagerAwareTrait;
+use Laminas\Stdlib\RequestInterface as Request;
+use Laminas\Stdlib\ResponseInterface as Response;
 use ZfcUser\Exception;
 
 class AdapterChain implements AdapterInterface

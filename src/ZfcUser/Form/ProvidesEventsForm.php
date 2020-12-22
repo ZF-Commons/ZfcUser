@@ -1,8 +1,8 @@
 <?php
 namespace ZfcUser\Form;
 
-use Zend\EventManager\EventManagerAwareTrait;
-use Zend\Form\Form;
+use Laminas\EventManager\EventManagerAwareTrait;
+use Laminas\Form\Form;
 
 class ProvidesEventsForm extends Form
 {

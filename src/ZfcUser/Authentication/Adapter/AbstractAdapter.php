@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\Authentication\Storage;
+use Laminas\Authentication\Storage;
 
 abstract class AbstractAdapter implements ChainableAdapter
 {
@@ -21,7 +21,7 @@ abstract class AbstractAdapter implements ChainableAdapter
     public function getStorage()
     {
         if (null === $this->storage) {
-            $this->setStorage(new Storage\Session(get_class($this)));
+            $this->setStorage(new Storage\Session('ZfcUser'));
         }
 
         return $this->storage;

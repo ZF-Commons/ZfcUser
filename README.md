@@ -10,8 +10,8 @@ Created by Evan Coury and the ZF-Commons team
 Introduction
 ------------
 
-ZfcUser is a user registration and authentication module for Zend Framework 2.
-Out of the box, ZfcUser works with Zend\Db, however alternative storage adapter
+ZfcUser is a user registration and authentication module for Laminas Framework 2.
+Out of the box, ZfcUser works with Laminas\Db, however alternative storage adapter
 modules are available (see below). ZfcUser provides the foundations for adding
 user authentication and registration to your ZF2 site. It is designed to be very
 simple and easy to extend.
@@ -22,7 +22,7 @@ Versions
 --------
 Please use below table to figure out what version of ZfcUser you should use.
 
-| ZfcUser version | Supported Zend Framework version | Status                                      |
+| ZfcUser version | Supported Laminas Framework version | Status                                      |
 |-----------------|----------------------------------|---------------------------------------------|
 | 1.x             | <= 2.5                           | Security-fixes only                         |
 | 2.x             | >= 2.6 < 3                       | bug-fixes, security-fixes                   |
@@ -31,7 +31,7 @@ Please use below table to figure out what version of ZfcUser you should use.
 Storage Adapter Modules
 -----------------------
 
-By default, ZfcUser ships with support for using Zend\Db for persisting users.
+By default, ZfcUser ships with support for using Laminas\Db for persisting users.
 However, by installing an optional alternative storage adapter module, you can
 take advantage of other methods of persisting users:
 
@@ -41,7 +41,7 @@ take advantage of other methods of persisting users:
 Requirements
 ------------
 
-* [Zend Framework 2](https://github.com/zendframework/zf2) (latest master)
+* [Laminas Framework](https://github.com/zendframework/zf2) (latest master)
 * [ZfcBase](https://github.com/ZF-Commons/ZfcBase) (latest master).
 
 Features / Goals
@@ -51,7 +51,7 @@ Features / Goals
   username and use strictly email) [COMPLETE]
 * User registration [COMPLETE]
 * Forms protected against CSRF [COMPLETE]
-* Out-of-the-box support for Doctrine2 _and_ Zend\Db [COMPLETE]
+* Out-of-the-box support for Doctrine2 _and_ Laminas\Db [COMPLETE]
 * Robust event system to allow for extending [COMPLETE]
 * Provide ActionController plugin and view helper [COMPLETE]
 
@@ -107,9 +107,9 @@ Coming soon...
 
 Coming soon...
 
-### Post-Install: Zend\Db
+### Post-Install: Laminas\Db
 
-1. If you do not already have a valid Zend\Db\Adapter\Adapter in your service
+1. If you do not already have a valid Laminas\Db\Adapter\Adapter in your service
    manager configuration, put the following in `./config/autoload/database.local.php`:
 
 ```php
@@ -124,7 +124,7 @@ return array(
     ),
     'service_manager' => array(
         'factories' => array(
-            'Zend\Db\Adapter\Adapter' => 'Zend\Db\Adapter\AdapterServiceFactory',
+            'Laminas\Db\Adapter\Adapter' => 'Laminas\Db\Adapter\AdapterServiceFactory',
         ),
     ),
 );
@@ -183,8 +183,8 @@ The following options are available:
   after they successfully register. Default value is `false`.
 - **use_registration_form_captcha** - Boolean value, determines if a captcha should
   be utilized on the user registration form. Default value is `true`. (Note,
-  right now this only utilizes a weak Zend\Text\Figlet CAPTCHA, but I have plans
-  to make all Zend\Captcha adapters work.)
+  right now this only utilizes a weak Laminas\Text\Figlet CAPTCHA, but I have plans
+  to make all Laminas\Captcha adapters work.)
 - **login_form_timeout** - Integer value, specify the timeout for the CSRF security
   field of the login form in seconds. Default value is 300 seconds.
 - **user_form_timeout** - Integer value, specify the timeout for the CSRF security
@@ -226,7 +226,7 @@ module.config.php, or a dedicated recaptcha.config.php):
             'instance'=>array(
                 'alias'=>array(
                     // OTHER ELEMENTS....
-                    'recaptcha_element' => 'Zend\Form\Element\Captcha',
+                    'recaptcha_element' => 'Laminas\Form\Element\Captcha',
                 ),
                 'recaptcha_element' => array(
                     'parameters' => array(

@@ -23,7 +23,7 @@ class AbstractAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStorageWithoutStorageSet()
     {
-        $this->assertInstanceOf('Zend\Authentication\Storage\Session', $this->adapter->getStorage());
+        $this->assertInstanceOf('Laminas\Authentication\Storage\Session', $this->adapter->getStorage());
     }
 
     /**
@@ -32,11 +32,11 @@ class AbstractAdapterTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetGetStorage()
     {
-        $storage = new \Zend\Authentication\Storage\Session('ZfcUser');
+        $storage = new \Laminas\Authentication\Storage\Session('ZfcUser');
         $storage->write('zfcUser');
         $this->adapter->setStorage($storage);
 
-        $this->assertInstanceOf('Zend\Authentication\Storage\Session', $this->adapter->getStorage());
+        $this->assertInstanceOf('Laminas\Authentication\Storage\Session', $this->adapter->getStorage());
         $this->assertSame('zfcUser', $this->adapter->getStorage()->read());
     }
 

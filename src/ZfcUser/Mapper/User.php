@@ -3,7 +3,7 @@
 namespace ZfcUser\Mapper;
 
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
-use Zend\Hydrator\HydratorInterface;
+use Laminas\Hydrator\HydratorInterface;
 
 class User extends AbstractDbMapper implements UserInterface
 {

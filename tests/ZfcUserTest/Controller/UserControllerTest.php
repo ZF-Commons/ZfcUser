@@ -2,14 +2,14 @@
 
 namespace ZfcUserTest\Controller;
 
-use Zend\Form\FormElementManager;
+use Laminas\Form\FormElementManager;
 use ZfcUser\Controller\RedirectCallback;
 use ZfcUser\Controller\UserController as Controller;
-use Zend\Http\Response;
-use Zend\Stdlib\Parameters;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\Http\Response;
+use Laminas\Stdlib\Parameters;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 use ZfcUser\Service\User as UserService;
-use Zend\Form\Form;
+use Laminas\Form\Form;
 use ZfcUser\Options\ModuleOptions;
 use ZfcUser\Entity\User as UserIdentity;
 
@@ -44,7 +44,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->zfcUserAuthenticationPlugin = $this->getMock('ZfcUser\Controller\Plugin\ZfcUserAuthentication');
 
-        $pluginManager = $this->getMockBuilder('Zend\Mvc\Controller\PluginManager')
+        $pluginManager = $this->getMockBuilder('Laminas\Mvc\Controller\PluginManager')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -117,7 +117,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->will($this->returnValue($redirectRoute));
         }
 
-        $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
+        $redirect = $this->getMock('Laminas\Mvc\Controller\Plugin\Redirect');
         $redirect->expects($this->once())
             ->method('toRoute')
             ->with($redirectRoute)
@@ -127,7 +127,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $result = call_user_func(array($controller, $methodeName));
 
-        $this->assertInstanceOf('Zend\Http\Response', $result);
+        $this->assertInstanceOf('Laminas\Http\Response', $result);
         $this->assertSame($response, $result);
     }
 
@@ -143,7 +143,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $result = $controller->indexAction();
 
-        $this->assertInstanceOf('Zend\View\Model\ViewModel', $result);
+        $this->assertInstanceOf('Laminas\View\Model\ViewModel', $result);
     }
 
 
@@ -161,7 +161,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         ));
 
         $flashMessenger = $this->getMock(
-            'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
+            'Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger'
         );
         $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -175,7 +175,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnSelf());
 
         $postArray = array('some', 'data');
-        $request = $this->getMock('Zend\Http\Request');
+        $request = $this->getMock('Laminas\Http\Request');
         $request->expects($this->any())
             ->method('isPost')
             ->will($this->returnValue(true));
@@ -211,7 +211,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $adapter->expects($this->once())
                 ->method('resetAdapters');
 
-            $service = $this->getMock('Zend\Authentication\AuthenticationService');
+            $service = $this->getMock('Laminas\Authentication\AuthenticationService');
             $service->expects($this->once())
                 ->method('clearIdentity');
 
@@ -226,7 +226,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
             $expectedResult = new \stdClass();
 
-            $forwardPlugin = $this->getMockBuilder('Zend\Mvc\Controller\Plugin\Forward')
+            $forwardPlugin = $this->getMockBuilder('Laminas\Mvc\Controller\Plugin\Forward')
                 ->disableOriginalConstructor()
                 ->getMock();
             $forwardPlugin->expects($this->once())
@@ -242,7 +242,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $route_url = "/user/login";
 
 
-            $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect', array('toUrl'));
+            $redirect = $this->getMock('Laminas\Mvc\Controller\Plugin\Redirect', array('toUrl'));
             $redirect->expects($this->any())
                 ->method('toUrl')
                 ->with($route_url . $redirectQuery)
@@ -257,7 +257,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
             $response = new Response();
-            $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url', array('fromRoute'));
+            $url = $this->getMock('Laminas\Mvc\Controller\Plugin\Url', array('fromRoute'));
             $url->expects($this->once())
                 ->method('fromRoute')
                 ->with($controller::ROUTE_LOGIN)
@@ -274,7 +274,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         if ($isValid) {
             $this->assertSame($expectedResult, $result);
         } else {
-            $this->assertInstanceOf('Zend\Http\Response', $result);
+            $this->assertInstanceOf('Laminas\Http\Response', $result);
             $this->assertEquals($response, $result);
             $this->assertEquals($route_url . $redirectQuery, $result->getHeaders()->get('Location')->getFieldValue());
         }
@@ -290,11 +290,11 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             'hasIdentity'=>false
         ));
 
-        $flashMessenger = $this->getMock('Zend\Mvc\Plugin\FlashMessenger\FlashMessenger');
+        $flashMessenger = $this->getMock('Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger');
 
         $this->pluginManagerPlugins['flashMessenger'] = $flashMessenger;
 
-        $request = $this->getMock('Zend\Http\Request');
+        $request = $this->getMock('Laminas\Http\Request');
         $request->expects($this->once())
             ->method('isPost')
             ->will($this->returnValue(false));
@@ -354,7 +354,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $adapter->expects($this->once())
             ->method('logoutAdapters');
 
-        $service = $this->getMock('Zend\Authentication\AuthenticationService');
+        $service = $this->getMock('Laminas\Authentication\AuthenticationService');
         $service->expects($this->once())
             ->method('clearIdentity');
 
@@ -372,7 +372,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $result = $controller->logoutAction();
 
-        $this->assertInstanceOf('Zend\Http\Response', $result);
+        $this->assertInstanceOf('Laminas\Http\Response', $result);
         $this->assertSame($response, $result);
     }
 
@@ -391,7 +391,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $response = new Response();
         $hasRedirect = !(is_null($query) && is_null($post));
 
-        $params = $this->getMock('Zend\Mvc\Controller\Plugin\Params');
+        $params = $this->getMock('Laminas\Mvc\Controller\Plugin\Params');
         $params->expects($this->any())
             ->method('__invoke')
             ->will($this->returnSelf());
@@ -408,7 +408,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $this->pluginManagerPlugins['params'] = $params;
 
 
-        $request = $this->getMock('Zend\Http\Request');
+        $request = $this->getMock('Laminas\Http\Request');
         $this->helperMakePropertyAccessable($controller, 'request', $request);
 
 
@@ -418,7 +418,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->with($request)
             ->will($this->returnValue($prepareResult));
 
-        $service = $this->getMock('Zend\Authentication\AuthenticationService');
+        $service = $this->getMock('Laminas\Authentication\AuthenticationService');
 
 
         $this->setUpZfcUserAuthenticationPlugin(array(
@@ -428,7 +428,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         ));
 
         if (is_bool($prepareResult)) {
-            $authResult = $this->getMockBuilder('Zend\Authentication\Result')
+            $authResult = $this->getMockBuilder('Laminas\Authentication\Result')
                 ->disableOriginalConstructor()
                 ->getMock();
             $authResult->expects($this->once())
@@ -440,12 +440,12 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 ->with($adapter)
                 ->will($this->returnValue($authResult));
 
-            $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
+            $redirect = $this->getMock('Laminas\Mvc\Controller\Plugin\Redirect');
             $this->pluginManagerPlugins['redirect'] = $redirect;
 
             if (!$authValid) {
                 $flashMessenger = $this->getMock(
-                    'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
+                    'Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger'
                 );
                 $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -468,7 +468,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                     ->with('user/login' . $redirectQuery)
                     ->will($this->returnValue($response));
 
-                $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url');
+                $url = $this->getMock('Laminas\Mvc\Controller\Plugin\Url');
                 $url->expects($this->once())
                     ->method('fromRoute')
                     ->with($controller::ROUTE_LOGIN)
@@ -533,13 +533,13 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->method('getEnableRegistration')
             ->will($this->returnValue(true));
 
-        $request = $this->getMock('Zend\Http\Request');
+        $request = $this->getMock('Laminas\Http\Request');
         $this->helperMakePropertyAccessable($controller, 'request', $request);
 
         $userService = $this->getMock('ZfcUser\Service\User');
         $controller->setUserService($userService);
 
-        $form = $this->getMockBuilder('Zend\Form\Form')
+        $form = $this->getMockBuilder('Laminas\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -559,7 +559,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         }
 
 
-        $url = $this->getMock('Zend\Mvc\Controller\Plugin\Url');
+        $url = $this->getMock('Laminas\Mvc\Controller\Plugin\Url');
         $url->expects($this->at(0))
             ->method('fromRoute')
             ->with($controller::ROUTE_REGISTER)
@@ -567,7 +567,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
         $this->pluginManagerPlugins['url']= $url;
 
-        $prg = $this->getMock('Zend\Mvc\Plugin\Prg\PostRedirectGet');
+        $prg = $this->getMock('Laminas\Mvc\Plugin\Prg\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
         $redirectQuery = $wantRedirect ? '?redirect=' . rawurlencode($redirectUrl) : '';
@@ -601,7 +601,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
                 $expectedResult = new \stdClass();
-                $forwardPlugin = $this->getMockBuilder('Zend\Mvc\Controller\Plugin\Forward')
+                $forwardPlugin = $this->getMockBuilder('Laminas\Mvc\Controller\Plugin\Forward')
                     ->disableOriginalConstructor()
                     ->getMock();
                 $forwardPlugin->expects($this->once())
@@ -620,7 +620,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
                 $redirectQuery = $redirectUrl ? '?redirect='. rawurlencode($redirectUrl) : '';
 
-                $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
+                $redirect = $this->getMock('Laminas\Mvc\Controller\Plugin\Redirect');
                 $redirect->expects($this->once())
                     ->method('toUrl')
                     ->with($route_url . $redirectQuery)
@@ -673,7 +673,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             $this->assertArrayHasKey('redirect', $result);
             $this->assertEquals($expectedResult, $result);
         } else {
-            $this->assertInstanceOf('Zend\Http\Response', $result);
+            $this->assertInstanceOf('Laminas\Http\Response', $result);
             $this->assertSame($response, $result);
         }
     }
@@ -692,7 +692,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             'hasIdentity'=>true
         ));
 
-        $form = $this->getMockBuilder('Zend\Form\Form')
+        $form = $this->getMockBuilder('Laminas\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -701,7 +701,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
         $flashMessenger = $this->getMock(
-            'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
+            'Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger'
         );
         $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -715,7 +715,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($status ? array('test') : array()));
 
 
-        $prg = $this->getMock('Zend\Mvc\Plugin\Prg\PostRedirectGet');
+        $prg = $this->getMock('Laminas\Mvc\Plugin\Prg\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
 
@@ -754,7 +754,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                         ->with(true);
 
 
-                    $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
+                    $redirect = $this->getMock('Laminas\Mvc\Controller\Plugin\Redirect');
                     $redirect->expects($this->once())
                         ->method('toRoute')
                         ->with($controller::ROUTE_CHANGEPASSWD)
@@ -770,7 +770,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $exceptedReturn = null;
 
         if ($postRedirectGetReturn instanceof Response) {
-            $this->assertInstanceOf('Zend\Http\Response', $result);
+            $this->assertInstanceOf('Laminas\Http\Response', $result);
             $this->assertSame($postRedirectGetReturn, $result);
         } else {
             if ($postRedirectGetReturn === false) {
@@ -790,7 +790,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 $this->assertArrayHasKey('changePasswordForm', $result);
                 $this->assertEquals($exceptedReturn, $result);
             } else {
-                $this->assertInstanceOf('Zend\Http\Response', $result);
+                $this->assertInstanceOf('Laminas\Http\Response', $result);
                 $this->assertSame($response, $result);
             }
         }
@@ -806,7 +806,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $controller = $this->controller;
         $response = new Response();
         $userService = $this->getMock('ZfcUser\Service\User');
-        $authService = $this->getMock('Zend\Authentication\AuthenticationService');
+        $authService = $this->getMock('Laminas\Authentication\AuthenticationService');
         $identity = new UserIdentity();
 
         $controller->setUserService($userService);
@@ -815,7 +815,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             'hasIdentity'=>true
         ));
 
-        $form = $this->getMockBuilder('Zend\Form\Form')
+        $form = $this->getMockBuilder('Laminas\Form\Form')
             ->disableOriginalConstructor()
             ->getMock();
 
@@ -831,12 +831,12 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $identity->setEmail('user@example.com');
 
 
-        $requestParams = $this->getMock('Zend\Stdlib\Parameters');
+        $requestParams = $this->getMock('Laminas\Stdlib\Parameters');
         $requestParams->expects($this->once())
             ->method('set')
             ->with('identity', $identity->getEmail());
 
-        $request = $this->getMock('Zend\Http\Request');
+        $request = $this->getMock('Laminas\Http\Request');
         $request->expects($this->once())
             ->method('getPost')
             ->will($this->returnValue($requestParams));
@@ -845,7 +845,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
 
 
         $flashMessenger = $this->getMock(
-            'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
+            'Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger'
         );
         $this->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -859,7 +859,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
             ->will($this->returnValue($status ? array('test') : array()));
 
 
-        $prg = $this->getMock('Zend\Mvc\Plugin\Prg\PostRedirectGet');
+        $prg = $this->getMock('Laminas\Mvc\Plugin\Prg\PostRedirectGet');
         $this->pluginManagerPlugins['prg'] = $prg;
 
 
@@ -890,7 +890,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                         ->with(true);
 
 
-                    $redirect = $this->getMock('Zend\Mvc\Controller\Plugin\Redirect');
+                    $redirect = $this->getMock('Laminas\Mvc\Controller\Plugin\Redirect');
                     $redirect->expects($this->once())
                         ->method('toRoute')
                         ->with($controller::ROUTE_CHANGEEMAIL)
@@ -910,7 +910,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $exceptedReturn = null;
 
         if ($postRedirectGetReturn instanceof Response) {
-            $this->assertInstanceOf('Zend\Http\Response', $result);
+            $this->assertInstanceOf('Laminas\Http\Response', $result);
             $this->assertSame($postRedirectGetReturn, $result);
         } else {
             if ($postRedirectGetReturn === false) {
@@ -931,7 +931,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
                 $this->assertArrayHasKey('changeEmailForm', $result);
                 $this->assertEquals($exceptedReturn, $result);
             } else {
-                $this->assertInstanceOf('Zend\Http\Response', $result);
+                $this->assertInstanceOf('Laminas\Http\Response', $result);
                 $this->assertSame($response, $result);
             }
         }
@@ -956,7 +956,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         }
 
         if ($useServiceLocator) {
-            $serviceLocator = $this->getMock('Zend\ServiceManager\ServiceLocatorInterface');
+            $serviceLocator = $this->getMock('Laminas\ServiceManager\ServiceLocatorInterface');
             $serviceLocator->expects($this->once())
                 ->method('get')
                 ->with($serviceName)
@@ -1035,7 +1035,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         $that = $this;
         $loginFormCallback[] = function ($that, $controller) {
             $flashMessenger = $that->getMock(
-                'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
+                'Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger'
             );
             $that->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 
@@ -1046,7 +1046,7 @@ class UserControllerTest extends \PHPUnit_Framework_TestCase
         };
         $loginFormCallback[] = function ($that, $controller) {
             $flashMessenger = $that->getMock(
-                'Zend\Mvc\Plugin\FlashMessenger\FlashMessenger'
+                'Laminas\Mvc\Plugin\FlashMessenger\FlashMessenger'
             );
             $that->pluginManagerPlugins['flashMessenger']= $flashMessenger;
 

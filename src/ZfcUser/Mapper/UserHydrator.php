@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Mapper;
 
-use Zend\Hydrator\ClassMethods;
+use Laminas\Hydrator\ClassMethods;
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
 
 class UserHydrator extends ClassMethods

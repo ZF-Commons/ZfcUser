@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Element;
+use Laminas\Form\Element;
 use ZfcUser\Options\AuthenticationOptionsInterface;
 
 class Login extends ProvidesEventsForm
@@ -47,14 +47,27 @@ class Login extends ProvidesEventsForm
             ),
         ));
 
-        // @todo: Fix this
-        // 1) getValidator() is a protected method
-        // 2) i don't believe the login form is actually being validated by the login action
-        // (but keep in mind we don't want to show invalid username vs invalid password or
-        // anything like that, it should just say "login failed" without any additional info)
-        //$csrf = new Element\Csrf('csrf');
-        //$csrf->getValidator()->setTimeout($options->getLoginFormTimeout());
-        //$this->add($csrf);
+        if ($this->getAuthenticationOptions()->getUseLoginFormCsrf()) {
+            $this->add([
+                'type' => '\Laminas\Form\Element\Csrf',
+                'name' => 'security',
+                'options' => [
+                    'csrf_options' => [
+                        'timeout' => $this->getAuthenticationOptions()->getLoginFormTimeout()
+                    ]
+                ]
+            ]);
+        }
+        if ($this->getAuthenticationOptions()->getUseLoginFormCaptcha()) {
+            $this->add(array(
+                'name' => 'captcha',
+                'type' => 'Laminas\Form\Element\Captcha',
+                'options' => array(
+                    'label' => 'Human check',
+                    'captcha' => $this->getAuthenticationOptions()->getFormCaptchaOptions(),
+                ),
+            ));
+        }
 
         $submitElement = new Element\Button('submit');
         $submitElement

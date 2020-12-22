@@ -3,11 +3,11 @@
 namespace ZfcUser\Authentication\Adapter;
 
 use Interop\Container\ContainerInterface;
-use Zend\Authentication\Result as AuthenticationResult;
-use Zend\EventManager\EventInterface;
-use Zend\ServiceManager\ServiceManager;
-use Zend\Crypt\Password\Bcrypt;
-use Zend\Session\Container as SessionContainer;
+use Laminas\Authentication\Result as AuthenticationResult;
+use Laminas\EventManager\EventInterface;
+use Laminas\ServiceManager\ServiceManager;
+use Laminas\Crypt\Password\Bcrypt;
+use Laminas\Session\Container as SessionContainer;
 use ZfcUser\Entity\UserInterface;
 use ZfcUser\Mapper\UserInterface as UserMapperInterface;
 use ZfcUser\Options\ModuleOptions;
@@ -105,7 +105,7 @@ class Db extends AbstractAdapter
         }
 
         // regen the id
-        $session = new SessionContainer($this->getStorage()->getNameSpace());
+        $session = new SessionContainer('ZfcUser');
         $session->getManager()->regenerateId();
 
         // Success!

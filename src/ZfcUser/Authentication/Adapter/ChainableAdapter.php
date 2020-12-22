@@ -2,8 +2,8 @@
 
 namespace ZfcUser\Authentication\Adapter;
 
-use Zend\Authentication\Storage\StorageInterface;
-use Zend\EventManager\EventInterface;
+use Laminas\Authentication\Storage\StorageInterface;
+use Laminas\EventManager\EventInterface;
 
 interface ChainableAdapter
 {

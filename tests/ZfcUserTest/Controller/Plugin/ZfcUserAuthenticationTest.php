@@ -3,8 +3,8 @@
 namespace ZfcUserTest\Controller\Plugin;
 
 use ZfcUser\Controller\Plugin\ZfcUserAuthentication as Plugin;
-use Zend\Authentication\AuthenticationService;
-use Zend\Authentication\Adapter\AdapterInterface;
+use Laminas\Authentication\AuthenticationService;
+use Laminas\Authentication\Adapter\AdapterInterface;
 use ZfcUser\Authentication\Adapter\AdapterChain;
 
 class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
@@ -30,7 +30,7 @@ class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
     public function setUp()
     {
         $this->SUT = new Plugin();
-        $this->mockedAuthenticationService = $this->getMock('Zend\Authentication\AuthenticationService');
+        $this->mockedAuthenticationService = $this->getMock('Laminas\Authentication\AuthenticationService');
         $this->mockedAuthenticationAdapter = $this->getMockForAbstractClass('\ZfcUser\Authentication\Adapter\AdapterChain');
     }
 
@@ -78,12 +78,12 @@ class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
         $adapter2 = new AdapterChain();
         $this->SUT->setAuthAdapter($adapter1);
 
-        $this->assertInstanceOf('\Zend\Authentication\Adapter\AdapterInterface', $this->SUT->getAuthAdapter());
+        $this->assertInstanceOf('\Laminas\Authentication\Adapter\AdapterInterface', $this->SUT->getAuthAdapter());
         $this->assertSame($adapter1, $this->SUT->getAuthAdapter());
 
         $this->SUT->setAuthAdapter($adapter2);
 
-        $this->assertInstanceOf('\Zend\Authentication\Adapter\AdapterInterface', $this->SUT->getAuthAdapter());
+        $this->assertInstanceOf('\Laminas\Authentication\Adapter\AdapterInterface', $this->SUT->getAuthAdapter());
         $this->assertNotSame($adapter1, $this->SUT->getAuthAdapter());
         $this->assertSame($adapter2, $this->SUT->getAuthAdapter());
     }
@@ -98,12 +98,12 @@ class ZfcUserAuthenticationTest extends \PHPUnit_Framework_TestCase
         $service2 = new AuthenticationService();
         $this->SUT->setAuthService($service1);
 
-        $this->assertInstanceOf('\Zend\Authentication\AuthenticationService', $this->SUT->getAuthService());
+        $this->assertInstanceOf('\Laminas\Authentication\AuthenticationService', $this->SUT->getAuthService());
         $this->assertSame($service1, $this->SUT->getAuthService());
 
         $this->SUT->setAuthService($service2);
 
-        $this->assertInstanceOf('\Zend\Authentication\AuthenticationService', $this->SUT->getAuthService());
+        $this->assertInstanceOf('\Laminas\Authentication\AuthenticationService', $this->SUT->getAuthService());
         $this->assertNotSame($service1, $this->SUT->getAuthService());
         $this->assertSame($service2, $this->SUT->getAuthService());
     }

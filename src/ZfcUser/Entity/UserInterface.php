@@ -67,14 +67,14 @@ interface UserInterface
     /**
      * Get password.
      *
-     * @return string password
+     * @return string|null password
      */
     public function getPassword();
 
     /**
      * Set password.
      *
-     * @param string $password
+     * @param string|null $password
      * @return UserInterface
      */
     public function setPassword($password);
@@ -82,15 +82,14 @@ interface UserInterface
     /**
      * Get state.
      *
-     * @return int
+     * @return boolean
      */
     public function getState();
 
     /**
      * Set state.
      *
-     * @param int $state
-     * @return UserInterface
+     * @param boolean $state
      */
     public function setState($state);
 }

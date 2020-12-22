@@ -15,7 +15,7 @@ class ZfcUserIdentityTest extends \PHPUnit_Framework_TestCase
         $helper = new ViewHelper;
         $this->helper = $helper;
 
-        $authService = $this->getMock('Zend\Authentication\AuthenticationService');
+        $authService = $this->getMock('Laminas\Authentication\AuthenticationService');
         $this->authService = $authService;
 
         $helper->setAuthService($authService);

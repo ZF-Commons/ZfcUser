@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Options;
 
-use Zend\Stdlib\AbstractOptions;
+use Laminas\Stdlib\AbstractOptions;
 
 class ModuleOptions extends AbstractOptions implements
     UserControllerOptionsInterface,
@@ -97,6 +97,16 @@ class ModuleOptions extends AbstractOptions implements
      * @var bool
      */
     protected $useRegistrationFormCaptcha = false;
+    
+    /**
+     * @var bool
+     */
+    protected $useLoginFormCaptcha = false;
+    
+    /**
+     * @var bool
+     */
+    protected $useLoginFormCsrf = true;
 
     /**
      * @var int
@@ -471,6 +481,50 @@ class ModuleOptions extends AbstractOptions implements
     public function getUseRegistrationFormCaptcha()
     {
         return $this->useRegistrationFormCaptcha;
+    }
+    
+    /**
+     * set use a captcha in login form
+     *
+     * @param bool $useRegistrationFormCaptcha
+     * @return ModuleOptions
+     */
+    public function setUseLoginFormCaptcha($useLoginFormCaptcha)
+    {
+        $this->useLoginFormCaptcha = $useLoginFormCaptcha;
+        return $this;
+    }
+    
+    /**
+     * get use a captcha in login form
+     *
+     * @return bool
+     */
+    public function getUseLoginFormCaptcha()
+    {
+        return $this->useLoginFormCaptcha;
+    }
+    
+    /**
+     * set use a csrf in login form
+     *
+     * @param bool $useRegistrationFormCaptcha
+     * @return ModuleOptions
+     */
+    public function setUseLoginFormCsrf($useLoginFormCsrf)
+    {
+        $this->useLoginFormCsrf = $useLoginFormCsrf;
+        return $this;
+    }
+    
+    /**
+     * get use a csrf in login form
+     *
+     * @return bool
+     */
+    public function getUseLoginFormCsrf()
+    {
+        return $this->useLoginFormCsrf;
     }
 
     /**

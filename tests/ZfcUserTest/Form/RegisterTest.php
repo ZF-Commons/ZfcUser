@@ -21,8 +21,8 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
         $options->expects($this->any())
                 ->method('getUseRegistrationFormCaptcha')
                 ->will($this->returnValue($useCaptcha));
-        if ($useCaptcha && class_exists('\Zend\Captcha\AbstractAdapter')) {
-            $captcha = $this->getMockForAbstractClass('\Zend\Captcha\AbstractAdapter');
+        if ($useCaptcha && class_exists('\Laminas\Captcha\AbstractAdapter')) {
+            $captcha = $this->getMockForAbstractClass('\Laminas\Captcha\AbstractAdapter');
 
             $options->expects($this->once())
                 ->method('getFormCaptchaOptions')
@@ -83,7 +83,7 @@ class RegisterTest extends \PHPUnit_Framework_TestCase
                 ->method('getUseRegistrationFormCaptcha')
                 ->will($this->returnValue(false));
 
-        $captcha = $this->getMock('\Zend\Form\Element\Captcha');
+        $captcha = $this->getMock('\Laminas\Form\Element\Captcha');
         $form = new Form(null, $options);
 
         $form->setCaptchaElement($captcha);

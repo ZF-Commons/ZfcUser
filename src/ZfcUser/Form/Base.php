@@ -2,7 +2,7 @@
 
 namespace ZfcUser\Form;
 
-use Zend\Form\Element;
+use Laminas\Form\Element;
 
 class Base extends ProvidesEventsForm
 {
@@ -75,7 +75,7 @@ class Base extends ProvidesEventsForm
 
         $this->add(array(
             'name' => 'userId',
-            'type' => 'Zend\Form\Element\Hidden',
+            'type' => 'Laminas\Form\Element\Hidden',
             'attributes' => array(
                 'type' => 'hidden'
             ),
