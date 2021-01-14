@@ -25,7 +25,7 @@
         }
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.2|~8.0",
         "zendframework/zend-authentication": "^2.5",
         "zendframework/zend-crypt": "^3.0",
         "zendframework/zend-form": "^2.9",
