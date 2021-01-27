@@ -5,7 +5,7 @@ namespace ZfcUser\Mapper;
 use Zend\Hydrator\ClassMethods;
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
 
-class UserHydrator extends ClassMethods
+class UserHydrator extends \Laminas\Hydrator\ClassMethodsHydrator
 {
     /**
      * Extract values from an object
