@@ -8,7 +8,7 @@ use Zend\Db\Sql\Select;
 use Zend\Db\Sql\Sql;
 use Zend\Db\Sql\TableIdentifier;
 use Zend\Hydrator\HydratorInterface;
-use Zend\Hydrator\ClassMethods;
+use Laminas\Hydrator\ClassMethodsHydrator;
 use ZfcUser\Entity\UserInterface as UserEntityInterface;
 use ZfcUser\EventManager\EventProvider;
 use ZfcUser\Db\Adapter\MasterSlaveAdapterInterface;
@@ -79,7 +79,7 @@ abstract class AbstractDbMapper extends EventProvider
             throw new \Exception('No db adapter present');
         }
         if (!$this->hydrator instanceof HydratorInterface) {
-            $this->hydrator = new ClassMethods;
+            $this->hydrator = new ClassMethodsHydrator;
         }
         if (!is_object($this->entityPrototype)) {
             throw new \Exception('No entity prototype set');
@@ -242,7 +242,7 @@ abstract class AbstractDbMapper extends EventProvider
     public function getHydrator()
     {
         if (!$this->hydrator) {
-            $this->hydrator = new ClassMethods(false);
+            $this->hydrator = new ClassMethodsHydrator(false);
         }
         return $this->hydrator;
     }
