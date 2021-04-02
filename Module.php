@@ -44,6 +44,9 @@ class Module implements
                 'zfcUserIdentity' => \ZfcUser\Factory\View\Helper\ZfcUserIdentity::class,
                 'zfcUserLoginWidget' => \ZfcUser\Factory\View\Helper\ZfcUserLoginWidget::class,
             ),
+            'aliases' => array(
+                'ZfcUserIdentity' => 'zfcUserIdentity',
+            ),
         );
 
     }
