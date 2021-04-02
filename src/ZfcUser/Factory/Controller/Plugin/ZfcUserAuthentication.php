@@ -29,7 +29,7 @@ class ZfcUserAuthentication implements FactoryInterface
      */
     public function createService(ServiceLocatorInterface $serviceManager)
     {
-        $serviceLocator = $serviceManager->getServiceLocator();
+        $serviceLocator = $serviceManager;
 
         return $this->__invoke($serviceLocator, null);
     }

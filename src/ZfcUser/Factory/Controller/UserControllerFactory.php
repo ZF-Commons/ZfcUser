@@ -39,7 +39,7 @@ class UserControllerFactory implements FactoryInterface
     public function createService(ServiceLocatorInterface $controllerManager)
     {
         /* @var ControllerManager $controllerManager*/
-        $serviceManager = $controllerManager->getServiceLocator();
+        $serviceManager = $controllerManager;
 
         return $this->__invoke($serviceManager, null);
     }

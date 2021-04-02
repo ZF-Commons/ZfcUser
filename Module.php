@@ -44,6 +44,9 @@ class Module implements
                 'zfcUserIdentity' => \ZfcUser\Factory\View\Helper\ZfcUserIdentity::class,
                 'zfcUserLoginWidget' => \ZfcUser\Factory\View\Helper\ZfcUserLoginWidget::class,
             ),
+            'aliases' => array(
+                'ZfcUserIdentity' => 'zfcUserIdentity',
+            ),
         );
 
     }
@@ -55,7 +58,7 @@ class Module implements
                 'zfcuser_zend_db_adapter' => \Zend\Db\Adapter\Adapter::class,
             ),
             'invokables' => array(
-                'zfcuser_register_form_hydrator' => \Zend\Hydrator\ClassMethods::class,
+                'zfcuser_register_form_hydrator' => \Laminas\Hydrator\ClassMethodsHydrator::class,
             ),
             'factories' => array(
                 'zfcuser_redirect_callback' => \ZfcUser\Factory\Controller\RedirectCallbackFactory::class,

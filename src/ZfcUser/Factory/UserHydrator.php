@@ -10,7 +10,7 @@ class UserHydrator implements FactoryInterface
 {
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        return new \Zend\Hydrator\ClassMethods();
+        return new \Laminas\Hydrator\ClassMethodsHydrator();
     }
 
 
